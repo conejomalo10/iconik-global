@@ -870,12 +870,17 @@ footer {
       <span class="card-arrow">→</span>
     </div>
     <!-- 7 -->
-    <div class="category-card reveal" onclick="openModal()">
-      <span class="card-number">07</span>
-      <span class="card-icon">👗</span>
-      <div class="card-title">Fashion</div>
-      <div class="card-desc">Supermodels, designers, streetwear icons, sneaker culture, runway stars — male & female — from every fashion capital.</div>
-      <div class="card-count">Designers · Models · Streetwear</div>
+    <div class="category-card reveal" onclick="openModal()" style="padding:0;overflow:hidden;">
+      <span class="card-number" style="position:absolute;top:12px;right:16px;z-index:2;">07</span>
+      <div style="width:100%;height:160px;overflow:hidden;position:relative;">
+        <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80" alt="Luxury Fashion" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.8);"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(7,7,13,0.95));"></div>
+      </div>
+      <div style="padding:20px 28px 28px;">
+        <div class="card-title">Fashion</div>
+        <div class="card-desc">Supermodels, designers, streetwear icons, sneaker culture, runway stars — male & female — from every fashion capital.</div>
+        <div class="card-count">Designers · Models · Streetwear</div>
+      </div>
       <span class="card-arrow">→</span>
     </div>
     <!-- 8 -->
@@ -888,12 +893,17 @@ footer {
       <span class="card-arrow">→</span>
     </div>
     <!-- 9 -->
-    <div class="category-card reveal" onclick="openModal()">
-      <span class="card-number">09</span>
-      <span class="card-icon">🚗</span>
-      <div class="card-title">Automotive & Lifestyle</div>
-      <div class="card-desc">Car culture icons, F1 legends, motorcycle stars, luxury brand ambassadors & custom car builders worldwide.</div>
-      <div class="card-count">Cars · Bikes · Luxury · Speed</div>
+    <div class="category-card reveal" onclick="openModal()" style="padding:0;overflow:hidden;">
+      <span class="card-number" style="position:absolute;top:12px;right:16px;z-index:2;">09</span>
+      <div style="width:100%;height:160px;overflow:hidden;position:relative;">
+        <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80" alt="Luxury Supercar" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.85);"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(7,7,13,0.95));"></div>
+      </div>
+      <div style="padding:20px 28px 28px;">
+        <div class="card-title">Automotive & Lifestyle</div>
+        <div class="card-desc">Car culture icons, F1 legends, motorcycle stars, luxury brand ambassadors & custom car builders worldwide.</div>
+        <div class="card-count">Cars · Bikes · Luxury · Speed</div>
+      </div>
       <span class="card-arrow">→</span>
     </div>
     <!-- 10 -->
@@ -1077,16 +1087,6 @@ footer {
         <p>The world's global fan ecosystem. Where icons are celebrated, fans connect, and every rising star finds their community. Find Your Tribe. Follow Your Icon.</p>
       </div>
       <div class="footer-col">
-        <h4>Communities</h4>
-        <ul>
-          <li><a href="#">Music</a></li>
-          <li><a href="#">Sports</a></li>
-          <li><a href="#">Film & TV</a></li>
-          <li><a href="#">Wellness</a></li>
-          <li><a href="#">Literature</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
         <h4>Platform</h4>
         <ul>
           <li><a href="#">How It Works</a></li>
@@ -1107,13 +1107,71 @@ footer {
         </ul>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span class="footer-copy">© 2026 ICONIK Global Fans Community · iconikglobal.web.app · All rights reserved.</span>
-      <div class="footer-socials">
-        <a class="footer-social" href="#">✕</a>
-        <a class="footer-social" href="#">📘</a>
-        <a class="footer-social" href="#">📸</a>
-        <a class="footer-social" href="#">▶</a>
+
+    <!-- ALL 13 COMMUNITIES HORIZONTAL -->
+    <div style="margin-bottom:48px;">
+      <h4 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;">All Communities</h4>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;">
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🎵 Music</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🎬 Film & TV</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">⚽ Sports</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">📚 Literature</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">💪 Fitness & Wellness</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🌿 Nature & Exploration</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">👗 Fashion</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🍽️ Food & Culinary</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🚗 Automotive</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">💻 Tech & Innovation</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">💄 Beauty & Aesthetics</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🎭 Entertainment & Talent</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🎓 Thought Leadership</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom" style="flex-direction:column;gap:24px;align-items:center;">
+      <!-- SOCIAL PLATFORMS WITH BRAND COLORS -->
+      <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+        <!-- TikTok -->
+        <a class="footer-social" href="#" title="TikTok" style="background:#000;border-color:#000;width:40px;height:40px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z" fill="#fff"/><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z" fill="#69C9D0" opacity="0.6"/></svg>
+        </a>
+        <!-- X / Twitter -->
+        <a class="footer-social" href="#" title="X" style="background:#000;border-color:#333;width:40px;height:40px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.259 5.631 5.905-5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <!-- Facebook -->
+        <a class="footer-social" href="#" title="Facebook" style="background:#1877F2;border-color:#1877F2;width:40px;height:40px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <!-- Instagram -->
+        <a class="footer-social" href="#" title="Instagram" style="background:radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);border-color:transparent;width:40px;height:40px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <!-- YouTube -->
+        <a class="footer-social" href="#" title="YouTube" style="background:#FF0000;border-color:#FF0000;width:40px;height:40px;">
+          <svg width="20" height="14" viewBox="0 0 24 17" fill="white"><path d="M23.495 2.205a3.02 3.02 0 00-2.122-2.122C19.505 0 12 0 12 0S4.495 0 2.627.083A3.02 3.02 0 00.505 2.205C0 4.073 0 8 0 8s0 3.927.505 5.795a3.02 3.02 0 002.122 2.122C4.495 16 12 16 12 16s7.505 0 9.373-.083a3.02 3.02 0 002.122-2.122C24 11.927 24 8 24 8s0-3.927-.505-5.795zM9.545 11.568V4.432L15.818 8l-6.273 3.568z"/></svg>
+        </a>
+        <!-- Telegram -->
+        <a class="footer-social" href="#" title="Telegram" style="background:#26A5E4;border-color:#26A5E4;width:40px;height:40px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        </a>
+        <!-- Reddit -->
+        <a class="footer-social" href="#" title="Reddit" style="background:#FF4500;border-color:#FF4500;width:40px;height:40px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+        </a>
+        <!-- WeChat -->
+        <a class="footer-social" href="#" title="WeChat" style="background:#07C160;border-color:#07C160;width:40px;height:40px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.328.328 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-3.89-6.348-7.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-7.062-6.122zm-3.318 2.554c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm6.306 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/></svg>
+        </a>
+        <!-- RuTube -->
+        <a class="footer-social" href="#" title="RuTube" style="background:#00ACED;border-color:#00ACED;width:40px;height:40px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="10" fill="none" stroke="white" stroke-width="1.5"/><polygon points="10,8 16,12 10,16" fill="white"/></svg>
+        </a>
+        <!-- LeekeLeeke -->
+        <a class="footer-social" href="#" title="LeekeLeeke" style="background:#E53935;border-color:#E53935;width:40px;height:40px;font-family:'Bebas Neue',sans-serif;font-size:0.65rem;font-weight:900;color:white;letter-spacing:0.05em;display:flex;align-items:center;justify-content:center;">LL</a>
+      </div>
+      <div style="display:flex;justify-content:space-between;width:100%;align-items:center;flex-wrap:wrap;gap:12px;">
+        <span class="footer-copy">© 2026 ICONIK Global Fans Community · iconik-global.web.app · All rights reserved.</span>
       </div>
     </div>
   </div>
@@ -1256,4 +1314,3 @@ document.querySelectorAll('.category-card').forEach((card, i) => {
 </script>
 </body>
 </html>
-
