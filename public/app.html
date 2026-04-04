@@ -3,1629 +3,582 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ICONIK — Member Dashboard</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Montserrat:wght@400;600;800;900&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-
+<title>ICONIK — My Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@400;600;800;900&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-:root {
-  --obsidian: #07070D;
-  --obsidian-2: #0F0F1A;
-  --obsidian-3: #141420;
-  --gold: #FFB800;
-  --gold-glow: #FF9500;
-  --gold-light: #FFD060;
-  --champagne: #F5F0E8;
-  --champagne-dim: #BDB5A6;
-  --glass: rgba(255,184,0,0.04);
-  --glass-border: rgba(255,184,0,0.15);
-  --glass-bright: rgba(255,184,0,0.4);
-  --success: #22C55E;
-  --error: #EF4444;
-  --admin-blue: #3B82F6;
-}
-
+:root{--obs:#07070D;--obs2:#0F0F1A;--obs3:#141420;--gold:#FFB800;--gg:#FF9500;--gl:#FFD060;--ch:#F5F0E8;--cd:#BDB5A6;--gb:rgba(255,184,0,0.04);--gbr:rgba(255,184,0,0.15);--gbri:rgba(255,184,0,0.4);--ok:#22C55E;--err:#EF4444;--ab:#3B82F6;--warn:#F59E0B;}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:var(--obsidian);color:var(--champagne);font-family:'Inter',sans-serif;overflow-x:hidden;min-height:100vh;}
-
-/* ── PAGES ── */
-.page{display:none;min-height:100vh;}
-.page.active{display:block;}
-
-/* ── AUTH PAGE ── */
-.auth-page{
-  display:none;min-height:100vh;
-  background:linear-gradient(135deg,var(--obsidian) 0%,#0A0A14 50%,var(--obsidian) 100%);
-  align-items:center;justify-content:center;padding:20px;
-}
-.auth-page.active{display:flex;}
-
-.auth-box{
-  width:100%;max-width:440px;
-  background:var(--obsidian-3);
-  border:1px solid var(--glass-border);
-  padding:48px 40px;
-  box-shadow:0 40px 120px rgba(0,0,0,0.6),0 0 60px rgba(255,184,0,0.06);
-  animation:fadeUp 0.5s ease forwards;
-}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-
-.auth-logo{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:2rem;letter-spacing:0.15em;
-  color:var(--gold);text-align:center;
-  text-shadow:0 0 30px rgba(255,184,0,0.4);
-  margin-bottom:8px;display:block;
-  text-decoration:none;
-}
-.auth-logo span{color:var(--champagne);}
-.auth-subtitle{
-  font-family:'Inter',sans-serif;font-size:0.8rem;
-  color:var(--champagne-dim);text-align:center;
-  letter-spacing:0.1em;margin-bottom:36px;
-}
-.auth-tabs{display:flex;gap:0;margin-bottom:32px;border-bottom:1px solid var(--glass-border);}
-.auth-tab{
-  flex:1;padding:12px;text-align:center;cursor:pointer;
-  font-family:'Montserrat',sans-serif;font-size:0.72rem;
-  font-weight:700;letter-spacing:0.15em;text-transform:uppercase;
-  color:var(--champagne-dim);border-bottom:2px solid transparent;
-  transition:all 0.3s;margin-bottom:-1px;
-}
-.auth-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
-
-.form-group{margin-bottom:18px;}
-.form-label{
-  font-family:'Montserrat',sans-serif;font-size:0.62rem;
-  font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
-  color:var(--champagne-dim);margin-bottom:8px;display:block;
-}
-.form-input{
-  width:100%;padding:13px 16px;
-  background:rgba(255,255,255,0.04);
-  border:1px solid var(--glass-border);
-  color:var(--champagne);font-family:'Inter',sans-serif;font-size:0.9rem;
-  outline:none;transition:all 0.3s;
-}
-.form-input:focus{border-color:var(--gold);box-shadow:0 0 20px rgba(255,184,0,0.08);}
-.form-input::placeholder{color:rgba(189,181,166,0.3);}
-
-.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px;}
-.cat-chip{
-  padding:10px 6px;text-align:center;
-  border:1px solid var(--glass-border);cursor:pointer;
-  transition:all 0.3s;background:transparent;
-}
-.cat-chip:hover,.cat-chip.selected{border-color:var(--gold);background:rgba(255,184,0,0.08);}
-.cat-chip-icon{font-size:1.2rem;display:block;margin-bottom:4px;}
-.cat-chip-name{font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--champagne-dim);}
-.cat-chip.selected .cat-chip-name{color:var(--gold);}
-
-.btn{
-  width:100%;padding:14px;
-  font-family:'Montserrat',sans-serif;font-weight:800;
-  font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;
-  cursor:pointer;border:none;transition:all 0.3s;
-}
-.btn-gold{
-  background:linear-gradient(135deg,var(--gold),var(--gold-glow));
-  color:var(--obsidian);
-  clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);
-  box-shadow:0 0 30px rgba(255,184,0,0.25);
-}
-.btn-gold:hover{box-shadow:0 0 50px rgba(255,184,0,0.45);transform:translateY(-1px);}
-.btn-outline{background:transparent;border:1px solid var(--glass-bright);color:var(--champagne);}
-.btn-outline:hover{border-color:var(--gold);color:var(--gold);}
-
-.auth-msg{
-  font-family:'Inter',sans-serif;font-size:0.78rem;
-  text-align:center;margin-top:16px;padding:10px;
-  border-radius:2px;display:none;
-}
-.auth-msg.error{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#EF4444;}
-.auth-msg.success{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:#22C55E;}
-
-.auth-switch{
-  font-family:'Inter',sans-serif;font-size:0.78rem;
-  color:var(--champagne-dim);text-align:center;margin-top:20px;
-}
-.auth-switch a{color:var(--gold);cursor:pointer;text-decoration:none;}
-
-/* ── TOP NAV ── */
-.topnav{
-  position:fixed;top:0;left:0;right:0;z-index:1000;
-  padding:14px 24px;
-  display:flex;align-items:center;justify-content:space-between;
-  background:rgba(7,7,13,0.92);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--glass-border);
-}
-.nav-logo-small{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:1.5rem;letter-spacing:0.15em;
-  color:var(--gold);text-decoration:none;
-  text-shadow:0 0 20px rgba(255,184,0,0.4);
-}
-.nav-logo-small span{color:var(--champagne);}
-.nav-right{display:flex;align-items:center;gap:12px;}
-.nav-user{
-  font-family:'Inter',sans-serif;font-size:0.78rem;
-  color:var(--champagne-dim);
-}
-.nav-avatar{
-  width:34px;height:34px;
-  background:linear-gradient(135deg,var(--gold),var(--gold-glow));
-  border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Bebas Neue',sans-serif;font-size:0.9rem;
-  color:var(--obsidian);cursor:pointer;
-  position:relative;
-}
-.nav-badge{
-  position:absolute;top:-2px;right:-2px;
-  width:10px;height:10px;
-  background:var(--gold);border-radius:50%;
-  border:2px solid var(--obsidian);
-}
-.nav-menu-btn{
-  background:none;border:none;cursor:pointer;
-  display:flex;flex-direction:column;gap:4px;
-}
-.nav-menu-btn span{display:block;width:20px;height:2px;background:var(--gold);}
-
-/* ── SIDEBAR ── */
-.sidebar{
-  position:fixed;top:0;left:-280px;width:280px;height:100vh;
-  background:var(--obsidian-3);
-  border-right:1px solid var(--glass-border);
-  z-index:2000;transition:left 0.3s ease;
-  overflow-y:auto;padding:0 0 40px;
-}
-.sidebar.open{left:0;}
-.sidebar-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,0.7);
-  z-index:1999;display:none;
-}
-.sidebar-overlay.open{display:block;}
-.sidebar-header{
-  padding:24px 20px;
-  border-bottom:1px solid var(--glass-border);
-  display:flex;align-items:center;justify-content:space-between;
-}
-.sidebar-logo{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:1.4rem;letter-spacing:0.15em;color:var(--gold);
-}
-.sidebar-close{
-  background:none;border:none;cursor:pointer;
-  color:var(--champagne-dim);font-size:1.2rem;
-}
-.sidebar-user{
-  padding:20px;border-bottom:1px solid var(--glass-border);
-}
-.sidebar-avatar{
-  width:48px;height:48px;
-  background:linear-gradient(135deg,var(--gold),var(--gold-glow));
-  border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Bebas Neue',sans-serif;font-size:1.2rem;
-  color:var(--obsidian);margin-bottom:10px;
-}
-.sidebar-name{
-  font-family:'Montserrat',sans-serif;font-weight:700;
-  font-size:0.85rem;color:var(--champagne);margin-bottom:4px;
-}
-.sidebar-tier{
-  display:inline-block;
-  font-family:'Bebas Neue',sans-serif;font-size:0.65rem;
-  letter-spacing:0.15em;color:var(--obsidian);
-  background:var(--gold);padding:2px 10px;
-}
-.sidebar-nav{padding:16px 0;}
-.sidebar-section{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:0.62rem;letter-spacing:0.3em;
-  color:rgba(189,181,166,0.4);padding:8px 20px 4px;
-}
-.sidebar-link{
-  display:flex;align-items:center;gap:12px;
-  padding:12px 20px;cursor:pointer;
-  font-family:'Inter',sans-serif;font-size:0.82rem;
-  color:var(--champagne-dim);transition:all 0.2s;
-  border-left:3px solid transparent;
-}
-.sidebar-link:hover,.sidebar-link.active{
-  color:var(--gold);background:var(--glass);
-  border-left-color:var(--gold);
-}
-.sidebar-link-icon{font-size:1rem;width:20px;text-align:center;}
-.sidebar-link-badge{
-  margin-left:auto;
-  font-family:'Bebas Neue',sans-serif;font-size:0.6rem;
-  background:var(--gold);color:var(--obsidian);
-  padding:1px 6px;letter-spacing:0.1em;
-}
-
-/* ── MAIN CONTENT ── */
-.main-content{padding:80px 20px 40px;}
-
-/* ── DASHBOARD VIEW ── */
+body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overflow-x:hidden;min-height:100vh;}
+/* AUTH */
+.auth-pg{display:none;min-height:100vh;background:linear-gradient(135deg,var(--obs),#0A0A14,var(--obs));align-items:center;justify-content:center;padding:16px;}
+.auth-pg.on{display:flex;}
+.dash-pg{display:none;}
+.dash-pg.on{display:block;}
+.abox{width:100%;max-width:480px;background:var(--obs3);border:1px solid var(--gbr);padding:36px 28px;box-shadow:0 40px 120px rgba(0,0,0,0.6);animation:fu 0.4s ease;}
+@keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.alogo{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.15em;color:var(--gold);text-align:center;text-shadow:0 0 30px rgba(255,184,0,0.4);margin-bottom:5px;display:block;text-decoration:none;}
+.alogo span{color:var(--ch);}
+.asub{font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--cd);text-align:center;margin-bottom:22px;}
+.atabs{display:flex;border-bottom:1px solid var(--gbr);margin-bottom:20px;}
+.atab{flex:1;padding:10px;text-align:center;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:0.64rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--cd);border-bottom:2px solid transparent;transition:all 0.3s;margin-bottom:-1px;}
+.atab.on{color:var(--gold);border-bottom-color:var(--gold);}
+/* VERIFICATION NOTICE */
+.vnotice{background:linear-gradient(135deg,rgba(245,158,11,0.08),rgba(255,184,0,0.04));border:1px solid rgba(245,158,11,0.25);border-left:4px solid var(--warn);padding:14px;margin-bottom:18px;}
+.vnotice-t{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--warn);margin-bottom:7px;}
+.vnotice p{font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);line-height:1.65;}
+.vnotice strong{color:var(--ch);}
+/* FORM */
+.fg{margin-bottom:13px;}
+.fl{font-family:'Montserrat',sans-serif;font-size:0.58rem;font-weight:700;letter-spacing:0.17em;text-transform:uppercase;color:var(--cd);margin-bottom:6px;display:block;}
+.req{color:var(--err);}
+.fi,.fs{width:100%;padding:11px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--gbr);color:var(--ch);font-family:'Inter',sans-serif;font-size:0.82rem;outline:none;transition:all 0.3s;}
+.fi:focus,.fs:focus{border-color:var(--gold);}
+.fi::placeholder{color:rgba(189,181,166,0.3);}
+.fs option{background:var(--obs3);}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.fhint{font-family:'Inter',sans-serif;font-size:0.62rem;color:rgba(189,181,166,0.4);margin-top:4px;}
+/* ID SECTION */
+.idbox{background:rgba(255,184,0,0.04);border:1px solid var(--gbr);border-left:3px solid var(--gold);padding:13px;margin-bottom:13px;}
+.idbox-t{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.idopts{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:9px;}
+.idopt{padding:7px 11px;border:1px solid var(--gbr);cursor:pointer;font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);transition:all 0.3s;border-radius:2px;}
+.idopt.on{border-color:var(--gold);background:rgba(255,184,0,0.08);color:var(--gold);}
+/* CATS */
+.catg{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:13px;}
+.cc{padding:8px 3px;text-align:center;border:1px solid var(--gbr);cursor:pointer;transition:all 0.3s;}
+.cc:hover,.cc.on{border-color:var(--gold);background:rgba(255,184,0,0.08);}
+.cc-i{font-size:1rem;display:block;margin-bottom:2px;}
+.cc-n{font-family:'Inter',sans-serif;font-size:0.5rem;color:var(--cd);}
+.cc.on .cc-n{color:var(--gold);}
+/* BUTTONS */
+.btn{width:100%;padding:12px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.68rem;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;border:none;transition:all 0.3s;}
+.btn-g{background:linear-gradient(135deg,var(--gold),var(--gg));color:var(--obs);clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);box-shadow:0 0 30px rgba(255,184,0,0.2);}
+.btn-g:hover{box-shadow:0 0 50px rgba(255,184,0,0.4);transform:translateY(-1px);}
+.btn-sm{width:auto;padding:6px 12px;font-size:0.58rem;}
+.btn-o{background:transparent;border:1px solid var(--gbri);color:var(--ch);}
+/* MSG */
+.amsg{font-family:'Inter',sans-serif;font-size:0.72rem;text-align:center;margin-top:11px;padding:9px;display:none;}
+.amsg.err{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:var(--err);}
+.amsg.ok{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:var(--ok);}
+/* TOPNAV */
+.tnav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:11px 16px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,7,13,0.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--gbr);}
+.nlogo{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.13em;color:var(--gold);text-decoration:none;text-shadow:0 0 20px rgba(255,184,0,0.4);}
+.nlogo span{color:var(--ch);}
+.nr{display:flex;align-items:center;gap:8px;}
+.nuname{font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);}
+.nav-av{width:30px;height:30px;background:linear-gradient(135deg,var(--gold),var(--gg));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.8rem;color:var(--obs);cursor:pointer;}
+.hbg{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:4px;}
+.hbg span{display:block;width:17px;height:2px;background:var(--gold);}
+/* SIDEBAR */
+.sb{position:fixed;top:0;left:-285px;width:285px;height:100vh;background:var(--obs3);border-right:1px solid var(--gbr);z-index:2000;transition:left 0.3s;overflow-y:auto;}
+.sb.on{left:0;}
+.sb-ov{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1999;display:none;}
+.sb-ov.on{display:block;}
+.sb-h{padding:16px;border-bottom:1px solid var(--gbr);display:flex;align-items:center;justify-content:space-between;}
+.sb-logo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.11em;color:var(--gold);}
+.sb-x{background:none;border:none;color:var(--cd);font-size:1rem;cursor:pointer;}
+.sb-u{padding:13px 16px;border-bottom:1px solid var(--gbr);}
+.sb-av{width:42px;height:42px;background:linear-gradient(135deg,var(--gold),var(--gg));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--obs);margin-bottom:6px;}
+.sb-nm{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.78rem;color:var(--ch);margin-bottom:3px;}
+.sb-tier{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.09em;color:var(--obs);background:var(--gold);padding:2px 7px;}
+.sb-vstatus{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.08em;color:var(--obs);background:var(--ok);padding:2px 6px;margin-left:3px;}
+.sb-nav{padding:9px 0;}
+.sb-sec{font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.25em;color:rgba(189,181,166,0.3);padding:5px 16px 2px;}
+.sb-lnk{display:flex;align-items:center;gap:8px;padding:10px 16px;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.76rem;color:var(--cd);transition:all 0.2s;border-left:3px solid transparent;}
+.sb-lnk:hover,.sb-lnk.on{color:var(--gold);background:var(--gb);border-left-color:var(--gold);}
+.sb-ic{font-size:0.88rem;width:16px;text-align:center;}
+.sb-bdg{margin-left:auto;font-family:'Bebas Neue',sans-serif;font-size:0.52rem;background:var(--gold);color:var(--obs);padding:1px 5px;}
+/* MAIN */
+.main{padding:64px 14px 32px;}
 .view{display:none;}
-.view.active{display:block;}
-
-.welcome-banner{
-  background:linear-gradient(135deg,rgba(255,184,0,0.1),rgba(255,149,0,0.05));
-  border:1px solid var(--glass-border);
-  padding:24px;margin-bottom:28px;
-  display:flex;align-items:center;gap:16px;
-}
-.welcome-icon{font-size:2rem;}
-.welcome-text h2{
-  font-family:'Playfair Display',serif;font-weight:700;
-  font-size:1.3rem;color:var(--champagne);margin-bottom:4px;
-}
-.welcome-text p{font-family:'Inter',sans-serif;font-size:0.8rem;color:var(--champagne-dim);}
-
-.stats-row{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:12px;margin-bottom:28px;
-}
-.stat-card{
-  background:var(--glass);border:1px solid var(--glass-border);
-  padding:16px;text-align:center;
-}
-.stat-card-number{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:2rem;color:var(--gold);letter-spacing:0.05em;
-}
-.stat-card-label{
-  font-family:'Inter',sans-serif;font-size:0.62rem;
-  color:var(--champagne-dim);letter-spacing:0.1em;
-  text-transform:uppercase;margin-top:4px;
-}
-
-.section-heading{
-  font-family:'Montserrat',sans-serif;font-weight:800;
-  font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;
-  color:var(--gold);margin-bottom:16px;
-  display:flex;align-items:center;gap:8px;
-}
-.section-heading::after{content:'';flex:1;height:1px;background:var(--glass-border);}
-
-/* ── CELEBRITY CARDS ── */
-.celeb-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:28px;}
-.celeb-card{
-  background:var(--glass);border:1px solid var(--glass-border);
-  overflow:hidden;cursor:pointer;transition:all 0.3s;
-}
-.celeb-card:hover{border-color:var(--glass-bright);transform:translateY(-2px);}
-.celeb-img{
-  width:100%;height:120px;object-fit:cover;
-  background:var(--obsidian-2);
-  display:flex;align-items:center;justify-content:center;
-  font-size:3rem;
-}
-.celeb-img img{width:100%;height:100%;object-fit:cover;}
-.celeb-info{padding:12px;}
-.celeb-name{
-  font-family:'Montserrat',sans-serif;font-weight:700;
-  font-size:0.82rem;color:var(--champagne);margin-bottom:4px;
-}
-.celeb-category{
-  font-family:'Bebas Neue',sans-serif;font-size:0.62rem;
-  letter-spacing:0.15em;color:var(--gold);
-}
-.celeb-followers{
-  font-family:'Inter',sans-serif;font-size:0.7rem;
-  color:var(--champagne-dim);margin-top:4px;
-}
-
-/* ── POSTS FEED ── */
-.post-card{
-  background:var(--glass);border:1px solid var(--glass-border);
-  padding:20px;margin-bottom:12px;
-}
-.post-header{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
-.post-avatar{
-  width:36px;height:36px;border-radius:50%;
-  background:linear-gradient(135deg,var(--gold),var(--gold-glow));
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--obsidian);
-  flex-shrink:0;
-}
-.post-meta{flex:1;}
-.post-author{
-  font-family:'Montserrat',sans-serif;font-weight:700;
-  font-size:0.8rem;color:var(--champagne);
-}
-.post-time{
-  font-family:'Inter',sans-serif;font-size:0.7rem;
-  color:var(--champagne-dim);
-}
-.post-category-tag{
-  font-family:'Bebas Neue',sans-serif;font-size:0.6rem;
-  letter-spacing:0.15em;color:var(--obsidian);
-  background:var(--gold);padding:2px 8px;
-}
-.post-content{
-  font-family:'Inter',sans-serif;font-size:0.85rem;
-  color:var(--champagne-dim);line-height:1.6;
-  margin-bottom:12px;
-}
-.post-actions{display:flex;gap:16px;}
-.post-action{
-  font-family:'Inter',sans-serif;font-size:0.75rem;
-  color:var(--champagne-dim);cursor:pointer;
-  display:flex;align-items:center;gap:4px;
-  background:none;border:none;transition:color 0.2s;
-}
-.post-action:hover{color:var(--gold);}
-
-/* ── ADMIN PANEL ── */
-.admin-header{
-  background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(59,130,246,0.05));
-  border:1px solid rgba(59,130,246,0.2);
-  padding:20px;margin-bottom:24px;
-  display:flex;align-items:center;gap:12px;
-}
-.admin-badge{
-  font-family:'Bebas Neue',sans-serif;font-size:0.65rem;
-  letter-spacing:0.2em;color:#fff;
-  background:var(--admin-blue);padding:4px 12px;
-}
-.admin-title{
-  font-family:'Playfair Display',serif;font-weight:700;
-  font-size:1.1rem;color:var(--champagne);
-}
-
-.admin-tabs{display:flex;gap:0;border-bottom:1px solid var(--glass-border);margin-bottom:24px;overflow-x:auto;}
-.admin-tab{
-  padding:10px 18px;cursor:pointer;white-space:nowrap;
-  font-family:'Montserrat',sans-serif;font-size:0.68rem;
-  font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
-  color:var(--champagne-dim);border-bottom:2px solid transparent;
-  transition:all 0.3s;margin-bottom:-1px;
-}
-.admin-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
-
-.admin-content{display:none;}
-.admin-content.active{display:block;}
-
-.data-table{width:100%;border-collapse:collapse;margin-bottom:20px;}
-.data-table th{
-  font-family:'Montserrat',sans-serif;font-size:0.62rem;
-  font-weight:700;letter-spacing:0.15em;text-transform:uppercase;
-  color:var(--gold);padding:10px 12px;
-  border-bottom:1px solid var(--glass-border);text-align:left;
-}
-.data-table td{
-  font-family:'Inter',sans-serif;font-size:0.78rem;
-  color:var(--champagne-dim);padding:10px 12px;
-  border-bottom:1px solid rgba(255,255,255,0.04);
-}
-.data-table tr:hover td{color:var(--champagne);}
-
-.tag{
-  display:inline-block;
-  font-family:'Bebas Neue',sans-serif;font-size:0.6rem;
-  letter-spacing:0.1em;padding:2px 8px;
-}
-.tag-gold{background:rgba(255,184,0,0.15);color:var(--gold);}
-.tag-green{background:rgba(34,197,94,0.15);color:#22C55E;}
-.tag-blue{background:rgba(59,130,246,0.15);color:#3B82F6;}
-.tag-red{background:rgba(239,68,68,0.15);color:#EF4444;}
-
-/* ── ADD CELEBRITY FORM ── */
-.add-form{background:var(--glass);border:1px solid var(--glass-border);padding:24px;margin-bottom:24px;}
-.add-form-title{
-  font-family:'Montserrat',sans-serif;font-weight:800;
-  font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;
-  color:var(--gold);margin-bottom:20px;
-}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.form-select{
-  width:100%;padding:13px 16px;
-  background:rgba(255,255,255,0.04);
-  border:1px solid var(--glass-border);
-  color:var(--champagne);font-family:'Inter',sans-serif;font-size:0.85rem;
-  outline:none;cursor:pointer;
-}
-.form-select option{background:var(--obsidian-3);color:var(--champagne);}
-
-/* ── MEMBERSHIP UPGRADE ── */
-.upgrade-grid{display:grid;grid-template-columns:1fr;gap:12px;}
-.upgrade-card{
-  border:1px solid var(--glass-border);
-  background:var(--glass);padding:20px;
-  cursor:pointer;transition:all 0.3s;
-  display:flex;align-items:center;gap:16px;
-}
-.upgrade-card:hover{border-color:var(--glass-bright);}
-.upgrade-card.current{border-color:var(--gold);background:rgba(255,184,0,0.06);}
-.upgrade-price{
-  font-family:'Playfair Display',serif;font-weight:900;
-  font-size:1.8rem;color:var(--champagne);min-width:60px;
-  text-align:center;
-}
-.upgrade-price span{font-size:0.9rem;color:var(--champagne-dim);}
-.upgrade-name{
-  font-family:'Bebas Neue',sans-serif;font-size:0.85rem;
-  letter-spacing:0.15em;color:var(--gold);
-}
-.upgrade-features{
-  font-family:'Inter',sans-serif;font-size:0.72rem;
-  color:var(--champagne-dim);margin-top:4px;line-height:1.5;
-}
-.upgrade-btn{
-  margin-left:auto;
-  font-family:'Montserrat',sans-serif;font-size:0.65rem;
-  font-weight:700;letter-spacing:0.1em;
-  padding:8px 16px;cursor:pointer;border:none;
-  background:var(--gold);color:var(--obsidian);
-  white-space:nowrap;
-}
-
-/* ── TOAST ── */
-.toast{
-  position:fixed;bottom:24px;right:24px;z-index:9999;
-  background:var(--obsidian-3);border:1px solid var(--glass-border);
-  padding:14px 20px;
-  font-family:'Inter',sans-serif;font-size:0.82rem;
-  color:var(--champagne);
-  transform:translateY(80px);opacity:0;
-  transition:all 0.3s;pointer-events:none;
-  max-width:280px;
-}
-.toast.show{transform:translateY(0);opacity:1;}
-.toast.success{border-color:rgba(34,197,94,0.4);color:#22C55E;}
-.toast.error{border-color:rgba(239,68,68,0.4);color:#EF4444;}
-
-/* ── LOADING ── */
-.loader{
-  display:flex;align-items:center;justify-content:center;
-  padding:40px;
-}
-.loader-ring{
-  width:36px;height:36px;
-  border:3px solid var(--glass-border);
-  border-top-color:var(--gold);
-  border-radius:50%;
-  animation:spin 0.8s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* ── MOBILE ── */
-@media(max-width:480px){
-  .auth-box{padding:32px 24px;}
-  .stats-row{grid-template-columns:repeat(3,1fr);}
-  .celeb-grid{grid-template-columns:repeat(2,1fr);}
-  .form-row{grid-template-columns:1fr;}
-  .topnav{padding:12px 16px;}
-}
+.view.on{display:block;}
+/* WELCOME BAR */
+.wbar{background:linear-gradient(135deg,rgba(255,184,0,0.08),rgba(255,149,0,0.04));border:1px solid var(--gbr);padding:16px;margin-bottom:16px;display:flex;align-items:center;gap:11px;}
+.wi{font-size:1.6rem;}
+.wh{font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--ch);}
+.ws{font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);margin-top:2px;}
+/* VERIFICATION STATUS BANNER */
+.vbanner{padding:10px 14px;margin-bottom:16px;font-family:'Inter',sans-serif;font-size:0.74rem;display:flex;align-items:center;gap:8px;}
+.vbanner.pending{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);color:var(--warn);}
+.vbanner.verified{background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);color:var(--ok);}
+.vbanner.rejected{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);color:var(--err);}
+/* STATS */
+.srow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+.sbox{background:var(--gb);border:1px solid var(--gbr);padding:11px;text-align:center;}
+.snum{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--gold);}
+.slbl{font-family:'Inter',sans-serif;font-size:0.52rem;color:var(--cd);letter-spacing:0.09em;text-transform:uppercase;margin-top:2px;}
+/* SECTION HEAD */
+.sh{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);margin-bottom:11px;display:flex;align-items:center;gap:6px;}
+.sh::after{content:'';flex:1;height:1px;background:var(--gbr);}
+/* CELEB CARDS */
+.cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;}
+.ccard{background:var(--gb);border:1px solid var(--gbr);overflow:hidden;transition:all 0.3s;cursor:pointer;}
+.ccard:hover{border-color:var(--gbri);transform:translateY(-2px);}
+.cimg{width:100%;height:105px;background:var(--obs2);display:flex;align-items:center;justify-content:center;font-size:2.2rem;overflow:hidden;}
+.cimg img{width:100%;height:100%;object-fit:cover;}
+.ci{padding:9px;}
+.cn{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.74rem;color:var(--ch);}
+.ccat{font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.1em;color:var(--gold);margin-top:2px;}
+.cmeta{font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--cd);margin-top:2px;}
+/* POSTS */
+.pcard{background:var(--gb);border:1px solid var(--gbr);padding:15px;margin-bottom:8px;}
+.ph{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.pav{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.78rem;color:var(--obs);flex-shrink:0;}
+.pau{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.74rem;color:var(--ch);}
+.pt{font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);}
+.ptag{font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.09em;color:var(--obs);background:var(--gold);padding:2px 6px;margin-left:auto;}
+.ptitle{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.8rem;color:var(--ch);margin-bottom:5px;}
+.pbody{font-family:'Inter',sans-serif;font-size:0.76rem;color:var(--cd);line-height:1.6;margin-bottom:8px;}
+.pacts{display:flex;gap:11px;}
+.pa{font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);cursor:pointer;background:none;border:none;padding:0;transition:color 0.2s;}
+.pa:hover{color:var(--gold);}
+/* TAGS */
+.tag{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.08em;padding:2px 6px;}
+.tg{background:rgba(255,184,0,0.12);color:var(--gold);}
+.tok{background:rgba(34,197,94,0.12);color:var(--ok);}
+.tbl{background:rgba(59,130,246,0.12);color:var(--ab);}
+.terr{background:rgba(239,68,68,0.12);color:var(--err);}
+.twarn{background:rgba(245,158,11,0.12);color:var(--warn);}
+/* MEMBERSHIP */
+.upgrid{display:grid;gap:9px;}
+.ucard{border:1px solid var(--gbr);background:var(--gb);padding:15px;display:flex;align-items:center;gap:11px;cursor:pointer;transition:all 0.3s;}
+.ucard:hover{border-color:var(--gbri);}
+.ucard.cur{border-color:var(--gold);background:rgba(255,184,0,0.06);}
+.uprice{font-family:'Playfair Display',serif;font-weight:900;font-size:1.4rem;color:var(--ch);min-width:44px;text-align:center;}
+.uprice small{font-size:0.68rem;color:var(--cd);}
+.uname{font-family:'Bebas Neue',sans-serif;font-size:0.74rem;letter-spacing:0.1em;color:var(--gold);}
+.ufeats{font-family:'Inter',sans-serif;font-size:0.64rem;color:var(--cd);margin-top:2px;}
+.uact{margin-left:auto;font-family:'Montserrat',sans-serif;font-size:0.57rem;font-weight:800;letter-spacing:0.08em;padding:6px 11px;cursor:pointer;border:none;background:var(--gold);color:var(--obs);white-space:nowrap;}
+/* TOUR BUDDY */
+.tbform{background:var(--gb);border:1px solid var(--gbr);padding:16px;margin-bottom:16px;}
+.tbform-t{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+/* MESSAGES */
+.msg-card{background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:8px;}
+.msg-from{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--gold);margin-bottom:4px;display:flex;align-items:center;gap:6px;}
+.msg-from-badge{font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.08em;color:var(--obs);background:var(--gold);padding:1px 5px;}
+.msg-time{font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--cd);margin-left:auto;}
+.msg-body{font-family:'Inter',sans-serif;font-size:0.76rem;color:var(--cd);line-height:1.6;}
+/* TOAST */
+.toast{position:fixed;bottom:16px;right:12px;z-index:9999;background:var(--obs3);border:1px solid var(--gbr);padding:10px 15px;font-family:'Inter',sans-serif;font-size:0.76rem;color:var(--ch);transform:translateY(80px);opacity:0;transition:all 0.3s;pointer-events:none;max-width:280px;}
+.toast.on{transform:translateY(0);opacity:1;}
+.toast.success{border-color:rgba(34,197,94,0.4);color:var(--ok);}
+.toast.error{border-color:rgba(239,68,68,0.4);color:var(--err);}
+/* LOADER */
+.ldr{display:flex;align-items:center;justify-content:center;padding:26px;}
+.lring{width:28px;height:28px;border:3px solid var(--gbr);border-top-color:var(--gold);border-radius:50%;animation:sp 0.8s linear infinite;}
+@keyframes sp{to{transform:rotate(360deg)}}
+/* ADMIN LINK */
+.admin-shortcut{display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.2);margin-bottom:16px;cursor:pointer;transition:all 0.3s;}
+.admin-shortcut:hover{background:rgba(59,130,246,0.1);}
+.admin-shortcut-text{font-family:'Montserrat',sans-serif;font-size:0.72rem;font-weight:700;color:var(--ab);}
+.admin-shortcut-sub{font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);}
+@media(max-width:480px){.abox{padding:24px 16px;}.fr{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════ -->
 <!-- AUTH PAGE -->
-<!-- ══════════════════════════════════════ -->
-<div class="auth-page active" id="authPage">
-  <div class="auth-box">
-    <a class="auth-logo" href="/"><span>ICON</span>IK</a>
-    <p class="auth-subtitle">Find Your Tribe. Follow Your Icon.</p>
-
-    <div class="auth-tabs">
-      <div class="auth-tab active" onclick="switchAuthTab('login')">Sign In</div>
-      <div class="auth-tab" onclick="switchAuthTab('register')">Join Free</div>
-    </div>
-
-    <!-- LOGIN FORM -->
-    <div id="loginForm">
-      <div class="form-group">
-        <label class="form-label">Email Address</label>
-        <input class="form-input" type="email" id="loginEmail" placeholder="your@email.com"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <input class="form-input" type="password" id="loginPassword" placeholder="••••••••"/>
-      </div>
-      <button class="btn btn-gold" onclick="handleLogin()">Enter ICONIK →</button>
-      <div class="auth-msg" id="loginMsg"></div>
-    </div>
-
-    <!-- REGISTER FORM -->
-    <div id="registerForm" style="display:none;">
-      <div class="form-group">
-        <label class="form-label">Full Name</label>
-        <input class="form-input" type="text" id="regName" placeholder="Your full name"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Email Address</label>
-        <input class="form-input" type="email" id="regEmail" placeholder="your@email.com"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <input class="form-input" type="password" id="regPassword" placeholder="Min. 6 characters"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Choose Your Communities</label>
-        <div class="cat-grid">
-          <div class="cat-chip" onclick="toggleCat(this)" data-cat="Music"><span class="cat-chip-icon">🎵</span><span class="cat-chip-name">Music</span></div>
-          <div class="cat-chip" onclick="toggleCat(this)" data-cat="Film"><span class="cat-chip-icon">🎬</span><span class="cat-chip-name">Film</span></div>
-          <div class="cat-chip" onclick="toggleCat(this)" data-cat="Sports"><span class="cat-chip-icon">⚽</span><span class="cat-chip-name">Sports</span></div>
-          <div class="cat-chip" onclick="toggleCat(this)" data-cat="Literature"><span class="cat-chip-icon">📚</span><span class="cat-chip-name">Books</span></div>
-          <div class="cat-chip" onclick="toggleCat(this)" data-cat="Wellness"><span class="cat-chip-icon">💪</span><span class="cat-chip-name">Wellness</span></div>
-          <div class="cat-chip" onclick="toggleCat(this)" data-cat="Nature"><span class="cat-chip-icon">🌿</span><span class="cat-chip-name">Nature</span></div>
-          <div class="cat-chip" onclick="toggleCat(this)" data-cat="Fashion"><span class="cat-chip-icon">👗</span><span class="cat-chip-name">Fashion</span></div>
-          <div class="cat-chip" onclick="toggleCat(this)" data-cat="Food"><span class="cat-chip-icon">🍽️</span><span class="cat-chip-name">Food</span></div>
-          <div class="cat-chip" onclick="toggleCat(this)" data-cat="Automotive"><span class="cat-chip-icon">🚗</span><span class="cat-chip-name">Auto</span></div>
-          <div class="cat-chip" onclick="toggleCat(this)" data-cat="Tech"><span class="cat-chip-icon">💻</span><span class="cat-chip-name">Tech</span></div>
-          <div class="cat-chip" onclick="toggleCat(this)" data-cat="Beauty"><span class="cat-chip-icon">💄</span><span class="cat-chip-name">Beauty</span></div>
-          <div class="cat-chip" onclick="toggleCat(this)" data-cat="Leadership"><span class="cat-chip-icon">🎓</span><span class="cat-chip-name">Leaders</span></div>
-        </div>
-      </div>
-      <button class="btn btn-gold" onclick="handleRegister()">Create My Account →</button>
-      <div class="auth-msg" id="registerMsg"></div>
-    </div>
-
-    <p class="auth-switch">
-      <span id="authSwitchText">New to ICONIK? </span>
-      <a onclick="switchAuthTab('register')" id="authSwitchLink">Join Free</a>
-    </p>
+<div class="auth-pg on" id="authPg">
+ <div class="abox">
+  <a class="alogo" href="/"><span>ICON</span>IK</a>
+  <p class="asub">Find Your Tribe. Follow Your Icon.</p>
+  <div class="atabs">
+   <div class="atab on" onclick="sTab('login')">Sign In</div>
+   <div class="atab" onclick="sTab('register')">Join Free</div>
   </div>
+
+  <!-- LOGIN -->
+  <div id="loginF">
+   <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" id="le" placeholder="your@email.com"/></div>
+   <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="lp" placeholder="••••••••"/></div>
+   <button class="btn btn-g" onclick="doLogin()">Enter ICONIK →</button>
+   <div class="amsg" id="lm"></div>
+   <p style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);text-align:center;margin-top:14px;">Chief Admin? <a href="/admin.html" style="color:var(--ab);">Go to Admin Panel →</a></p>
+  </div>
+
+  <!-- REGISTER -->
+  <div id="regF" style="display:none;">
+   <div class="vnotice">
+    <div class="vnotice-t">🔒 Why We Verify Your Identity</div>
+    <p>ICONIK is a <strong>world-class global fan platform</strong>. To protect all members and ensure legitimacy, we verify personal details. This safeguards against fraud and confirms every member is real. <strong>Your data is encrypted, strictly private, and only accessible to the ICONIK Chief Admin for verification.</strong></p>
+   </div>
+   <div class="fr">
+    <div class="fg"><label class="fl">Full Name <span class="req">*</span></label><input class="fi" type="text" id="rn" placeholder="Your full name"/></div>
+    <div class="fg"><label class="fl">Phone Number <span class="req">*</span></label><input class="fi" type="tel" id="rph" placeholder="+1 234 567 8900"/></div>
+   </div>
+   <div class="fg"><label class="fl">Email Address <span class="req">*</span></label><input class="fi" type="email" id="re" placeholder="your@email.com"/></div>
+   <div class="fr">
+    <div class="fg"><label class="fl">Country <span class="req">*</span></label><input class="fi" type="text" id="rco" placeholder="Your country"/></div>
+    <div class="fg"><label class="fl">City <span class="req">*</span></label><input class="fi" type="text" id="rci" placeholder="Your city"/></div>
+   </div>
+   <div class="fg"><label class="fl">Home / Office Address <span class="req">*</span></label><input class="fi" type="text" id="rad" placeholder="Street address, area"/><p class="fhint">🔒 Encrypted — Chief Admin verification only</p></div>
+   <div class="idbox">
+    <div class="idbox-t">🪪 Identity Verification — Select ONE document type</div>
+    <p style="font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);margin-bottom:9px;line-height:1.5;">Required for platform security. Confirms you are a real, legitimate ICONIK member. Stored securely — never shared externally.</p>
+    <div class="idopts">
+     <div class="idopt" onclick="selId(this,'national')">🪪 National ID Card</div>
+     <div class="idopt" onclick="selId(this,'drivers')">🚗 Driver's License</div>
+     <div class="idopt" onclick="selId(this,'passport')">📘 Int'l Passport</div>
+    </div>
+    <div class="fg" id="idG" style="display:none;">
+     <label class="fl" id="idL">ID Number <span class="req">*</span></label>
+     <input class="fi" type="text" id="rId" placeholder="Enter document number"/>
+     <p class="fhint">🔒 Chief Admin eyes only. Never shared.</p>
+    </div>
+   </div>
+   <div class="fg"><label class="fl">Password <span class="req">*</span></label><input class="fi" type="password" id="rp" placeholder="Min. 6 characters"/><p class="fhint">Your password is never visible to anyone.</p></div>
+   <div class="fg">
+    <label class="fl">Choose Your Communities</label>
+    <div class="catg">
+     <div class="cc" onclick="tC(this)" data-cat="Music"><span class="cc-i">🎵</span><span class="cc-n">Music</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Film"><span class="cc-i">🎬</span><span class="cc-n">Film</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Sports"><span class="cc-i">⚽</span><span class="cc-n">Sports</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Literature"><span class="cc-i">📚</span><span class="cc-n">Books</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Wellness"><span class="cc-i">💪</span><span class="cc-n">Wellness</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Nature"><span class="cc-i">🌿</span><span class="cc-n">Nature</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Fashion"><span class="cc-i">👗</span><span class="cc-n">Fashion</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Food"><span class="cc-i">🍽️</span><span class="cc-n">Food</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Automotive"><span class="cc-i">🚗</span><span class="cc-n">Auto</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Tech"><span class="cc-i">💻</span><span class="cc-n">Tech</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Beauty"><span class="cc-i">💄</span><span class="cc-n">Beauty</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Leadership"><span class="cc-i">🎓</span><span class="cc-n">Leaders</span></div>
+    </div>
+   </div>
+   <button class="btn btn-g" onclick="doReg()">Create Verified Account →</button>
+   <div class="amsg" id="rm"></div>
+  </div>
+  <p style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);text-align:center;margin-top:13px;"><span id="swT">New to ICONIK? </span><a style="color:var(--gold);cursor:pointer;" id="swL" onclick="sTab('register')">Join Free</a></p>
+ </div>
 </div>
 
-<!-- ══════════════════════════════════════ -->
 <!-- DASHBOARD PAGE -->
-<!-- ══════════════════════════════════════ -->
-<div class="page" id="dashPage">
+<div class="dash-pg" id="dashPg">
+ <nav class="tnav">
+  <a class="nlogo" href="/"><span>ICON</span>IK</a>
+  <div class="nr">
+   <span class="nuname" id="nNm"></span>
+   <div class="nav-av" id="nAv" onclick="togSB()">U</div>
+   <button class="hbg" onclick="togSB()"><span></span><span></span><span></span></button>
+  </div>
+ </nav>
 
-  <!-- TOP NAV -->
-  <nav class="topnav">
-    <a class="nav-logo-small" href="/"><span>ICON</span>IK</a>
-    <div class="nav-right">
-      <span class="nav-user" id="navUserName"></span>
-      <div class="nav-avatar" id="navAvatar" onclick="toggleSidebar()">
-        <span id="navAvatarLetter">U</span>
-        <div class="nav-badge"></div>
-      </div>
-      <button class="nav-menu-btn" onclick="toggleSidebar()">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
+ <div class="sb-ov" id="sbOv" onclick="cSB()"></div>
+ <div class="sb" id="sb">
+  <div class="sb-h"><span class="sb-logo">ICONIK</span><button class="sb-x" onclick="cSB()">✕</button></div>
+  <div class="sb-u">
+   <div class="sb-av" id="sbAv">U</div>
+   <div class="sb-nm" id="sbNm">Member</div>
+   <span class="sb-tier" id="sbTier">FAN</span>
+   <span class="sb-vstatus" id="sbVS" style="display:none;">✓ VERIFIED</span>
+  </div>
+  <nav class="sb-nav">
+   <div class="sb-sec">Main</div>
+   <div class="sb-lnk on" onclick="sV('feed')"><span class="sb-ic">🏠</span>My Feed</div>
+   <div class="sb-lnk" onclick="sV('icons')"><span class="sb-ic">⭐</span>Icons & Celebs</div>
+   <div class="sb-lnk" onclick="sV('coms')"><span class="sb-ic">🌍</span>My Communities</div>
+   <div class="sb-lnk" onclick="sV('tb')"><span class="sb-ic">🎫</span>Tour Buddy</div>
+   <div class="sb-lnk" onclick="sV('msgs')"><span class="sb-ic">📩</span>Messages</div>
+   <div class="sb-sec">Account</div>
+   <div class="sb-lnk" onclick="sV('membership')"><span class="sb-ic">👑</span>Membership<span class="sb-bdg">UPGRADE</span></div>
+   <div class="sb-lnk" onclick="sV('profile')"><span class="sb-ic">👤</span>My Profile</div>
+   <div class="sb-sec">More</div>
+   <div class="sb-lnk" onclick="doLogout()"><span class="sb-ic">🚪</span>Sign Out</div>
   </nav>
+ </div>
 
-  <!-- SIDEBAR -->
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-  <div class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <span class="sidebar-logo">ICONIK</span>
-      <button class="sidebar-close" onclick="closeSidebar()">✕</button>
-    </div>
-    <div class="sidebar-user">
-      <div class="sidebar-avatar" id="sidebarAvatar">U</div>
-      <div class="sidebar-name" id="sidebarName">Member</div>
-      <span class="sidebar-tier" id="sidebarTier">FAN</span>
-    </div>
-    <nav class="sidebar-nav">
-      <div class="sidebar-section">Main</div>
-      <div class="sidebar-link active" onclick="showView('feed')">
-        <span class="sidebar-link-icon">🏠</span> My Feed
-      </div>
-      <div class="sidebar-link" onclick="showView('celebrities')">
-        <span class="sidebar-link-icon">⭐</span> Icons & Celebs
-      </div>
-      <div class="sidebar-link" onclick="showView('communities')">
-        <span class="sidebar-link-icon">🌍</span> My Communities
-      </div>
-      <div class="sidebar-link" onclick="showView('tourbuddy')">
-        <span class="sidebar-link-icon">🎫</span> Tour Buddy Finder
-      </div>
+ <div class="main">
 
-      <div class="sidebar-section">Account</div>
-      <div class="sidebar-link" onclick="showView('membership')">
-        <span class="sidebar-link-icon">👑</span> Membership
-        <span class="sidebar-link-badge">UPGRADE</span>
-      </div>
-      <div class="sidebar-link" onclick="showView('profile')">
-        <span class="sidebar-link-icon">👤</span> My Profile
-      </div>
-
-      <div class="sidebar-section" id="adminNavSection" style="display:none;">Admin</div>
-      <div class="sidebar-link" id="adminNavLink" style="display:none;" onclick="showView('admin')">
-        <span class="sidebar-link-icon">⚙️</span> Admin Panel
-        <span class="sidebar-link-badge" style="background:var(--admin-blue);color:#fff;">ADMIN</span>
-      </div>
-
-      <div class="sidebar-section">More</div>
-      <div class="sidebar-link" onclick="handleLogout()">
-        <span class="sidebar-link-icon">🚪</span> Sign Out
-      </div>
-    </nav>
+  <!-- FEED VIEW -->
+  <div class="view on" id="feedV">
+   <div class="wbar"><span class="wi">🌟</span><div><div class="wh" id="wH">Welcome!</div><div class="ws" id="wS">Your personalized icon feed</div></div></div>
+   <div class="vbanner pending" id="vBanner" style="display:none;"></div>
+   <div class="srow">
+    <div class="sbox"><div class="snum" id="sCom">0</div><div class="slbl">Communities</div></div>
+    <div class="sbox"><div class="snum" id="sIco">0</div><div class="slbl">Icons</div></div>
+    <div class="sbox"><div class="snum" id="sPo">0</div><div class="slbl">Posts</div></div>
+   </div>
+   <div class="sh">Featured Icons</div>
+   <div class="cgrid" id="featC"><div class="ldr"><div class="lring"></div></div></div>
+   <div class="sh">Latest Updates</div>
+   <div id="feedP"><div class="ldr"><div class="lring"></div></div></div>
   </div>
 
-  <!-- MAIN CONTENT -->
-  <div class="main-content">
+  <!-- ICONS VIEW -->
+  <div class="view" id="iconsV">
+   <div class="sh">All Icons & Celebrities</div>
+   <input class="fi" style="margin-bottom:11px;" type="text" id="cSrch" placeholder="Search icons by name or category..." oninput="fCl()"/>
+   <div class="cgrid" id="allC"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
 
-    <!-- ── FEED VIEW ── -->
-    <div class="view active" id="feedView">
-      <div class="welcome-banner">
-        <span class="welcome-icon">🌟</span>
-        <div class="welcome-text">
-          <h2 id="welcomeHeading">Welcome back!</h2>
-          <p id="welcomeSub">Your personalized icon feed</p>
-        </div>
-      </div>
+  <!-- COMMUNITIES VIEW -->
+  <div class="view" id="comsV">
+   <div class="sh">My Communities</div>
+   <div class="cgrid" id="myComG"></div>
+  </div>
 
-      <div class="stats-row">
-        <div class="stat-card">
-          <div class="stat-card-number" id="statCommunities">0</div>
-          <div class="stat-card-label">Communities</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card-number" id="statIcons">0</div>
-          <div class="stat-card-label">Icons Following</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card-number" id="statPosts">0</div>
-          <div class="stat-card-label">New Posts</div>
-        </div>
-      </div>
-
-      <div class="section-heading">Featured Icons</div>
-      <div class="celeb-grid" id="featuredCelebs">
-        <div class="loader"><div class="loader-ring"></div></div>
-      </div>
-
-      <div class="section-heading">Latest Updates</div>
-      <div id="postsFeed">
-        <div class="loader"><div class="loader-ring"></div></div>
-      </div>
+  <!-- TOUR BUDDY VIEW -->
+  <div class="view" id="tbV">
+   <div class="wbar"><span class="wi">🎫</span><div><div class="wh">Tour Buddy Finder</div><div class="ws">Connect with fans at the same events</div></div></div>
+   <div class="tbform">
+    <div class="tbform-t">Post Your Event</div>
+    <div class="fg"><label class="fl">Event / Concert Name</label><input class="fi" type="text" id="tbe" placeholder="e.g. Beyoncé — Renaissance Tour, London"/></div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Date</label><input class="fi" type="date" id="tbd"/></div>
+     <div class="fg"><label class="fl">City, Country</label><input class="fi" type="text" id="tbc" placeholder="e.g. London, UK"/></div>
     </div>
+    <div class="fg"><label class="fl">Message</label><input class="fi" type="text" id="tbm" placeholder="Looking for fans to attend together!"/></div>
+    <button class="btn btn-g" onclick="postTB()">Post Tour Buddy Request →</button>
+   </div>
+   <div class="sh">Active Requests</div>
+   <div id="tbList"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
 
-    <!-- ── CELEBRITIES VIEW ── -->
-    <div class="view" id="celebritiesView">
-      <div class="section-heading">All Icons & Celebrities</div>
-      <div style="margin-bottom:16px;">
-        <input class="form-input" type="text" id="celebSearch" placeholder="Search icons by name or category..." oninput="filterCelebs()"/>
-      </div>
-      <div class="celeb-grid" id="allCelebsGrid">
-        <div class="loader"><div class="loader-ring"></div></div>
-      </div>
+  <!-- MESSAGES VIEW -->
+  <div class="view" id="msgsV">
+   <div class="wbar"><span class="wi">📩</span><div><div class="wh">Messages</div><div class="ws">Messages from Admin & Sub Admins</div></div></div>
+   <div class="sh">Inbox</div>
+   <div id="msgsList"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- MEMBERSHIP VIEW -->
+  <div class="view" id="membershipV">
+   <div class="sh">Your Membership</div>
+   <div id="currentTierBanner" style="margin-bottom:14px;"></div>
+   <div class="upgrid">
+    <div class="ucard cur"><div class="uprice">$0<small>/mo</small></div><div><div class="uname">Fan Member</div><div class="ufeats">Basic · 3 communities · Tour Buddy · Messages</div></div><div class="uact" style="background:var(--gbr);color:var(--cd);">Current</div></div>
+    <div class="ucard" onclick="upgP('Bronze')"><div class="uprice">$5<small>/mo</small></div><div><div class="uname">VIP Bronze</div><div class="ufeats">7 communities · Priority feed · Bronze badge</div></div><button class="uact">Upgrade</button></div>
+    <div class="ucard" onclick="upgP('Silver')"><div class="uprice">$12<small>/mo</small></div><div><div class="uname">VIP Silver ⭐</div><div class="ufeats">Unlimited · VIP lounge · Tour matchmaking</div></div><button class="uact">Upgrade</button></div>
+    <div class="ucard" onclick="upgP('Gold')"><div class="uprice">$25<small>/mo</small></div><div><div class="uname">VIP Gold 👑</div><div class="ufeats">All Silver + Sub Admin eligible + Affiliate revenue</div></div><button class="uact">Upgrade</button></div>
+   </div>
+   <p style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);text-align:center;margin-top:11px;">PayPal & Crypto accepted · Contact Admin via WhatsApp to process payment</p>
+  </div>
+
+  <!-- PROFILE VIEW -->
+  <div class="view" id="profileV">
+   <div class="sh">My Profile</div>
+   <div class="tbform">
+    <div class="tbform-t">Profile Settings</div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Display Name</label><input class="fi" type="text" id="pNm"/></div>
+     <div class="fg"><label class="fl">Phone</label><input class="fi" type="tel" id="pPh"/></div>
     </div>
-
-    <!-- ── COMMUNITIES VIEW ── -->
-    <div class="view" id="communitiesView">
-      <div class="section-heading">My Communities</div>
-      <div id="myCommunitiesGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;"></div>
+    <div class="fg"><label class="fl">Email (read only)</label><input class="fi" type="email" id="pEm" readonly style="opacity:0.6;"/></div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Country</label><input class="fi" type="text" id="pCo"/></div>
+     <div class="fg"><label class="fl">City</label><input class="fi" type="text" id="pCi"/></div>
     </div>
+    <div class="fg"><label class="fl">Address</label><input class="fi" type="text" id="pAd"/></div>
+    <div class="fg"><label class="fl">Bio</label><input class="fi" type="text" id="pBio" placeholder="Tell the community about yourself"/></div>
+    <button class="btn btn-g" onclick="saveP()">Save Profile →</button>
+   </div>
+   <div class="tbform" style="margin-top:14px;">
+    <div class="tbform-t">Verification Status</div>
+    <div id="verifyStatusBlock"></div>
+   </div>
+  </div>
 
-    <!-- ── TOUR BUDDY VIEW ── -->
-    <div class="view" id="tourbuddyView">
-      <div class="welcome-banner">
-        <span class="welcome-icon">🎫</span>
-        <div class="welcome-text">
-          <h2>Tour Buddy Finder</h2>
-          <p>Find fellow fans going to the same events</p>
-        </div>
-      </div>
-      <div class="add-form">
-        <div class="add-form-title">Post Your Event</div>
-        <div class="form-group">
-          <label class="form-label">Event / Concert Name</label>
-          <input class="form-input" type="text" id="tbEvent" placeholder="e.g. Taylor Swift — Eras Tour, Paris"/>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Date</label>
-            <input class="form-input" type="date" id="tbDate"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">City</label>
-            <input class="form-input" type="text" id="tbCity" placeholder="City, Country"/>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Message</label>
-          <input class="form-input" type="text" id="tbMessage" placeholder="Looking for fans to attend together!"/>
-        </div>
-        <button class="btn btn-gold" onclick="postTourBuddy()">Post Tour Buddy Request →</button>
-      </div>
-      <div class="section-heading">Active Requests</div>
-      <div id="tourBuddyList"><div class="loader"><div class="loader-ring"></div></div></div>
-    </div>
+ </div><!-- /main -->
+</div><!-- /dash -->
 
-    <!-- ── MEMBERSHIP VIEW ── -->
-    <div class="view" id="membershipView">
-      <div class="section-heading">Your Membership</div>
-      <div class="upgrade-grid">
-        <div class="upgrade-card current" id="tierFan">
-          <div class="upgrade-price">$0<span>/mo</span></div>
-          <div>
-            <div class="upgrade-name">Fan Member</div>
-            <div class="upgrade-features">3 communities · Basic feed · Tour Buddy</div>
-          </div>
-          <div class="upgrade-btn" style="background:var(--glass-border);color:var(--champagne-dim);">Current</div>
-        </div>
-        <div class="upgrade-card" onclick="upgradeTier('Bronze')">
-          <div class="upgrade-price">$5<span>/mo</span></div>
-          <div>
-            <div class="upgrade-name">VIP Bronze</div>
-            <div class="upgrade-features">7 communities · Priority feed · Bronze badge</div>
-          </div>
-          <button class="upgrade-btn">Upgrade</button>
-        </div>
-        <div class="upgrade-card" onclick="upgradeTier('Silver')">
-          <div class="upgrade-price">$12<span>/mo</span></div>
-          <div>
-            <div class="upgrade-name">VIP Silver ⭐</div>
-            <div class="upgrade-features">Unlimited · VIP lounge · Tour matchmaking</div>
-          </div>
-          <button class="upgrade-btn">Upgrade</button>
-        </div>
-        <div class="upgrade-card" onclick="upgradeTier('Gold')">
-          <div class="upgrade-price">$25<span>/mo</span></div>
-          <div>
-            <div class="upgrade-name">VIP Gold 👑</div>
-            <div class="upgrade-features">All Silver + Sub Admin + Affiliate sharing</div>
-          </div>
-          <button class="upgrade-btn">Upgrade</button>
-        </div>
-      </div>
-      <p style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);margin-top:16px;text-align:center;">
-        PayPal & Crypto accepted · Contact Admin to process payment
-      </p>
-    </div>
-
-    <!-- ── PROFILE VIEW ── -->
-    <div class="view" id="profileView">
-      <div class="section-heading">My Profile</div>
-      <div class="add-form">
-        <div class="add-form-title">Profile Settings</div>
-        <div class="form-group">
-          <label class="form-label">Display Name</label>
-          <input class="form-input" type="text" id="profileName" placeholder="Your name"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input class="form-input" type="email" id="profileEmail" readonly style="opacity:0.6;"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Country</label>
-          <input class="form-input" type="text" id="profileCountry" placeholder="Your country"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Bio</label>
-          <input class="form-input" type="text" id="profileBio" placeholder="Tell the community about yourself"/>
-        </div>
-        <button class="btn btn-gold" onclick="saveProfile()">Save Profile →</button>
-      </div>
-    </div>
-
-    <!-- ── ADMIN VIEW ── -->
-    <div class="view" id="adminView">
-      <div class="admin-header">
-        <span class="admin-badge">ADMIN</span>
-        <div>
-          <div class="admin-title">ICONIK Admin Panel</div>
-          <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:var(--champagne-dim);">Manage members, celebrities, posts & Sub Admins</div>
-        </div>
-      </div>
-
-      <div class="admin-tabs">
-        <div class="admin-tab active" onclick="switchAdminTab('celebrities')">⭐ Celebrities</div>
-        <div class="admin-tab" onclick="switchAdminTab('members')">👥 Members</div>
-        <div class="admin-tab" onclick="switchAdminTab('posts')">📝 Posts</div>
-        <div class="admin-tab" onclick="switchAdminTab('subadmins')">🛡️ Sub Admins</div>
-        <div class="admin-tab" onclick="switchAdminTab('images')">🖼️ Card Images</div>
-      </div>
-
-      <!-- CELEBRITIES TAB -->
-      <div class="admin-content active" id="adminCelebrities">
-        <div class="add-form">
-          <div class="add-form-title">➕ Add New Celebrity / Icon</div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Full Name</label>
-              <input class="form-input" type="text" id="celebName" placeholder="Celebrity name"/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Category</label>
-              <select class="form-select" id="celebCategory">
-                <option value="">Select category</option>
-                <option>Music</option><option>Film & TV</option><option>Sports</option>
-                <option>Literature</option><option>Fitness & Wellness</option>
-                <option>Nature & Exploration</option><option>Fashion</option>
-                <option>Food & Culinary</option><option>Automotive</option>
-                <option>Tech & Innovation</option><option>Beauty</option>
-                <option>Entertainment & Talent</option><option>Thought Leadership</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Country / Origin</label>
-              <input class="form-input" type="text" id="celebCountry" placeholder="e.g. USA, Nigeria, South Korea"/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Followers (approx)</label>
-              <input class="form-input" type="text" id="celebFollowers" placeholder="e.g. 50M"/>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Photo URL (optional)</label>
-            <input class="form-input" type="text" id="celebPhoto" placeholder="https://..."/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Bio / Description</label>
-            <input class="form-input" type="text" id="celebBio" placeholder="Brief description"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Status</label>
-            <select class="form-select" id="celebStatus">
-              <option value="active">Active / Trending</option>
-              <option value="rising">Rising Star</option>
-              <option value="legend">Legend</option>
-            </select>
-          </div>
-          <button class="btn btn-gold" onclick="addCelebrity()">Add to ICONIK →</button>
-        </div>
-
-        <div class="section-heading">All Celebrities</div>
-        <div style="overflow-x:auto;">
-          <table class="data-table" id="celebsTable">
-            <thead>
-              <tr>
-                <th>Name</th><th>Category</th><th>Country</th><th>Followers</th><th>Status</th><th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="celebsTableBody">
-              <tr><td colspan="6" style="text-align:center;padding:20px;"><div class="loader-ring" style="margin:auto;"></div></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- MEMBERS TAB -->
-      <div class="admin-content" id="adminMembers">
-        <div class="section-heading">All Members</div>
-        <div style="overflow-x:auto;">
-          <table class="data-table" id="membersTable">
-            <thead>
-              <tr><th>Name</th><th>Email</th><th>Tier</th><th>Communities</th><th>Joined</th><th>Action</th></tr>
-            </thead>
-            <tbody id="membersTableBody">
-              <tr><td colspan="6" style="text-align:center;padding:20px;"><div class="loader-ring" style="margin:auto;"></div></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- POSTS TAB -->
-      <div class="admin-content" id="adminPosts">
-        <div class="add-form">
-          <div class="add-form-title">📝 Create Community Post</div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Category</label>
-              <select class="form-select" id="postCategory">
-                <option value="">All Communities</option>
-                <option>Music</option><option>Film & TV</option><option>Sports</option>
-                <option>Literature</option><option>Fitness & Wellness</option>
-                <option>Fashion</option><option>Food & Culinary</option>
-                <option>Tech & Innovation</option><option>Beauty</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Post Type</label>
-              <select class="form-select" id="postType">
-                <option>Update</option><option>News</option><option>Tour/Event</option><option>Discussion</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Post Title</label>
-            <input class="form-input" type="text" id="postTitle" placeholder="Post headline"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Content</label>
-            <input class="form-input" type="text" id="postContent" placeholder="Post content..."/>
-          </div>
-          <button class="btn btn-gold" onclick="createPost()">Publish Post →</button>
-        </div>
-        <div class="section-heading">Recent Posts</div>
-        <div id="adminPostsList"><div class="loader"><div class="loader-ring"></div></div></div>
-      </div>
-
-      <!-- SUB ADMINS TAB -->
-      <div class="admin-content" id="adminSubadmins">
-        <div class="add-form">
-          <div class="add-form-title">🛡️ Assign Sub Admin</div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Member Email</label>
-              <input class="form-input" type="email" id="subAdminEmail" placeholder="member@email.com"/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Assigned Category</label>
-              <select class="form-select" id="subAdminCategory">
-                <option>Music</option><option>Film & TV</option><option>Sports</option>
-                <option>Literature</option><option>Fashion</option><option>Food & Culinary</option>
-                <option>Fitness & Wellness</option><option>Tech & Innovation</option>
-                <option>Nature & Exploration</option><option>Beauty</option>
-                <option>Automotive</option><option>Entertainment</option><option>Leadership</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Region / Country</label>
-            <input class="form-input" type="text" id="subAdminRegion" placeholder="e.g. USA, Australia, Belgium"/>
-          </div>
-          <button class="btn btn-gold" onclick="assignSubAdmin()">Assign Sub Admin →</button>
-        </div>
-        <div class="section-heading">Current Sub Admins</div>
-        <div style="overflow-x:auto;">
-          <table class="data-table">
-            <thead><tr><th>Name</th><th>Category</th><th>Region</th><th>Status</th></tr></thead>
-            <tbody id="subAdminsTableBody">
-              <tr><td colspan="4" style="text-align:center;padding:20px;">No Sub Admins yet</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- IMAGES TAB -->
-      <div class="admin-content" id="adminImages">
-        <div class="add-form">
-          <div class="add-form-title">🖼️ Update Category Card Images</div>
-          <p style="font-family:'Inter',sans-serif;font-size:0.78rem;color:var(--champagne-dim);margin-bottom:20px;">
-            Update the photo displayed on each community card on the homepage. Paste any image URL below.
-          </p>
-          <div id="imageUpdateList"></div>
-          <button class="btn btn-gold" onclick="saveImageUpdates()">Save All Image Updates →</button>
-        </div>
-      </div>
-
-    </div><!-- end adminView -->
-
-  </div><!-- end main-content -->
-</div><!-- end dashPage -->
-
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- ══════════════════════════════════════ -->
-<!-- FIREBASE SDK -->
-<!-- ══════════════════════════════════════ -->
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, collection, doc, setDoc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, query, orderBy, limit, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,updateProfile}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,updateDoc,query,orderBy,limit,where,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",
-  authDomain: "iconik-global.firebaseapp.com",
-  projectId: "iconik-global",
-  storageBucket: "iconik-global.firebasestorage.app",
-  messagingSenderId: "1040054516979",
-  appId: "1:1040054516979:web:33cd5f07ae8fc146a30b86"
-};
+const cfg={apiKey:"AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",authDomain:"iconik-global.firebaseapp.com",projectId:"iconik-global",storageBucket:"iconik-global.firebasestorage.app",messagingSenderId:"1040054516979",appId:"1:1040054516979:web:33cd5f07ae8fc146a30b86"};
+const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app);
+const CHIEF='iconikglobal01@gmail.com';
+let cU=null,cD=null,allC=[],selIdType='';
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// ── ADMIN EMAILS ──
-const ADMIN_EMAILS = ['admin@iconik.com', 'malo@iconik.com'];
-
-let currentUser = null;
-let currentUserData = null;
-let allCelebs = [];
-
-// ── AUTH STATE ──
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    currentUser = user;
-    currentUserData = await loadUserData(user);
-    showDashboard();
-  } else {
-    currentUser = null;
-    currentUserData = null;
-    showAuth();
-  }
+onAuthStateChanged(auth,async u=>{
+ if(u){
+  // Redirect chief admin to admin panel
+  if(u.email===CHIEF){window.location.href='/admin.html';return;}
+  cU=u;cD=await lUD(u);showDash();
+ }else{cU=null;cD=null;showAuth();}
 });
 
-// ── LOAD USER DATA ──
-async function loadUserData(user) {
-  try {
-    const docRef = doc(db, 'users', user.uid);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      return docSnap.data();
-    }
-    return { name: user.displayName || 'Member', tier: 'Fan', categories: [], email: user.email };
-  } catch(e) {
-    return { name: user.displayName || 'Member', tier: 'Fan', categories: [], email: user.email };
-  }
+async function lUD(u){
+ try{const s=await getDoc(doc(db,'users',u.uid));return s.exists()?s.data():{name:u.displayName||'Member',tier:'Fan',categories:[],email:u.email};}
+ catch{return{name:u.displayName||'Member',tier:'Fan',categories:[],email:u.email};}
 }
 
-// ── SHOW AUTH ──
-function showAuth() {
-  document.getElementById('authPage').classList.add('active');
-  document.getElementById('dashPage').classList.remove('active');
+function showAuth(){document.getElementById('authPg').classList.add('on');document.getElementById('dashPg').classList.remove('on');}
+function showDash(){
+ document.getElementById('authPg').classList.remove('on');document.getElementById('dashPg').classList.add('on');
+ const nm=cD?.name||cU?.displayName||'Member',l=nm.charAt(0).toUpperCase(),cats=cD?.categories||[],vs=cD?.verificationStatus||'pending';
+ document.getElementById('nNm').textContent=nm;document.getElementById('nAv').textContent=l;
+ document.getElementById('sbAv').textContent=l;document.getElementById('sbNm').textContent=nm;
+ document.getElementById('sbTier').textContent='VIP '+(cD?.tier||'Fan');
+ if(vs==='verified'){document.getElementById('sbVS').style.display='inline-block';}
+ document.getElementById('wH').textContent=`Welcome back, ${nm.split(' ')[0]}! 👋`;
+ document.getElementById('wS').textContent=`${cats.length} communities · ${cD?.tier||'Fan'} Member`;
+ document.getElementById('sCom').textContent=cats.length;
+ document.getElementById('pNm').value=nm;document.getElementById('pEm').value=cU.email;
+ document.getElementById('pPh').value=cD?.phone||'';document.getElementById('pCo').value=cD?.country||'';
+ document.getElementById('pCi').value=cD?.city||'';document.getElementById('pAd').value=cD?.address||'';
+ document.getElementById('pBio').value=cD?.bio||'';
+ // Verification banner
+ const vb=document.getElementById('vBanner');
+ if(vs==='pending'){vb.style.display='flex';vb.className='vbanner pending';vb.innerHTML='⏳ Your account is pending verification by Admin. Full access unlocks after verification.';}
+ else if(vs==='verified'){vb.style.display='flex';vb.className='vbanner verified';vb.innerHTML='✅ Your account is verified. Welcome to ICONIK!';}
+ else if(vs==='rejected'){vb.style.display='flex';vb.className='vbanner rejected';vb.innerHTML='❌ Verification rejected. Please contact Admin for assistance.';}
+ // Verify status in profile
+ const vsb=document.getElementById('verifyStatusBlock');
+ const vLabels={pending:'⏳ Pending — Admin will review your details shortly.',verified:'✅ Verified — Your identity has been confirmed.',rejected:'❌ Rejected — Contact Admin for assistance.'};
+ const vClasses={pending:'twarn',verified:'tok',rejected:'terr'};
+ vsb.innerHTML=`<span class="tag ${vClasses[vs]||'twarn'}" style="font-size:0.72rem;padding:6px 12px;">${vLabels[vs]||'Pending'}</span>`;
+ lFeed();lCelebs();
 }
 
-// ── SHOW DASHBOARD ──
-function showDashboard() {
-  document.getElementById('authPage').classList.remove('active');
-  document.getElementById('dashPage').classList.add('active');
+window.doLogin=async function(){
+ const e=document.getElementById('le').value.trim(),p=document.getElementById('lp').value,m=document.getElementById('lm');
+ if(!e||!p){sM(m,'Please fill all fields','err');return;}
+ try{m.style.display='none';await signInWithEmailAndPassword(auth,e,p);toastF('Welcome back! 🌟','success');}
+ catch(er){sM(m,aE(er.code),'err');}
+};
 
-  const name = currentUserData?.name || currentUser?.displayName || 'Member';
-  const tier = currentUserData?.tier || 'Fan';
-  const letter = name.charAt(0).toUpperCase();
-  const categories = currentUserData?.categories || [];
+window.doReg=async function(){
+ const nm=document.getElementById('rn').value.trim(),ph=document.getElementById('rph').value.trim(),
+  em=document.getElementById('re').value.trim(),co=document.getElementById('rco').value.trim(),
+  ci=document.getElementById('rci').value.trim(),ad=document.getElementById('rad').value.trim(),
+  idN=document.getElementById('rId').value.trim(),pw=document.getElementById('rp').value,
+  cats=[...document.querySelectorAll('.cc.on')].map(c=>c.dataset.cat),m=document.getElementById('rm');
+ if(!nm||!ph||!em||!co||!ci||!ad){sM(m,'Please fill all required fields *','err');return;}
+ if(!selIdType||!idN){sM(m,'Please select an ID type and enter your document number','err');return;}
+ if(pw.length<6){sM(m,'Password must be at least 6 characters','err');return;}
+ try{
+  m.style.display='none';
+  const cr=await createUserWithEmailAndPassword(auth,em,pw);
+  await updateProfile(cr.user,{displayName:nm});
+  await setDoc(doc(db,'users',cr.user.uid),{
+   name:nm,phone:ph,email:em,country:co,city:ci,address:ad,
+   idType:selIdType,idNumber:idN,categories:cats,
+   tier:'Fan',role:'member',verificationStatus:'pending',
+   joinedAt:serverTimestamp(),bio:''
+  });
+  toastF('Account created! Welcome to ICONIK 🎉','success');
+ }catch(er){sM(m,aE(er.code),'err');}
+};
 
-  document.getElementById('navUserName').textContent = name;
-  document.getElementById('navAvatarLetter').textContent = letter;
-  document.getElementById('navAvatar').title = name;
-  document.getElementById('sidebarAvatar').textContent = letter;
-  document.getElementById('sidebarName').textContent = name;
-  document.getElementById('sidebarTier').textContent = `VIP ${tier}`;
-  document.getElementById('welcomeHeading').textContent = `Welcome back, ${name.split(' ')[0]}! 👋`;
-  document.getElementById('welcomeSub').textContent = `You follow ${categories.length} communities`;
-  document.getElementById('statCommunities').textContent = categories.length || 0;
-  document.getElementById('profileName').value = name;
-  document.getElementById('profileEmail').value = currentUser.email;
+window.selId=function(el,t){
+ document.querySelectorAll('.idopt').forEach(o=>o.classList.remove('on'));el.classList.add('on');selIdType=t;
+ const lb={national:'National ID Card Number',drivers:"Driver's License Number",passport:'International Passport Number'};
+ document.getElementById('idL').innerHTML=lb[t]+' <span class="req">*</span>';
+ document.getElementById('idG').style.display='block';
+};
 
-  // Admin check
-  if (ADMIN_EMAILS.includes(currentUser.email) || currentUserData?.role === 'admin') {
-    document.getElementById('adminNavSection').style.display = 'block';
-    document.getElementById('adminNavLink').style.display = 'flex';
-  }
+window.doLogout=async function(){await signOut(auth);toastF('Signed out 👋');cSB();};
 
-  loadFeed();
-  loadCelebs();
+async function lFeed(){
+ const el=document.getElementById('feedP');
+ try{
+  const q=query(collection(db,'posts'),orderBy('createdAt','desc'),limit(10));
+  const s=await getDocs(q);document.getElementById('sPo').textContent=s.size;
+  if(s.empty){el.innerHTML=`<div class="pcard"><p style="font-family:'Inter',sans-serif;font-size:0.76rem;color:var(--cd);text-align:center;padding:16px;">No posts yet. Admin will post updates soon! 🌟</p></div>`;return;}
+  el.innerHTML='';
+  s.forEach(d=>{
+   const p=d.data(),t=p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString():'Just now';
+   el.innerHTML+=`<div class="pcard"><div class="ph"><div class="pav">${(p.authorName||'A').charAt(0)}</div><div><div class="pau">${p.authorName||'ICONIK Admin'}</div><div class="pt">${t}</div></div>${p.category?`<span class="ptag">${p.category}</span>`:''}</div>${p.title?`<div class="ptitle">${p.title}</div>`:''}<div class="pbody">${p.content||''}</div><div class="pacts"><button class="pa">❤️ Like</button><button class="pa">💬 Comment</button><button class="pa">🔗 Share</button></div></div>`;
+  });
+ }catch{el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:16px;">Feed loading... ✨</p></div>`;}
 }
 
-// ── LOGIN ──
-window.handleLogin = async function() {
-  const email = document.getElementById('loginEmail').value.trim();
-  const pass = document.getElementById('loginPassword').value;
-  const msg = document.getElementById('loginMsg');
-  if (!email || !pass) { showMsg(msg, 'Please fill in all fields', 'error'); return; }
-  try {
-    msg.style.display = 'none';
-    await signInWithEmailAndPassword(auth, email, pass);
-    showToast('Welcome back to ICONIK! 🌟', 'success');
-  } catch(e) {
-    showMsg(msg, getAuthError(e.code), 'error');
-  }
-};
-
-// ── REGISTER ──
-window.handleRegister = async function() {
-  const name = document.getElementById('regName').value.trim();
-  const email = document.getElementById('regEmail').value.trim();
-  const pass = document.getElementById('regPassword').value;
-  const msg = document.getElementById('registerMsg');
-  const cats = [...document.querySelectorAll('.cat-chip.selected')].map(c => c.dataset.cat);
-
-  if (!name || !email || !pass) { showMsg(msg, 'Please fill in all fields', 'error'); return; }
-  if (pass.length < 6) { showMsg(msg, 'Password must be at least 6 characters', 'error'); return; }
-
-  try {
-    msg.style.display = 'none';
-    const cred = await createUserWithEmailAndPassword(auth, email, pass);
-    await updateProfile(cred.user, { displayName: name });
-    await setDoc(doc(db, 'users', cred.user.uid), {
-      name, email, categories: cats,
-      tier: 'Fan', role: 'member',
-      joinedAt: serverTimestamp(),
-      country: '', bio: ''
-    });
-    showToast('Welcome to ICONIK! Find Your Tribe. 🎉', 'success');
-  } catch(e) {
-    showMsg(msg, getAuthError(e.code), 'error');
-  }
-};
-
-// ── LOGOUT ──
-window.handleLogout = async function() {
-  await signOut(auth);
-  showToast('Signed out. See you soon! 👋');
-  closeSidebar();
-};
-
-// ── LOAD FEED ──
-async function loadFeed() {
-  const feedEl = document.getElementById('postsFeed');
-  try {
-    const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'), limit(10));
-    const snap = await getDocs(q);
-    document.getElementById('statPosts').textContent = snap.size;
-
-    if (snap.empty) {
-      feedEl.innerHTML = `<div class="post-card"><p style="font-family:'Inter',sans-serif;font-size:0.82rem;color:var(--champagne-dim);text-align:center;padding:20px;">No posts yet. Admin will post updates soon! 🌟</p></div>`;
-      return;
-    }
-
-    feedEl.innerHTML = '';
-    snap.forEach(d => {
-      const p = d.data();
-      const time = p.createdAt?.toDate ? p.createdAt.toDate().toLocaleDateString() : 'Just now';
-      feedEl.innerHTML += `
-        <div class="post-card">
-          <div class="post-header">
-            <div class="post-avatar">${(p.authorName||'A').charAt(0)}</div>
-            <div class="post-meta">
-              <div class="post-author">${p.authorName||'ICONIK Admin'}</div>
-              <div class="post-time">${time}</div>
-            </div>
-            ${p.category ? `<span class="post-category-tag">${p.category}</span>` : ''}
-          </div>
-          ${p.title ? `<div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.9rem;color:var(--champagne);margin-bottom:8px;">${p.title}</div>` : ''}
-          <div class="post-content">${p.content||''}</div>
-          <div class="post-actions">
-            <button class="post-action">❤️ Like</button>
-            <button class="post-action">💬 Comment</button>
-            <button class="post-action">🔗 Share</button>
-          </div>
-        </div>`;
-    });
-  } catch(e) {
-    feedEl.innerHTML = `<div class="post-card"><p style="font-family:'Inter',sans-serif;font-size:0.82rem;color:var(--champagne-dim);text-align:center;">Feed loading... ✨</p></div>`;
-  }
+async function lCelebs(){
+ try{
+  const s=await getDocs(collection(db,'celebrities'));
+  allC=[];s.forEach(d=>allC.push({id:d.id,...d.data()}));
+  document.getElementById('sIco').textContent=allC.length;
+  rFeat();rAll();
+ }catch{document.getElementById('featC').innerHTML=`<div style="grid-column:span 2;text-align:center;padding:16px;color:var(--cd);">Icons coming soon! ⭐</div>`;}
 }
 
-// ── LOAD CELEBS ──
-async function loadCelebs() {
-  try {
-    const snap = await getDocs(collection(db, 'celebrities'));
-    allCelebs = [];
-    snap.forEach(d => allCelebs.push({ id: d.id, ...d.data() }));
-    document.getElementById('statIcons').textContent = allCelebs.length;
-    renderFeaturedCelebs();
-    renderAllCelebs();
-    renderCelebsTable();
-  } catch(e) {
-    document.getElementById('featuredCelebs').innerHTML = `<div style="grid-column:span 2;text-align:center;padding:20px;font-family:'Inter',sans-serif;font-size:0.8rem;color:var(--champagne-dim);">Admin will add icons soon! ⭐</div>`;
-  }
+const mCC=c=>`<div class="ccard"><div class="cimg">${c.photo?`<img src="${c.photo}" alt="${c.name}" onerror="this.parentElement.innerHTML='⭐'"/>`:'⭐'}</div><div class="ci"><div class="cn">${c.name}</div><div class="ccat">${c.category||''}</div><div class="cmeta">${c.country||''} ${c.followers?'· '+c.followers:''}</div></div></div>`;
+function rFeat(){document.getElementById('featC').innerHTML=allC.length?allC.slice(0,4).map(mCC).join(''):`<div style="grid-column:span 2;text-align:center;padding:16px;color:var(--cd);">Icons coming soon! ⭐</div>`;}
+function rAll(){document.getElementById('allC').innerHTML=allC.length?allC.map(mCC).join(''):`<div style="grid-column:span 2;text-align:center;padding:24px;color:var(--cd);">No icons yet. Admin adds from Admin Panel ⭐</div>`;}
+window.fCl=function(){const q=document.getElementById('cSrch').value.toLowerCase();document.getElementById('allC').innerHTML=allC.filter(c=>c.name?.toLowerCase().includes(q)||c.category?.toLowerCase().includes(q)).map(mCC).join('')||`<div style="grid-column:span 2;text-align:center;padding:16px;color:var(--cd);">No results</div>`;};
+
+function lMyComs(){
+ const cats=cD?.categories||[];
+ const ic={'Music':'🎵','Film':'🎬','Sports':'⚽','Literature':'📚','Wellness':'💪','Nature':'🌿','Fashion':'👗','Food':'🍽️','Automotive':'🚗','Tech':'💻','Beauty':'💄','Leadership':'🎓','Entertainment':'🎭'};
+ document.getElementById('myComG').innerHTML=cats.length?cats.map(c=>`<div class="ccard" style="cursor:default;"><div class="cimg">${ic[c]||'🌟'}</div><div class="ci"><div class="cn">${c}</div><div class="ccat">Your Community</div></div></div>`).join(''):`<div style="grid-column:span 2;text-align:center;padding:24px;color:var(--cd);">No communities yet. Update your profile.</div>`;
 }
 
-function renderFeaturedCelebs() {
-  const el = document.getElementById('featuredCelebs');
-  const featured = allCelebs.slice(0, 4);
-  if (!featured.length) {
-    el.innerHTML = `<div style="grid-column:span 2;text-align:center;padding:20px;font-family:'Inter',sans-serif;font-size:0.8rem;color:var(--champagne-dim);">Icons coming soon! ⭐</div>`;
-    return;
-  }
-  el.innerHTML = featured.map(c => `
-    <div class="celeb-card">
-      <div class="celeb-img">
-        ${c.photo ? `<img src="${c.photo}" alt="${c.name}" onerror="this.parentElement.innerHTML='⭐'"/>` : '⭐'}
-      </div>
-      <div class="celeb-info">
-        <div class="celeb-name">${c.name}</div>
-        <div class="celeb-category">${c.category||''}</div>
-        <div class="celeb-followers">${c.country||''} ${c.followers ? '· ' + c.followers + ' followers' : ''}</div>
-      </div>
-    </div>`).join('');
+window.postTB=async function(){
+ const ev=document.getElementById('tbe').value.trim(),ci=document.getElementById('tbc').value.trim();
+ if(!ev||!ci){toastF('Event and city required','error');return;}
+ try{
+  await addDoc(collection(db,'tourbuddy'),{event:ev,date:document.getElementById('tbd').value,city:ci,message:document.getElementById('tbm').value.trim(),userName:cD?.name||'Member',userId:cU.uid,createdAt:serverTimestamp()});
+  toastF('Tour buddy posted! 🎫','success');
+  ['tbe','tbc','tbm'].forEach(id=>document.getElementById(id).value='');
+  lTB();
+ }catch{toastF('Error posting','error');}
+};
+
+async function lTB(){
+ const el=document.getElementById('tbList');
+ try{
+  const q=query(collection(db,'tourbuddy'),orderBy('createdAt','desc'),limit(10));
+  const s=await getDocs(q);
+  if(s.empty){el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.76rem;padding:14px;">No requests yet. Be the first! 🎫</p></div>`;return;}
+  el.innerHTML='';
+  s.forEach(d=>{const b=d.data();el.innerHTML+=`<div class="pcard"><div class="ph"><div class="pav">${(b.userName||'M').charAt(0)}</div><div><div class="pau">${b.userName||'Member'}</div><div class="pt">${b.date||''} · ${b.city||''}</div></div></div><div class="ptitle">🎫 ${b.event}</div><div class="pbody">${b.message||''}</div></div>`;});
+ }catch{}
 }
 
-function renderAllCelebs() {
-  const el = document.getElementById('allCelebsGrid');
-  if (!allCelebs.length) {
-    el.innerHTML = `<div style="grid-column:span 2;text-align:center;padding:40px;font-family:'Inter',sans-serif;font-size:0.8rem;color:var(--champagne-dim);">No icons added yet. Admin adds celebrities from the Admin Panel. ⭐</div>`;
-    return;
-  }
-  el.innerHTML = allCelebs.map(c => `
-    <div class="celeb-card">
-      <div class="celeb-img">
-        ${c.photo ? `<img src="${c.photo}" alt="${c.name}" onerror="this.parentElement.innerHTML='⭐'"/>` : '⭐'}
-      </div>
-      <div class="celeb-info">
-        <div class="celeb-name">${c.name}</div>
-        <div class="celeb-category">${c.category||''}</div>
-        <div class="celeb-followers">${c.country||''} ${c.followers ? '· ' + c.followers : ''}</div>
-      </div>
-    </div>`).join('');
+async function lMsgs(){
+ const el=document.getElementById('msgsList');
+ try{
+  const q=query(collection(db,'messages'),where('to','in',['all',cU?.uid||'none']),orderBy('createdAt','desc'),limit(20));
+  const s=await getDocs(q);
+  if(s.empty){el.innerHTML=`<div class="msg-card"><p style="font-family:'Inter',sans-serif;font-size:0.76rem;color:var(--cd);text-align:center;padding:14px;">No messages yet. Admin will reach out when needed. 📩</p></div>`;return;}
+  el.innerHTML='';
+  s.forEach(d=>{
+   const m=d.data(),t=m.createdAt?.toDate?m.createdAt.toDate().toLocaleDateString():'Just now';
+   el.innerHTML+=`<div class="msg-card"><div class="msg-from"><span>${m.fromName||'ICONIK Admin'}</span><span class="msg-from-badge">${m.fromRole||'ADMIN'}</span><span class="msg-time">${t}</span></div><div class="msg-body">${m.content||''}</div></div>`;
+  });
+ }catch{el.innerHTML=`<div class="msg-card"><p style="text-align:center;color:var(--cd);padding:14px;">Messages loading...</p></div>`;}
 }
 
-window.filterCelebs = function() {
-  const q = document.getElementById('celebSearch').value.toLowerCase();
-  const filtered = allCelebs.filter(c =>
-    c.name?.toLowerCase().includes(q) || c.category?.toLowerCase().includes(q)
-  );
-  const el = document.getElementById('allCelebsGrid');
-  if (!filtered.length) { el.innerHTML = `<div style="grid-column:span 2;text-align:center;padding:20px;color:var(--champagne-dim);">No results found</div>`; return; }
-  el.innerHTML = filtered.map(c => `
-    <div class="celeb-card">
-      <div class="celeb-img">${c.photo ? `<img src="${c.photo}" alt="${c.name}" onerror="this.parentElement.innerHTML='⭐'"/>` : '⭐'}</div>
-      <div class="celeb-info">
-        <div class="celeb-name">${c.name}</div>
-        <div class="celeb-category">${c.category||''}</div>
-        <div class="celeb-followers">${c.country||''}</div>
-      </div>
-    </div>`).join('');
+window.saveP=async function(){
+ try{
+  const d={name:document.getElementById('pNm').value.trim(),phone:document.getElementById('pPh').value.trim(),country:document.getElementById('pCo').value.trim(),city:document.getElementById('pCi').value.trim(),address:document.getElementById('pAd').value.trim(),bio:document.getElementById('pBio').value.trim()};
+  await updateDoc(doc(db,'users',cU.uid),d);
+  await updateProfile(cU,{displayName:d.name});
+  cD={...cD,...d};
+  document.getElementById('sbNm').textContent=d.name;document.getElementById('nNm').textContent=d.name;
+  toastF('Profile saved! ✅','success');
+ }catch{toastF('Error saving','error');}
 };
 
-// ── LOAD COMMUNITIES ──
-function loadMyCommunitiesView() {
-  const cats = currentUserData?.categories || [];
-  const icons = {'Music':'🎵','Film':'🎬','Sports':'⚽','Literature':'📚','Wellness':'💪','Nature':'🌿','Fashion':'👗','Food':'🍽️','Automotive':'🚗','Tech':'💻','Beauty':'💄','Leadership':'🎓','Entertainment':'🎭'};
-  const el = document.getElementById('myCommunitiesGrid');
-  if (!cats.length) {
-    el.innerHTML = `<div style="grid-column:span 2;text-align:center;padding:30px;font-family:'Inter',sans-serif;font-size:0.8rem;color:var(--champagne-dim);">No communities selected. Update your profile to add communities.</div>`;
-    return;
-  }
-  el.innerHTML = cats.map(c => `
-    <div class="celeb-card" style="cursor:default;">
-      <div class="celeb-img" style="font-size:3rem;display:flex;align-items:center;justify-content:center;background:var(--obsidian-2);">${icons[c]||'🌟'}</div>
-      <div class="celeb-info">
-        <div class="celeb-name">${c}</div>
-        <div class="celeb-category">Your Community</div>
-      </div>
-    </div>`).join('');
-}
+window.upgP=function(t){toastF(`To upgrade to VIP ${t}: WhatsApp Admin with your email. Pay via PayPal or Crypto. 👑`,'success');};
 
-// ── TOUR BUDDY ──
-window.postTourBuddy = async function() {
-  const event = document.getElementById('tbEvent').value.trim();
-  const date = document.getElementById('tbDate').value;
-  const city = document.getElementById('tbCity').value.trim();
-  const message = document.getElementById('tbMessage').value.trim();
-  if (!event || !city) { showToast('Please fill event name and city', 'error'); return; }
-  try {
-    await addDoc(collection(db, 'tourbuddy'), {
-      event, date, city, message,
-      userName: currentUserData?.name || 'Member',
-      userId: currentUser.uid,
-      createdAt: serverTimestamp()
-    });
-    showToast('Tour buddy request posted! 🎫', 'success');
-    document.getElementById('tbEvent').value = '';
-    document.getElementById('tbCity').value = '';
-    document.getElementById('tbMessage').value = '';
-    loadTourBuddy();
-  } catch(e) { showToast('Error posting request', 'error'); }
+window.sV=function(nm){
+ document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+ document.querySelectorAll('.sb-lnk').forEach(l=>l.classList.remove('on'));
+ document.getElementById(nm+'V').classList.add('on');cSB();
+ if(nm==='coms')lMyComs();if(nm==='tb')lTB();if(nm==='msgs')lMsgs();
 };
 
-async function loadTourBuddy() {
-  const el = document.getElementById('tourBuddyList');
-  try {
-    const q = query(collection(db, 'tourbuddy'), orderBy('createdAt', 'desc'), limit(10));
-    const snap = await getDocs(q);
-    if (snap.empty) { el.innerHTML = `<div class="post-card"><p style="text-align:center;color:var(--champagne-dim);font-family:'Inter',sans-serif;font-size:0.8rem;">No requests yet. Be the first! 🎫</p></div>`; return; }
-    el.innerHTML = '';
-    snap.forEach(d => {
-      const b = d.data();
-      el.innerHTML += `
-        <div class="post-card">
-          <div class="post-header">
-            <div class="post-avatar">${(b.userName||'M').charAt(0)}</div>
-            <div class="post-meta">
-              <div class="post-author">${b.userName||'Member'}</div>
-              <div class="post-time">${b.date||''} · ${b.city||''}</div>
-            </div>
-          </div>
-          <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.85rem;color:var(--champagne);margin-bottom:6px;">🎫 ${b.event}</div>
-          <div class="post-content">${b.message||''}</div>
-        </div>`;
-    });
-  } catch(e) { el.innerHTML = ''; }
-}
-
-// ── ADD CELEBRITY (ADMIN) ──
-window.addCelebrity = async function() {
-  const name = document.getElementById('celebName').value.trim();
-  const category = document.getElementById('celebCategory').value;
-  const country = document.getElementById('celebCountry').value.trim();
-  const followers = document.getElementById('celebFollowers').value.trim();
-  const photo = document.getElementById('celebPhoto').value.trim();
-  const bio = document.getElementById('celebBio').value.trim();
-  const status = document.getElementById('celebStatus').value;
-
-  if (!name || !category) { showToast('Name and category required', 'error'); return; }
-  try {
-    await addDoc(collection(db, 'celebrities'), {
-      name, category, country, followers, photo, bio, status,
-      addedAt: serverTimestamp(),
-      addedBy: currentUser.email
-    });
-    showToast(`${name} added to ICONIK! ⭐`, 'success');
-    document.getElementById('celebName').value = '';
-    document.getElementById('celebCountry').value = '';
-    document.getElementById('celebFollowers').value = '';
-    document.getElementById('celebPhoto').value = '';
-    document.getElementById('celebBio').value = '';
-    loadCelebs();
-  } catch(e) { showToast('Error adding celebrity', 'error'); }
+window.sTab=function(t){
+ document.querySelectorAll('.atab').forEach(a=>a.classList.remove('on'));
+ document.querySelectorAll('.atab')[t==='login'?0:1].classList.add('on');
+ document.getElementById('loginF').style.display=t==='login'?'block':'none';
+ document.getElementById('regF').style.display=t==='register'?'block':'none';
+ document.getElementById('swT').textContent=t==='login'?'New to ICONIK? ':'Already a member? ';
+ document.getElementById('swL').textContent=t==='login'?'Join Free':'Sign In';
+ document.getElementById('swL').onclick=()=>sTab(t==='login'?'register':'login');
 };
 
-// ── CELEBRITIES TABLE ──
-function renderCelebsTable() {
-  const tbody = document.getElementById('celebsTableBody');
-  if (!allCelebs.length) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--champagne-dim);">No celebrities added yet</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = allCelebs.map(c => `
-    <tr>
-      <td><strong style="color:var(--champagne);">${c.name}</strong></td>
-      <td><span class="tag tag-gold">${c.category}</span></td>
-      <td>${c.country||'—'}</td>
-      <td>${c.followers||'—'}</td>
-      <td><span class="tag ${c.status==='active'?'tag-green':c.status==='rising'?'tag-blue':'tag-gold'}">${c.status||'active'}</span></td>
-      <td><button onclick="deleteCeleb('${c.id}')" style="background:none;border:1px solid rgba(239,68,68,0.3);color:#EF4444;padding:4px 10px;cursor:pointer;font-size:0.7rem;font-family:'Montserrat',sans-serif;">Remove</button></td>
-    </tr>`).join('');
-}
-
-window.deleteCeleb = async function(id) {
-  if (!confirm('Remove this celebrity?')) return;
-  try {
-    await deleteDoc(doc(db, 'celebrities', id));
-    showToast('Celebrity removed', 'success');
-    loadCelebs();
-  } catch(e) { showToast('Error removing celebrity', 'error'); }
-};
-
-// ── LOAD MEMBERS (ADMIN) ──
-async function loadMembers() {
-  const tbody = document.getElementById('membersTableBody');
-  try {
-    const snap = await getDocs(collection(db, 'users'));
-    if (snap.empty) {
-      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px;">No members yet</td></tr>`;
-      return;
-    }
-    tbody.innerHTML = '';
-    snap.forEach(d => {
-      const m = d.data();
-      const joined = m.joinedAt?.toDate ? m.joinedAt.toDate().toLocaleDateString() : '—';
-      tbody.innerHTML += `
-        <tr>
-          <td><strong style="color:var(--champagne);">${m.name||'—'}</strong></td>
-          <td style="font-size:0.72rem;">${m.email||'—'}</td>
-          <td><span class="tag tag-gold">${m.tier||'Fan'}</span></td>
-          <td>${(m.categories||[]).length} communities</td>
-          <td>${joined}</td>
-          <td>
-            <select onchange="upgradeMember('${d.id}',this.value)" style="background:var(--obsidian-3);border:1px solid var(--glass-border);color:var(--champagne);padding:4px;font-size:0.7rem;">
-              <option>Fan</option><option>Bronze</option><option>Silver</option><option>Gold</option>
-            </select>
-          </td>
-        </tr>`;
-    });
-  } catch(e) { tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">Error loading members</td></tr>`; }
-}
-
-window.upgradeMember = async function(uid, tier) {
-  try {
-    await updateDoc(doc(db, 'users', uid), { tier });
-    showToast(`Member upgraded to ${tier}! 👑`, 'success');
-  } catch(e) { showToast('Error upgrading member', 'error'); }
-};
-
-// ── CREATE POST (ADMIN) ──
-window.createPost = async function() {
-  const title = document.getElementById('postTitle').value.trim();
-  const content = document.getElementById('postContent').value.trim();
-  const category = document.getElementById('postCategory').value;
-  const type = document.getElementById('postType').value;
-  if (!content) { showToast('Post content required', 'error'); return; }
-  try {
-    await addDoc(collection(db, 'posts'), {
-      title, content, category, type,
-      authorName: currentUserData?.name || 'ICONIK Admin',
-      authorId: currentUser.uid,
-      createdAt: serverTimestamp()
-    });
-    showToast('Post published! 📝', 'success');
-    document.getElementById('postTitle').value = '';
-    document.getElementById('postContent').value = '';
-    loadAdminPosts();
-    loadFeed();
-  } catch(e) { showToast('Error creating post', 'error'); }
-};
-
-async function loadAdminPosts() {
-  const el = document.getElementById('adminPostsList');
-  try {
-    const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'), limit(10));
-    const snap = await getDocs(q);
-    if (snap.empty) { el.innerHTML = `<p style="text-align:center;color:var(--champagne-dim);font-family:'Inter',sans-serif;font-size:0.8rem;padding:20px;">No posts yet</p>`; return; }
-    el.innerHTML = '';
-    snap.forEach(d => {
-      const p = d.data();
-      const time = p.createdAt?.toDate ? p.createdAt.toDate().toLocaleDateString() : '—';
-      el.innerHTML += `
-        <div class="post-card">
-          <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;">
-            <div>
-              ${p.category ? `<span class="post-category-tag">${p.category}</span> ` : ''}
-              <span class="tag tag-blue">${p.type||'Update'}</span>
-            </div>
-            <button onclick="deletePost('${d.id}')" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:0.75rem;">✕ Delete</button>
-          </div>
-          ${p.title ? `<div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.85rem;color:var(--champagne);margin-bottom:4px;">${p.title}</div>` : ''}
-          <div class="post-content">${p.content}</div>
-          <div style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--champagne-dim);">Posted ${time}</div>
-        </div>`;
-    });
-  } catch(e) { el.innerHTML = ''; }
-}
-
-window.deletePost = async function(id) {
-  if (!confirm('Delete this post?')) return;
-  try {
-    await deleteDoc(doc(db, 'posts', id));
-    showToast('Post deleted', 'success');
-    loadAdminPosts();
-    loadFeed();
-  } catch(e) { showToast('Error deleting post', 'error'); }
-};
-
-// ── ASSIGN SUB ADMIN ──
-window.assignSubAdmin = async function() {
-  const email = document.getElementById('subAdminEmail').value.trim();
-  const category = document.getElementById('subAdminCategory').value;
-  const region = document.getElementById('subAdminRegion').value.trim();
-  if (!email || !region) { showToast('Email and region required', 'error'); return; }
-  try {
-    await addDoc(collection(db, 'subadmins'), {
-      email, category, region,
-      status: 'active',
-      assignedAt: serverTimestamp(),
-      assignedBy: currentUser.email
-    });
-    showToast(`${email} assigned as Sub Admin for ${category}! 🛡️`, 'success');
-    document.getElementById('subAdminEmail').value = '';
-    document.getElementById('subAdminRegion').value = '';
-    loadSubAdmins();
-  } catch(e) { showToast('Error assigning Sub Admin', 'error'); }
-};
-
-async function loadSubAdmins() {
-  const tbody = document.getElementById('subAdminsTableBody');
-  try {
-    const snap = await getDocs(collection(db, 'subadmins'));
-    if (snap.empty) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:20px;">No Sub Admins yet</td></tr>`; return; }
-    tbody.innerHTML = '';
-    snap.forEach(d => {
-      const s = d.data();
-      tbody.innerHTML += `<tr><td>${s.email}</td><td><span class="tag tag-gold">${s.category}</span></td><td>${s.region}</td><td><span class="tag tag-green">${s.status}</span></td></tr>`;
-    });
-  } catch(e) {}
-}
-
-// ── CARD IMAGE UPDATES ──
-function loadImageUpdateForm() {
-  const categories = ['Music','Film & TV','Sports','Literature','Fitness & Wellness','Nature & Exploration','Fashion','Food & Culinary','Automotive & Lifestyle','Tech & Innovation','Beauty & Aesthetics','Entertainment & Talent','Thought Leadership'];
-  const el = document.getElementById('imageUpdateList');
-  el.innerHTML = categories.map(cat => `
-    <div class="form-group">
-      <label class="form-label">${cat}</label>
-      <input class="form-input" type="text" id="img_${cat.replace(/[^a-z]/gi,'_')}" placeholder="Paste new image URL for ${cat}"/>
-    </div>`).join('');
-}
-
-window.saveImageUpdates = async function() {
-  const categories = ['Music','Film & TV','Sports','Literature','Fitness & Wellness','Nature & Exploration','Fashion','Food & Culinary','Automotive & Lifestyle','Tech & Innovation','Beauty & Aesthetics','Entertainment & Talent','Thought Leadership'];
-  try {
-    for (const cat of categories) {
-      const input = document.getElementById(`img_${cat.replace(/[^a-z]/gi,'_')}`);
-      if (input?.value.trim()) {
-        await setDoc(doc(db, 'categoryImages', cat), {
-          imageUrl: input.value.trim(),
-          updatedAt: serverTimestamp(),
-          updatedBy: currentUser.email
-        });
-      }
-    }
-    showToast('Category images updated! 🖼️', 'success');
-  } catch(e) { showToast('Error saving images', 'error'); }
-};
-
-// ── SAVE PROFILE ──
-window.saveProfile = async function() {
-  const name = document.getElementById('profileName').value.trim();
-  const country = document.getElementById('profileCountry').value.trim();
-  const bio = document.getElementById('profileBio').value.trim();
-  try {
-    await updateDoc(doc(db, 'users', currentUser.uid), { name, country, bio });
-    await updateProfile(currentUser, { displayName: name });
-    currentUserData = { ...currentUserData, name, country, bio };
-    document.getElementById('sidebarName').textContent = name;
-    document.getElementById('navUserName').textContent = name;
-    showToast('Profile saved! ✅', 'success');
-  } catch(e) { showToast('Error saving profile', 'error'); }
-};
-
-// ── UPGRADE TIER ──
-window.upgradeTier = function(tier) {
-  showToast(`To upgrade to VIP ${tier}, please contact Admin via WhatsApp with your email. Payment via PayPal or Crypto. 👑`, 'success');
-};
-
-// ── VIEW NAVIGATION ──
-window.showView = function(name) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-  document.getElementById(name + 'View').classList.add('active');
-  closeSidebar();
-
-  if (name === 'communities') loadMyCommunitiesView();
-  if (name === 'tourbuddy') loadTourBuddy();
-  if (name === 'admin') { loadAdminPosts(); loadSubAdmins(); loadImageUpdateForm(); }
-  if (name === 'members') loadMembers();
-};
-
-// ── ADMIN TABS ──
-window.switchAdminTab = function(name) {
-  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.admin-content').forEach(c => c.classList.remove('active'));
-  document.getElementById('admin' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
-  event.target.classList.add('active');
-  if (name === 'members') loadMembers();
-  if (name === 'posts') loadAdminPosts();
-  if (name === 'subadmins') loadSubAdmins();
-  if (name === 'images') loadImageUpdateForm();
-};
-
-// ── AUTH TAB SWITCH ──
-window.switchAuthTab = function(tab) {
-  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.auth-tab')[tab === 'login' ? 0 : 1].classList.add('active');
-  document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
-  document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
-  document.getElementById('authSwitchText').textContent = tab === 'login' ? 'New to ICONIK? ' : 'Already a member? ';
-  document.getElementById('authSwitchLink').textContent = tab === 'login' ? 'Join Free' : 'Sign In';
-  document.getElementById('authSwitchLink').onclick = () => switchAuthTab(tab === 'login' ? 'register' : 'login');
-};
-
-// ── SIDEBAR ──
-window.toggleSidebar = function() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('sidebarOverlay').classList.toggle('open');
-};
-window.closeSidebar = function() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebarOverlay').classList.remove('open');
-};
-
-// ── CAT CHIP ──
-window.toggleCat = function(el) { el.classList.toggle('selected'); };
-
-// ── TOAST ──
-function showToast(msg, type = '') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show ' + type;
-  setTimeout(() => t.className = 'toast', 3500);
-}
-
-// ── MSG ──
-function showMsg(el, msg, type) {
-  el.textContent = msg;
-  el.className = 'auth-msg ' + type;
-  el.style.display = 'block';
-}
-
-// ── AUTH ERRORS ──
-function getAuthError(code) {
-  const errors = {
-    'auth/user-not-found': 'No account found with this email',
-    'auth/wrong-password': 'Incorrect password',
-    'auth/email-already-in-use': 'This email is already registered',
-    'auth/weak-password': 'Password must be at least 6 characters',
-    'auth/invalid-email': 'Please enter a valid email address',
-    'auth/too-many-requests': 'Too many attempts. Please try again later',
-    'auth/invalid-credential': 'Invalid email or password'
-  };
-  return errors[code] || 'Something went wrong. Please try again.';
-}
-
+window.togSB=function(){document.getElementById('sb').classList.toggle('on');document.getElementById('sbOv').classList.toggle('on');};
+window.cSB=function(){document.getElementById('sb').classList.remove('on');document.getElementById('sbOv').classList.remove('on');};
+window.tC=function(el){el.classList.toggle('on');};
+function toastF(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='toast on '+type;setTimeout(()=>t.className='toast',3500);}
+function sM(el,msg,type){el.textContent=msg;el.className='amsg '+type;el.style.display='block';}
+function aE(c){const e={'auth/user-not-found':'No account found with this email','auth/wrong-password':'Incorrect password','auth/email-already-in-use':'Email already registered','auth/weak-password':'Min. 6 characters','auth/invalid-email':'Invalid email address','auth/too-many-requests':'Too many attempts. Try again later','auth/invalid-credential':'Invalid email or password'};return e[c]||'Something went wrong. Try again.';}
 </script>
 </body>
 </html>
