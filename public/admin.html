@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ICONIK — Chief Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@400;600;800;900&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--obs:#07070D;--obs2:#0F0F1A;--obs3:#141420;--gold:#FFB800;--gg:#FF9500;--ch:#F5F0E8;--cd:#BDB5A6;--gb:rgba(255,184,0,0.04);--gbr:rgba(255,184,0,0.15);--gbri:rgba(255,184,0,0.4);--ok:#22C55E;--err:#EF4444;--ab:#3B82F6;--warn:#F59E0B;--ab2:rgba(59,130,246,0.08);}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-height:100vh;}
+/* AUTH GATE */
+.gate{display:none;min-height:100vh;background:linear-gradient(135deg,var(--obs),#0A0A14,var(--obs));align-items:center;justify-content:center;padding:16px;}
+.gate.on{display:flex;}
+.gbox{width:100%;max-width:400px;background:var(--obs3);border:1px solid var(--gbr);padding:36px 28px;box-shadow:0 40px 120px rgba(0,0,0,0.6);}
+.glogo{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.15em;color:var(--gold);text-align:center;display:block;text-decoration:none;text-shadow:0 0 30px rgba(255,184,0,0.4);margin-bottom:5px;}
+.glogo span{color:var(--ch);}
+.gsub{font-family:'Inter',sans-serif;font-size:0.72rem;color:var(--cd);text-align:center;margin-bottom:6px;}
+.gadmin-label{font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.18em;color:var(--obs);background:var(--ab);padding:3px 10px;display:inline-block;margin:0 auto 20px;display:block;text-align:center;width:fit-content;margin:0 auto 20px;}
+/* ADMIN PAGE */
+.admin-pg{display:none;}
+.admin-pg.on{display:block;}
+/* TOP BAR */
+.tbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,7,13,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(59,130,246,0.2);}
+.tbar-logo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.12em;color:var(--gold);text-decoration:none;}
+.tbar-logo span{color:var(--ch);}
+.tbar-badge{font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.15em;color:#fff;background:var(--ab);padding:3px 9px;margin-left:8px;}
+.tbar-right{display:flex;align-items:center;gap:8px;}
+.tbar-user{font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);}
+.tbar-av{width:30px;height:30px;background:linear-gradient(135deg,var(--ab),#1D4ED8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.8rem;color:#fff;cursor:pointer;}
+.hbg{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:4px;}
+.hbg span{display:block;width:17px;height:2px;background:var(--gold);}
+/* SIDEBAR */
+.sb{position:fixed;top:0;left:-280px;width:280px;height:100vh;background:var(--obs3);border-right:1px solid rgba(59,130,246,0.15);z-index:2000;transition:left 0.3s;overflow-y:auto;}
+.sb.on{left:0;}
+.sb-ov{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1999;display:none;}
+.sb-ov.on{display:block;}
+.sb-h{padding:16px;border-bottom:1px solid rgba(59,130,246,0.15);display:flex;align-items:center;justify-content:space-between;}
+.sb-logo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.1em;color:var(--ab);}
+.sb-x{background:none;border:none;color:var(--cd);font-size:1rem;cursor:pointer;}
+.sb-u{padding:13px 16px;border-bottom:1px solid rgba(59,130,246,0.15);}
+.sb-av{width:40px;height:40px;background:linear-gradient(135deg,var(--ab),#1D4ED8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.95rem;color:#fff;margin-bottom:6px;}
+.sb-nm{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);margin-bottom:3px;}
+.sb-role{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.1em;color:#fff;background:var(--ab);padding:2px 7px;}
+.sb-nav{padding:8px 0;}
+.sb-sec{font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.24em;color:rgba(189,181,166,0.28);padding:5px 15px 2px;}
+.sb-lnk{display:flex;align-items:center;gap:8px;padding:10px 15px;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--cd);transition:all 0.2s;border-left:3px solid transparent;}
+.sb-lnk:hover,.sb-lnk.on{color:var(--ab);background:var(--ab2);border-left-color:var(--ab);}
+.sb-ic{font-size:0.86rem;width:15px;text-align:center;}
+.sb-cnt{margin-left:auto;font-family:'Bebas Neue',sans-serif;font-size:0.52rem;background:var(--ab);color:#fff;padding:1px 5px;border-radius:2px;}
+/* MAIN */
+.main{padding:64px 14px 32px;}
+.view{display:none;}
+.view.on{display:block;}
+/* STATS BAR */
+.stats-bar{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:18px;}
+.stat-box{background:var(--ab2);border:1px solid rgba(59,130,246,0.15);padding:12px;text-align:center;}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;color:var(--ab);}
+.stat-lbl{font-family:'Inter',sans-serif;font-size:0.52rem;color:var(--cd);letter-spacing:0.09em;text-transform:uppercase;margin-top:2px;}
+/* SECTION HEAD */
+.sh{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ab);margin-bottom:11px;display:flex;align-items:center;gap:6px;}
+.sh::after{content:'';flex:1;height:1px;background:rgba(59,130,246,0.15);}
+/* CHIEF ONLY NOTICE */
+.conly{background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.2);border-left:3px solid var(--ab);padding:10px 13px;margin-bottom:13px;font-family:'Inter',sans-serif;font-size:0.7rem;color:#93C5FD;}
+/* FORMS */
+.fg{margin-bottom:12px;}
+.fl{font-family:'Montserrat',sans-serif;font-size:0.57rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--cd);margin-bottom:6px;display:block;}
+.req{color:var(--err);}
+.fi,.fs{width:100%;padding:11px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--gbr);color:var(--ch);font-family:'Inter',sans-serif;font-size:0.8rem;outline:none;transition:all 0.3s;}
+.fi:focus,.fs:focus{border-color:var(--ab);}
+.fi::placeholder{color:rgba(189,181,166,0.3);}
+.fs option{background:var(--obs3);}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.fhint{font-family:'Inter',sans-serif;font-size:0.6rem;color:rgba(189,181,166,0.4);margin-top:3px;}
+/* FORMS PANEL */
+.aform{background:var(--gb);border:1px solid var(--gbr);padding:16px;margin-bottom:16px;}
+.aform-t{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:13px;}
+/* BUTTONS */
+.btn{width:100%;padding:11px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;border:none;transition:all 0.3s;}
+.btn-g{background:linear-gradient(135deg,var(--gold),var(--gg));color:var(--obs);clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);}
+.btn-g:hover{box-shadow:0 0 30px rgba(255,184,0,0.3);}
+.btn-b{background:linear-gradient(135deg,var(--ab),#1D4ED8);color:#fff;}
+.btn-sm{width:auto;padding:6px 11px;font-size:0.57rem;}
+.btn-d{background:rgba(239,68,68,0.09);border:1px solid rgba(239,68,68,0.27);color:var(--err);font-family:'Montserrat',sans-serif;font-size:0.55rem;font-weight:700;letter-spacing:0.07em;padding:5px 9px;cursor:pointer;transition:all 0.2s;}
+.btn-d:hover{background:rgba(239,68,68,0.18);}
+.btn-ok{background:rgba(34,197,94,0.09);border:1px solid rgba(34,197,94,0.27);color:var(--ok);font-family:'Montserrat',sans-serif;font-size:0.55rem;font-weight:700;letter-spacing:0.07em;padding:5px 9px;cursor:pointer;}
+/* TABLE */
+.dtwrap{overflow-x:auto;}
+.dt{width:100%;border-collapse:collapse;margin-bottom:13px;font-size:0.68rem;}
+.dt th{font-family:'Montserrat',sans-serif;font-size:0.53rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:var(--ab);padding:8px 8px;border-bottom:1px solid rgba(59,130,246,0.15);text-align:left;white-space:nowrap;}
+.dt td{font-family:'Inter',sans-serif;font-size:0.67rem;color:var(--cd);padding:8px 8px;border-bottom:1px solid rgba(255,255,255,0.03);vertical-align:middle;}
+.dt tr:hover td{color:var(--ch);}
+/* TAGS */
+.tag{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.08em;padding:2px 6px;}
+.tg{background:rgba(255,184,0,0.12);color:var(--gold);}
+.tok{background:rgba(34,197,94,0.12);color:var(--ok);}
+.tbl{background:rgba(59,130,246,0.12);color:var(--ab);}
+.terr{background:rgba(239,68,68,0.12);color:var(--err);}
+.twarn{background:rgba(245,158,11,0.12);color:var(--warn);}
+/* MEMBER DETAIL MODAL */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:3000;align-items:center;justify-content:center;padding:12px;}
+.modal-ov.on{display:flex;}
+.modal-box{background:var(--obs3);border:1px solid var(--gbri);width:100%;max-width:520px;max-height:88vh;overflow-y:auto;padding:22px 18px;position:relative;animation:fu 0.3s ease;}
+@keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.modal-x{position:absolute;top:11px;right:11px;background:none;border:none;color:var(--cd);font-size:1rem;cursor:pointer;}
+.modal-t{font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:var(--ch);margin-bottom:2px;}
+.modal-s{font-family:'Inter',sans-serif;font-size:0.64rem;color:var(--cd);margin-bottom:14px;}
+.dr{display:flex;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.dl{font-family:'Montserrat',sans-serif;font-size:0.55rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:var(--cd);width:120px;flex-shrink:0;}
+.dv{font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--ch);flex:1;word-break:break-word;}
+.id-reveal{background:rgba(255,184,0,0.05);border:1px solid var(--gbr);border-left:3px solid var(--gold);padding:11px;margin-top:13px;}
+.id-reveal-t{font-family:'Bebas Neue',sans-serif;font-size:0.64rem;letter-spacing:0.12em;color:var(--gold);margin-bottom:7px;}
+/* POSTS PREVIEW */
+.pcard{background:var(--gb);border:1px solid var(--gbr);padding:13px;margin-bottom:8px;}
+.ptitle{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.78rem;color:var(--ch);margin-bottom:4px;}
+.pbody{font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--cd);line-height:1.6;}
+.ptag{font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.09em;color:var(--obs);background:var(--gold);padding:2px 6px;}
+/* TOAST */
+.toast{position:fixed;bottom:16px;right:12px;z-index:9999;background:var(--obs3);border:1px solid var(--gbr);padding:10px 15px;font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--ch);transform:translateY(80px);opacity:0;transition:all 0.3s;pointer-events:none;max-width:280px;}
+.toast.on{transform:translateY(0);opacity:1;}
+.toast.success{border-color:rgba(34,197,94,0.4);color:var(--ok);}
+.toast.error{border-color:rgba(239,68,68,0.4);color:var(--err);}
+/* LOADER */
+.ldr{display:flex;align-items:center;justify-content:center;padding:24px;}
+.lring{width:26px;height:26px;border:3px solid var(--gbr);border-top-color:var(--ab);border-radius:50%;animation:sp 0.8s linear infinite;}
+@keyframes sp{to{transform:rotate(360deg)}}
+/* SEARCH */
+.srch-row{display:flex;gap:8px;margin-bottom:11px;}
+.srch-row .fi{flex:1;}
+/* MSG FORM */
+.msg-form{background:var(--gb);border:1px solid var(--gbr);padding:16px;margin-bottom:16px;}
+.msg-form-t{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--ab);margin-bottom:13px;}
+@media(max-width:480px){.fr{grid-template-columns:1fr;}.stats-bar{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+<!-- AUTH GATE -->
+<div class="gate on" id="gatePg">
+ <div class="gbox">
+  <a class="glogo" href="/"><span>ICON</span>IK</a>
+  <p class="gsub">Admin Control Center</p>
+  <span class="gadmin-label">CHIEF ADMIN ACCESS ONLY</span>
+  <div class="fg"><label class="fl">Admin Email</label><input class="fi" type="email" id="ge" placeholder="iconikglobal01@gmail.com"/></div>
+  <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="gp" placeholder="••••••••"/></div>
+  <button class="btn btn-b" onclick="doAdminLogin()" style="clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);">Access Admin Panel →</button>
+  <div class="amsg" id="gm" style="font-family:'Inter',sans-serif;font-size:0.72rem;text-align:center;margin-top:11px;padding:9px;display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:var(--err);"></div>
+  <p style="font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);text-align:center;margin-top:14px;"><a href="/app.html" style="color:var(--gold);">← Back to Member Dashboard</a></p>
+ </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-pg" id="adminPg">
+ <div class="tbar">
+  <div style="display:flex;align-items:center;">
+   <a class="tbar-logo" href="/"><span>ICON</span>IK</a>
+   <span class="tbar-badge">CHIEF ADMIN</span>
+  </div>
+  <div class="tbar-right">
+   <span class="tbar-user" id="tbarUser"></span>
+   <div class="tbar-av" id="tbarAv">A</div>
+   <button class="hbg" onclick="togSB()"><span></span><span></span><span></span></button>
+  </div>
+ </div>
+
+ <div class="sb-ov" id="sbOv" onclick="cSB()"></div>
+ <div class="sb" id="sb">
+  <div class="sb-h"><span class="sb-logo">ICONIK ADMIN</span><button class="sb-x" onclick="cSB()">✕</button></div>
+  <div class="sb-u">
+   <div class="sb-av" id="sbAv">A</div>
+   <div class="sb-nm" id="sbNm">Chief Admin</div>
+   <span class="sb-role">CHIEF ADMIN</span>
+  </div>
+  <nav class="sb-nav">
+   <div class="sb-sec">Dashboard</div>
+   <div class="sb-lnk on" onclick="sV('overview')"><span class="sb-ic">📊</span>Overview</div>
+   <div class="sb-sec">Management</div>
+   <div class="sb-lnk" onclick="sV('members')"><span class="sb-ic">👥</span>Members<span class="sb-cnt" id="sbMCnt">0</span></div>
+   <div class="sb-lnk" onclick="sV('celebs')"><span class="sb-ic">⭐</span>Celebrities</div>
+   <div class="sb-lnk" onclick="sV('posts')"><span class="sb-ic">📝</span>Posts</div>
+   <div class="sb-lnk" onclick="sV('messages')"><span class="sb-ic">📩</span>Send Messages</div>
+   <div class="sb-sec">Control</div>
+   <div class="sb-lnk" onclick="sV('subadmins')"><span class="sb-ic">🛡️</span>Sub Admins</div>
+   <div class="sb-lnk" onclick="sV('images')"><span class="sb-ic">🖼️</span>Category Images</div>
+   <div class="sb-sec">More</div>
+   <div class="sb-lnk" onclick="doLogout()"><span class="sb-ic">🚪</span>Sign Out</div>
+  </nav>
+ </div>
+
+ <div class="main">
+
+  <!-- OVERVIEW -->
+  <div class="view on" id="overviewV">
+   <div style="background:linear-gradient(135deg,rgba(59,130,246,0.08),rgba(59,130,246,0.03));border:1px solid rgba(59,130,246,0.18);padding:16px;margin-bottom:16px;">
+    <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--ch);margin-bottom:4px;">ICONIK Control Center</div>
+    <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:var(--cd);">Full platform management — Members · Celebrities · Posts · Messages · Sub Admins</div>
+   </div>
+   <div class="stats-bar" id="overviewStats">
+    <div class="stat-box"><div class="stat-num" id="ovMembers">—</div><div class="stat-lbl">Total Members</div></div>
+    <div class="stat-box"><div class="stat-num" id="ovCelebs">—</div><div class="stat-lbl">Celebrities</div></div>
+    <div class="stat-box"><div class="stat-num" id="ovPosts">—</div><div class="stat-lbl">Posts</div></div>
+    <div class="stat-box"><div class="stat-num" id="ovPending">—</div><div class="stat-lbl">Pending Verify</div></div>
+   </div>
+   <div class="sh">Quick Actions</div>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+    <div style="background:var(--gb);border:1px solid var(--gbr);padding:14px;cursor:pointer;text-align:center;" onclick="sV('members')">
+     <div style="font-size:1.6rem;margin-bottom:6px;">👥</div>
+     <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">View Members</div>
+     <div style="font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--cd);margin-top:2px;">Verify & manage</div>
+    </div>
+    <div style="background:var(--gb);border:1px solid var(--gbr);padding:14px;cursor:pointer;text-align:center;" onclick="sV('messages')">
+     <div style="font-size:1.6rem;margin-bottom:6px;">📩</div>
+     <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">Send Message</div>
+     <div style="font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--cd);margin-top:2px;">To all or specific member</div>
+    </div>
+    <div style="background:var(--gb);border:1px solid var(--gbr);padding:14px;cursor:pointer;text-align:center;" onclick="sV('celebs')">
+     <div style="font-size:1.6rem;margin-bottom:6px;">⭐</div>
+     <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">Add Celebrity</div>
+     <div style="font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--cd);margin-top:2px;">Grow icon roster</div>
+    </div>
+    <div style="background:var(--gb);border:1px solid var(--gbr);padding:14px;cursor:pointer;text-align:center;" onclick="sV('subadmins')">
+     <div style="font-size:1.6rem;margin-bottom:6px;">🛡️</div>
+     <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">Sub Admins</div>
+     <div style="font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--cd);margin-top:2px;">Assign & remove</div>
+    </div>
+   </div>
+  </div>
+
+  <!-- MEMBERS -->
+  <div class="view" id="membersV">
+   <div class="conly">🔒 <strong>Chief Admin Only</strong> — Full verification details including ID documents, addresses, and phone numbers visible only here.</div>
+   <div class="srch-row">
+    <input class="fi" type="text" id="mSrch" placeholder="Search by name, email or country..." oninput="fM()"/>
+    <select class="fs" style="width:auto;" id="mFilter" onchange="fM()">
+     <option value="">All Status</option>
+     <option value="pending">Pending</option>
+     <option value="verified">Verified</option>
+     <option value="rejected">Rejected</option>
+    </select>
+   </div>
+   <div class="dtwrap">
+    <table class="dt">
+     <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Country</th><th>City</th><th>Tier</th><th>ID Type</th><th>Status</th><th>Actions</th></tr></thead>
+     <tbody id="mTbody"><tr><td colspan="9" style="text-align:center;padding:18px;"><div class="lring" style="margin:auto;border-top-color:var(--ab);"></div></td></tr></tbody>
+    </table>
+   </div>
+  </div>
+
+  <!-- CELEBRITIES -->
+  <div class="view" id="celebsV">
+   <div class="aform">
+    <div class="aform-t">➕ Add Celebrity / Icon</div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Full Name <span class="req">*</span></label><input class="fi" type="text" id="cNm" placeholder="Celebrity name"/></div>
+     <div class="fg"><label class="fl">Category <span class="req">*</span></label>
+      <select class="fs" id="cCat">
+       <option value="">Select category</option>
+       <option>Music</option><option>Film & TV</option><option>Sports</option>
+       <option>Literature</option><option>Fitness & Wellness</option>
+       <option>Nature & Exploration</option><option>Fashion</option>
+       <option>Food & Culinary</option><option>Automotive</option>
+       <option>Tech & Innovation</option><option>Beauty</option>
+       <option>Entertainment & Talent</option><option>Thought Leadership</option>
+      </select>
+     </div>
+    </div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Country / Origin</label><input class="fi" type="text" id="cCo" placeholder="e.g. USA, South Korea, Nigeria"/></div>
+     <div class="fg"><label class="fl">Followers (approx)</label><input class="fi" type="text" id="cFol" placeholder="e.g. 50M"/></div>
+    </div>
+    <div class="fg"><label class="fl">Photo URL</label><input class="fi" type="text" id="cPh" placeholder="https://..."/></div>
+    <div class="fg"><label class="fl">Bio / Description</label><input class="fi" type="text" id="cBio" placeholder="Brief description of this icon"/></div>
+    <div class="fg"><label class="fl">Status</label>
+     <select class="fs" id="cSt"><option value="active">Active / Trending</option><option value="rising">Rising Star</option><option value="legend">Legend</option></select>
+    </div>
+    <button class="btn btn-g" onclick="addCeleb()">Add to ICONIK →</button>
+   </div>
+   <div class="sh">All Celebrities</div>
+   <input class="fi" style="margin-bottom:10px;" type="text" id="cSrch" placeholder="Search celebrities..." oninput="fCelebs()"/>
+   <div class="dtwrap">
+    <table class="dt">
+     <thead><tr><th>Name</th><th>Category</th><th>Country</th><th>Followers</th><th>Status</th><th>Action</th></tr></thead>
+     <tbody id="cTbody"><tr><td colspan="6" style="text-align:center;padding:18px;"><div class="lring" style="margin:auto;border-top-color:var(--ab);"></div></td></tr></tbody>
+    </table>
+   </div>
+  </div>
+
+  <!-- POSTS -->
+  <div class="view" id="postsV">
+   <div class="aform">
+    <div class="aform-t">📝 Create Community Post</div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Category</label>
+      <select class="fs" id="poCat">
+       <option value="">All Communities</option>
+       <option>Music</option><option>Film & TV</option><option>Sports</option>
+       <option>Literature</option><option>Fashion</option><option>Food & Culinary</option>
+       <option>Fitness & Wellness</option><option>Tech & Innovation</option><option>Beauty</option>
+      </select>
+     </div>
+     <div class="fg"><label class="fl">Post Type</label>
+      <select class="fs" id="poTyp"><option>Update</option><option>News</option><option>Tour/Event</option><option>Discussion</option><option>Alert</option></select>
+     </div>
+    </div>
+    <div class="fg"><label class="fl">Title</label><input class="fi" type="text" id="poTit" placeholder="Post headline"/></div>
+    <div class="fg"><label class="fl">Content <span class="req">*</span></label><input class="fi" type="text" id="poCon" placeholder="Post content..."/></div>
+    <button class="btn btn-g" onclick="createPost()">Publish Post →</button>
+   </div>
+   <div class="sh">Recent Posts</div>
+   <div id="admPosts"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- MESSAGES -->
+  <div class="view" id="messagesV">
+   <div class="msg-form">
+    <div class="msg-form-t">📩 Send Message to Members</div>
+    <div class="fg"><label class="fl">Send To</label>
+     <select class="fs" id="msgTo">
+      <option value="all">📢 All Members</option>
+      <option value="verified">✅ Verified Members Only</option>
+      <option value="pending">⏳ Pending Verification Only</option>
+      <option value="specific">👤 Specific Member (enter UID below)</option>
+     </select>
+    </div>
+    <div class="fg" id="specificUIDGroup" style="display:none;">
+     <label class="fl">Member UID or Email</label>
+     <input class="fi" type="text" id="msgUID" placeholder="Member UID from Members table"/>
+     <p class="fhint">Find the UID by clicking View on a member in the Members tab</p>
+    </div>
+    <div class="fg"><label class="fl">Subject / Title <span class="req">*</span></label><input class="fi" type="text" id="msgSubj" placeholder="Message subject"/></div>
+    <div class="fg"><label class="fl">Message <span class="req">*</span></label><textarea class="fi" id="msgBody" placeholder="Write your message to members..." rows="4" style="resize:vertical;"></textarea></div>
+    <div class="fg"><label class="fl">Sender Display Name</label><input class="fi" type="text" id="msgFrom" value="ICONIK Admin" placeholder="How sender name appears"/></div>
+    <button class="btn btn-g" onclick="sendMsg()">Send Message →</button>
+   </div>
+   <div class="sh">Sent Messages</div>
+   <div id="sentMsgs"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- SUB ADMINS -->
+  <div class="view" id="subadminsV">
+   <div class="conly">🔒 <strong>Chief Admin Exclusive</strong> — Only <strong>iconikglobal01@gmail.com</strong> can assign or remove Sub Admins from ICONIK.</div>
+   <div class="aform">
+    <div class="aform-t">🛡️ Assign Sub Admin</div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Member Email <span class="req">*</span></label><input class="fi" type="email" id="saEm" placeholder="member@email.com"/></div>
+     <div class="fg"><label class="fl">Category <span class="req">*</span></label>
+      <select class="fs" id="saCat">
+       <option>Music</option><option>Film & TV</option><option>Sports</option>
+       <option>Literature</option><option>Fashion</option><option>Food & Culinary</option>
+       <option>Fitness & Wellness</option><option>Tech & Innovation</option>
+       <option>Nature & Exploration</option><option>Beauty</option>
+       <option>Automotive</option><option>Entertainment</option><option>Leadership</option>
+      </select>
+     </div>
+    </div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Region / Country <span class="req">*</span></label><input class="fi" type="text" id="saReg" placeholder="e.g. USA, Australia, Belgium"/></div>
+     <div class="fg"><label class="fl">Full Name</label><input class="fi" type="text" id="saNm" placeholder="Sub Admin full name"/></div>
+    </div>
+    <button class="btn btn-g" onclick="assignSA()">Assign Sub Admin →</button>
+   </div>
+   <div class="sh">Current Sub Admins</div>
+   <div class="dtwrap">
+    <table class="dt">
+     <thead><tr><th>Name</th><th>Email</th><th>Category</th><th>Region</th><th>Status</th><th>Assigned</th><th>Remove</th></tr></thead>
+     <tbody id="saTbody"><tr><td colspan="7" style="text-align:center;padding:18px;color:var(--cd);">No Sub Admins yet</td></tr></tbody>
+    </table>
+   </div>
+  </div>
+
+  <!-- IMAGES -->
+  <div class="view" id="imagesV">
+   <div class="aform">
+    <div class="aform-t">🖼️ Update Category Card Images</div>
+    <p style="font-family:'Inter',sans-serif;font-size:0.72rem;color:var(--cd);margin-bottom:16px;line-height:1.6;">Paste a new image URL for any community card. Leave blank to keep the current image. Updates go live on the homepage immediately after saving.</p>
+    <div id="imgFormList"></div>
+    <button class="btn btn-g" onclick="saveImgs()">Save All Image Updates →</button>
+   </div>
+  </div>
+
+ </div><!-- /main -->
+</div><!-- /admin-pg -->
+
+<!-- MEMBER DETAIL MODAL -->
+<div class="modal-ov" id="mMod">
+ <div class="modal-box">
+  <button class="modal-x" onclick="cMM()">✕</button>
+  <div class="modal-t" id="mModT">Member Details</div>
+  <div class="modal-s">Full verified profile — Chief Admin eyes only</div>
+  <div id="mModContent"></div>
+ </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import{getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,updateDoc,deleteDoc,query,orderBy,limit,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const cfg={apiKey:"AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",authDomain:"iconik-global.firebaseapp.com",projectId:"iconik-global",storageBucket:"iconik-global.firebasestorage.app",messagingSenderId:"1040054516979",appId:"1:1040054516979:web:33cd5f07ae8fc146a30b86"};
+const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app);
+const CHIEF='iconikglobal01@gmail.com';
+let cU=null,allM=[],allC=[];
+
+onAuthStateChanged(auth,u=>{
+ if(u&&u.email===CHIEF){cU=u;showAdmin();}
+ else if(u&&u.email!==CHIEF){signOut(auth);showGate();toastF('Access denied. Chief Admin only.','error');}
+ else{cU=null;showGate();}
+});
+
+function showGate(){document.getElementById('gatePg').classList.add('on');document.getElementById('adminPg').classList.remove('on');}
+function showAdmin(){
+ document.getElementById('gatePg').classList.remove('on');document.getElementById('adminPg').classList.add('on');
+ const nm=cU.displayName||'Chief Admin',l=nm.charAt(0).toUpperCase();
+ document.getElementById('tbarUser').textContent=nm;document.getElementById('tbarAv').textContent=l;
+ document.getElementById('sbAv').textContent=l;document.getElementById('sbNm').textContent=nm;
+ lOverview();
+}
+
+window.doAdminLogin=async function(){
+ const e=document.getElementById('ge').value.trim(),p=document.getElementById('gp').value,m=document.getElementById('gm');
+ if(!e||!p){m.textContent='Please fill all fields';m.style.display='block';return;}
+ if(e!==CHIEF){m.textContent='Access restricted to Chief Admin only.';m.style.display='block';return;}
+ try{m.style.display='none';await signInWithEmailAndPassword(auth,e,p);}
+ catch(er){m.textContent=aE(er.code);m.style.display='block';}
+};
+
+window.doLogout=async function(){await signOut(auth);toastF('Signed out 👋');cSB();};
+
+// OVERVIEW
+async function lOverview(){
+ try{
+  const[ms,cs,ps,sas]=await Promise.all([getDocs(collection(db,'users')),getDocs(collection(db,'celebrities')),getDocs(collection(db,'posts')),getDocs(collection(db,'subadmins'))]);
+  document.getElementById('ovMembers').textContent=ms.size;
+  document.getElementById('ovCelebs').textContent=cs.size;
+  document.getElementById('ovPosts').textContent=ps.size;
+  document.getElementById('sbMCnt').textContent=ms.size;
+  let pending=0;ms.forEach(d=>{if((d.data().verificationStatus||'pending')==='pending')pending++;});
+  document.getElementById('ovPending').textContent=pending;
+ }catch{}
+}
+
+// MEMBERS
+async function lMembers(){
+ const el=document.getElementById('mTbody');
+ try{
+  const s=await getDocs(collection(db,'users'));
+  allM=[];s.forEach(d=>allM.push({id:d.id,...d.data()}));
+  rMT(allM);
+ }catch{el.innerHTML=`<tr><td colspan="9" style="text-align:center;padding:18px;color:var(--cd);">Error loading members</td></tr>`;}
+}
+
+function rMT(ms){
+ const el=document.getElementById('mTbody');
+ if(!ms.length){el.innerHTML=`<tr><td colspan="9" style="text-align:center;padding:18px;color:var(--cd);">No members yet</td></tr>`;return;}
+ el.innerHTML=ms.map(m=>{
+  const vs=m.verificationStatus||'pending',vc=vs==='verified'?'tok':vs==='rejected'?'terr':'twarn';
+  const idLabels={national:'National ID',drivers:"Driver's License",passport:'Int\'l Passport'};
+  return`<tr>
+   <td><strong style="color:var(--ch);cursor:pointer;" onclick="openMM('${m.id}')">${m.name||'—'}</strong></td>
+   <td style="font-size:0.63rem;max-width:120px;overflow:hidden;text-overflow:ellipsis;">${m.email||'—'}</td>
+   <td>${m.phone||'—'}</td>
+   <td>${m.country||'—'}</td>
+   <td>${m.city||'—'}</td>
+   <td>
+    <select onchange="setTier('${m.id}',this.value)" style="background:var(--obs3);border:1px solid var(--gbr);color:var(--ch);padding:3px 4px;font-size:0.6rem;font-family:'Inter',sans-serif;">
+     <option ${m.tier==='Fan'?'selected':''}>Fan</option>
+     <option ${m.tier==='Bronze'?'selected':''}>Bronze</option>
+     <option ${m.tier==='Silver'?'selected':''}>Silver</option>
+     <option ${m.tier==='Gold'?'selected':''}>Gold</option>
+    </select>
+   </td>
+   <td>${idLabels[m.idType]||m.idType||'—'}</td>
+   <td><span class="tag ${vc}">${vs}</span></td>
+   <td style="display:flex;gap:3px;flex-wrap:wrap;padding:6px 8px;">
+    <button class="btn-ok" onclick="setV('${m.id}','verified')">✓</button>
+    <button class="btn-d" onclick="setV('${m.id}','rejected')">✗</button>
+    <button style="background:rgba(59,130,246,0.09);border:1px solid rgba(59,130,246,0.25);color:var(--ab);font-family:'Montserrat',sans-serif;font-size:0.55rem;font-weight:700;padding:5px 9px;cursor:pointer;" onclick="openMM('${m.id}')">👁</button>
+   </td>
+  </tr>`;
+ }).join('');
+}
+
+window.fM=function(){
+ const q=document.getElementById('mSrch').value.toLowerCase();
+ const f=document.getElementById('mFilter').value;
+ let filtered=allM.filter(m=>!q||(m.name?.toLowerCase().includes(q)||m.email?.toLowerCase().includes(q)||m.country?.toLowerCase().includes(q)));
+ if(f)filtered=filtered.filter(m=>(m.verificationStatus||'pending')===f);
+ rMT(filtered);
+};
+
+window.openMM=function(id){
+ const m=allM.find(x=>x.id===id);if(!m)return;
+ const iLb={national:'National ID Card',drivers:"Driver's License",passport:'International Passport'};
+ const vs=m.verificationStatus||'pending',vc=vs==='verified'?'tok':vs==='rejected'?'terr':'twarn';
+ document.getElementById('mModT').textContent=m.name||'Member';
+ document.getElementById('mModContent').innerHTML=`
+  <div class="dr"><span class="dl">Full Name</span><span class="dv">${m.name||'—'}</span></div>
+  <div class="dr"><span class="dl">Email</span><span class="dv">${m.email||'—'}</span></div>
+  <div class="dr"><span class="dl">Phone</span><span class="dv">${m.phone||'—'}</span></div>
+  <div class="dr"><span class="dl">Country</span><span class="dv">${m.country||'—'}</span></div>
+  <div class="dr"><span class="dl">City</span><span class="dv">${m.city||'—'}</span></div>
+  <div class="dr"><span class="dl">Address</span><span class="dv">${m.address||'—'}</span></div>
+  <div class="dr"><span class="dl">Communities</span><span class="dv">${(m.categories||[]).join(', ')||'—'}</span></div>
+  <div class="dr"><span class="dl">Membership</span><span class="dv"><span class="tag tg">${m.tier||'Fan'}</span></span></div>
+  <div class="dr"><span class="dl">Bio</span><span class="dv">${m.bio||'—'}</span></div>
+  <div class="dr"><span class="dl">Joined</span><span class="dv">${m.joinedAt?.toDate?m.joinedAt.toDate().toLocaleDateString():'—'}</span></div>
+  <div class="dr"><span class="dl">Verification</span><span class="dv"><span class="tag ${vc}">${vs}</span></span></div>
+  <div class="dr"><span class="dl">Member UID</span><span class="dv" style="font-family:'Bebas Neue',sans-serif;font-size:0.68rem;letter-spacing:0.05em;color:var(--ab);">${m.id}</span></div>
+  <div class="id-reveal">
+   <div class="id-reveal-t">🪪 Identity Document — Chief Admin Eyes Only</div>
+   <div class="dr" style="border:none;padding:5px 0;"><span class="dl">ID Type</span><span class="dv">${iLb[m.idType]||m.idType||'—'}</span></div>
+   <div class="dr" style="border:none;padding:5px 0;"><span class="dl">ID Number</span><span class="dv" style="font-family:'Bebas Neue',sans-serif;letter-spacing:0.1em;color:var(--gold);font-size:0.9rem;">${m.idNumber||'—'}</span></div>
+  </div>
+  <div style="display:flex;gap:7px;margin-top:14px;flex-wrap:wrap;">
+   <button class="btn btn-g btn-sm" onclick="setV('${m.id}','verified');cMM()">✅ Verify Member</button>
+   <button style="background:rgba(245,158,11,0.09);border:1px solid rgba(245,158,11,0.25);color:var(--warn);font-family:'Montserrat',sans-serif;font-size:0.57rem;font-weight:800;padding:6px 12px;cursor:pointer;" onclick="setV('${m.id}','pending');cMM()">⏳ Set Pending</button>
+   <button class="btn-d" onclick="setV('${m.id}','rejected');cMM()">❌ Reject</button>
+  </div>`;
+ document.getElementById('mMod').classList.add('on');
+};
+window.cMM=function(){document.getElementById('mMod').classList.remove('on');};
+
+window.setTier=async function(uid,tier){
+ try{await updateDoc(doc(db,'users',uid),{tier});toastF(`Tier updated → ${tier} 👑`,'success');}
+ catch{toastF('Error updating tier','error');}
+};
+window.setV=async function(uid,st){
+ try{await updateDoc(doc(db,'users',uid),{verificationStatus:st});toastF(`Member ${st} ✅`,'success');lMembers();}
+ catch{toastF('Error','error');}
+};
+
+// CELEBRITIES
+async function lCelebs(){
+ try{const s=await getDocs(collection(db,'celebrities'));allC=[];s.forEach(d=>allC.push({id:d.id,...d.data()}));rCT(allC);}
+ catch{}
+}
+function rCT(cs){
+ const el=document.getElementById('cTbody');
+ el.innerHTML=cs.length?cs.map(c=>`<tr><td><strong style="color:var(--ch);">${c.name}</strong></td><td><span class="tag tg">${c.category}</span></td><td>${c.country||'—'}</td><td>${c.followers||'—'}</td><td><span class="tag ${c.status==='active'?'tok':c.status==='rising'?'tbl':'tg'}">${c.status||'active'}</span></td><td><button class="btn-d" onclick="delCeleb('${c.id}')">Remove</button></td></tr>`).join(''):`<tr><td colspan="6" style="text-align:center;padding:18px;color:var(--cd);">No celebrities yet</td></tr>`;
+}
+window.fCelebs=function(){const q=document.getElementById('cSrch').value.toLowerCase();rCT(allC.filter(c=>c.name?.toLowerCase().includes(q)||c.category?.toLowerCase().includes(q)));};
+window.addCeleb=async function(){
+ const nm=document.getElementById('cNm').value.trim(),cat=document.getElementById('cCat').value;
+ if(!nm||!cat){toastF('Name and category required','error');return;}
+ try{
+  await addDoc(collection(db,'celebrities'),{name:nm,category:cat,country:document.getElementById('cCo').value.trim(),followers:document.getElementById('cFol').value.trim(),photo:document.getElementById('cPh').value.trim(),bio:document.getElementById('cBio').value.trim(),status:document.getElementById('cSt').value,addedAt:serverTimestamp(),addedBy:cU.email});
+  toastF(`${nm} added to ICONIK! ⭐`,'success');
+  ['cNm','cCo','cFol','cPh','cBio'].forEach(id=>document.getElementById(id).value='');
+  lCelebs();lOverview();
+ }catch{toastF('Error adding celebrity','error');}
+};
+window.delCeleb=async function(id){
+ if(!confirm('Remove this celebrity from ICONIK?'))return;
+ try{await deleteDoc(doc(db,'celebrities',id));toastF('Celebrity removed','success');lCelebs();}
+ catch{toastF('Error','error');}
+};
+
+// POSTS
+window.createPost=async function(){
+ const con=document.getElementById('poCon').value.trim();
+ if(!con){toastF('Content required','error');return;}
+ try{
+  await addDoc(collection(db,'posts'),{title:document.getElementById('poTit').value.trim(),content:con,category:document.getElementById('poCat').value,type:document.getElementById('poTyp').value,authorName:'ICONIK Admin',authorRole:'Chief Admin',authorId:cU.uid,createdAt:serverTimestamp()});
+  toastF('Post published! 📝','success');
+  document.getElementById('poTit').value='';document.getElementById('poCon').value='';
+  lPosts();
+ }catch{toastF('Error publishing','error');}
+};
+async function lPosts(){
+ const el=document.getElementById('admPosts');
+ try{
+  const q=query(collection(db,'posts'),orderBy('createdAt','desc'),limit(15));
+  const s=await getDocs(q);
+  if(s.empty){el.innerHTML=`<p style="text-align:center;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.76rem;padding:18px;">No posts yet</p>`;return;}
+  el.innerHTML='';
+  s.forEach(d=>{
+   const p=d.data(),t=p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString():'—';
+   el.innerHTML+=`<div class="pcard"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;">${p.category?`<span class="ptag">${p.category}</span>`:'<span></span>'}<button onclick="delPost('${d.id}')" style="background:none;border:none;color:var(--err);cursor:pointer;font-family:'Montserrat',sans-serif;font-size:0.6rem;font-weight:700;">✕ Delete</button></div>${p.title?`<div class="ptitle">${p.title}</div>`:''}<div class="pbody">${p.content}</div><div style="font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);margin-top:6px;">Posted ${t}</div></div>`;
+  });
+ }catch{}
+}
+window.delPost=async function(id){
+ if(!confirm('Delete this post?'))return;
+ try{await deleteDoc(doc(db,'posts',id));toastF('Deleted','success');lPosts();}
+ catch{toastF('Error','error');}
+};
+
+// MESSAGES
+document.getElementById('msgTo').addEventListener('change',function(){
+ document.getElementById('specificUIDGroup').style.display=this.value==='specific'?'block':'none';
+});
+
+window.sendMsg=async function(){
+ const subj=document.getElementById('msgSubj').value.trim(),body=document.getElementById('msgBody').value.trim();
+ const toVal=document.getElementById('msgTo').value,fromNm=document.getElementById('msgFrom').value.trim()||'ICONIK Admin';
+ if(!subj||!body){toastF('Subject and message required','error');return;}
+ try{
+  let toField='all';
+  if(toVal==='specific'){toField=document.getElementById('msgUID').value.trim();if(!toField){toastF('Please enter member UID','error');return;}}
+  else if(toVal==='verified')toField='verified';
+  else if(toVal==='pending')toField='pending';
+  await addDoc(collection(db,'messages'),{to:toField,subject:subj,content:body,fromName:fromNm,fromRole:'Chief Admin',fromId:cU.uid,createdAt:serverTimestamp()});
+  toastF('Message sent! 📩','success');
+  document.getElementById('msgSubj').value='';document.getElementById('msgBody').value='';
+  lSentMsgs();
+ }catch{toastF('Error sending message','error');}
+};
+
+async function lSentMsgs(){
+ const el=document.getElementById('sentMsgs');
+ try{
+  const q=query(collection(db,'messages'),orderBy('createdAt','desc'),limit(15));
+  const s=await getDocs(q);
+  if(s.empty){el.innerHTML=`<p style="text-align:center;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.76rem;padding:18px;">No messages sent yet</p>`;return;}
+  el.innerHTML='';
+  s.forEach(d=>{
+   const m=d.data(),t=m.createdAt?.toDate?m.createdAt.toDate().toLocaleDateString():'—';
+   const toLabel={'all':'📢 All Members','verified':'✅ Verified Only','pending':'⏳ Pending Only'};
+   el.innerHTML+=`<div class="pcard"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.08em;color:var(--ab);">${toLabel[m.to]||'👤 Specific: '+m.to}</span><div style="display:flex;align-items:center;gap:8px;"><span style="font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--cd);">${t}</span><button onclick="delMsg('${d.id}')" style="background:none;border:none;color:var(--err);cursor:pointer;font-size:0.7rem;">✕</button></div></div><div class="ptitle">${m.subject||''}</div><div class="pbody">${m.content}</div></div>`;
+  });
+ }catch{}
+}
+window.delMsg=async function(id){
+ try{await deleteDoc(doc(db,'messages',id));toastF('Message deleted','success');lSentMsgs();}
+ catch{toastF('Error','error');}
+};
+
+// SUB ADMINS
+window.assignSA=async function(){
+ const em=document.getElementById('saEm').value.trim(),reg=document.getElementById('saReg').value.trim();
+ if(!em||!reg){toastF('Email and region required','error');return;}
+ try{
+  await addDoc(collection(db,'subadmins'),{name:document.getElementById('saNm').value.trim(),email:em,category:document.getElementById('saCat').value,region:reg,status:'active',assignedAt:serverTimestamp(),assignedBy:cU.email});
+  toastF(`${em} assigned as Sub Admin! 🛡️`,'success');
+  ['saEm','saReg','saNm'].forEach(id=>document.getElementById(id).value='');
+  lSAs();
+ }catch{toastF('Error assigning Sub Admin','error');}
+};
+async function lSAs(){
+ const el=document.getElementById('saTbody');
+ try{
+  const s=await getDocs(collection(db,'subadmins'));
+  if(s.empty){el.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:18px;color:var(--cd);">No Sub Admins yet</td></tr>`;return;}
+  el.innerHTML='';
+  s.forEach(d=>{
+   const x=d.data(),t=x.assignedAt?.toDate?x.assignedAt.toDate().toLocaleDateString():'—';
+   el.innerHTML+=`<tr><td>${x.name||'—'}</td><td style="font-size:0.63rem;">${x.email}</td><td><span class="tag tg">${x.category}</span></td><td>${x.region}</td><td><span class="tag tok">${x.status}</span></td><td style="font-size:0.62rem;">${t}</td><td><button class="btn-d" onclick="removeSA('${d.id}','${x.email}')">Remove</button></td></tr>`;
+  });
+ }catch{}
+}
+window.removeSA=async function(id,email){
+ if(!confirm(`Remove ${email} as Sub Admin?`))return;
+ try{await deleteDoc(doc(db,'subadmins',id));toastF('Sub Admin removed','success');lSAs();}
+ catch{toastF('Error','error');}
+};
+
+// IMAGES
+const imgCats=['Music','Film & TV','Sports','Literature','Fitness & Wellness','Nature & Exploration','Fashion','Food & Culinary','Automotive & Lifestyle','Tech & Innovation','Beauty & Aesthetics','Entertainment & Talent','Thought Leadership'];
+function lImgForm(){
+ document.getElementById('imgFormList').innerHTML=imgCats.map(c=>`<div class="fg"><label class="fl">${c}</label><input class="fi" type="text" id="img_${c.replace(/[^a-z]/gi,'_')}" placeholder="New image URL for ${c}"/></div>`).join('');
+}
+window.saveImgs=async function(){
+ let updated=0;
+ try{
+  for(const c of imgCats){
+   const el=document.getElementById(`img_${c.replace(/[^a-z]/gi,'_')}`);
+   if(el?.value.trim()){await setDoc(doc(db,'categoryImages',c),{imageUrl:el.value.trim(),updatedAt:serverTimestamp(),updatedBy:cU.email});updated++;}
+  }
+  toastF(`${updated} image(s) updated! 🖼️`,'success');
+ }catch{toastF('Error saving images','error');}
+};
+
+// VIEW NAVIGATION
+window.sV=function(nm){
+ document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+ document.querySelectorAll('.sb-lnk').forEach(l=>l.classList.remove('on'));
+ document.getElementById(nm+'V').classList.add('on');cSB();
+ if(nm==='members')lMembers();
+ if(nm==='celebs')lCelebs();
+ if(nm==='posts')lPosts();
+ if(nm==='messages')lSentMsgs();
+ if(nm==='subadmins')lSAs();
+ if(nm==='images')lImgForm();
+ if(nm==='overview')lOverview();
+};
+
+window.togSB=function(){document.getElementById('sb').classList.toggle('on');document.getElementById('sbOv').classList.toggle('on');};
+window.cSB=function(){document.getElementById('sb').classList.remove('on');document.getElementById('sbOv').classList.remove('on');};
+function toastF(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='toast on '+type;setTimeout(()=>t.className='toast',3500);}
+function aE(c){const e={'auth/user-not-found':'No account found','auth/wrong-password':'Incorrect password','auth/invalid-email':'Invalid email','auth/too-many-requests':'Too many attempts. Try later','auth/invalid-credential':'Invalid email or password'};return e[c]||'Something went wrong.';}
+</script>
+</body>
+</html>
