@@ -4,179 +4,273 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>ICONIK — My Dashboard</title>
+<meta name="description" content="ICONIK Global Fans Community — Your Favorite Celebrity's Platform"/>
+<meta name="theme-color" content="#FFB800"/>
+<link rel="manifest" href="/manifest.json"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="ICONIK"/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@400;600;800;900&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-:root{--obs:#07070D;--obs2:#0F0F1A;--obs3:#141420;--gold:#FFB800;--gg:#FF9500;--gl:#FFD060;--ch:#F5F0E8;--cd:#BDB5A6;--gb:rgba(255,184,0,0.04);--gbr:rgba(255,184,0,0.15);--gbri:rgba(255,184,0,0.4);--ok:#22C55E;--err:#EF4444;--ab:#3B82F6;--warn:#F59E0B;}
+:root{--obs:#07070D;--obs2:#0F0F1A;--obs3:#141420;--gold:#FFB800;--gg:#FF9500;--gl:#FFD060;--ch:#F5F0E8;--cd:#BDB5A6;--gb:rgba(255,184,0,0.04);--gbr:rgba(255,184,0,0.15);--gbri:rgba(255,184,0,0.4);--ok:#22C55E;--err:#EF4444;--ab:#3B82F6;--warn:#F59E0B;--purple:#8B5CF6;}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overflow-x:hidden;min-height:100vh;}
+/* PWA INSTALL BANNER */
+.pwa-banner{display:none;position:fixed;bottom:0;left:0;right:0;z-index:5000;background:linear-gradient(135deg,var(--obs3),var(--obs2));border-top:1px solid var(--gbri);padding:14px 16px;align-items:center;gap:12px;}
+.pwa-banner.show{display:flex;}
+.pwa-icon{font-size:1.8rem;}
+.pwa-text{flex:1;}
+.pwa-title{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.78rem;color:var(--ch);letter-spacing:0.05em;}
+.pwa-sub{font-family:'Inter',sans-serif;font-size:0.66rem;color:var(--cd);margin-top:2px;}
+.pwa-btns{display:flex;gap:7px;}
+.pwa-install{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.1em;padding:7px 13px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;}
+.pwa-dismiss{font-family:'Inter',sans-serif;font-size:0.62rem;padding:7px 10px;background:transparent;color:var(--cd);border:1px solid var(--gbr);cursor:pointer;}
 /* AUTH */
 .auth-pg{display:none;min-height:100vh;background:linear-gradient(135deg,var(--obs),#0A0A14,var(--obs));align-items:center;justify-content:center;padding:16px;}
 .auth-pg.on{display:flex;}
 .dash-pg{display:none;}
 .dash-pg.on{display:block;}
-.abox{width:100%;max-width:480px;background:var(--obs3);border:1px solid var(--gbr);padding:36px 28px;box-shadow:0 40px 120px rgba(0,0,0,0.6);animation:fu 0.4s ease;}
-@keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.abox{width:100%;max-width:480px;background:var(--obs3);border:1px solid var(--gbr);padding:32px 24px;box-shadow:0 40px 120px rgba(0,0,0,0.6);animation:fu 0.4s ease;}
+@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 .alogo{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.15em;color:var(--gold);text-align:center;text-shadow:0 0 30px rgba(255,184,0,0.4);margin-bottom:5px;display:block;text-decoration:none;}
 .alogo span{color:var(--ch);}
-.asub{font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--cd);text-align:center;margin-bottom:22px;}
-.atabs{display:flex;border-bottom:1px solid var(--gbr);margin-bottom:20px;}
-.atab{flex:1;padding:10px;text-align:center;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:0.64rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--cd);border-bottom:2px solid transparent;transition:all 0.3s;margin-bottom:-1px;}
+.asub{font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--cd);text-align:center;margin-bottom:20px;}
+.atabs{display:flex;border-bottom:1px solid var(--gbr);margin-bottom:18px;}
+.atab{flex:1;padding:10px;text-align:center;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:0.63rem;font-weight:700;letter-spacing:0.11em;text-transform:uppercase;color:var(--cd);border-bottom:2px solid transparent;transition:all 0.3s;margin-bottom:-1px;}
 .atab.on{color:var(--gold);border-bottom-color:var(--gold);}
-/* VERIFICATION NOTICE */
-.vnotice{background:linear-gradient(135deg,rgba(245,158,11,0.08),rgba(255,184,0,0.04));border:1px solid rgba(245,158,11,0.25);border-left:4px solid var(--warn);padding:14px;margin-bottom:18px;}
-.vnotice-t{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--warn);margin-bottom:7px;}
-.vnotice p{font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);line-height:1.65;}
+.vnotice{background:linear-gradient(135deg,rgba(245,158,11,0.08),rgba(255,184,0,0.04));border:1px solid rgba(245,158,11,0.25);border-left:4px solid var(--warn);padding:13px;margin-bottom:16px;}
+.vnotice-t{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.61rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--warn);margin-bottom:6px;}
+.vnotice p{font-family:'Inter',sans-serif;font-size:0.69rem;color:var(--cd);line-height:1.6;}
 .vnotice strong{color:var(--ch);}
-/* FORM */
-.fg{margin-bottom:13px;}
-.fl{font-family:'Montserrat',sans-serif;font-size:0.58rem;font-weight:700;letter-spacing:0.17em;text-transform:uppercase;color:var(--cd);margin-bottom:6px;display:block;}
+.fg{margin-bottom:12px;}
+.fl{font-family:'Montserrat',sans-serif;font-size:0.57rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--cd);margin-bottom:5px;display:block;}
 .req{color:var(--err);}
-.fi,.fs{width:100%;padding:11px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--gbr);color:var(--ch);font-family:'Inter',sans-serif;font-size:0.82rem;outline:none;transition:all 0.3s;}
+.fi,.fs{width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--gbr);color:var(--ch);font-family:'Inter',sans-serif;font-size:0.81rem;outline:none;transition:all 0.3s;}
 .fi:focus,.fs:focus{border-color:var(--gold);}
 .fi::placeholder{color:rgba(189,181,166,0.3);}
 .fs option{background:var(--obs3);}
-.fr{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
-.fhint{font-family:'Inter',sans-serif;font-size:0.62rem;color:rgba(189,181,166,0.4);margin-top:4px;}
-/* ID SECTION */
-.idbox{background:rgba(255,184,0,0.04);border:1px solid var(--gbr);border-left:3px solid var(--gold);padding:13px;margin-bottom:13px;}
-.idbox-t{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
-.idopts{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:9px;}
-.idopt{padding:7px 11px;border:1px solid var(--gbr);cursor:pointer;font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);transition:all 0.3s;border-radius:2px;}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.fhint{font-family:'Inter',sans-serif;font-size:0.6rem;color:rgba(189,181,166,0.4);margin-top:3px;}
+.idbox{background:rgba(255,184,0,0.04);border:1px solid var(--gbr);border-left:3px solid var(--gold);padding:12px;margin-bottom:12px;}
+.idbox-t{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.59rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.idopts{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
+.idopt{padding:7px 10px;border:1px solid var(--gbr);cursor:pointer;font-family:'Inter',sans-serif;font-size:0.67rem;color:var(--cd);transition:all 0.3s;}
 .idopt.on{border-color:var(--gold);background:rgba(255,184,0,0.08);color:var(--gold);}
-/* CATS */
-.catg{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:13px;}
-.cc{padding:8px 3px;text-align:center;border:1px solid var(--gbr);cursor:pointer;transition:all 0.3s;}
+.catg{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:12px;}
+.cc{padding:7px 3px;text-align:center;border:1px solid var(--gbr);cursor:pointer;transition:all 0.3s;}
 .cc:hover,.cc.on{border-color:var(--gold);background:rgba(255,184,0,0.08);}
-.cc-i{font-size:1rem;display:block;margin-bottom:2px;}
-.cc-n{font-family:'Inter',sans-serif;font-size:0.5rem;color:var(--cd);}
+.cc-i{font-size:0.95rem;display:block;margin-bottom:2px;}
+.cc-n{font-family:'Inter',sans-serif;font-size:0.49rem;color:var(--cd);}
 .cc.on .cc-n{color:var(--gold);}
-/* BUTTONS */
-.btn{width:100%;padding:12px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.68rem;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;border:none;transition:all 0.3s;}
-.btn-g{background:linear-gradient(135deg,var(--gold),var(--gg));color:var(--obs);clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);box-shadow:0 0 30px rgba(255,184,0,0.2);}
-.btn-g:hover{box-shadow:0 0 50px rgba(255,184,0,0.4);transform:translateY(-1px);}
-.btn-sm{width:auto;padding:6px 12px;font-size:0.58rem;}
+.btn{width:100%;padding:11px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.67rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;border:none;transition:all 0.3s;}
+.btn-g{background:linear-gradient(135deg,var(--gold),var(--gg));color:var(--obs);clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);box-shadow:0 0 25px rgba(255,184,0,0.2);}
+.btn-g:hover{box-shadow:0 0 45px rgba(255,184,0,0.4);}
+.btn-sm{width:auto;padding:6px 11px;font-size:0.57rem;}
 .btn-o{background:transparent;border:1px solid var(--gbri);color:var(--ch);}
-/* MSG */
-.amsg{font-family:'Inter',sans-serif;font-size:0.72rem;text-align:center;margin-top:11px;padding:9px;display:none;}
+.amsg{font-family:'Inter',sans-serif;font-size:0.71rem;text-align:center;margin-top:10px;padding:8px;display:none;}
 .amsg.err{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:var(--err);}
 .amsg.ok{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:var(--ok);}
 /* TOPNAV */
-.tnav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:11px 16px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,7,13,0.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--gbr);}
-.nlogo{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.13em;color:var(--gold);text-decoration:none;text-shadow:0 0 20px rgba(255,184,0,0.4);}
+.tnav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:10px 15px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,7,13,0.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--gbr);}
+.nlogo{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:0.13em;color:var(--gold);text-decoration:none;text-shadow:0 0 20px rgba(255,184,0,0.4);}
 .nlogo span{color:var(--ch);}
-.nr{display:flex;align-items:center;gap:8px;}
-.nuname{font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);}
-.nav-av{width:30px;height:30px;background:linear-gradient(135deg,var(--gold),var(--gg));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.8rem;color:var(--obs);cursor:pointer;}
-.hbg{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:4px;}
-.hbg span{display:block;width:17px;height:2px;background:var(--gold);}
+.nr{display:flex;align-items:center;gap:7px;}
+.nun{font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);}
+.nav-av{width:29px;height:29px;background:linear-gradient(135deg,var(--gold),var(--gg));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.78rem;color:var(--obs);cursor:pointer;}
+.hbg{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:3px;}
+.hbg span{display:block;width:16px;height:2px;background:var(--gold);}
 /* SIDEBAR */
-.sb{position:fixed;top:0;left:-285px;width:285px;height:100vh;background:var(--obs3);border-right:1px solid var(--gbr);z-index:2000;transition:left 0.3s;overflow-y:auto;}
+.sb{position:fixed;top:0;left:-282px;width:282px;height:100vh;background:var(--obs3);border-right:1px solid var(--gbr);z-index:2000;transition:left 0.3s;overflow-y:auto;}
 .sb.on{left:0;}
 .sb-ov{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1999;display:none;}
 .sb-ov.on{display:block;}
-.sb-h{padding:16px;border-bottom:1px solid var(--gbr);display:flex;align-items:center;justify-content:space-between;}
-.sb-logo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.11em;color:var(--gold);}
-.sb-x{background:none;border:none;color:var(--cd);font-size:1rem;cursor:pointer;}
-.sb-u{padding:13px 16px;border-bottom:1px solid var(--gbr);}
-.sb-av{width:42px;height:42px;background:linear-gradient(135deg,var(--gold),var(--gg));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--obs);margin-bottom:6px;}
-.sb-nm{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.78rem;color:var(--ch);margin-bottom:3px;}
-.sb-tier{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.09em;color:var(--obs);background:var(--gold);padding:2px 7px;}
-.sb-vstatus{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.08em;color:var(--obs);background:var(--ok);padding:2px 6px;margin-left:3px;}
-.sb-nav{padding:9px 0;}
-.sb-sec{font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.25em;color:rgba(189,181,166,0.3);padding:5px 16px 2px;}
-.sb-lnk{display:flex;align-items:center;gap:8px;padding:10px 16px;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.76rem;color:var(--cd);transition:all 0.2s;border-left:3px solid transparent;}
+.sb-h{padding:14px;border-bottom:1px solid var(--gbr);display:flex;align-items:center;justify-content:space-between;}
+.sb-logo{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:0.1em;color:var(--gold);}
+.sb-x{background:none;border:none;color:var(--cd);font-size:0.95rem;cursor:pointer;}
+.sb-u{padding:12px 15px;border-bottom:1px solid var(--gbr);}
+.sb-av{width:40px;height:40px;background:linear-gradient(135deg,var(--gold),var(--gg));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.95rem;color:var(--obs);margin-bottom:5px;}
+.sb-nm{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);margin-bottom:3px;}
+.sb-tier{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.08em;color:var(--obs);background:var(--gold);padding:2px 6px;}
+.sb-vs{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.07em;color:var(--obs);background:var(--ok);padding:2px 6px;margin-left:3px;}
+.sb-nav{padding:8px 0;}
+.sb-sec{font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.23em;color:rgba(189,181,166,0.28);padding:4px 15px 2px;}
+.sb-lnk{display:flex;align-items:center;gap:7px;padding:9px 15px;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--cd);transition:all 0.2s;border-left:3px solid transparent;}
 .sb-lnk:hover,.sb-lnk.on{color:var(--gold);background:var(--gb);border-left-color:var(--gold);}
-.sb-ic{font-size:0.88rem;width:16px;text-align:center;}
-.sb-bdg{margin-left:auto;font-family:'Bebas Neue',sans-serif;font-size:0.52rem;background:var(--gold);color:var(--obs);padding:1px 5px;}
+.sb-ic{font-size:0.85rem;width:15px;text-align:center;}
+.sb-bdg{margin-left:auto;font-family:'Bebas Neue',sans-serif;font-size:0.5rem;background:var(--gold);color:var(--obs);padding:1px 5px;}
+.sb-new{margin-left:auto;font-family:'Bebas Neue',sans-serif;font-size:0.5rem;background:var(--err);color:#fff;padding:1px 5px;border-radius:2px;}
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:0;right:0;z-index:999;background:rgba(7,7,13,0.96);backdrop-filter:blur(20px);border-top:1px solid var(--gbr);display:flex;padding:6px 0;}
+.bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:6px 0;cursor:pointer;transition:all 0.2s;}
+.bnav-item.on .bnav-ic,.bnav-item.on .bnav-lbl{color:var(--gold);}
+.bnav-ic{font-size:1.1rem;margin-bottom:2px;}
+.bnav-lbl{font-family:'Montserrat',sans-serif;font-size:0.48rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--cd);}
 /* MAIN */
-.main{padding:64px 14px 32px;}
+.main{padding:62px 13px 80px;}
 .view{display:none;}
 .view.on{display:block;}
-/* WELCOME BAR */
-.wbar{background:linear-gradient(135deg,rgba(255,184,0,0.08),rgba(255,149,0,0.04));border:1px solid var(--gbr);padding:16px;margin-bottom:16px;display:flex;align-items:center;gap:11px;}
-.wi{font-size:1.6rem;}
-.wh{font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--ch);}
-.ws{font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);margin-top:2px;}
-/* VERIFICATION STATUS BANNER */
-.vbanner{padding:10px 14px;margin-bottom:16px;font-family:'Inter',sans-serif;font-size:0.74rem;display:flex;align-items:center;gap:8px;}
-.vbanner.pending{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);color:var(--warn);}
-.vbanner.verified{background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);color:var(--ok);}
-.vbanner.rejected{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);color:var(--err);}
+/* WELCOME */
+.wbar{background:linear-gradient(135deg,rgba(255,184,0,0.08),rgba(255,149,0,0.04));border:1px solid var(--gbr);padding:14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.wi{font-size:1.5rem;}
+.wh{font-family:'Playfair Display',serif;font-weight:700;font-size:1.05rem;color:var(--ch);}
+.ws{font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);margin-top:2px;}
+/* VERIFICATION BANNER */
+.vbanner{padding:9px 13px;margin-bottom:13px;font-family:'Inter',sans-serif;font-size:0.72rem;display:flex;align-items:center;gap:7px;display:none;}
+.vbanner.pending{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);color:var(--warn);display:flex;}
+.vbanner.verified{background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);color:var(--ok);display:flex;}
+.vbanner.rejected{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);color:var(--err);display:flex;}
 /* STATS */
-.srow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
-.sbox{background:var(--gb);border:1px solid var(--gbr);padding:11px;text-align:center;}
-.snum{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--gold);}
-.slbl{font-family:'Inter',sans-serif;font-size:0.52rem;color:var(--cd);letter-spacing:0.09em;text-transform:uppercase;margin-top:2px;}
+.srow{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px;}
+.sbox{background:var(--gb);border:1px solid var(--gbr);padding:10px;text-align:center;}
+.snum{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--gold);}
+.slbl{font-family:'Inter',sans-serif;font-size:0.5rem;color:var(--cd);letter-spacing:0.08em;text-transform:uppercase;margin-top:1px;}
 /* SECTION HEAD */
-.sh{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);margin-bottom:11px;display:flex;align-items:center;gap:6px;}
+.sh{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:5px;}
 .sh::after{content:'';flex:1;height:1px;background:var(--gbr);}
 /* CELEB CARDS */
-.cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;}
+.cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-bottom:14px;}
 .ccard{background:var(--gb);border:1px solid var(--gbr);overflow:hidden;transition:all 0.3s;cursor:pointer;}
 .ccard:hover{border-color:var(--gbri);transform:translateY(-2px);}
-.cimg{width:100%;height:105px;background:var(--obs2);display:flex;align-items:center;justify-content:center;font-size:2.2rem;overflow:hidden;}
+.cimg{width:100%;height:100px;background:var(--obs2);display:flex;align-items:center;justify-content:center;font-size:2rem;overflow:hidden;}
 .cimg img{width:100%;height:100%;object-fit:cover;}
-.ci{padding:9px;}
-.cn{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.74rem;color:var(--ch);}
-.ccat{font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.1em;color:var(--gold);margin-top:2px;}
-.cmeta{font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--cd);margin-top:2px;}
+.ci{padding:8px;}
+.cn{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);}
+.ccat{font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.09em;color:var(--gold);margin-top:2px;}
+.cmeta{font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:2px;}
 /* POSTS */
-.pcard{background:var(--gb);border:1px solid var(--gbr);padding:15px;margin-bottom:8px;}
-.ph{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-.pav{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.78rem;color:var(--obs);flex-shrink:0;}
-.pau{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.74rem;color:var(--ch);}
-.pt{font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);}
-.ptag{font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.09em;color:var(--obs);background:var(--gold);padding:2px 6px;margin-left:auto;}
-.ptitle{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.8rem;color:var(--ch);margin-bottom:5px;}
-.pbody{font-family:'Inter',sans-serif;font-size:0.76rem;color:var(--cd);line-height:1.6;margin-bottom:8px;}
-.pacts{display:flex;gap:11px;}
-.pa{font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);cursor:pointer;background:none;border:none;padding:0;transition:color 0.2s;}
+.pcard{background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:7px;transition:border-color 0.2s;}
+.pcard:hover{border-color:var(--gbr);}
+.ph{display:flex;align-items:center;gap:7px;margin-bottom:8px;}
+.pav{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.75rem;color:var(--obs);flex-shrink:0;}
+.pau{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);}
+.pt{font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--cd);}
+.ptag{font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.08em;color:var(--obs);background:var(--gold);padding:2px 5px;margin-left:auto;flex-shrink:0;}
+.ptitle{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.78rem;color:var(--ch);margin-bottom:5px;}
+.pbody{font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--cd);line-height:1.6;margin-bottom:8px;}
+/* SOCIAL ACTIONS */
+.pacts{display:flex;gap:0;border-top:1px solid rgba(255,255,255,0.04);padding-top:8px;}
+.pa{flex:1;font-family:'Inter',sans-serif;font-size:0.66rem;color:var(--cd);cursor:pointer;background:none;border:none;padding:4px 0;transition:color 0.2s;display:flex;align-items:center;justify-content:center;gap:4px;}
 .pa:hover{color:var(--gold);}
+.pa.liked{color:var(--err);}
+/* COMMUNITY POST FORM */
+.post-form{background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:14px;}
+.post-form-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.post-form-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.76rem;color:var(--obs);flex-shrink:0;}
+.post-form-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--gbr);color:var(--ch);font-family:'Inter',sans-serif;font-size:0.78rem;padding:9px 12px;outline:none;transition:border-color 0.3s;}
+.post-form-input:focus{border-color:var(--gold);}
+.post-form-input::placeholder{color:rgba(189,181,166,0.3);}
+.post-form-actions{display:flex;gap:7px;align-items:center;margin-top:9px;}
+.post-type-select{background:rgba(255,255,255,0.04);border:1px solid var(--gbr);color:var(--cd);font-family:'Inter',sans-serif;font-size:0.68rem;padding:6px 8px;outline:none;flex:1;}
+.post-submit{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.6rem;letter-spacing:0.1em;padding:8px 14px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;text-transform:uppercase;}
 /* TAGS */
-.tag{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.08em;padding:2px 6px;}
+.tag{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.08em;padding:2px 6px;}
 .tg{background:rgba(255,184,0,0.12);color:var(--gold);}
 .tok{background:rgba(34,197,94,0.12);color:var(--ok);}
 .tbl{background:rgba(59,130,246,0.12);color:var(--ab);}
 .terr{background:rgba(239,68,68,0.12);color:var(--err);}
 .twarn{background:rgba(245,158,11,0.12);color:var(--warn);}
-/* MEMBERSHIP */
-.upgrid{display:grid;gap:9px;}
-.ucard{border:1px solid var(--gbr);background:var(--gb);padding:15px;display:flex;align-items:center;gap:11px;cursor:pointer;transition:all 0.3s;}
+.tpur{background:rgba(139,92,246,0.12);color:var(--purple);}
+/* NEWS CARDS */
+.news-grid{display:grid;gap:8px;margin-bottom:14px;}
+.news-card{background:var(--gb);border:1px solid var(--gbr);padding:13px;display:flex;gap:11px;transition:border-color 0.3s;cursor:pointer;}
+.news-card:hover{border-color:var(--gbri);}
+.news-thumb{width:64px;height:64px;border-radius:2px;object-fit:cover;flex-shrink:0;background:var(--obs2);display:flex;align-items:center;justify-content:center;font-size:1.5rem;}
+.news-thumb img{width:100%;height:100%;object-fit:cover;}
+.news-content{flex:1;min-width:0;}
+.news-cat{font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.1em;color:var(--gold);margin-bottom:3px;}
+.news-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.74rem;color:var(--ch);line-height:1.3;margin-bottom:4px;}
+.news-meta{font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);}
+/* WELLNESS HUB */
+.wellness-cats{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-bottom:14px;}
+.wcat{background:var(--gb);border:1px solid var(--gbr);padding:13px;cursor:pointer;transition:all 0.3s;text-align:center;}
+.wcat:hover{border-color:var(--gbri);transform:translateY(-2px);}
+.wcat-i{font-size:1.6rem;margin-bottom:6px;}
+.wcat-n{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.7rem;color:var(--ch);}
+.wcat-d{font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--cd);margin-top:3px;line-height:1.4;}
+/* AFFILIATE PRODUCTS */
+.prod-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-bottom:14px;}
+.prod-card{background:var(--gb);border:1px solid var(--gbr);overflow:hidden;transition:all 0.3s;}
+.prod-card:hover{border-color:var(--gbri);}
+.prod-img{width:100%;height:90px;background:var(--obs2);display:flex;align-items:center;justify-content:center;font-size:2rem;overflow:hidden;}
+.prod-img img{width:100%;height:100%;object-fit:cover;}
+.prod-info{padding:9px;}
+.prod-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.7rem;color:var(--ch);margin-bottom:3px;}
+.prod-price{font-family:'Bebas Neue',sans-serif;font-size:0.85rem;color:var(--gold);}
+.prod-commission{font-family:'Inter',sans-serif;font-size:0.55rem;color:var(--ok);margin-top:2px;}
+.prod-btn{width:100%;margin-top:7px;padding:7px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.58rem;letter-spacing:0.08em;text-transform:uppercase;background:var(--gold);color:var(--obs);border:none;cursor:pointer;}
+/* PAYMENT */
+.pay-card{background:var(--gb);border:1px solid var(--gbr);padding:16px;margin-bottom:10px;}
+.pay-title{font-family:'Playfair Display',serif;font-weight:700;font-size:0.95rem;color:var(--ch);margin-bottom:4px;}
+.pay-desc{font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);margin-bottom:12px;line-height:1.5;}
+.pay-methods{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px;}
+.pay-method{display:flex;align-items:center;gap:5px;padding:8px 12px;border:1px solid var(--gbr);background:rgba(255,255,255,0.03);cursor:pointer;transition:all 0.3s;}
+.pay-method:hover,.pay-method.on{border-color:var(--gold);}
+.pay-method-icon{font-size:1.1rem;}
+.pay-method-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.64rem;color:var(--ch);}
+.pay-step{background:rgba(255,184,0,0.05);border:1px solid var(--gbr);border-left:3px solid var(--gold);padding:10px 12px;margin-bottom:8px;}
+.pay-step-num{font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.1em;color:var(--gold);margin-bottom:3px;}
+.pay-step-text{font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);line-height:1.5;}
+/* MEMBERSHIP CARDS */
+.upgrid{display:grid;gap:8px;}
+.ucard{border:1px solid var(--gbr);background:var(--gb);padding:14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all 0.3s;}
 .ucard:hover{border-color:var(--gbri);}
 .ucard.cur{border-color:var(--gold);background:rgba(255,184,0,0.06);}
-.uprice{font-family:'Playfair Display',serif;font-weight:900;font-size:1.4rem;color:var(--ch);min-width:44px;text-align:center;}
-.uprice small{font-size:0.68rem;color:var(--cd);}
-.uname{font-family:'Bebas Neue',sans-serif;font-size:0.74rem;letter-spacing:0.1em;color:var(--gold);}
-.ufeats{font-family:'Inter',sans-serif;font-size:0.64rem;color:var(--cd);margin-top:2px;}
-.uact{margin-left:auto;font-family:'Montserrat',sans-serif;font-size:0.57rem;font-weight:800;letter-spacing:0.08em;padding:6px 11px;cursor:pointer;border:none;background:var(--gold);color:var(--obs);white-space:nowrap;}
+.uprice{font-family:'Playfair Display',serif;font-weight:900;font-size:1.35rem;color:var(--ch);min-width:42px;text-align:center;}
+.uprice small{font-size:0.66rem;color:var(--cd);}
+.uname{font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.09em;color:var(--gold);}
+.ufeats{font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);margin-top:2px;}
+.uact{margin-left:auto;font-family:'Montserrat',sans-serif;font-size:0.55rem;font-weight:800;letter-spacing:0.08em;padding:6px 10px;cursor:pointer;border:none;background:var(--gold);color:var(--obs);white-space:nowrap;}
+/* MSG */
+.msg-card{background:var(--gb);border:1px solid var(--gbr);padding:13px;margin-bottom:7px;}
+.msg-from{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.7rem;color:var(--gold);margin-bottom:3px;display:flex;align-items:center;gap:5px;}
+.msg-badge{font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.08em;color:var(--obs);background:var(--gold);padding:1px 5px;}
+.msg-time{font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-left:auto;}
+.msg-subj{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.75rem;color:var(--ch);margin-bottom:4px;}
+.msg-body{font-family:'Inter',sans-serif;font-size:0.72rem;color:var(--cd);line-height:1.6;}
 /* TOUR BUDDY */
-.tbform{background:var(--gb);border:1px solid var(--gbr);padding:16px;margin-bottom:16px;}
-.tbform-t{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
-/* MESSAGES */
-.msg-card{background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:8px;}
-.msg-from{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--gold);margin-bottom:4px;display:flex;align-items:center;gap:6px;}
-.msg-from-badge{font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.08em;color:var(--obs);background:var(--gold);padding:1px 5px;}
-.msg-time{font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--cd);margin-left:auto;}
-.msg-body{font-family:'Inter',sans-serif;font-size:0.76rem;color:var(--cd);line-height:1.6;}
+.tbform{background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:14px;}
+.tbform-t{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.6rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--gold);margin-bottom:11px;}
+/* PROFILE */
+.profform{background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:12px;}
+.profform-t{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.6rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--gold);margin-bottom:11px;}
 /* TOAST */
-.toast{position:fixed;bottom:16px;right:12px;z-index:9999;background:var(--obs3);border:1px solid var(--gbr);padding:10px 15px;font-family:'Inter',sans-serif;font-size:0.76rem;color:var(--ch);transform:translateY(80px);opacity:0;transition:all 0.3s;pointer-events:none;max-width:280px;}
+.toast{position:fixed;bottom:72px;right:12px;z-index:9999;background:var(--obs3);border:1px solid var(--gbr);padding:10px 14px;font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--ch);transform:translateY(80px);opacity:0;transition:all 0.3s;pointer-events:none;max-width:270px;}
 .toast.on{transform:translateY(0);opacity:1;}
 .toast.success{border-color:rgba(34,197,94,0.4);color:var(--ok);}
 .toast.error{border-color:rgba(239,68,68,0.4);color:var(--err);}
 /* LOADER */
-.ldr{display:flex;align-items:center;justify-content:center;padding:26px;}
-.lring{width:28px;height:28px;border:3px solid var(--gbr);border-top-color:var(--gold);border-radius:50%;animation:sp 0.8s linear infinite;}
+.ldr{display:flex;align-items:center;justify-content:center;padding:24px;}
+.lring{width:26px;height:26px;border:3px solid var(--gbr);border-top-color:var(--gold);border-radius:50%;animation:sp 0.8s linear infinite;}
 @keyframes sp{to{transform:rotate(360deg)}}
-/* ADMIN LINK */
-.admin-shortcut{display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.2);margin-bottom:16px;cursor:pointer;transition:all 0.3s;}
-.admin-shortcut:hover{background:rgba(59,130,246,0.1);}
-.admin-shortcut-text{font-family:'Montserrat',sans-serif;font-size:0.72rem;font-weight:700;color:var(--ab);}
-.admin-shortcut-sub{font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);}
-@media(max-width:480px){.abox{padding:24px 16px;}.fr{grid-template-columns:1fr;}}
+/* COMMENTS */
+.comments-section{border-top:1px solid rgba(255,255,255,0.05);margin-top:8px;padding-top:8px;}
+.comment{display:flex;gap:7px;margin-bottom:8px;}
+.comment-av{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.6rem;color:var(--obs);flex-shrink:0;margin-top:2px;}
+.comment-body{flex:1;}
+.comment-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.64rem;color:var(--ch);}
+.comment-text{font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);line-height:1.5;}
+.comment-input-row{display:flex;gap:6px;margin-top:8px;}
+.comment-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--gbr);color:var(--ch);font-family:'Inter',sans-serif;font-size:0.72rem;padding:7px 10px;outline:none;}
+.comment-input::placeholder{color:rgba(189,181,166,0.3);}
+.comment-send{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.58rem;letter-spacing:0.08em;padding:7px 11px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;}
+@media(max-width:480px){.abox{padding:22px 14px;}.fr{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
+
+<!-- PWA INSTALL BANNER -->
+<div class="pwa-banner" id="pwaBanner">
+ <span class="pwa-icon">📱</span>
+ <div class="pwa-text">
+  <div class="pwa-title">Install ICONIK App</div>
+  <div class="pwa-sub">Add to your home screen for the best experience</div>
+ </div>
+ <div class="pwa-btns">
+  <button class="pwa-install" id="pwaInstallBtn">Install</button>
+  <button class="pwa-dismiss" onclick="dismissPWA()">Later</button>
+ </div>
+</div>
 
 <!-- AUTH PAGE -->
 <div class="auth-pg on" id="authPg">
@@ -187,21 +281,17 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
    <div class="atab on" onclick="sTab('login')">Sign In</div>
    <div class="atab" onclick="sTab('register')">Join Free</div>
   </div>
-
-  <!-- LOGIN -->
   <div id="loginF">
    <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" id="le" placeholder="your@email.com"/></div>
    <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="lp" placeholder="••••••••"/></div>
    <button class="btn btn-g" onclick="doLogin()">Enter ICONIK →</button>
    <div class="amsg" id="lm"></div>
-   <p style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);text-align:center;margin-top:14px;">Chief Admin? <a href="/admin.html" style="color:var(--ab);">Go to Admin Panel →</a></p>
+   <p style="font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);text-align:center;margin-top:12px;">Chief Admin? <a href="/admin.html" style="color:var(--ab);">Go to Admin Panel →</a></p>
   </div>
-
-  <!-- REGISTER -->
   <div id="regF" style="display:none;">
    <div class="vnotice">
     <div class="vnotice-t">🔒 Why We Verify Your Identity</div>
-    <p>ICONIK is a <strong>world-class global fan platform</strong>. To protect all members and ensure legitimacy, we verify personal details. This safeguards against fraud and confirms every member is real. <strong>Your data is encrypted, strictly private, and only accessible to the ICONIK Chief Admin for verification.</strong></p>
+    <p>ICONIK is a <strong>world-class global fan platform</strong>. To protect all members and ensure legitimacy, we verify personal details. <strong>Your data is encrypted, strictly private, and only accessible to the ICONIK Chief Admin for verification.</strong></p>
    </div>
    <div class="fr">
     <div class="fg"><label class="fl">Full Name <span class="req">*</span></label><input class="fi" type="text" id="rn" placeholder="Your full name"/></div>
@@ -214,20 +304,20 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
    </div>
    <div class="fg"><label class="fl">Home / Office Address <span class="req">*</span></label><input class="fi" type="text" id="rad" placeholder="Street address, area"/><p class="fhint">🔒 Encrypted — Chief Admin verification only</p></div>
    <div class="idbox">
-    <div class="idbox-t">🪪 Identity Verification — Select ONE document type</div>
-    <p style="font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);margin-bottom:9px;line-height:1.5;">Required for platform security. Confirms you are a real, legitimate ICONIK member. Stored securely — never shared externally.</p>
+    <div class="idbox-t">🪪 Identity Verification — Select ONE</div>
+    <p style="font-family:'Inter',sans-serif;font-size:0.67rem;color:var(--cd);margin-bottom:8px;line-height:1.5;">Required for platform security. Stored securely — never shared externally.</p>
     <div class="idopts">
-     <div class="idopt" onclick="selId(this,'national')">🪪 National ID Card</div>
+     <div class="idopt" onclick="selId(this,'national')">🪪 National ID</div>
      <div class="idopt" onclick="selId(this,'drivers')">🚗 Driver's License</div>
      <div class="idopt" onclick="selId(this,'passport')">📘 Int'l Passport</div>
     </div>
     <div class="fg" id="idG" style="display:none;">
-     <label class="fl" id="idL">ID Number <span class="req">*</span></label>
+     <label class="fl" id="idL">Document Number <span class="req">*</span></label>
      <input class="fi" type="text" id="rId" placeholder="Enter document number"/>
      <p class="fhint">🔒 Chief Admin eyes only. Never shared.</p>
     </div>
    </div>
-   <div class="fg"><label class="fl">Password <span class="req">*</span></label><input class="fi" type="password" id="rp" placeholder="Min. 6 characters"/><p class="fhint">Your password is never visible to anyone.</p></div>
+   <div class="fg"><label class="fl">Password <span class="req">*</span></label><input class="fi" type="password" id="rp" placeholder="Min. 6 characters"/></div>
    <div class="fg">
     <label class="fl">Choose Your Communities</label>
     <div class="catg">
@@ -248,16 +338,16 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
    <button class="btn btn-g" onclick="doReg()">Create Verified Account →</button>
    <div class="amsg" id="rm"></div>
   </div>
-  <p style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);text-align:center;margin-top:13px;"><span id="swT">New to ICONIK? </span><a style="color:var(--gold);cursor:pointer;" id="swL" onclick="sTab('register')">Join Free</a></p>
+  <p style="font-family:'Inter',sans-serif;font-size:0.69rem;color:var(--cd);text-align:center;margin-top:12px;"><span id="swT">New to ICONIK? </span><a style="color:var(--gold);cursor:pointer;" id="swL" onclick="sTab('register')">Join Free</a></p>
  </div>
 </div>
 
-<!-- DASHBOARD PAGE -->
+<!-- DASHBOARD -->
 <div class="dash-pg" id="dashPg">
  <nav class="tnav">
   <a class="nlogo" href="/"><span>ICON</span>IK</a>
   <div class="nr">
-   <span class="nuname" id="nNm"></span>
+   <span class="nun" id="nNm"></span>
    <div class="nav-av" id="nAv" onclick="togSB()">U</div>
    <button class="hbg" onclick="togSB()"><span></span><span></span><span></span></button>
   </div>
@@ -270,62 +360,102 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
    <div class="sb-av" id="sbAv">U</div>
    <div class="sb-nm" id="sbNm">Member</div>
    <span class="sb-tier" id="sbTier">FAN</span>
-   <span class="sb-vstatus" id="sbVS" style="display:none;">✓ VERIFIED</span>
+   <span class="sb-vs" id="sbVS" style="display:none;">✓ VERIFIED</span>
   </div>
   <nav class="sb-nav">
    <div class="sb-sec">Main</div>
-   <div class="sb-lnk on" onclick="sV('feed')"><span class="sb-ic">🏠</span>My Feed</div>
-   <div class="sb-lnk" onclick="sV('icons')"><span class="sb-ic">⭐</span>Icons & Celebs</div>
-   <div class="sb-lnk" onclick="sV('coms')"><span class="sb-ic">🌍</span>My Communities</div>
-   <div class="sb-lnk" onclick="sV('tb')"><span class="sb-ic">🎫</span>Tour Buddy</div>
-   <div class="sb-lnk" onclick="sV('msgs')"><span class="sb-ic">📩</span>Messages</div>
+   <div class="sb-lnk on" onclick="sV('feed');cSB()"><span class="sb-ic">🏠</span>My Feed</div>
+   <div class="sb-lnk" onclick="sV('explore');cSB()"><span class="sb-ic">🔍</span>Explore Icons</div>
+   <div class="sb-lnk" onclick="sV('coms');cSB()"><span class="sb-ic">🌍</span>Communities</div>
+   <div class="sb-lnk" onclick="sV('news');cSB()"><span class="sb-ic">📰</span>Celebrity News</div>
+   <div class="sb-lnk" onclick="sV('tb');cSB()"><span class="sb-ic">🎫</span>Tour Buddy</div>
+   <div class="sb-lnk" onclick="sV('msgs');cSB()"><span class="sb-ic">📩</span>Messages<span class="sb-new" id="msgBadge" style="display:none;">NEW</span></div>
+   <div class="sb-sec">Discover</div>
+   <div class="sb-lnk" onclick="sV('wellness');cSB()"><span class="sb-ic">💪</span>Wellness Hub</div>
+   <div class="sb-lnk" onclick="sV('affiliate');cSB()"><span class="sb-ic">🛍️</span>Shop & Earn</div>
    <div class="sb-sec">Account</div>
-   <div class="sb-lnk" onclick="sV('membership')"><span class="sb-ic">👑</span>Membership<span class="sb-bdg">UPGRADE</span></div>
-   <div class="sb-lnk" onclick="sV('profile')"><span class="sb-ic">👤</span>My Profile</div>
+   <div class="sb-lnk" onclick="sV('membership');cSB()"><span class="sb-ic">👑</span>Membership<span class="sb-bdg">UPGRADE</span></div>
+   <div class="sb-lnk" onclick="sV('profile');cSB()"><span class="sb-ic">👤</span>My Profile</div>
    <div class="sb-sec">More</div>
    <div class="sb-lnk" onclick="doLogout()"><span class="sb-ic">🚪</span>Sign Out</div>
   </nav>
  </div>
 
+ <!-- BOTTOM NAV -->
+ <div class="bnav">
+  <div class="bnav-item on" id="bn-feed" onclick="sV('feed');setBN('feed')"><span class="bnav-ic">🏠</span><span class="bnav-lbl">Feed</span></div>
+  <div class="bnav-item" id="bn-explore" onclick="sV('explore');setBN('explore')"><span class="bnav-ic">⭐</span><span class="bnav-lbl">Icons</span></div>
+  <div class="bnav-item" id="bn-news" onclick="sV('news');setBN('news')"><span class="bnav-ic">📰</span><span class="bnav-lbl">News</span></div>
+  <div class="bnav-item" id="bn-wellness" onclick="sV('wellness');setBN('wellness')"><span class="bnav-ic">💪</span><span class="bnav-lbl">Wellness</span></div>
+  <div class="bnav-item" id="bn-membership" onclick="sV('membership');setBN('membership')"><span class="bnav-ic">👑</span><span class="bnav-lbl">VIP</span></div>
+ </div>
+
  <div class="main">
 
-  <!-- FEED VIEW -->
+  <!-- FEED -->
   <div class="view on" id="feedV">
    <div class="wbar"><span class="wi">🌟</span><div><div class="wh" id="wH">Welcome!</div><div class="ws" id="wS">Your personalized icon feed</div></div></div>
-   <div class="vbanner pending" id="vBanner" style="display:none;"></div>
+   <div class="vbanner" id="vBanner"></div>
    <div class="srow">
     <div class="sbox"><div class="snum" id="sCom">0</div><div class="slbl">Communities</div></div>
     <div class="sbox"><div class="snum" id="sIco">0</div><div class="slbl">Icons</div></div>
     <div class="sbox"><div class="snum" id="sPo">0</div><div class="slbl">Posts</div></div>
    </div>
-   <div class="sh">Featured Icons</div>
-   <div class="cgrid" id="featC"><div class="ldr"><div class="lring"></div></div></div>
+   <!-- COMMUNITY POST FORM -->
+   <div class="post-form">
+    <div class="post-form-header">
+     <div class="post-form-av" id="pfAv">U</div>
+     <input class="post-form-input" type="text" id="newPostText" placeholder="Share something with your communities..."/>
+    </div>
+    <div class="post-form-actions">
+     <select class="post-type-select" id="newPostCat">
+      <option value="">Select community...</option>
+      <option>Music</option><option>Film & TV</option><option>Sports</option>
+      <option>Literature</option><option>Wellness</option><option>Fashion</option>
+      <option>Food</option><option>Tech</option><option>Beauty</option>
+     </select>
+     <button class="post-submit" onclick="submitPost()">Post</button>
+    </div>
+   </div>
    <div class="sh">Latest Updates</div>
    <div id="feedP"><div class="ldr"><div class="lring"></div></div></div>
   </div>
 
-  <!-- ICONS VIEW -->
-  <div class="view" id="iconsV">
+  <!-- EXPLORE ICONS -->
+  <div class="view" id="exploreV">
    <div class="sh">All Icons & Celebrities</div>
-   <input class="fi" style="margin-bottom:11px;" type="text" id="cSrch" placeholder="Search icons by name or category..." oninput="fCl()"/>
+   <input class="fi" style="margin-bottom:10px;" type="text" id="cSrch" placeholder="Search by name or category..." oninput="fCl()"/>
    <div class="cgrid" id="allC"><div class="ldr"><div class="lring"></div></div></div>
   </div>
 
-  <!-- COMMUNITIES VIEW -->
+  <!-- COMMUNITIES -->
   <div class="view" id="comsV">
    <div class="sh">My Communities</div>
    <div class="cgrid" id="myComG"></div>
   </div>
 
-  <!-- TOUR BUDDY VIEW -->
+  <!-- CELEBRITY NEWS -->
+  <div class="view" id="newsV">
+   <div class="wbar"><span class="wi">📰</span><div><div class="wh">Celebrity News</div><div class="ws">Latest from the world of icons</div></div></div>
+   <div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;" id="newsCatFilter">
+    <button class="news-filter-btn on" onclick="filterNews('all',this)" style="white-space:nowrap;font-family:'Montserrat',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.08em;padding:6px 12px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;flex-shrink:0;">All</button>
+    <button class="news-filter-btn" onclick="filterNews('Music',this)" style="white-space:nowrap;font-family:'Montserrat',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.08em;padding:6px 12px;background:transparent;color:var(--cd);border:1px solid var(--gbr);cursor:pointer;flex-shrink:0;">🎵 Music</button>
+    <button class="news-filter-btn" onclick="filterNews('Sports',this)" style="white-space:nowrap;font-family:'Montserrat',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.08em;padding:6px 12px;background:transparent;color:var(--cd);border:1px solid var(--gbr);cursor:pointer;flex-shrink:0;">⚽ Sports</button>
+    <button class="news-filter-btn" onclick="filterNews('Film',this)" style="white-space:nowrap;font-family:'Montserrat',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.08em;padding:6px 12px;background:transparent;color:var(--cd);border:1px solid var(--gbr);cursor:pointer;flex-shrink:0;">🎬 Film</button>
+    <button class="news-filter-btn" onclick="filterNews('Fashion',this)" style="white-space:nowrap;font-family:'Montserrat',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.08em;padding:6px 12px;background:transparent;color:var(--cd);border:1px solid var(--gbr);cursor:pointer;flex-shrink:0;">👗 Fashion</button>
+   </div>
+   <div class="news-grid" id="newsFeed"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- TOUR BUDDY -->
   <div class="view" id="tbV">
    <div class="wbar"><span class="wi">🎫</span><div><div class="wh">Tour Buddy Finder</div><div class="ws">Connect with fans at the same events</div></div></div>
    <div class="tbform">
     <div class="tbform-t">Post Your Event</div>
-    <div class="fg"><label class="fl">Event / Concert Name</label><input class="fi" type="text" id="tbe" placeholder="e.g. Beyoncé — Renaissance Tour, London"/></div>
+    <div class="fg"><label class="fl">Event / Concert</label><input class="fi" type="text" id="tbe" placeholder="e.g. Beyoncé — Renaissance Tour, London"/></div>
     <div class="fr">
      <div class="fg"><label class="fl">Date</label><input class="fi" type="date" id="tbd"/></div>
-     <div class="fg"><label class="fl">City, Country</label><input class="fi" type="text" id="tbc" placeholder="e.g. London, UK"/></div>
+     <div class="fg"><label class="fl">City, Country</label><input class="fi" type="text" id="tbc" placeholder="London, UK"/></div>
     </div>
     <div class="fg"><label class="fl">Message</label><input class="fi" type="text" id="tbm" placeholder="Looking for fans to attend together!"/></div>
     <button class="btn btn-g" onclick="postTB()">Post Tour Buddy Request →</button>
@@ -334,31 +464,133 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
    <div id="tbList"><div class="ldr"><div class="lring"></div></div></div>
   </div>
 
-  <!-- MESSAGES VIEW -->
+  <!-- MESSAGES -->
   <div class="view" id="msgsV">
-   <div class="wbar"><span class="wi">📩</span><div><div class="wh">Messages</div><div class="ws">Messages from Admin & Sub Admins</div></div></div>
+   <div class="wbar"><span class="wi">📩</span><div><div class="wh">Messages</div><div class="ws">From Admin & Sub Admins</div></div></div>
    <div class="sh">Inbox</div>
    <div id="msgsList"><div class="ldr"><div class="lring"></div></div></div>
   </div>
 
-  <!-- MEMBERSHIP VIEW -->
-  <div class="view" id="membershipV">
-   <div class="sh">Your Membership</div>
-   <div id="currentTierBanner" style="margin-bottom:14px;"></div>
-   <div class="upgrid">
-    <div class="ucard cur"><div class="uprice">$0<small>/mo</small></div><div><div class="uname">Fan Member</div><div class="ufeats">Basic · 3 communities · Tour Buddy · Messages</div></div><div class="uact" style="background:var(--gbr);color:var(--cd);">Current</div></div>
-    <div class="ucard" onclick="upgP('Bronze')"><div class="uprice">$5<small>/mo</small></div><div><div class="uname">VIP Bronze</div><div class="ufeats">7 communities · Priority feed · Bronze badge</div></div><button class="uact">Upgrade</button></div>
-    <div class="ucard" onclick="upgP('Silver')"><div class="uprice">$12<small>/mo</small></div><div><div class="uname">VIP Silver ⭐</div><div class="ufeats">Unlimited · VIP lounge · Tour matchmaking</div></div><button class="uact">Upgrade</button></div>
-    <div class="ucard" onclick="upgP('Gold')"><div class="uprice">$25<small>/mo</small></div><div><div class="uname">VIP Gold 👑</div><div class="ufeats">All Silver + Sub Admin eligible + Affiliate revenue</div></div><button class="uact">Upgrade</button></div>
+  <!-- WELLNESS HUB -->
+  <div class="view" id="wellnessV">
+   <div class="wbar"><span class="wi">💪</span><div><div class="wh">ICONIK Wellness Hub</div><div class="ws">Health · Fitness · Nutrition · Beauty · Anti-Aging</div></div></div>
+   <div class="sh">Wellness Communities</div>
+   <div class="wellness-cats">
+    <div class="wcat" onclick="showWellnessCat('fitness')"><div class="wcat-i">🏋️</div><div class="wcat-n">Fitness & Training</div><div class="wcat-d">Coaches, workouts, gym culture</div></div>
+    <div class="wcat" onclick="showWellnessCat('nutrition')"><div class="wcat-i">🥗</div><div class="wcat-n">Nutrition & Diet</div><div class="wcat-d">Nutritionists, meal plans, health foods</div></div>
+    <div class="wcat" onclick="showWellnessCat('mental')"><div class="wcat-i">🧘</div><div class="wcat-n">Mental Wellness</div><div class="wcat-d">Mindfulness, therapy, meditation</div></div>
+    <div class="wcat" onclick="showWellnessCat('herbal')"><div class="wcat-i">🌿</div><div class="wcat-n">Herbal & Natural</div><div class="wcat-d">Natural remedies, plant-based healing</div></div>
+    <div class="wcat" onclick="showWellnessCat('antiaging')"><div class="wcat-i">✨</div><div class="wcat-n">Anti-Aging & Beauty</div><div class="wcat-d">Skincare science, longevity, aesthetics</div></div>
+    <div class="wcat" onclick="showWellnessCat('medical')"><div class="wcat-i">🩺</div><div class="wcat-n">Medical Wellness</div><div class="wcat-d">Doctors, nurses, evidence-based health</div></div>
+    <div class="wcat" onclick="showWellnessCat('recovery')"><div class="wcat-i">🏃</div><div class="wcat-n">Sports Recovery</div><div class="wcat-d">Physiotherapy, recovery, performance</div></div>
+    <div class="wcat" onclick="showWellnessCat('womens')"><div class="wcat-i">💊</div><div class="wcat-n">Women's Health</div><div class="wcat-d">Hormonal health, maternal wellness</div></div>
    </div>
-   <p style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);text-align:center;margin-top:11px;">PayPal & Crypto accepted · Contact Admin via WhatsApp to process payment</p>
+   <div class="sh">Wellness Partners & Coaches</div>
+   <div id="wellnessPartners"><div class="ldr"><div class="lring"></div></div></div>
+   <p style="font-family:'Inter',sans-serif;font-size:0.68rem;color:rgba(189,181,166,0.4);text-align:center;margin-top:8px;line-height:1.5;">⚠️ ICONIK does not provide medical advice. Always consult your healthcare provider.</p>
   </div>
 
-  <!-- PROFILE VIEW -->
+  <!-- AFFILIATE / SHOP -->
+  <div class="view" id="affiliateV">
+   <div class="wbar"><span class="wi">🛍️</span><div><div class="wh">Shop & Earn</div><div class="ws">Curated products · Affiliate rewards</div></div></div>
+   <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-left:3px solid var(--ok);padding:10px 12px;margin-bottom:14px;">
+    <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ok);margin-bottom:4px;">💰 Earn With ICONIK</div>
+    <div style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);line-height:1.5;">Share products with your network and earn affiliate commissions. VIP Gold members earn bonus revenue sharing.</div>
+   </div>
+   <div class="sh">Featured Products</div>
+   <div class="prod-grid" id="productsGrid">
+    <!-- Static affiliate products - Admin can update via Firestore -->
+    <div class="prod-card">
+     <div class="prod-img">💊</div>
+     <div class="prod-info">
+      <div class="prod-name">Premium Protein Supplement</div>
+      <div class="prod-price">$49.99</div>
+      <div class="prod-commission">✓ 8% commission on sales</div>
+      <button class="prod-btn" onclick="affiliateClick('protein')">Shop & Earn →</button>
+     </div>
+    </div>
+    <div class="prod-card">
+     <div class="prod-img">🏋️</div>
+     <div class="prod-info">
+      <div class="prod-name">Home Gym Resistance Kit</div>
+      <div class="prod-price">$34.99</div>
+      <div class="prod-commission">✓ 6% commission on sales</div>
+      <button class="prod-btn" onclick="affiliateClick('gym')">Shop & Earn →</button>
+     </div>
+    </div>
+    <div class="prod-card">
+     <div class="prod-img">🌿</div>
+     <div class="prod-info">
+      <div class="prod-name">Herbal Immunity Boost</div>
+      <div class="prod-price">$29.99</div>
+      <div class="prod-commission">✓ 10% commission on sales</div>
+      <button class="prod-btn" onclick="affiliateClick('herbal')">Shop & Earn →</button>
+     </div>
+    </div>
+    <div class="prod-card">
+     <div class="prod-img">✨</div>
+     <div class="prod-info">
+      <div class="prod-name">Anti-Aging Serum Kit</div>
+      <div class="prod-price">$79.99</div>
+      <div class="prod-commission">✓ 12% commission on sales</div>
+      <button class="prod-btn" onclick="affiliateClick('serum')">Shop & Earn →</button>
+     </div>
+    </div>
+    <div class="prod-card">
+     <div class="prod-img">📚</div>
+     <div class="prod-info">
+      <div class="prod-name">Wellness Masterclass Course</div>
+      <div class="prod-price">$19.99</div>
+      <div class="prod-commission">✓ 15% commission on sales</div>
+      <button class="prod-btn" onclick="affiliateClick('course')">Shop & Earn →</button>
+     </div>
+    </div>
+    <div class="prod-card">
+     <div class="prod-img">🧴</div>
+     <div class="prod-info">
+      <div class="prod-name">Natural Skincare Bundle</div>
+      <div class="prod-price">$44.99</div>
+      <div class="prod-commission">✓ 9% commission on sales</div>
+      <button class="prod-btn" onclick="affiliateClick('skincare')">Shop & Earn →</button>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <!-- MEMBERSHIP + PAYMENT -->
+  <div class="view" id="membershipV">
+   <div class="sh">Your Membership</div>
+   <div class="upgrid" style="margin-bottom:16px;">
+    <div class="ucard cur"><div class="uprice">$0<small>/mo</small></div><div><div class="uname">Fan Member</div><div class="ufeats">Basic · 3 communities · Feed · Messages</div></div><div class="uact" style="background:var(--gbr);color:var(--cd);">Current</div></div>
+    <div class="ucard" onclick="showPayment('Bronze',5)"><div class="uprice">$5<small>/mo</small></div><div><div class="uname">VIP Bronze</div><div class="ufeats">7 communities · Priority feed · Bronze badge</div></div><button class="uact">Upgrade</button></div>
+    <div class="ucard" onclick="showPayment('Silver',12)"><div class="uprice">$12<small>/mo</small></div><div><div class="uname">VIP Silver ⭐</div><div class="ufeats">Unlimited · VIP lounge · Tour match</div></div><button class="uact">Upgrade</button></div>
+    <div class="ucard" onclick="showPayment('Gold',25)"><div class="uprice">$25<small>/mo</small></div><div><div class="uname">VIP Gold 👑</div><div class="ufeats">All Silver + Sub Admin + Affiliate revenue</div></div><button class="uact">Upgrade</button></div>
+   </div>
+   <!-- PAYMENT SECTION -->
+   <div class="pay-card" id="paymentSection" style="display:none;">
+    <div class="pay-title" id="payTitle">Upgrade to VIP Silver</div>
+    <div class="pay-desc">Complete your upgrade in 3 simple steps. We accept PayPal and all major cryptocurrencies.</div>
+    <div class="sh">Select Payment Method</div>
+    <div class="pay-methods">
+     <div class="pay-method on" onclick="selectPayment(this,'paypal')"><span class="pay-method-icon">🅿️</span><span class="pay-method-name">PayPal</span></div>
+     <div class="pay-method" onclick="selectPayment(this,'bitcoin')"><span class="pay-method-icon">₿</span><span class="pay-method-name">Bitcoin</span></div>
+     <div class="pay-method" onclick="selectPayment(this,'ethereum')"><span class="pay-method-icon">Ξ</span><span class="pay-method-name">Ethereum</span></div>
+     <div class="pay-method" onclick="selectPayment(this,'usdt')"><span class="pay-method-icon">₮</span><span class="pay-method-name">USDT</span></div>
+     <div class="pay-method" onclick="selectPayment(this,'bnb')"><span class="pay-method-icon">🔶</span><span class="pay-method-name">BNB</span></div>
+    </div>
+    <div class="sh">Payment Steps</div>
+    <div class="pay-step"><div class="pay-step-num">STEP 1</div><div class="pay-step-text" id="payStep1">Send <strong id="payAmount">$12</strong> via PayPal to: <strong>iconikglobal01@gmail.com</strong></div></div>
+    <div class="pay-step"><div class="pay-step-num">STEP 2</div><div class="pay-step-text">Send your <strong>payment screenshot/proof</strong> + your registered email to Admin via WhatsApp or the Messages section.</div></div>
+    <div class="pay-step"><div class="pay-step-num">STEP 3</div><div class="pay-step-text">Admin confirms your payment and <strong>upgrades your account within 24 hours</strong>. You receive a confirmation message.</div></div>
+    <button class="btn btn-g" onclick="sendUpgradeRequest()" style="margin-top:12px;">Send Upgrade Request to Admin →</button>
+   </div>
+  </div>
+
+  <!-- PROFILE -->
   <div class="view" id="profileV">
    <div class="sh">My Profile</div>
-   <div class="tbform">
-    <div class="tbform-t">Profile Settings</div>
+   <div class="profform">
+    <div class="profform-t">Profile Settings</div>
     <div class="fr">
      <div class="fg"><label class="fl">Display Name</label><input class="fi" type="text" id="pNm"/></div>
      <div class="fg"><label class="fl">Phone</label><input class="fi" type="tel" id="pPh"/></div>
@@ -372,9 +604,9 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
     <div class="fg"><label class="fl">Bio</label><input class="fi" type="text" id="pBio" placeholder="Tell the community about yourself"/></div>
     <button class="btn btn-g" onclick="saveP()">Save Profile →</button>
    </div>
-   <div class="tbform" style="margin-top:14px;">
-    <div class="tbform-t">Verification Status</div>
-    <div id="verifyStatusBlock"></div>
+   <div class="profform">
+    <div class="profform-t">Verification Status</div>
+    <div id="vStatusBlock"></div>
    </div>
   </div>
 
@@ -386,16 +618,31 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,updateProfile}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,updateDoc,query,orderBy,limit,where,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,updateDoc,query,orderBy,limit,where,serverTimestamp,increment}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const cfg={apiKey:"AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",authDomain:"iconik-global.firebaseapp.com",projectId:"iconik-global",storageBucket:"iconik-global.firebasestorage.app",messagingSenderId:"1040054516979",appId:"1:1040054516979:web:33cd5f07ae8fc146a30b86"};
 const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app);
 const CHIEF='iconikglobal01@gmail.com';
-let cU=null,cD=null,allC=[],selIdType='';
+let cU=null,cD=null,allC=[],allNews=[],selIdType='',selectedPayMethod='paypal',selectedTier='',selectedTierPrice=0;
 
+// ── PWA SETUP ──
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+ e.preventDefault();deferredPrompt=e;
+ if(!localStorage.getItem('pwa-dismissed'))document.getElementById('pwaBanner').classList.add('show');
+});
+document.getElementById('pwaInstallBtn').addEventListener('click',async()=>{
+ if(!deferredPrompt)return;
+ deferredPrompt.prompt();
+ const{outcome}=await deferredPrompt.userChoice;
+ if(outcome==='accepted')toastF('ICONIK installed! 📱','success');
+ deferredPrompt=null;document.getElementById('pwaBanner').classList.remove('show');
+});
+window.dismissPWA=function(){document.getElementById('pwaBanner').classList.remove('show');localStorage.setItem('pwa-dismissed','1');};
+
+// ── AUTH ──
 onAuthStateChanged(auth,async u=>{
  if(u){
-  // Redirect chief admin to admin panel
   if(u.email===CHIEF){window.location.href='/admin.html';return;}
   cU=u;cD=await lUD(u);showDash();
  }else{cU=null;cD=null;showAuth();}
@@ -407,14 +654,16 @@ async function lUD(u){
 }
 
 function showAuth(){document.getElementById('authPg').classList.add('on');document.getElementById('dashPg').classList.remove('on');}
+
 function showDash(){
  document.getElementById('authPg').classList.remove('on');document.getElementById('dashPg').classList.add('on');
  const nm=cD?.name||cU?.displayName||'Member',l=nm.charAt(0).toUpperCase(),cats=cD?.categories||[],vs=cD?.verificationStatus||'pending';
  document.getElementById('nNm').textContent=nm;document.getElementById('nAv').textContent=l;
  document.getElementById('sbAv').textContent=l;document.getElementById('sbNm').textContent=nm;
  document.getElementById('sbTier').textContent='VIP '+(cD?.tier||'Fan');
- if(vs==='verified'){document.getElementById('sbVS').style.display='inline-block';}
- document.getElementById('wH').textContent=`Welcome back, ${nm.split(' ')[0]}! 👋`;
+ document.getElementById('pfAv').textContent=l;
+ if(vs==='verified')document.getElementById('sbVS').style.display='inline-block';
+ document.getElementById('wH').textContent=`Welcome, ${nm.split(' ')[0]}! 👋`;
  document.getElementById('wS').textContent=`${cats.length} communities · ${cD?.tier||'Fan'} Member`;
  document.getElementById('sCom').textContent=cats.length;
  document.getElementById('pNm').value=nm;document.getElementById('pEm').value=cU.email;
@@ -423,17 +672,16 @@ function showDash(){
  document.getElementById('pBio').value=cD?.bio||'';
  // Verification banner
  const vb=document.getElementById('vBanner');
- if(vs==='pending'){vb.style.display='flex';vb.className='vbanner pending';vb.innerHTML='⏳ Your account is pending verification by Admin. Full access unlocks after verification.';}
- else if(vs==='verified'){vb.style.display='flex';vb.className='vbanner verified';vb.innerHTML='✅ Your account is verified. Welcome to ICONIK!';}
- else if(vs==='rejected'){vb.style.display='flex';vb.className='vbanner rejected';vb.innerHTML='❌ Verification rejected. Please contact Admin for assistance.';}
- // Verify status in profile
- const vsb=document.getElementById('verifyStatusBlock');
- const vLabels={pending:'⏳ Pending — Admin will review your details shortly.',verified:'✅ Verified — Your identity has been confirmed.',rejected:'❌ Rejected — Contact Admin for assistance.'};
- const vClasses={pending:'twarn',verified:'tok',rejected:'terr'};
- vsb.innerHTML=`<span class="tag ${vClasses[vs]||'twarn'}" style="font-size:0.72rem;padding:6px 12px;">${vLabels[vs]||'Pending'}</span>`;
- lFeed();lCelebs();
+ const vm={pending:'⏳ Account pending verification. Full access unlocks after Admin review.',verified:'✅ Account verified! Welcome to ICONIK.',rejected:'❌ Verification rejected. Contact Admin for help.'};
+ if(vm[vs]){vb.className='vbanner '+vs;vb.textContent=vm[vs];}
+ // Profile verify status
+ const vsc={pending:'twarn',verified:'tok',rejected:'terr'};
+ const vsl={pending:'⏳ Pending — Admin will review your details shortly.',verified:'✅ Verified — Your identity has been confirmed.',rejected:'❌ Rejected — Contact Admin for assistance.'};
+ document.getElementById('vStatusBlock').innerHTML=`<span class="tag ${vsc[vs]||'twarn'}" style="font-size:0.7rem;padding:7px 12px;display:inline-block;">${vsl[vs]||'Pending'}</span>`;
+ lFeed();lCelebs();lNewsFromFirestore();lMsgsCheck();
 }
 
+// ── LOGIN ──
 window.doLogin=async function(){
  const e=document.getElementById('le').value.trim(),p=document.getElementById('lp').value,m=document.getElementById('lm');
  if(!e||!p){sM(m,'Please fill all fields','err');return;}
@@ -441,6 +689,7 @@ window.doLogin=async function(){
  catch(er){sM(m,aE(er.code),'err');}
 };
 
+// ── REGISTER ──
 window.doReg=async function(){
  const nm=document.getElementById('rn').value.trim(),ph=document.getElementById('rph').value.trim(),
   em=document.getElementById('re').value.trim(),co=document.getElementById('rco').value.trim(),
@@ -454,115 +703,267 @@ window.doReg=async function(){
   m.style.display='none';
   const cr=await createUserWithEmailAndPassword(auth,em,pw);
   await updateProfile(cr.user,{displayName:nm});
-  await setDoc(doc(db,'users',cr.user.uid),{
-   name:nm,phone:ph,email:em,country:co,city:ci,address:ad,
-   idType:selIdType,idNumber:idN,categories:cats,
-   tier:'Fan',role:'member',verificationStatus:'pending',
-   joinedAt:serverTimestamp(),bio:''
-  });
+  await setDoc(doc(db,'users',cr.user.uid),{name:nm,phone:ph,email:em,country:co,city:ci,address:ad,idType:selIdType,idNumber:idN,categories:cats,tier:'Fan',role:'member',verificationStatus:'pending',joinedAt:serverTimestamp(),bio:'',postCount:0,likeCount:0});
   toastF('Account created! Welcome to ICONIK 🎉','success');
  }catch(er){sM(m,aE(er.code),'err');}
 };
 
-window.selId=function(el,t){
- document.querySelectorAll('.idopt').forEach(o=>o.classList.remove('on'));el.classList.add('on');selIdType=t;
- const lb={national:'National ID Card Number',drivers:"Driver's License Number",passport:'International Passport Number'};
- document.getElementById('idL').innerHTML=lb[t]+' <span class="req">*</span>';
- document.getElementById('idG').style.display='block';
-};
-
+window.selId=function(el,t){document.querySelectorAll('.idopt').forEach(o=>o.classList.remove('on'));el.classList.add('on');selIdType=t;const lb={national:'National ID Number',drivers:"Driver's License Number",passport:'International Passport Number'};document.getElementById('idL').innerHTML=lb[t]+' <span class="req">*</span>';document.getElementById('idG').style.display='block';};
 window.doLogout=async function(){await signOut(auth);toastF('Signed out 👋');cSB();};
 
+// ── FEED ──
 async function lFeed(){
  const el=document.getElementById('feedP');
  try{
-  const q=query(collection(db,'posts'),orderBy('createdAt','desc'),limit(10));
+  const q=query(collection(db,'posts'),orderBy('createdAt','desc'),limit(20));
   const s=await getDocs(q);document.getElementById('sPo').textContent=s.size;
-  if(s.empty){el.innerHTML=`<div class="pcard"><p style="font-family:'Inter',sans-serif;font-size:0.76rem;color:var(--cd);text-align:center;padding:16px;">No posts yet. Admin will post updates soon! 🌟</p></div>`;return;}
+  if(s.empty){el.innerHTML=`<div class="pcard"><p style="font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--cd);text-align:center;padding:14px;">No posts yet — be the first to post! 🌟</p></div>`;return;}
   el.innerHTML='';
   s.forEach(d=>{
    const p=d.data(),t=p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString():'Just now';
-   el.innerHTML+=`<div class="pcard"><div class="ph"><div class="pav">${(p.authorName||'A').charAt(0)}</div><div><div class="pau">${p.authorName||'ICONIK Admin'}</div><div class="pt">${t}</div></div>${p.category?`<span class="ptag">${p.category}</span>`:''}</div>${p.title?`<div class="ptitle">${p.title}</div>`:''}<div class="pbody">${p.content||''}</div><div class="pacts"><button class="pa">❤️ Like</button><button class="pa">💬 Comment</button><button class="pa">🔗 Share</button></div></div>`;
+   const liked=p.likedBy?.includes(cU?.uid);
+   el.innerHTML+=`
+   <div class="pcard" id="post-${d.id}">
+    <div class="ph">
+     <div class="pav">${(p.authorName||'M').charAt(0)}</div>
+     <div>
+      <div class="pau">${p.authorName||'Member'}</div>
+      <div class="pt">${t} ${p.category?`· ${p.category}`:''}</div>
+     </div>
+     ${p.category?`<span class="ptag">${p.category}</span>`:''}
+    </div>
+    ${p.title?`<div class="ptitle">${p.title}</div>`:''}
+    <div class="pbody">${p.content||''}</div>
+    <div class="pacts">
+     <button class="pa ${liked?'liked':''}" onclick="toggleLike('${d.id}',${liked})">❤️ <span id="likes-${d.id}">${p.likes||0}</span></button>
+     <button class="pa" onclick="toggleComments('${d.id}')">💬 Comment</button>
+     <button class="pa" onclick="sharePost('${d.id}','${p.content?.substring(0,50)||''}')">🔗 Share</button>
+    </div>
+    <div class="comments-section" id="comments-${d.id}" style="display:none;">
+     <div id="commentsList-${d.id}"></div>
+     <div class="comment-input-row">
+      <input class="comment-input" type="text" id="commentInput-${d.id}" placeholder="Write a comment..."/>
+      <button class="comment-send" onclick="submitComment('${d.id}')">Post</button>
+     </div>
+    </div>
+   </div>`;
   });
- }catch{el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:16px;">Feed loading... ✨</p></div>`;}
+ }catch{el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:14px;">Feed loading... ✨</p></div>`;}
 }
 
+// ── SUBMIT MEMBER POST ──
+window.submitPost=async function(){
+ const text=document.getElementById('newPostText').value.trim();
+ const cat=document.getElementById('newPostCat').value;
+ if(!text){toastF('Please write something first','error');return;}
+ try{
+  await addDoc(collection(db,'posts'),{content:text,category:cat,authorName:cD?.name||'Member',authorId:cU.uid,authorRole:'member',likes:0,likedBy:[],createdAt:serverTimestamp()});
+  toastF('Posted! 🌟','success');
+  document.getElementById('newPostText').value='';
+  lFeed();
+ }catch{toastF('Error posting','error');}
+};
+
+// ── LIKE ──
+window.toggleLike=async function(postId,alreadyLiked){
+ if(!cU)return;
+ try{
+  const pRef=doc(db,'posts',postId);
+  if(alreadyLiked){
+   await updateDoc(pRef,{likes:increment(-1),likedBy:(await getDoc(pRef)).data().likedBy.filter(id=>id!==cU.uid)});
+  }else{
+   await updateDoc(pRef,{likes:increment(1),likedBy:[...(await getDoc(pRef)).data().likedBy,cU.uid]});
+  }
+  lFeed();
+ }catch{}
+};
+
+// ── COMMENTS ──
+window.toggleComments=async function(postId){
+ const el=document.getElementById(`comments-${postId}`);
+ if(el.style.display==='none'){el.style.display='block';lComments(postId);}
+ else el.style.display='none';
+};
+
+async function lComments(postId){
+ const el=document.getElementById(`commentsList-${postId}`);
+ try{
+  const q=query(collection(db,'posts',postId,'comments'),orderBy('createdAt','asc'),limit(10));
+  const s=await getDocs(q);
+  el.innerHTML='';
+  s.forEach(d=>{const c=d.data();el.innerHTML+=`<div class="comment"><div class="comment-av">${(c.name||'M').charAt(0)}</div><div class="comment-body"><div class="comment-name">${c.name||'Member'}</div><div class="comment-text">${c.text}</div></div></div>`;});
+ }catch{}
+}
+
+window.submitComment=async function(postId){
+ const input=document.getElementById(`commentInput-${postId}`);
+ const text=input.value.trim();
+ if(!text)return;
+ try{
+  await addDoc(collection(db,'posts',postId,'comments'),{text,name:cD?.name||'Member',userId:cU.uid,createdAt:serverTimestamp()});
+  input.value='';lComments(postId);
+ }catch{toastF('Error posting comment','error');}
+};
+
+window.sharePost=function(postId,preview){
+ const url=`${window.location.origin}/app.html#post-${postId}`;
+ if(navigator.share){navigator.share({title:'ICONIK Post',text:preview+'...',url}).catch(()=>{});}
+ else{navigator.clipboard?.writeText(url);toastF('Link copied! 🔗','success');}
+};
+
+// ── CELEBS ──
 async function lCelebs(){
  try{
   const s=await getDocs(collection(db,'celebrities'));
   allC=[];s.forEach(d=>allC.push({id:d.id,...d.data()}));
   document.getElementById('sIco').textContent=allC.length;
-  rFeat();rAll();
- }catch{document.getElementById('featC').innerHTML=`<div style="grid-column:span 2;text-align:center;padding:16px;color:var(--cd);">Icons coming soon! ⭐</div>`;}
+  rAll();
+ }catch{}
 }
-
 const mCC=c=>`<div class="ccard"><div class="cimg">${c.photo?`<img src="${c.photo}" alt="${c.name}" onerror="this.parentElement.innerHTML='⭐'"/>`:'⭐'}</div><div class="ci"><div class="cn">${c.name}</div><div class="ccat">${c.category||''}</div><div class="cmeta">${c.country||''} ${c.followers?'· '+c.followers:''}</div></div></div>`;
-function rFeat(){document.getElementById('featC').innerHTML=allC.length?allC.slice(0,4).map(mCC).join(''):`<div style="grid-column:span 2;text-align:center;padding:16px;color:var(--cd);">Icons coming soon! ⭐</div>`;}
-function rAll(){document.getElementById('allC').innerHTML=allC.length?allC.map(mCC).join(''):`<div style="grid-column:span 2;text-align:center;padding:24px;color:var(--cd);">No icons yet. Admin adds from Admin Panel ⭐</div>`;}
+function rAll(){document.getElementById('allC').innerHTML=allC.length?allC.map(mCC).join(''):`<div style="grid-column:span 2;text-align:center;padding:22px;color:var(--cd);">Icons coming soon! ⭐</div>`;}
 window.fCl=function(){const q=document.getElementById('cSrch').value.toLowerCase();document.getElementById('allC').innerHTML=allC.filter(c=>c.name?.toLowerCase().includes(q)||c.category?.toLowerCase().includes(q)).map(mCC).join('')||`<div style="grid-column:span 2;text-align:center;padding:16px;color:var(--cd);">No results</div>`;};
 
-function lMyComs(){
- const cats=cD?.categories||[];
- const ic={'Music':'🎵','Film':'🎬','Sports':'⚽','Literature':'📚','Wellness':'💪','Nature':'🌿','Fashion':'👗','Food':'🍽️','Automotive':'🚗','Tech':'💻','Beauty':'💄','Leadership':'🎓','Entertainment':'🎭'};
- document.getElementById('myComG').innerHTML=cats.length?cats.map(c=>`<div class="ccard" style="cursor:default;"><div class="cimg">${ic[c]||'🌟'}</div><div class="ci"><div class="cn">${c}</div><div class="ccat">Your Community</div></div></div>`).join(''):`<div style="grid-column:span 2;text-align:center;padding:24px;color:var(--cd);">No communities yet. Update your profile.</div>`;
+// ── CELEBRITY NEWS (from Firestore + static fallback) ──
+async function lNewsFromFirestore(){
+ try{
+  const s=await getDocs(query(collection(db,'celebrityNews'),orderBy('publishedAt','desc'),limit(20)));
+  if(!s.empty){allNews=[];s.forEach(d=>allNews.push({id:d.id,...d.data()}));rNews(allNews);return;}
+ }catch{}
+ // Fallback static news
+ allNews=[
+  {title:'New Album Drop Alert — Global Music Charts Shaken',category:'Music',summary:'A massive new release is taking the world by storm across all streaming platforms.',icon:'🎵',time:'Today'},
+  {title:'World Cup Qualifier Results — Historic Win for Underdogs',category:'Sports',summary:'Shock results across multiple qualifying rounds as new champions emerge.',icon:'⚽',time:'Yesterday'},
+  {title:'Box Office Record Shattered by New Blockbuster',category:'Film',summary:'The global film industry witnesses one of the biggest opening weekends in history.',icon:'🎬',time:'2 days ago'},
+  {title:'Paris Fashion Week — Top Looks of the Season',category:'Fashion',summary:'Designers from around the world unveil stunning collections at this year\'s biggest fashion event.',icon:'👗',time:'3 days ago'},
+  {title:'Sports Star Signs Historic $500M Contract',category:'Sports',summary:'A landmark deal reshapes the economics of professional sports globally.',icon:'🏆',time:'4 days ago'},
+  {title:'Grammy Nominations Announced — Surprises Abound',category:'Music',summary:'This year\'s Grammy nominations include several unexpected artists from around the world.',icon:'🎤',time:'5 days ago'},
+  {title:'Streaming Wars — New Platform Launches Globally',category:'Film',summary:'A major new streaming service launches with exclusive celebrity content and live events.',icon:'📺',time:'6 days ago'},
+  {title:'Wellness Trend — Celebrity Coaches Go Viral',category:'Wellness',summary:'Several fitness coaches gain millions of followers overnight with revolutionary workout methods.',icon:'💪',time:'1 week ago'},
+ ];
+ rNews(allNews);
 }
 
+function rNews(news){
+ const el=document.getElementById('newsFeed');
+ el.innerHTML=news.map(n=>`
+  <div class="news-card">
+   <div class="news-thumb">${n.icon||'📰'}</div>
+   <div class="news-content">
+    <div class="news-cat">${n.category||'ICONIK NEWS'}</div>
+    <div class="news-title">${n.title}</div>
+    <div class="news-meta">${n.time||''} ${n.source?'· '+n.source:''}</div>
+   </div>
+  </div>`).join('');
+}
+window.filterNews=function(cat,btn){
+ document.querySelectorAll('.news-filter-btn').forEach(b=>{b.style.background='transparent';b.style.color='var(--cd)';b.style.border='1px solid var(--gbr)';});
+ btn.style.background='var(--gold)';btn.style.color='var(--obs)';btn.style.border='1px solid var(--gold)';
+ rNews(cat==='all'?allNews:allNews.filter(n=>n.category?.toLowerCase().includes(cat.toLowerCase())));
+};
+
+// ── TOUR BUDDY ──
 window.postTB=async function(){
  const ev=document.getElementById('tbe').value.trim(),ci=document.getElementById('tbc').value.trim();
  if(!ev||!ci){toastF('Event and city required','error');return;}
- try{
-  await addDoc(collection(db,'tourbuddy'),{event:ev,date:document.getElementById('tbd').value,city:ci,message:document.getElementById('tbm').value.trim(),userName:cD?.name||'Member',userId:cU.uid,createdAt:serverTimestamp()});
-  toastF('Tour buddy posted! 🎫','success');
-  ['tbe','tbc','tbm'].forEach(id=>document.getElementById(id).value='');
-  lTB();
- }catch{toastF('Error posting','error');}
+ try{await addDoc(collection(db,'tourbuddy'),{event:ev,date:document.getElementById('tbd').value,city:ci,message:document.getElementById('tbm').value.trim(),userName:cD?.name||'Member',userId:cU.uid,createdAt:serverTimestamp()});toastF('Posted! 🎫','success');['tbe','tbc','tbm'].forEach(id=>document.getElementById(id).value='');lTB();}
+ catch{toastF('Error posting','error');}
 };
-
 async function lTB(){
  const el=document.getElementById('tbList');
- try{
-  const q=query(collection(db,'tourbuddy'),orderBy('createdAt','desc'),limit(10));
-  const s=await getDocs(q);
-  if(s.empty){el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.76rem;padding:14px;">No requests yet. Be the first! 🎫</p></div>`;return;}
-  el.innerHTML='';
-  s.forEach(d=>{const b=d.data();el.innerHTML+=`<div class="pcard"><div class="ph"><div class="pav">${(b.userName||'M').charAt(0)}</div><div><div class="pau">${b.userName||'Member'}</div><div class="pt">${b.date||''} · ${b.city||''}</div></div></div><div class="ptitle">🎫 ${b.event}</div><div class="pbody">${b.message||''}</div></div>`;});
- }catch{}
+ try{const q=query(collection(db,'tourbuddy'),orderBy('createdAt','desc'),limit(10));const s=await getDocs(q);if(s.empty){el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;padding:12px;">No requests yet 🎫</p></div>`;return;}el.innerHTML='';s.forEach(d=>{const b=d.data();el.innerHTML+=`<div class="pcard"><div class="ph"><div class="pav">${(b.userName||'M').charAt(0)}</div><div><div class="pau">${b.userName||'Member'}</div><div class="pt">${b.date||''} · ${b.city||''}</div></div></div><div class="ptitle">🎫 ${b.event}</div><div class="pbody">${b.message||''}</div></div>`;});}
+ catch{}
 }
 
+// ── MESSAGES ──
+async function lMsgsCheck(){
+ try{const q=query(collection(db,'messages'),orderBy('createdAt','desc'),limit(1));const s=await getDocs(q);if(!s.empty)document.getElementById('msgBadge').style.display='inline-block';}
+ catch{}
+}
 async function lMsgs(){
  const el=document.getElementById('msgsList');
  try{
-  const q=query(collection(db,'messages'),where('to','in',['all',cU?.uid||'none']),orderBy('createdAt','desc'),limit(20));
+  document.getElementById('msgBadge').style.display='none';
+  const q=query(collection(db,'messages'),orderBy('createdAt','desc'),limit(20));
   const s=await getDocs(q);
-  if(s.empty){el.innerHTML=`<div class="msg-card"><p style="font-family:'Inter',sans-serif;font-size:0.76rem;color:var(--cd);text-align:center;padding:14px;">No messages yet. Admin will reach out when needed. 📩</p></div>`;return;}
+  if(s.empty){el.innerHTML=`<div class="msg-card"><p style="font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--cd);text-align:center;padding:12px;">No messages yet. Admin will reach out when needed. 📩</p></div>`;return;}
   el.innerHTML='';
-  s.forEach(d=>{
-   const m=d.data(),t=m.createdAt?.toDate?m.createdAt.toDate().toLocaleDateString():'Just now';
-   el.innerHTML+=`<div class="msg-card"><div class="msg-from"><span>${m.fromName||'ICONIK Admin'}</span><span class="msg-from-badge">${m.fromRole||'ADMIN'}</span><span class="msg-time">${t}</span></div><div class="msg-body">${m.content||''}</div></div>`;
-  });
- }catch{el.innerHTML=`<div class="msg-card"><p style="text-align:center;color:var(--cd);padding:14px;">Messages loading...</p></div>`;}
+  s.forEach(d=>{const m=d.data(),t=m.createdAt?.toDate?m.createdAt.toDate().toLocaleDateString():'Just now';el.innerHTML+=`<div class="msg-card"><div class="msg-from"><span>${m.fromName||'ICONIK Admin'}</span><span class="msg-badge">${m.fromRole||'ADMIN'}</span><span class="msg-time">${t}</span></div>${m.subject?`<div class="msg-subj">${m.subject}</div>`:''}<div class="msg-body">${m.content||''}</div></div>`;});
+ }catch{el.innerHTML=`<div class="msg-card"><p style="text-align:center;color:var(--cd);padding:12px;">Loading messages...</p></div>`;}
 }
 
+// ── WELLNESS ──
+window.showWellnessCat=function(cat){
+ const names={fitness:'Fitness & Training',nutrition:'Nutrition & Diet',mental:'Mental Wellness',herbal:'Herbal & Natural',antiaging:'Anti-Aging & Beauty',medical:'Medical Wellness',recovery:'Sports Recovery',womens:"Women's Health"};
+ toastF(`${names[cat]} community coming soon! Stay tuned. 💪`,'success');
+};
+async function lWellnessPartners(){
+ const el=document.getElementById('wellnessPartners');
+ try{const s=await getDocs(collection(db,'wellnessPartners'));if(s.empty){el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;padding:12px;">Wellness partners coming soon! Admin adds verified coaches & products. 💪</p></div>`;return;}el.innerHTML='';s.forEach(d=>{const p=d.data();el.innerHTML+=`<div class="pcard"><div class="ph"><div class="pav">${(p.name||'W').charAt(0)}</div><div><div class="pau">${p.name}</div><div class="pt">${p.specialty||''} · ${p.country||''}</div></div></div><div class="pbody">${p.bio||''}</div></div>`;});}
+ catch{el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:12px;">Wellness Hub loading... 💪</p></div>`;}
+}
+
+// ── AFFILIATE ──
+window.affiliateClick=function(product){toastF(`Redirecting to ${product} affiliate link... Admin will configure links in Admin Panel. 🛍️`,'success');};
+
+// ── PAYMENT ──
+window.showPayment=function(tier,price){
+ selectedTier=tier;selectedTierPrice=price;
+ document.getElementById('payTitle').textContent=`Upgrade to VIP ${tier}`;
+ document.getElementById('payAmount').textContent=`$${price}`;
+ document.getElementById('payStep1').innerHTML=`Send <strong>$${price}</strong> via PayPal to: <strong>iconikglobal01@gmail.com</strong>`;
+ document.getElementById('paymentSection').style.display='block';
+ document.getElementById('paymentSection').scrollIntoView({behavior:'smooth'});
+};
+window.selectPayment=function(el,method){
+ selectedPayMethod=method;
+ document.querySelectorAll('.pay-method').forEach(m=>m.classList.remove('on'));
+ el.classList.add('on');
+ const instructions={
+  paypal:`Send <strong>$${selectedTierPrice}</strong> via PayPal to: <strong>iconikglobal01@gmail.com</strong>`,
+  bitcoin:`Send <strong>$${selectedTierPrice}</strong> worth of Bitcoin (BTC). Contact Admin via WhatsApp for wallet address.`,
+  ethereum:`Send <strong>$${selectedTierPrice}</strong> worth of Ethereum (ETH). Contact Admin via WhatsApp for wallet address.`,
+  usdt:`Send <strong>$${selectedTierPrice}</strong> USDT (TRC20 or ERC20). Contact Admin via WhatsApp for wallet address.`,
+  bnb:`Send <strong>$${selectedTierPrice}</strong> worth of BNB. Contact Admin via WhatsApp for wallet address.`,
+ };
+ document.getElementById('payStep1').innerHTML=instructions[method]||instructions.paypal;
+};
+window.sendUpgradeRequest=async function(){
+ if(!selectedTier){toastF('Please select a membership tier','error');return;}
+ try{
+  await addDoc(collection(db,'messages'),{to:CHIEF,subject:`Upgrade Request — VIP ${selectedTier}`,content:`Member ${cD?.name||'Member'} (${cU.email}) is requesting upgrade to VIP ${selectedTier} ($${selectedTierPrice}/mo) via ${selectedPayMethod}. Please confirm payment and process upgrade.`,fromName:cD?.name||'Member',fromRole:'Member',fromId:cU.uid,type:'upgrade_request',createdAt:serverTimestamp()});
+  toastF(`Upgrade request sent to Admin! 🎉 You will be upgraded within 24 hours after payment confirmation.`,'success');
+ }catch{toastF('Error sending request','error');}
+};
+
+// ── PROFILE ──
 window.saveP=async function(){
  try{
   const d={name:document.getElementById('pNm').value.trim(),phone:document.getElementById('pPh').value.trim(),country:document.getElementById('pCo').value.trim(),city:document.getElementById('pCi').value.trim(),address:document.getElementById('pAd').value.trim(),bio:document.getElementById('pBio').value.trim()};
   await updateDoc(doc(db,'users',cU.uid),d);
   await updateProfile(cU,{displayName:d.name});
-  cD={...cD,...d};
-  document.getElementById('sbNm').textContent=d.name;document.getElementById('nNm').textContent=d.name;
+  cD={...cD,...d};document.getElementById('sbNm').textContent=d.name;document.getElementById('nNm').textContent=d.name;
   toastF('Profile saved! ✅','success');
  }catch{toastF('Error saving','error');}
 };
 
-window.upgP=function(t){toastF(`To upgrade to VIP ${t}: WhatsApp Admin with your email. Pay via PayPal or Crypto. 👑`,'success');};
+// ── COMMUNITIES ──
+function lMyComs(){
+ const cats=cD?.categories||[];
+ const ic={'Music':'🎵','Film':'🎬','Sports':'⚽','Literature':'📚','Wellness':'💪','Nature':'🌿','Fashion':'👗','Food':'🍽️','Automotive':'🚗','Tech':'💻','Beauty':'💄','Leadership':'🎓','Entertainment':'🎭'};
+ document.getElementById('myComG').innerHTML=cats.length?cats.map(c=>`<div class="ccard" style="cursor:default;"><div class="cimg">${ic[c]||'🌟'}</div><div class="ci"><div class="cn">${c}</div><div class="ccat">Your Community</div></div></div>`).join(''):`<div style="grid-column:span 2;text-align:center;padding:22px;color:var(--cd);">No communities yet. Update your profile.</div>`;
+}
 
+// ── VIEW NAV ──
 window.sV=function(nm){
  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
- document.querySelectorAll('.sb-lnk').forEach(l=>l.classList.remove('on'));
- document.getElementById(nm+'V').classList.add('on');cSB();
+ document.getElementById(nm+'V').classList.add('on');
  if(nm==='coms')lMyComs();if(nm==='tb')lTB();if(nm==='msgs')lMsgs();
+ if(nm==='wellness')lWellnessPartners();if(nm==='news')lNewsFromFirestore();
 };
+window.setBN=function(nm){document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('on'));document.getElementById('bn-'+nm)?.classList.add('on');};
 
+// ── AUTH TAB ──
 window.sTab=function(t){
  document.querySelectorAll('.atab').forEach(a=>a.classList.remove('on'));
  document.querySelectorAll('.atab')[t==='login'?0:1].classList.add('on');
@@ -578,7 +979,7 @@ window.cSB=function(){document.getElementById('sb').classList.remove('on');docum
 window.tC=function(el){el.classList.toggle('on');};
 function toastF(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='toast on '+type;setTimeout(()=>t.className='toast',3500);}
 function sM(el,msg,type){el.textContent=msg;el.className='amsg '+type;el.style.display='block';}
-function aE(c){const e={'auth/user-not-found':'No account found with this email','auth/wrong-password':'Incorrect password','auth/email-already-in-use':'Email already registered','auth/weak-password':'Min. 6 characters','auth/invalid-email':'Invalid email address','auth/too-many-requests':'Too many attempts. Try again later','auth/invalid-credential':'Invalid email or password'};return e[c]||'Something went wrong. Try again.';}
+function aE(c){const e={'auth/user-not-found':'No account found','auth/wrong-password':'Incorrect password','auth/email-already-in-use':'Email already registered','auth/weak-password':'Min. 6 characters','auth/invalid-email':'Invalid email','auth/too-many-requests':'Too many attempts. Try later','auth/invalid-credential':'Invalid email or password'};return e[c]||'Something went wrong.';}
 </script>
 </body>
 </html>
