@@ -299,12 +299,34 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-he
       </select>
      </div>
      <div class="fg"><label class="fl">Post Type</label>
-      <select class="fs" id="poTyp"><option>Update</option><option>News</option><option>Tour/Event</option><option>Discussion</option><option>Alert</option></select>
+      <select class="fs" id="poTyp">
+       <option value="text">✏️ Text</option>
+       <option value="photo">📸 Photo</option>
+       <option value="video">🎬 Video</option>
+       <option value="fanart">🎨 Fan Art</option>
+       <option value="news">📰 News</option>
+       <option value="event">🎫 Tour/Event</option>
+      </select>
      </div>
     </div>
     <div class="fg"><label class="fl">Title</label><input class="fi" type="text" id="poTit" placeholder="Post headline"/></div>
     <div class="fg"><label class="fl">Content <span class="req">*</span></label><input class="fi" type="text" id="poCon" placeholder="Post content..."/></div>
-    <button class="btn btn-g" onclick="createPost()">Publish Post →</button>
+    <!-- MEDIA UPLOAD -->
+    <div class="fg">
+     <label class="fl">Attach Media (Photo / Video)</label>
+     <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:rgba(255,255,255,0.03);border:1px dashed var(--gbr);cursor:pointer;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;">
+      📎 Choose file (image or video)
+      <input type="file" id="adminMediaFile" accept="image/*,video/*" style="display:none;" onchange="previewAdminMedia(this)"/>
+     </label>
+     <div id="adminMediaPreview" style="display:none;margin-top:8px;position:relative;">
+      <img id="adminPreviewImg" style="width:100%;max-height:180px;object-fit:cover;display:none;"/>
+      <video id="adminPreviewVid" controls style="width:100%;max-height:180px;display:none;"></video>
+      <button onclick="clearAdminMedia()" style="position:absolute;top:5px;right:5px;background:rgba(0,0,0,0.7);border:none;color:#fff;width:24px;height:24px;border-radius:50%;cursor:pointer;">✕</button>
+     </div>
+     <p class="fhint">Posts from Admin show as "ICONIK" with OFFICIAL badge — like Facebook/Instagram management posts.</p>
+    </div>
+    <div class="fg"><label class="fl">Media URL (optional — paste instead of upload)</label><input class="fi" type="text" id="poMedia" placeholder="https://... (image or video URL)"/></div>
+    <button class="btn btn-g" onclick="createPost()" id="createPostBtn">Publish as ICONIK →</button>
    </div>
    <div class="sh">Recent Posts</div>
    <div id="admPosts"><div class="ldr"><div class="lring"></div></div></div>
@@ -557,16 +579,72 @@ window.delCeleb=async function(id){
  catch{toastF('Error','error');}
 };
 
-// POSTS
+// ── ADMIN MEDIA PREVIEW ──
+let adminMediaFile=null;
+window.previewAdminMedia=function(input){
+ const file=input.files[0];if(!file)return;
+ adminMediaFile=file;
+ document.getElementById('adminMediaPreview').style.display='block';
+ const isVideo=file.type.startsWith('video');
+ document.getElementById('adminPreviewImg').style.display=isVideo?'none':'block';
+ document.getElementById('adminPreviewVid').style.display=isVideo?'block':'none';
+ const url=URL.createObjectURL(file);
+ if(isVideo)document.getElementById('adminPreviewVid').src=url;
+ else document.getElementById('adminPreviewImg').src=url;
+};
+window.clearAdminMedia=function(){
+ adminMediaFile=null;
+ document.getElementById('adminMediaPreview').style.display='none';
+ document.getElementById('adminMediaFile').value='';
+};
+
+async function uploadAdminMedia(file){
+ const fd=new FormData();
+ fd.append('file',file);
+ fd.append('upload_preset','iconik_uploads');
+ const res=await fetch('https://api.cloudinary.com/v1_1/iconik-global/upload',{method:'POST',body:fd});
+ if(!res.ok)throw new Error('Upload failed');
+ const data=await res.json();
+ return{url:data.secure_url,type:file.type.startsWith('video')?'video':'image'};
+}
+
+// POSTS — ICONIK branding
 window.createPost=async function(){
  const con=document.getElementById('poCon').value.trim();
  if(!con){toastF('Content required','error');return;}
+ const btn=document.getElementById('createPostBtn');
+ btn.textContent='Publishing...';btn.disabled=true;
  try{
-  await addDoc(collection(db,'posts'),{title:document.getElementById('poTit').value.trim(),content:con,category:document.getElementById('poCat').value,type:document.getElementById('poTyp').value,authorName:'ICONIK Admin',authorRole:'Chief Admin',authorId:cU.uid,createdAt:serverTimestamp()});
-  toastF('Post published! 📝','success');
-  document.getElementById('poTit').value='';document.getElementById('poCon').value='';
-  lPosts();
- }catch{toastF('Error publishing','error');}
+  let mediaUrl=document.getElementById('poMedia').value.trim();
+  let mediaType='';
+  if(adminMediaFile){
+   toastF('Uploading media... ⏳');
+   const up=await uploadAdminMedia(adminMediaFile);
+   mediaUrl=up.url;mediaType=up.type;
+  }else if(mediaUrl){
+   mediaType=mediaUrl.match(/\.(mp4|mov|webm|avi)/i)?'video':'image';
+  }
+  await addDoc(collection(db,'posts'),{
+   title:document.getElementById('poTit').value.trim(),
+   content:con,
+   category:document.getElementById('poCat').value,
+   postType:document.getElementById('poTyp').value,
+   mediaUrl,mediaType,
+   // ✅ ICONIK branding — not "ICONIK Admin"
+   authorName:'ICONIK',
+   authorRole:'admin',
+   authorId:cU.uid,
+   likes:0,likedBy:[],commentCount:0,
+   createdAt:serverTimestamp()
+  });
+  toastF('Post published as ICONIK! 📝','success');
+  document.getElementById('poTit').value='';
+  document.getElementById('poCon').value='';
+  document.getElementById('poMedia').value='';
+  clearAdminMedia();
+  lPosts();lOverview();
+ }catch(e){toastF('Error publishing','error');console.error(e);}
+ finally{btn.textContent='Publish as ICONIK →';btn.disabled=false;}
 };
 async function lPosts(){
  const el=document.getElementById('admPosts');
@@ -693,3 +771,4 @@ function aE(c){const e={'auth/user-not-found':'No account found','auth/wrong-pas
 </script>
 </body>
 </html>
+
