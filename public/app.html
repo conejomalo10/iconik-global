@@ -404,16 +404,39 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
    <!-- COMMUNITY POST FORM -->
    <div class="post-form">
     <div class="post-form-header">
-     <div class="post-form-av" id="pfAv">U</div>
-     <input class="post-form-input" type="text" id="newPostText" placeholder="Share something with your communities..."/>
+     <div class="post-form-av" id="pfAv" style="overflow:hidden;flex-shrink:0;">U</div>
+     <input class="post-form-input" type="text" id="newPostText" placeholder="Share with your communities..."/>
+    </div>
+    <!-- MEDIA PREVIEW -->
+    <div id="mediaPreview" style="display:none;margin:8px 0;position:relative;">
+     <img id="mediaPreviewImg" style="width:100%;max-height:200px;object-fit:cover;display:none;"/>
+     <video id="mediaPreviewVid" controls style="width:100%;max-height:200px;display:none;"></video>
+     <button onclick="clearMedia()" style="position:absolute;top:5px;right:5px;background:rgba(0,0,0,0.7);border:none;color:#fff;width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:0.8rem;">✕</button>
     </div>
     <div class="post-form-actions">
      <select class="post-type-select" id="newPostCat">
-      <option value="">Select community...</option>
+      <option value="">Community...</option>
       <option>Music</option><option>Film & TV</option><option>Sports</option>
       <option>Literature</option><option>Wellness</option><option>Fashion</option>
       <option>Food</option><option>Tech</option><option>Beauty</option>
      </select>
+     <select class="post-type-select" id="newPostType" style="width:auto;">
+      <option value="text">✏️ Text</option>
+      <option value="fanart">🎨 Fan Art</option>
+      <option value="photo">📸 Photo</option>
+      <option value="video">🎬 Video</option>
+     </select>
+    </div>
+    <!-- MEDIA UPLOAD ROW (VIP only) -->
+    <div id="mediaUploadRow" style="display:none;margin-top:8px;display:flex;gap:7px;align-items:center;flex-wrap:wrap;">
+     <label style="font-family:'Montserrat',sans-serif;font-size:0.58rem;font-weight:700;letter-spacing:0.08em;padding:7px 12px;background:rgba(255,184,0,0.08);border:1px solid var(--gbr);color:var(--gold);cursor:pointer;">
+      📎 Attach Media
+      <input type="file" id="mediaFileInput" accept="image/*,video/*" style="display:none;" onchange="previewMedia(this)"/>
+     </label>
+     <span style="font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--cd);" id="mediaFileName"></span>
+     <button class="post-submit" onclick="submitPost()">Post</button>
+    </div>
+    <div id="basicPostRow" style="display:flex;justify-content:flex-end;margin-top:8px;">
      <button class="post-submit" onclick="submitPost()">Post</button>
     </div>
    </div>
@@ -589,6 +612,19 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
   <!-- PROFILE -->
   <div class="view" id="profileV">
    <div class="sh">My Profile</div>
+   <!-- PROFILE PICTURE -->
+   <div class="profform" style="text-align:center;margin-bottom:12px;">
+    <div class="profform-t" style="text-align:left;">Profile Picture</div>
+    <div style="position:relative;display:inline-block;margin-bottom:12px;">
+     <div id="profilePicDisplay" style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--obs);overflow:hidden;border:3px solid var(--gbr);margin:0 auto;">U</div>
+     <label style="position:absolute;bottom:0;right:0;width:26px;height:26px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.7rem;">
+      📷
+      <input type="file" id="profilePicInput" accept="image/*" style="display:none;" onchange="uploadProfilePic(this)"/>
+     </label>
+    </div>
+    <div style="font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);">Tap 📷 to change your profile picture</div>
+    <div id="picUploadStatus" style="font-family:'Inter',sans-serif;font-size:0.66rem;margin-top:6px;"></div>
+   </div>
    <div class="profform">
     <div class="profform-t">Profile Settings</div>
     <div class="fr">
@@ -663,6 +699,19 @@ function showDash(){
  document.getElementById('sbTier').textContent='VIP '+(cD?.tier||'Fan');
  document.getElementById('pfAv').textContent=l;
  if(vs==='verified')document.getElementById('sbVS').style.display='inline-block';
+ // Load profile picture if exists
+ if(cD?.profilePic){
+  const picEl=document.getElementById('profilePicDisplay');
+  picEl.innerHTML=`<img src="${cD.profilePic}" style="width:100%;height:100%;object-fit:cover;"/>`;
+  document.getElementById('pfAv').innerHTML=`<img src="${cD.profilePic}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
+  document.getElementById('nAv').innerHTML=`<img src="${cD.profilePic}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
+ }
+ // Show media upload for VIP members
+ const tier=cD?.tier||'Fan';
+ if(tier==='Bronze'||tier==='Silver'||tier==='Gold'){
+  document.getElementById('mediaUploadRow').style.display='flex';
+  document.getElementById('basicPostRow').style.display='none';
+ }
  document.getElementById('wH').textContent=`Welcome, ${nm.split(' ')[0]}! 👋`;
  document.getElementById('wS').textContent=`${cats.length} communities · ${cD?.tier||'Fan'} Member`;
  document.getElementById('sCom').textContent=cats.length;
@@ -721,61 +770,151 @@ async function lFeed(){
   el.innerHTML='';
   s.forEach(d=>{
    const p=d.data(),t=p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString():'Just now';
-   const liked=p.likedBy?.includes(cU?.uid);
+   // ✅ ICONIK branding for admin posts
+   const isAdmin=p.authorRole==='admin'||p.authorRole==='Chief Admin'||p.authorId===CHIEF;
+   const displayName=isAdmin?'ICONIK':p.authorName||'Member';
+   const displayAv=isAdmin?'★':displayName.charAt(0);
+   const avBg=isAdmin?'background:linear-gradient(135deg,var(--gold),var(--gg));':'background:linear-gradient(135deg,#3B82F6,#1D4ED8);';
+   // Like state — check array safely
+   const likedBy=Array.isArray(p.likedBy)?p.likedBy:[];
+   const liked=cU&&likedBy.includes(cU.uid);
+   const likeCount=p.likes||0;
+   // Media
+   let mediaHtml='';
+   if(p.mediaUrl&&p.mediaType==='video'){mediaHtml=`<video src="${p.mediaUrl}" controls style="width:100%;max-height:220px;margin-bottom:8px;border:1px solid var(--gbr);"></video>`;}
+   else if(p.mediaUrl){mediaHtml=`<img src="${p.mediaUrl}" style="width:100%;max-height:250px;object-fit:cover;margin-bottom:8px;border:1px solid var(--gbr);" onerror="this.style.display='none'"/>`;}
+   // Post type badge
+   const typeBadge=p.postType&&p.postType!=='text'?`<span style="font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.08em;color:var(--purple);background:rgba(139,92,246,0.12);padding:2px 5px;margin-right:4px;">${p.postType==='fanart'?'🎨 FAN ART':p.postType==='photo'?'📸 PHOTO':'🎬 VIDEO'}</span>`:'';
    el.innerHTML+=`
    <div class="pcard" id="post-${d.id}">
     <div class="ph">
-     <div class="pav">${(p.authorName||'M').charAt(0)}</div>
+     <div class="pav" style="${avBg}color:var(--obs);">${displayAv}</div>
      <div>
-      <div class="pau">${p.authorName||'Member'}</div>
+      <div class="pau">${displayName}${isAdmin?` <span style="font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.08em;color:var(--obs);background:var(--gold);padding:1px 5px;margin-left:3px;">OFFICIAL</span>`:''}</div>
       <div class="pt">${t} ${p.category?`· ${p.category}`:''}</div>
      </div>
-     ${p.category?`<span class="ptag">${p.category}</span>`:''}
+     <div style="margin-left:auto;display:flex;gap:3px;align-items:center;">${typeBadge}${p.category?`<span class="ptag">${p.category}</span>`:''}</div>
     </div>
     ${p.title?`<div class="ptitle">${p.title}</div>`:''}
+    ${mediaHtml}
     <div class="pbody">${p.content||''}</div>
     <div class="pacts">
-     <button class="pa ${liked?'liked':''}" onclick="toggleLike('${d.id}',${liked})">❤️ <span id="likes-${d.id}">${p.likes||0}</span></button>
-     <button class="pa" onclick="toggleComments('${d.id}')">💬 Comment</button>
-     <button class="pa" onclick="sharePost('${d.id}','${p.content?.substring(0,50)||''}')">🔗 Share</button>
+     <button class="pa ${liked?'liked':''}" onclick="toggleLike('${d.id}')" id="likeBtn-${d.id}">
+      ${liked?'❤️':'🤍'} <span id="likeCount-${d.id}">${likeCount}</span>
+     </button>
+     <button class="pa" onclick="toggleComments('${d.id}')">💬 <span id="commentCount-${d.id}">${p.commentCount||0}</span></button>
+     <button class="pa" onclick="sharePost('${d.id}','${(p.content||'').substring(0,50).replace(/'/g,'').replace(/"/g,'')}')">🔗 Share</button>
     </div>
     <div class="comments-section" id="comments-${d.id}" style="display:none;">
      <div id="commentsList-${d.id}"></div>
      <div class="comment-input-row">
-      <input class="comment-input" type="text" id="commentInput-${d.id}" placeholder="Write a comment..."/>
+      <input class="comment-input" type="text" id="commentInput-${d.id}" placeholder="Write a comment..." onkeypress="if(event.key==='Enter')submitComment('${d.id}')"/>
       <button class="comment-send" onclick="submitComment('${d.id}')">Post</button>
      </div>
     </div>
    </div>`;
   });
- }catch{el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:14px;">Feed loading... ✨</p></div>`;}
+ }catch(e){el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:14px;">Feed loading... ✨</p></div>`;console.error(e);}
+}
 }
 
-// ── SUBMIT MEMBER POST ──
+// ── MEDIA PREVIEW ──
+let selectedMediaFile=null;
+window.previewMedia=function(input){
+ const file=input.files[0];if(!file)return;
+ selectedMediaFile=file;
+ document.getElementById('mediaFileName').textContent=file.name;
+ document.getElementById('mediaPreview').style.display='block';
+ const isVideo=file.type.startsWith('video');
+ document.getElementById('mediaPreviewImg').style.display=isVideo?'none':'block';
+ document.getElementById('mediaPreviewVid').style.display=isVideo?'block':'none';
+ const url=URL.createObjectURL(file);
+ if(isVideo)document.getElementById('mediaPreviewVid').src=url;
+ else document.getElementById('mediaPreviewImg').src=url;
+};
+window.clearMedia=function(){
+ selectedMediaFile=null;
+ document.getElementById('mediaPreview').style.display='none';
+ document.getElementById('mediaFileInput').value='';
+ document.getElementById('mediaFileName').textContent='';
+ document.getElementById('mediaPreviewImg').src='';
+ document.getElementById('mediaPreviewVid').src='';
+};
+
+async function uploadToCloudinary(file){
+ const fd=new FormData();
+ fd.append('file',file);
+ fd.append('upload_preset','iconik_uploads');
+ const res=await fetch('https://api.cloudinary.com/v1_1/iconik-global/upload',{method:'POST',body:fd});
+ if(!res.ok)throw new Error('Upload failed');
+ const data=await res.json();
+ return{url:data.secure_url,type:file.type.startsWith('video')?'video':'image'};
+}
+
+// ── SUBMIT POST ──
 window.submitPost=async function(){
  const text=document.getElementById('newPostText').value.trim();
  const cat=document.getElementById('newPostCat').value;
- if(!text){toastF('Please write something first','error');return;}
+ const postType=document.getElementById('newPostType')?.value||'text';
+ if(!text&&!selectedMediaFile){toastF('Please write something or attach media','error');return;}
+ const submitBtns=document.querySelectorAll('.post-submit');
+ submitBtns.forEach(b=>{b.textContent='Posting...';b.disabled=true;});
  try{
-  await addDoc(collection(db,'posts'),{content:text,category:cat,authorName:cD?.name||'Member',authorId:cU.uid,authorRole:'member',likes:0,likedBy:[],createdAt:serverTimestamp()});
+  let mediaUrl='',mediaType='';
+  if(selectedMediaFile){
+   toastF('Uploading media... ⏳');
+   try{const up=await uploadToCloudinary(selectedMediaFile);mediaUrl=up.url;mediaType=up.type;}
+   catch{toastF('Media upload failed — posting text only','error');}
+  }
+  await addDoc(collection(db,'posts'),{
+   content:text,category:cat,postType,
+   mediaUrl,mediaType,
+   authorName:cD?.name||'Member',
+   authorId:cU.uid,
+   authorRole:cD?.role||'member',
+   authorTier:cD?.tier||'Fan',
+   likes:0,likedBy:[],commentCount:0,
+   createdAt:serverTimestamp()
+  });
   toastF('Posted! 🌟','success');
   document.getElementById('newPostText').value='';
+  clearMedia();
   lFeed();
- }catch{toastF('Error posting','error');}
+ }catch(e){toastF('Error posting. Try again.','error');console.error(e);}
+ finally{submitBtns.forEach(b=>{b.textContent='Post';b.disabled=false;});}
 };
 
-// ── LIKE ──
-window.toggleLike=async function(postId,alreadyLiked){
- if(!cU)return;
+// ── LIKE — OPTIMISTIC UI (no full reload) ──
+window.toggleLike=async function(postId){
+ if(!cU){toastF('Sign in to like posts','error');return;}
+ const btn=document.getElementById(`likeBtn-${postId}`);
+ const countEl=document.getElementById(`likeCount-${postId}`);
+ const isLiked=btn.classList.contains('liked');
+ const currentCount=parseInt(countEl.textContent)||0;
+ // Optimistic update
+ if(isLiked){
+  btn.classList.remove('liked');btn.innerHTML=`🤍 <span id="likeCount-${postId}">${currentCount-1}</span>`;
+ }else{
+  btn.classList.add('liked');btn.innerHTML=`❤️ <span id="likeCount-${postId}">${currentCount+1}</span>`;
+ }
  try{
   const pRef=doc(db,'posts',postId);
-  if(alreadyLiked){
-   await updateDoc(pRef,{likes:increment(-1),likedBy:(await getDoc(pRef)).data().likedBy.filter(id=>id!==cU.uid)});
+  const snap=await getDoc(pRef);
+  if(!snap.exists())return;
+  const likedBy=Array.isArray(snap.data().likedBy)?snap.data().likedBy:[];
+  if(isLiked){
+   await updateDoc(pRef,{likes:Math.max(0,(snap.data().likes||1)-1),likedBy:likedBy.filter(id=>id!==cU.uid)});
   }else{
-   await updateDoc(pRef,{likes:increment(1),likedBy:[...(await getDoc(pRef)).data().likedBy,cU.uid]});
+   if(!likedBy.includes(cU.uid)){
+    await updateDoc(pRef,{likes:(snap.data().likes||0)+1,likedBy:[...likedBy,cU.uid]});
+   }
   }
-  lFeed();
- }catch{}
+ }catch{
+  // Revert on error
+  if(isLiked){btn.classList.add('liked');btn.innerHTML=`❤️ <span id="likeCount-${postId}">${currentCount}</span>`;}
+  else{btn.classList.remove('liked');btn.innerHTML=`🤍 <span id="likeCount-${postId}">${currentCount}</span>`;}
+  toastF('Error updating like','error');
+ }
 };
 
 // ── COMMENTS ──
@@ -801,7 +940,12 @@ window.submitComment=async function(postId){
  if(!text)return;
  try{
   await addDoc(collection(db,'posts',postId,'comments'),{text,name:cD?.name||'Member',userId:cU.uid,createdAt:serverTimestamp()});
-  input.value='';lComments(postId);
+  // Increment comment count
+  await updateDoc(doc(db,'posts',postId),{commentCount:increment(1)});
+  input.value='';
+  lComments(postId);
+  const cc=document.getElementById(`commentCount-${postId}`);
+  if(cc)cc.textContent=parseInt(cc.textContent||0)+1;
  }catch{toastF('Error posting comment','error');}
 };
 
@@ -936,7 +1080,34 @@ window.sendUpgradeRequest=async function(){
  }catch{toastF('Error sending request','error');}
 };
 
-// ── PROFILE ──
+// ── PROFILE PICTURE UPLOAD ──
+window.uploadProfilePic=async function(input){
+ const file=input.files[0];if(!file)return;
+ const status=document.getElementById('picUploadStatus');
+ status.textContent='Uploading...';status.style.color='var(--warn)';
+ try{
+  const fd=new FormData();
+  fd.append('file',file);
+  fd.append('upload_preset','iconik_uploads');
+  const res=await fetch('https://api.cloudinary.com/v1_1/iconik-global/upload',{method:'POST',body:fd});
+  if(!res.ok)throw new Error('Upload failed');
+  const data=await res.json();
+  const picUrl=data.secure_url;
+  // Save to Firestore
+  await updateDoc(doc(db,'users',cU.uid),{profilePic:picUrl});
+  cD={...cD,profilePic:picUrl};
+  // Update all avatar displays
+  const imgTag=`<img src="${picUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
+  document.getElementById('profilePicDisplay').innerHTML=imgTag;
+  document.getElementById('pfAv').innerHTML=imgTag;
+  document.getElementById('nAv').innerHTML=imgTag;
+  document.getElementById('sbAv').innerHTML=imgTag.replace('border-radius:50%;','');
+  status.textContent='✅ Profile picture updated!';status.style.color='var(--ok)';
+  toastF('Profile picture updated! 📸','success');
+ }catch(e){status.textContent='❌ Upload failed. Check your internet and try again.';status.style.color='var(--err)';console.error(e);}
+};
+
+// ── SAVE PROFILE ──
 window.saveP=async function(){
  try{
   const d={name:document.getElementById('pNm').value.trim(),phone:document.getElementById('pPh').value.trim(),country:document.getElementById('pCo').value.trim(),city:document.getElementById('pCi').value.trim(),address:document.getElementById('pAd').value.trim(),bio:document.getElementById('pBio').value.trim()};
