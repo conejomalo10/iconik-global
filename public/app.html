@@ -1104,35 +1104,60 @@ window.uploadProfilePic=async function(input){
   document.getElementById('sbAv').innerHTML=imgTag.replace('border-radius:50%;','');
   status.textContent='✅ Profile picture updated!';status.style.color='var(--ok)';
   toastF('Profile picture updated! 📸','success');
- }catch(e){status.textContent='❌ Upload failed. Check your internet and try again.';status.style.color='var(--err)';console.error(e);}
+ }catch(e){
+  status.textContent='❌ Upload failed. Check your internet and try again.';
+  status.style.color='var(--err)';
+  console.error(e);
+ }
 };
 
 // ── SAVE PROFILE ──
 window.saveP=async function(){
  try{
-  const d={name:document.getElementById('pNm').value.trim(),phone:document.getElementById('pPh').value.trim(),country:document.getElementById('pCo').value.trim(),city:document.getElementById('pCi').value.trim(),address:document.getElementById('pAd').value.trim(),bio:document.getElementById('pBio').value.trim()};
+  const d={
+   name:document.getElementById('pNm').value.trim(),
+   phone:document.getElementById('pPh').value.trim(),
+   country:document.getElementById('pCo').value.trim(),
+   city:document.getElementById('pCi').value.trim(),
+   address:document.getElementById('pAd').value.trim(),
+   bio:document.getElementById('pBio').value.trim()
+  };
   await updateDoc(doc(db,'users',cU.uid),d);
   await updateProfile(cU,{displayName:d.name});
-  cD={...cD,...d};document.getElementById('sbNm').textContent=d.name;document.getElementById('nNm').textContent=d.name;
+  cD={...cD,...d};
+  document.getElementById('sbNm').textContent=d.name;
+  document.getElementById('nNm').textContent=d.name;
   toastF('Profile saved! ✅','success');
- }catch{toastF('Error saving','error');}
+ }catch(e){
+  toastF('Error saving','error');
+  console.error(e);
+ }
 };
 
 // ── COMMUNITIES ──
 function lMyComs(){
  const cats=cD?.categories||[];
  const ic={'Music':'🎵','Film':'🎬','Sports':'⚽','Literature':'📚','Wellness':'💪','Nature':'🌿','Fashion':'👗','Food':'🍽️','Automotive':'🚗','Tech':'💻','Beauty':'💄','Leadership':'🎓','Entertainment':'🎭'};
- document.getElementById('myComG').innerHTML=cats.length?cats.map(c=>`<div class="ccard" style="cursor:default;"><div class="cimg">${ic[c]||'🌟'}</div><div class="ci"><div class="cn">${c}</div><div class="ccat">Your Community</div></div></div>`).join(''):`<div style="grid-column:span 2;text-align:center;padding:22px;color:var(--cd);">No communities yet. Update your profile.</div>`;
+ document.getElementById('myComG').innerHTML=cats.length ? 
+  cats.map(c=>`<div class="ccard" style="cursor:default;"><div class="cimg">\( {ic[c]||'🌟'}</div><div class="ci"><div class="cn"> \){c}</div><div class="ccat">Your Community</div></div></div>`).join('') :
+  `<div style="grid-column:span 2;text-align:center;padding:22px;color:var(--cd);">No communities yet. Update your profile.</div>`;
 }
 
 // ── VIEW NAV ──
 window.sV=function(nm){
  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
  document.getElementById(nm+'V').classList.add('on');
- if(nm==='coms')lMyComs();if(nm==='tb')lTB();if(nm==='msgs')lMsgs();
- if(nm==='wellness')lWellnessPartners();if(nm==='news')lNewsFromFirestore();
+ if(nm==='coms') lMyComs();
+ if(nm==='tb') lTB();
+ if(nm==='msgs') lMsgs();
+ if(nm==='wellness') lWellnessPartners();
+ if(nm==='news') lNewsFromFirestore();
 };
-window.setBN=function(nm){document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('on'));document.getElementById('bn-'+nm)?.classList.add('on');};
+
+window.setBN=function(nm){
+ document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('on'));
+ document.getElementById('bn-'+nm)?.classList.add('on');
+};
 
 // ── AUTH TAB ──
 window.sTab=function(t){
@@ -1148,9 +1173,32 @@ window.sTab=function(t){
 window.togSB=function(){document.getElementById('sb').classList.toggle('on');document.getElementById('sbOv').classList.toggle('on');};
 window.cSB=function(){document.getElementById('sb').classList.remove('on');document.getElementById('sbOv').classList.remove('on');};
 window.tC=function(el){el.classList.toggle('on');};
-function toastF(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='toast on '+type;setTimeout(()=>t.className='toast',3500);}
-function sM(el,msg,type){el.textContent=msg;el.className='amsg '+type;el.style.display='block';}
-function aE(c){const e={'auth/user-not-found':'No account found','auth/wrong-password':'Incorrect password','auth/email-already-in-use':'Email already registered','auth/weak-password':'Min. 6 characters','auth/invalid-email':'Invalid email','auth/too-many-requests':'Too many attempts. Try later','auth/invalid-credential':'Invalid email or password'};return e[c]||'Something went wrong.';}
+
+function toastF(msg,type=''){
+ const t=document.getElementById('toast');
+ t.textContent=msg;
+ t.className='toast on '+type;
+ setTimeout(()=>t.className='toast',3500);
+}
+
+function sM(el,msg,type){
+ el.textContent=msg;
+ el.className='amsg '+type;
+ el.style.display='block';
+}
+
+function aE(c){
+ const e={
+  'auth/user-not-found':'No account found',
+  'auth/wrong-password':'Incorrect password',
+  'auth/email-already-in-use':'Email already registered',
+  'auth/weak-password':'Min. 6 characters',
+  'auth/invalid-email':'Invalid email',
+  'auth/too-many-requests':'Too many attempts. Try later',
+  'auth/invalid-credential':'Invalid email or password'
+ };
+ return e[c]||'Something went wrong.';
+}
 </script>
 </body>
 </html>
