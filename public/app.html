@@ -291,6 +291,35 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
 .celeb-hero-name{position:absolute;bottom:12px;left:14px;font-family:'Playfair Display',serif;font-weight:900;font-size:1.3rem;color:var(--ch);}
 .celeb-hero-cat{position:absolute;bottom:34px;left:14px;font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.12em;color:var(--gold);}
 .celeb-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px;}
+/* CHAT */
+.chat-tab-btn{white-space:nowrap;font-family:'Montserrat',sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.08em;padding:6px 12px;background:transparent;color:var(--cd);border:1px solid var(--gbr);cursor:pointer;flex-shrink:0;transition:all 0.2s;}
+.chat-tab-btn.on{background:var(--gold);color:var(--obs);border-color:var(--gold);}
+.chat-msg{display:flex;gap:7px;animation:fu 0.2s ease;}
+.chat-msg.mine{flex-direction:row-reverse;}
+.chat-av{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.6rem;color:var(--obs);flex-shrink:0;overflow:hidden;}
+.chat-av img{width:100%;height:100%;object-fit:cover;}
+.chat-bubble{max-width:75%;padding:8px 11px;font-family:'Inter',sans-serif;font-size:0.72rem;line-height:1.5;}
+.chat-msg:not(.mine) .chat-bubble{background:var(--obs3);border:1px solid var(--gbr);color:var(--ch);border-radius:0 8px 8px 8px;}
+.chat-msg.mine .chat-bubble{background:linear-gradient(135deg,var(--gold),var(--gg));color:var(--obs);border-radius:8px 0 8px 8px;}
+.chat-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.58rem;color:var(--gold);margin-bottom:2px;}
+.chat-msg.mine .chat-name{text-align:right;color:var(--obs);}
+.chat-time{font-family:'Inter',sans-serif;font-size:0.54rem;color:rgba(189,181,166,0.4);margin-top:3px;}
+/* EVENT CARDS */
+.event-card{background:var(--gb);border:1px solid var(--gbr);margin-bottom:9px;overflow:hidden;transition:all 0.3s;}
+.event-card:hover{border-color:var(--gbri);}
+.event-banner{width:100%;height:85px;background:linear-gradient(135deg,var(--obs2),var(--obs3));display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative;}
+.event-date-badge{position:absolute;top:8px;right:8px;background:var(--gold);color:var(--obs);font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;padding:3px 8px;}
+.event-info{padding:11px;}
+.event-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.8rem;color:var(--ch);margin-bottom:3px;}
+.event-meta{font-family:'Inter',sans-serif;font-size:0.64rem;color:var(--cd);margin-bottom:8px;}
+.event-price{font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--gold);margin-bottom:8px;}
+.event-btn{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.6rem;letter-spacing:0.1em;padding:8px 14px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;}
+/* VIP CONTENT */
+.vip-content-card{background:linear-gradient(135deg,rgba(255,184,0,0.06),rgba(255,149,0,0.02));border:1px solid var(--gbr);padding:14px;margin-bottom:9px;position:relative;overflow:hidden;}
+.vip-content-card::before{content:'👑';position:absolute;top:8px;right:10px;font-size:0.9rem;opacity:0.4;}
+.vip-content-type{font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.1em;color:var(--gold);margin-bottom:5px;}
+.vip-content-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.78rem;color:var(--ch);margin-bottom:5px;}
+.vip-content-body{font-family:'Inter',sans-serif;font-size:0.72rem;color:var(--cd);line-height:1.6;}
 @media(max-width:480px){.abox{padding:22px 14px;}.fr{grid-template-columns:1fr;}}
 </style>
 </head>
@@ -414,7 +443,12 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
    <div class="sb-lnk" onclick="sV('tb');cSB()"><span class="sb-ic">🎫</span>Tour Buddy</div>
    <div class="sb-lnk" onclick="sV('notifs');cSB()"><span class="sb-ic">🔔</span>Notifications<span class="sb-new" id="notifBadgeSB" style="display:none;">NEW</span></div>
    <div class="sb-lnk" onclick="sV('msgs');cSB()"><span class="sb-ic">📩</span>Messages<span class="sb-new" id="msgBadge" style="display:none;">NEW</span></div>
-   <div class="sb-sec">Discover</div>
+   <div class="sb-sec">Community</div>
+   <div class="sb-lnk" onclick="sV('chat');cSB()"><span class="sb-ic">💬</span>Live Chat</div>
+   <div class="sb-lnk" onclick="sV('events');cSB()"><span class="sb-ic">🎟️</span>Events & Tickets</div>
+   <div class="sb-lnk" onclick="sV('vip');cSB()"><span class="sb-ic">👑</span>VIP Exclusive</div>
+   <div class="sb-lnk" onclick="sV('referral');cSB()"><span class="sb-ic">🎁</span>Refer & Earn</div>
+   <div class="sb-lnk" onclick="sV('appdownload');cSB()"><span class="sb-ic">📱</span>Get the App</div>
    <div class="sb-lnk" onclick="sV('wellness');cSB()"><span class="sb-ic">💪</span>Wellness Hub</div>
    <div class="sb-lnk" onclick="sV('affiliate');cSB()"><span class="sb-ic">🛍️</span>Shop & Earn</div>
    <div class="sb-sec">Account</div>
@@ -727,6 +761,157 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
   <div class="view" id="celebSingleV">
    <button onclick="sV('celebpages')" style="font-family:'Montserrat',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;padding:7px 12px;background:transparent;border:1px solid var(--gbr);color:var(--cd);cursor:pointer;margin-bottom:12px;">← Back to Celebrity Pages</button>
    <div id="celebSingleContent"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- LIVE COMMUNITY CHAT -->
+  <div class="view" id="chatV">
+   <div class="wbar"><span class="wi">💬</span><div><div class="wh">Live Community Chat</div><div class="ws">Real-time fan conversations</div></div></div>
+   <div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:8px;margin-bottom:11px;">
+    <button class="chat-tab-btn on" onclick="switchChat('global',this)">🌍 Global</button>
+    <button class="chat-tab-btn" onclick="switchChat('Music',this)">🎵 Music</button>
+    <button class="chat-tab-btn" onclick="switchChat('Sports',this)">⚽ Sports</button>
+    <button class="chat-tab-btn" onclick="switchChat('Film',this)">🎬 Film</button>
+    <button class="chat-tab-btn" onclick="switchChat('Fashion',this)">👗 Fashion</button>
+    <button class="chat-tab-btn" onclick="switchChat('Tech',this)">💻 Tech</button>
+    <button class="chat-tab-btn" onclick="switchChat('Wellness',this)">💪 Wellness</button>
+   </div>
+   <div id="chatRoom" style="background:var(--obs2);border:1px solid var(--gbr);height:360px;overflow-y:auto;padding:12px;margin-bottom:10px;display:flex;flex-direction:column;gap:8px;">
+    <div class="ldr"><div class="lring"></div></div>
+   </div>
+   <div style="display:flex;gap:7px;">
+    <input class="fi" type="text" id="chatInput" placeholder="Type a message..." style="flex:1;" onkeypress="if(event.key==='Enter')sendChat()"/>
+    <button onclick="sendChat()" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.1em;padding:10px 14px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;white-space:nowrap;">Send →</button>
+   </div>
+   <p style="font-family:'Inter',sans-serif;font-size:0.6rem;color:rgba(189,181,166,0.35);margin-top:6px;">💬 Live chat · Messages auto-refresh every 5 seconds · Be respectful to all ICONIK fans</p>
+  </div>
+
+  <!-- EVENTS & TICKETS -->
+  <div class="view" id="eventsV">
+   <div class="wbar"><span class="wi">🎟️</span><div><div class="wh">Events & Tickets</div><div class="ws">Concerts · Tours · Fan meets · Experiences</div></div></div>
+   <div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;">
+    <button class="chat-tab-btn on" onclick="filterEvents('all',this)">All Events</button>
+    <button class="chat-tab-btn" onclick="filterEvents('concert',this)">🎵 Concerts</button>
+    <button class="chat-tab-btn" onclick="filterEvents('tour',this)">🌍 Tours</button>
+    <button class="chat-tab-btn" onclick="filterEvents('fanmeet',this)">🤝 Fan Meets</button>
+    <button class="chat-tab-btn" onclick="filterEvents('sports',this)">⚽ Sports</button>
+   </div>
+   <div id="eventsList"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- VIP EXCLUSIVE CONTENT -->
+  <div class="view" id="vipV">
+   <div class="wbar"><span class="wi">👑</span><div><div class="wh">VIP Exclusive</div><div class="ws">Premium content for VIP members only</div></div></div>
+   <div id="vipGate" style="display:none;">
+    <div style="background:linear-gradient(135deg,rgba(255,184,0,0.1),rgba(255,149,0,0.05));border:1px solid var(--gbri);padding:24px;text-align:center;margin-bottom:16px;">
+     <div style="font-size:2.5rem;margin-bottom:10px;">👑</div>
+     <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--ch);margin-bottom:8px;">VIP Members Only</div>
+     <div style="font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--cd);margin-bottom:14px;line-height:1.6;">This section is exclusive to VIP Bronze, Silver and Gold members. Upgrade to unlock behind-the-scenes content, exclusive videos, early announcements and more.</div>
+     <button onclick="sV('membership')" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.12em;padding:11px 20px;background:linear-gradient(135deg,var(--gold),var(--gg));color:var(--obs);border:none;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);">Upgrade to VIP →</button>
+    </div>
+   </div>
+   <div id="vipContent" style="display:none;">
+    <div style="background:linear-gradient(135deg,rgba(255,184,0,0.08),rgba(255,149,0,0.04));border:1px solid var(--gbri);border-left:4px solid var(--gold);padding:12px 14px;margin-bottom:14px;">
+     <div style="font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.14em;color:var(--gold);margin-bottom:3px;">👑 VIP EXCLUSIVE ACCESS</div>
+     <div style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);">Welcome to the inner circle. Content visible to VIP members only.</div>
+    </div>
+    <div class="sh">Exclusive Content</div>
+    <div id="vipContentList"><div class="ldr"><div class="lring"></div></div></div>
+    <div class="sh" style="margin-top:14px;">VIP Lounge Chat</div>
+    <div id="vipChatRoom" style="background:var(--obs2);border:1px solid var(--gbri);height:280px;overflow-y:auto;padding:12px;margin-bottom:10px;display:flex;flex-direction:column;gap:8px;"></div>
+    <div style="display:flex;gap:7px;">
+     <input class="fi" type="text" id="vipChatInput" placeholder="VIP Lounge message..." style="flex:1;" onkeypress="if(event.key==='Enter')sendVIPChat()"/>
+     <button onclick="sendVIPChat()" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.1em;padding:10px 12px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;">Send</button>
+    </div>
+   </div>
+  </div>
+
+  <!-- REFERRAL SYSTEM -->
+  <div class="view" id="referralV">
+   <div class="wbar"><span class="wi">🎁</span><div><div class="wh">Refer & Earn</div><div class="ws">Invite fans · Earn rewards · Grow ICONIK</div></div></div>
+   <div style="background:linear-gradient(135deg,rgba(34,197,94,0.08),rgba(34,197,94,0.03));border:1px solid rgba(34,197,94,0.2);border-left:4px solid var(--ok);padding:16px;margin-bottom:16px;">
+    <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ok);margin-bottom:8px;">💰 How It Works</div>
+    <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:var(--cd);line-height:1.7;">
+     1. Share your unique referral link with friends<br/>
+     2. They sign up and join ICONIK using your link<br/>
+     3. When they upgrade to VIP — <strong style="color:var(--ch);">you earn rewards!</strong><br/>
+     4. VIP Gold members earn <strong style="color:var(--gold);">10% of their referral's subscription</strong>
+    </div>
+   </div>
+   <!-- REFERRAL LINK -->
+   <div class="sh">Your Referral Link</div>
+   <div style="background:var(--obs2);border:1px solid var(--gbr);padding:13px;margin-bottom:14px;">
+    <div style="font-family:'Inter',sans-serif;font-size:0.66rem;color:var(--cd);margin-bottom:7px;">Share this link to invite fans to ICONIK:</div>
+    <div style="display:flex;gap:7px;align-items:center;">
+     <div id="referralLink" style="flex:1;font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.06em;color:var(--gold);word-break:break-all;padding:9px 10px;background:rgba(255,184,0,0.05);border:1px solid var(--gbr);">Loading...</div>
+     <button onclick="copyReferral()" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.58rem;letter-spacing:0.08em;padding:9px 12px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;white-space:nowrap;">Copy 📋</button>
+    </div>
+    <button onclick="shareReferral()" style="width:100%;margin-top:8px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.64rem;letter-spacing:0.1em;padding:10px;background:transparent;border:1px solid var(--gbri);color:var(--gold);cursor:pointer;">🔗 Share via WhatsApp / Social</button>
+   </div>
+   <!-- REFERRAL STATS -->
+   <div class="sh">Your Referral Stats</div>
+   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;">
+    <div class="sbox"><div class="snum" id="refTotal">0</div><div class="slbl">Invited</div></div>
+    <div class="sbox"><div class="snum" id="refJoined">0</div><div class="slbl">Joined</div></div>
+    <div class="sbox"><div class="snum" id="refEarned">$0</div><div class="slbl">Earned</div></div>
+   </div>
+   <!-- REFERRAL REWARDS TIERS -->
+   <div class="sh">Reward Tiers</div>
+   <div style="display:grid;gap:7px;margin-bottom:14px;">
+    <div style="background:var(--gb);border:1px solid var(--gbr);padding:12px;display:flex;align-items:center;gap:11px;">
+     <div style="font-size:1.4rem;">🥉</div>
+     <div style="flex:1;"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.1em;color:var(--gold);">Fan Member</div><div style="font-family:'Inter',sans-serif;font-size:0.64rem;color:var(--cd);margin-top:2px;">Refer 3+ fans → 1 month free VIP Bronze</div></div>
+    </div>
+    <div style="background:var(--gb);border:1px solid var(--gbr);padding:12px;display:flex;align-items:center;gap:11px;">
+     <div style="font-size:1.4rem;">🥈</div>
+     <div style="flex:1;"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.1em;color:var(--gold);">VIP Bronze/Silver</div><div style="font-family:'Inter',sans-serif;font-size:0.64rem;color:var(--cd);margin-top:2px;">Refer 5+ fans → Tier upgrade + $5 credit</div></div>
+    </div>
+    <div style="background:rgba(255,184,0,0.05);border:1px solid var(--gbri);padding:12px;display:flex;align-items:center;gap:11px;">
+     <div style="font-size:1.4rem;">👑</div>
+     <div style="flex:1;"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.1em;color:var(--gold);">VIP Gold</div><div style="font-family:'Inter',sans-serif;font-size:0.64rem;color:var(--cd);margin-top:2px;">Earn 10% of every referral's VIP subscription</div></div>
+    </div>
+   </div>
+   <!-- REFERRAL HISTORY -->
+   <div class="sh">Referral History</div>
+   <div id="referralHistory"><div style="text-align:center;padding:18px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;">No referrals yet. Share your link and start earning! 🎁</div></div>
+  </div>
+
+  <!-- APP DOWNLOAD PAGE -->
+  <div class="view" id="appdownloadV">
+   <div style="text-align:center;padding:24px 16px 16px;">
+    <div style="font-size:3rem;margin-bottom:12px;">📱</div>
+    <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.4rem;color:var(--ch);margin-bottom:6px;">Get the ICONIK App</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.14em;color:var(--gold);margin-bottom:12px;">FIND YOUR TRIBE. FOLLOW YOUR ICON.</div>
+    <div style="font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--cd);line-height:1.7;margin-bottom:20px;">Install ICONIK directly on your phone for the fastest, smoothest experience. No app store needed — install straight from your browser in seconds.</div>
+   </div>
+   <!-- PWA INSTALL CARD -->
+   <div style="background:linear-gradient(135deg,rgba(255,184,0,0.1),rgba(255,149,0,0.05));border:1px solid var(--gbri);padding:20px;margin-bottom:12px;text-align:center;">
+    <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.76rem;letter-spacing:0.1em;color:var(--gold);margin-bottom:6px;">📲 INSTALL ON ANY PHONE</div>
+    <div style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);margin-bottom:14px;line-height:1.6;">Works on Android & iPhone. No App Store. No Play Store. Install directly.</div>
+    <button id="appInstallBtn" onclick="triggerPWAInstall()" style="width:100%;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.7rem;letter-spacing:0.12em;padding:13px;background:linear-gradient(135deg,var(--gold),var(--gg));color:var(--obs);border:none;cursor:pointer;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);">📱 Install ICONIK App Now →</button>
+   </div>
+   <!-- MANUAL INSTALL STEPS -->
+   <div class="sh">How To Install Manually</div>
+   <div style="display:grid;gap:7px;margin-bottom:16px;">
+    <div style="background:var(--gb);border:1px solid var(--gbr);border-left:3px solid var(--gold);padding:12px;">
+     <div style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.12em;color:var(--gold);margin-bottom:4px;">📱 ANDROID (Chrome)</div>
+     <div style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);line-height:1.6;">1. Open Chrome browser → go to iconik-global.web.app<br/>2. Tap the 3-dot menu ⋮ at top right<br/>3. Tap "Add to Home Screen"<br/>4. Tap "Add" — ICONIK appears on your home screen!</div>
+    </div>
+    <div style="background:var(--gb);border:1px solid var(--gbr);border-left:3px solid var(--gold);padding:12px;">
+     <div style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.12em;color:var(--gold);margin-bottom:4px;">🍎 IPHONE (Safari)</div>
+     <div style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);line-height:1.6;">1. Open Safari → go to iconik-global.web.app<br/>2. Tap the Share button 📤 at the bottom<br/>3. Scroll down → tap "Add to Home Screen"<br/>4. Tap "Add" — ICONIK is now on your iPhone!</div>
+    </div>
+   </div>
+   <!-- FEATURES LIST -->
+   <div class="sh">Why Install the App?</div>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:16px;">
+    <div style="background:var(--gb);border:1px solid var(--gbr);padding:11px;text-align:center;"><div style="font-size:1.3rem;margin-bottom:5px;">⚡</div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.64rem;color:var(--ch);">Faster Loading</div><div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:2px;">App-speed experience</div></div>
+    <div style="background:var(--gb);border:1px solid var(--gbr);padding:11px;text-align:center;"><div style="font-size:1.3rem;margin-bottom:5px;">🔔</div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.64rem;color:var(--ch);">Notifications</div><div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:2px;">Never miss updates</div></div>
+    <div style="background:var(--gb);border:1px solid var(--gbr);padding:11px;text-align:center;"><div style="font-size:1.3rem;margin-bottom:5px;">📴</div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.64rem;color:var(--ch);">Works Offline</div><div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:2px;">Browse saved content</div></div>
+    <div style="background:var(--gb);border:1px solid var(--gbr);padding:11px;text-align:center;"><div style="font-size:1.3rem;margin-bottom:5px;">🔒</div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.64rem;color:var(--ch);">Stay Signed In</div><div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:2px;">No re-login needed</div></div>
+   </div>
+   <!-- SHARE THE APP -->
+   <div class="sh">Share ICONIK With Friends</div>
+   <button onclick="shareApp()" style="width:100%;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.12em;padding:12px;background:transparent;border:1px solid var(--gbri);color:var(--gold);cursor:pointer;">🔗 Share ICONIK With Your Friends →</button>
   </div>
 
  </div><!-- /main -->
@@ -1378,12 +1563,242 @@ window.sTab=function(t){
  document.getElementById('swL').onclick=()=>sTab(t==='login'?'register':'login');
 };
 
+// ══════════════════════════════════════
+// PHASE 5 FEATURES
+// ══════════════════════════════════════
+
+// ── LIVE CHAT ──
+let currentChatRoom='global',chatInterval=null;
+
+window.switchChat=function(room,btn){
+ document.querySelectorAll('.chat-tab-btn').forEach(b=>{b.classList.remove('on');});
+ btn.classList.add('on');
+ currentChatRoom=room;
+ lChat();
+};
+
+async function lChat(){
+ const el=document.getElementById('chatRoom');
+ try{
+  const q=query(collection(db,'chat_'+currentChatRoom),orderBy('createdAt','asc'),limit(50));
+  const s=await getDocs(q);
+  el.innerHTML='';
+  if(s.empty){el.innerHTML=`<div style="text-align:center;padding:20px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;">No messages yet. Start the conversation! 💬</div>`;return;}
+  s.forEach(d=>{
+   const m=d.data(),isMine=m.userId===cU?.uid;
+   const t=m.createdAt?.toDate?m.createdAt.toDate().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}):'';
+   const av=m.profilePic?`<img src="${m.profilePic}"/>`:(m.name||'M').charAt(0);
+   el.innerHTML+=`
+    <div class="chat-msg ${isMine?'mine':''}">
+     <div class="chat-av">${av}</div>
+     <div>
+      <div class="chat-name">${isMine?'You':m.name||'Member'}</div>
+      <div class="chat-bubble">${m.text}</div>
+      <div class="chat-time">${t}</div>
+     </div>
+    </div>`;
+  });
+  el.scrollTop=el.scrollHeight;
+ }catch(e){el.innerHTML=`<div style="text-align:center;padding:16px;color:var(--cd);">Chat loading...</div>`;console.error(e);}
+}
+
+window.sendChat=async function(){
+ const input=document.getElementById('chatInput');
+ const text=input.value.trim();
+ if(!text||!cU)return;
+ try{
+  await addDoc(collection(db,'chat_'+currentChatRoom),{
+   text,name:cD?.name||'Member',userId:cU.uid,
+   profilePic:cD?.profilePic||'',
+   createdAt:serverTimestamp()
+  });
+  input.value='';lChat();
+ }catch{toastF('Error sending message','error');}
+};
+
+// VIP Chat
+async function lVIPChat(){
+ const el=document.getElementById('vipChatRoom');
+ try{
+  const q=query(collection(db,'chat_vip'),orderBy('createdAt','asc'),limit(30));
+  const s=await getDocs(q);el.innerHTML='';
+  s.forEach(d=>{
+   const m=d.data(),isMine=m.userId===cU?.uid;
+   const t=m.createdAt?.toDate?m.createdAt.toDate().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'';
+   el.innerHTML+=`<div class="chat-msg ${isMine?'mine':''}"><div class="chat-av">${(m.name||'M').charAt(0)}</div><div><div class="chat-name">${isMine?'You':m.name}</div><div class="chat-bubble">${m.text}</div><div class="chat-time">${t}</div></div></div>`;
+  });
+  el.scrollTop=el.scrollHeight;
+ }catch{}
+}
+
+window.sendVIPChat=async function(){
+ const input=document.getElementById('vipChatInput');
+ const text=input.value.trim();
+ if(!text||!cU)return;
+ try{
+  await addDoc(collection(db,'chat_vip'),{text,name:cD?.name||'VIP Member',userId:cU.uid,tier:cD?.tier,createdAt:serverTimestamp()});
+  input.value='';lVIPChat();
+ }catch{toastF('Error sending','error');}
+};
+
+// ── EVENTS ──
+let allEvents=[];
+async function lEvents(){
+ const el=document.getElementById('eventsList');
+ try{
+  const s=await getDocs(query(collection(db,'events'),orderBy('eventDate','asc'),limit(20)));
+  if(!s.empty){allEvents=[];s.forEach(d=>allEvents.push({id:d.id,...d.data()}));rEvents(allEvents);return;}
+ }catch{}
+ // Static fallback events
+ allEvents=[
+  {name:'Bad Bunny — Debí Tirar Más Fotos World Tour',venue:'Madison Square Garden, New York',eventDate:'2026-05-15',type:'concert',price:'$85',icon:'🎵',category:'Music',description:'The most anticipated Latin music event of 2026. Experience Bad Bunny live in concert.'},
+  {name:'Champions League Final 2026',venue:'Wembley Stadium, London',eventDate:'2026-06-01',type:'sports',price:'$120',icon:'⚽',category:'Sports',description:'The biggest club football match in the world. Witness history live at Wembley.'},
+  {name:'Met Gala Fan Experience',venue:'Metropolitan Museum, New York',eventDate:'2026-05-05',type:'fanmeet',price:'$45',icon:'👗',category:'Fashion',description:'Get exclusive behind-the-scenes access to the world\'s most iconic fashion event.'},
+  {name:'K-Pop World Festival',venue:'Seoul Olympic Stadium',eventDate:'2026-07-20',type:'concert',price:'$60',icon:'🎤',category:'Music',description:'Celebrate the global K-Pop phenomenon with the biggest stars from South Korea and beyond.'},
+  {name:'ICONIK Fan Meet & Greet',venue:'Virtual + Global Chapters',eventDate:'2026-08-10',type:'fanmeet',price:'Free',icon:'🌍',category:'All',description:'Connect with ICONIK fans from around the world. Virtual and in-person chapters simultaneously.'},
+  {name:'Formula 1 — Monaco Grand Prix',venue:'Circuit de Monaco',eventDate:'2026-05-28',type:'sports',price:'$200',icon:'🏎️',category:'Sports',description:'The crown jewel of Formula 1. Experience the most glamorous race weekend on the calendar.'},
+ ];
+ rEvents(allEvents);
+}
+
+function rEvents(events){
+ const el=document.getElementById('eventsList');
+ if(!events.length){el.innerHTML=`<div style="text-align:center;padding:22px;color:var(--cd);">No events yet. Admin adds events from Admin Panel. 🎟️</div>`;return;}
+ el.innerHTML=events.map(e=>`
+  <div class="event-card">
+   <div class="event-banner">${e.icon||'🎟️'}<span class="event-date-badge">${e.eventDate||'TBA'}</span></div>
+   <div class="event-info">
+    <div class="event-name">${e.name}</div>
+    <div class="event-meta">📍 ${e.venue||'TBA'} ${e.category?`· ${e.category}`:''}</div>
+    ${e.description?`<div style="font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);margin-bottom:8px;line-height:1.5;">${e.description.substring(0,100)}...</div>`:''}
+    <div class="event-price">${e.price||'TBA'}</div>
+    <button class="event-btn" onclick="expressInterest('${e.name}')">🎟️ Express Interest</button>
+   </div>
+  </div>`).join('');
+}
+
+window.filterEvents=function(type,btn){
+ document.querySelectorAll('.chat-tab-btn').forEach(b=>{b.classList.remove('on');});btn.classList.add('on');
+ rEvents(type==='all'?allEvents:allEvents.filter(e=>e.type===type));
+};
+
+window.expressInterest=async function(eventName){
+ try{
+  await addDoc(collection(db,'eventInterest'),{event:eventName,userId:cU?.uid,userName:cD?.name,email:cU?.email,createdAt:serverTimestamp()});
+  toastF(`Interest registered for ${eventName}! Admin will contact you. 🎟️`,'success');
+ }catch{toastF(`Interest noted for ${eventName}! 🎟️`,'success');}
+};
+
+// ── VIP CONTENT ──
+async function lVIPContent(){
+ const tier=cD?.tier||'Fan';
+ const isVIP=tier==='Bronze'||tier==='Silver'||tier==='Gold';
+ document.getElementById('vipGate').style.display=isVIP?'none':'block';
+ document.getElementById('vipContent').style.display=isVIP?'block':'none';
+ if(!isVIP)return;
+ const el=document.getElementById('vipContentList');
+ try{
+  const s=await getDocs(query(collection(db,'vipContent'),orderBy('createdAt','desc'),limit(10)));
+  if(!s.empty){
+   el.innerHTML='';
+   s.forEach(d=>{const c=d.data();el.innerHTML+=`<div class="vip-content-card"><div class="vip-content-type">👑 ${c.type||'EXCLUSIVE'}</div><div class="vip-content-title">${c.title||''}</div><div class="vip-content-body">${c.content||''}</div></div>`;});
+   return;
+  }
+ }catch{}
+ // Static VIP content fallback
+ el.innerHTML=`
+  <div class="vip-content-card"><div class="vip-content-type">👑 EXCLUSIVE UPDATE</div><div class="vip-content-title">Welcome to the VIP Inner Circle</div><div class="vip-content-body">As a VIP member you get early access to announcements, exclusive content, and direct interaction with the ICONIK community. More exclusive content is added regularly by Admin.</div></div>
+  <div class="vip-content-card"><div class="vip-content-type">📰 EARLY ACCESS</div><div class="vip-content-title">Celebrity Partnership Announcements</div><div class="vip-content-body">VIP members are the first to know about new celebrity partnerships, platform features, and major community events. You are ahead of the crowd.</div></div>
+  <div class="vip-content-card"><div class="vip-content-type">🎁 VIP PERK</div><div class="vip-content-title">Priority Support & Dedicated WhatsApp Line</div><div class="vip-content-body">VIP members get priority responses from Admin and Sub Admins. Your messages go to the front of the queue.</div></div>`;
+ lVIPChat();
+}
+
+// ── REFERRAL SYSTEM ──
+function buildReferralLink(){
+ const uid=cU?.uid||'ref';
+ const link=`https://iconik-global.web.app/app.html?ref=${uid}`;
+ document.getElementById('referralLink').textContent=link;
+ return link;
+}
+
+window.copyReferral=function(){
+ const link=buildReferralLink();
+ navigator.clipboard?.writeText(link).then(()=>toastF('Referral link copied! 📋','success')).catch(()=>{
+  // Fallback for mobile
+  const el=document.createElement('textarea');el.value=link;document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);
+  toastF('Link copied! 📋','success');
+ });
+};
+
+window.shareReferral=function(){
+ const link=buildReferralLink();
+ const text=`Join me on ICONIK — the world's ultimate fan community! Find your tribe, follow your icons. Sign up here: ${link}`;
+ if(navigator.share){navigator.share({title:'Join ICONIK!',text,url:link}).catch(()=>{});}
+ else{window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,'_blank');}
+};
+
+async function lReferralData(){
+ try{
+  buildReferralLink();
+  const q=query(collection(db,'referrals'),where('referrerId','==',cU?.uid));
+  const s=await getDocs(q);
+  document.getElementById('refTotal').textContent=s.size;
+  let joined=0;s.forEach(d=>{if(d.data().status==='joined')joined++;});
+  document.getElementById('refJoined').textContent=joined;
+  // Check URL for ref param (on join)
+  const params=new URLSearchParams(window.location.search);
+  const ref=params.get('ref');
+  if(ref&&ref!==cU?.uid){
+   await addDoc(collection(db,'referrals'),{referrerId:ref,referredId:cU.uid,referredName:cD?.name,status:'joined',joinedAt:serverTimestamp()}).catch(()=>{});
+  }
+ }catch(e){console.error(e);}
+}
+
+// ── APP DOWNLOAD ──
+window.triggerPWAInstall=function(){
+ if(deferredPrompt){
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(r=>{if(r.outcome==='accepted')toastF('ICONIK installed! 📱','success');deferredPrompt=null;});
+ }else{
+  toastF('To install: tap browser menu → "Add to Home Screen" 📱','success');
+ }
+};
+
+window.shareApp=function(){
+ const text='Join ICONIK — the world\'s ultimate fan community! 🌟 Find your tribe, follow your icons at: https://iconik-global.web.app';
+ if(navigator.share){navigator.share({title:'ICONIK Global Fans',text,url:'https://iconik-global.web.app'}).catch(()=>{});}
+ else{navigator.clipboard?.writeText('https://iconik-global.web.app');toastF('Link copied! Share it with friends 🔗','success');}
+};
+
+// Start chat auto-refresh when on chat view
+let p5ChatInterval=null;
+
+window.sV=function(nm){
+ document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+ document.getElementById(nm+'V').classList.add('on');
+ // Clear any chat interval when leaving chat
+ if(p5ChatInterval){clearInterval(p5ChatInterval);p5ChatInterval=null;}
+ if(nm==='coms')lMyComs();
+ if(nm==='tb')lTB();
+ if(nm==='msgs')lMsgs();
+ if(nm==='wellness')lWellnessPartners();
+ if(nm==='news')lNewsFromFirestore();
+ if(nm==='notifs')lNotifs();
+ if(nm==='search')searchMembers();
+ if(nm==='celebpages')lCelebPages();
+ if(nm==='chat'){lChat();p5ChatInterval=setInterval(lChat,5000);}
+ if(nm==='events')lEvents();
+ if(nm==='vip')lVIPContent();
+ if(nm==='referral')lReferralData();
+};
+window.setBN=function(nm){document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('on'));document.getElementById('bn-'+nm)?.classList.add('on');};
 window.togSB=function(){document.getElementById('sb').classList.toggle('on');document.getElementById('sbOv').classList.toggle('on');};
 window.cSB=function(){document.getElementById('sb').classList.remove('on');document.getElementById('sbOv').classList.remove('on');};
 window.tC=function(el){el.classList.toggle('on');};
 function toastF(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='toast on '+type;setTimeout(()=>t.className='toast',3500);}
 function sM(el,msg,type){el.textContent=msg;el.className='amsg '+type;el.style.display='block';}
 function aE(c){const e={'auth/user-not-found':'No account found','auth/wrong-password':'Incorrect password','auth/email-already-in-use':'Email already registered','auth/weak-password':'Min. 6 characters','auth/invalid-email':'Invalid email','auth/too-many-requests':'Too many attempts. Try later','auth/invalid-credential':'Invalid email or password'};return e[c]||'Something went wrong.';}
+
 </script>
 </body>
 </html>
