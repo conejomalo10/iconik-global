@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ICONIK — Sub Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@400;600;800;900&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--obs:#07070D;--obs2:#0F0F1A;--obs3:#141420;--gold:#FFB800;--gg:#FF9500;--ch:#F5F0E8;--cd:#BDB5A6;--gb:rgba(255,184,0,0.04);--gbr:rgba(255,184,0,0.15);--gbri:rgba(255,184,0,0.4);--ok:#22C55E;--err:#EF4444;--ab:#3B82F6;--warn:#F59E0B;--purple:#8B5CF6;--pg:#10B981;--pg2:rgba(16,185,129,0.08);}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-height:100vh;}
+.gate{display:none;min-height:100vh;background:linear-gradient(135deg,var(--obs),#0A0A14,var(--obs));align-items:center;justify-content:center;padding:16px;}
+.gate.on{display:flex;}
+.gbox{width:100%;max-width:400px;background:var(--obs3);border:1px solid var(--gbr);padding:32px 24px;box-shadow:0 40px 120px rgba(0,0,0,0.6);}
+.glogo{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.15em;color:var(--gold);text-align:center;display:block;text-decoration:none;text-shadow:0 0 30px rgba(255,184,0,0.4);margin-bottom:5px;}
+.glogo span{color:var(--ch);}
+.gsub{font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);text-align:center;margin-bottom:5px;}
+.grole{font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:var(--obs);background:var(--pg);padding:3px 10px;display:block;text-align:center;width:fit-content;margin:0 auto 18px;}
+.fg{margin-bottom:12px;}
+.fl{font-family:'Montserrat',sans-serif;font-size:0.57rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--cd);margin-bottom:5px;display:block;}
+.fi{width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--gbr);color:var(--ch);font-family:'Inter',sans-serif;font-size:0.8rem;outline:none;transition:all 0.3s;}
+.fi:focus{border-color:var(--pg);}
+.fi::placeholder{color:rgba(189,181,166,0.3);}
+.btn{width:100%;padding:11px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.67rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;border:none;transition:all 0.3s;}
+.btn-pg{background:linear-gradient(135deg,var(--pg),#059669);color:#fff;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);}
+.gm{font-family:'Inter',sans-serif;font-size:0.7rem;text-align:center;margin-top:10px;padding:8px;display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:var(--err);}
+/* ADMIN PAGE */
+.pg{display:none;}.pg.on{display:block;}
+/* TOP BAR */
+.tbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,7,13,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(16,185,129,0.2);}
+.tbar-logo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.12em;color:var(--gold);text-decoration:none;}
+.tbar-logo span{color:var(--ch);}
+.tbar-badge{font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.14em;color:#fff;background:var(--pg);padding:3px 9px;margin-left:8px;}
+.tbar-cat{font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.1em;color:var(--pg);border:1px solid rgba(16,185,129,0.3);padding:2px 7px;margin-left:5px;}
+.tbar-right{display:flex;align-items:center;gap:8px;}
+.tbar-user{font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);}
+.tbar-av{width:29px;height:29px;background:linear-gradient(135deg,var(--pg),#059669);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.78rem;color:#fff;cursor:pointer;}
+.hbg{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:4px;}
+.hbg span{display:block;width:16px;height:2px;background:var(--gold);}
+/* SIDEBAR */
+.sb{position:fixed;top:0;left:-278px;width:278px;height:100vh;background:var(--obs3);border-right:1px solid rgba(16,185,129,0.15);z-index:2000;transition:left 0.3s;overflow-y:auto;}
+.sb.on{left:0;}
+.sb-ov{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1999;display:none;}
+.sb-ov.on{display:block;}
+.sb-h{padding:15px;border-bottom:1px solid rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:space-between;}
+.sb-logo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.1em;color:var(--pg);}
+.sb-x{background:none;border:none;color:var(--cd);font-size:0.95rem;cursor:pointer;}
+.sb-u{padding:13px 15px;border-bottom:1px solid rgba(16,185,129,0.15);}
+.sb-av{width:40px;height:40px;background:linear-gradient(135deg,var(--pg),#059669);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.95rem;color:#fff;margin-bottom:6px;}
+.sb-nm{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);margin-bottom:2px;}
+.sb-role{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.09em;color:#fff;background:var(--pg);padding:2px 6px;}
+.sb-cat{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.08em;color:var(--pg);border:1px solid rgba(16,185,129,0.3);padding:2px 6px;margin-left:3px;}
+.sb-nav{padding:8px 0;}
+.sb-sec{font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.22em;color:rgba(189,181,166,0.28);padding:4px 15px 2px;}
+.sb-lnk{display:flex;align-items:center;gap:8px;padding:9px 15px;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.73rem;color:var(--cd);transition:all 0.2s;border-left:3px solid transparent;}
+.sb-lnk:hover,.sb-lnk.on{color:var(--pg);background:var(--pg2);border-left-color:var(--pg);}
+.sb-ic{font-size:0.85rem;width:15px;text-align:center;}
+/* MAIN */
+.main{padding:62px 14px 32px;}
+.view{display:none;}.view.on{display:block;}
+/* WELCOME */
+.wbar{background:linear-gradient(135deg,rgba(16,185,129,0.09),rgba(16,185,129,0.03));border:1px solid rgba(16,185,129,0.2);padding:15px;margin-bottom:15px;display:flex;align-items:center;gap:10px;}
+.wi{font-size:1.5rem;}.wh{font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:var(--ch);}
+.ws{font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);margin-top:2px;}
+/* STATS */
+.srow{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px;}
+.sbox{background:var(--pg2);border:1px solid rgba(16,185,129,0.15);padding:10px;text-align:center;}
+.snum{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--pg);}
+.slbl{font-family:'Inter',sans-serif;font-size:0.5rem;color:var(--cd);letter-spacing:0.08em;text-transform:uppercase;margin-top:1px;}
+/* SECTION HEAD */
+.sh{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--pg);margin-bottom:10px;display:flex;align-items:center;gap:5px;}
+.sh::after{content:'';flex:1;height:1px;background:rgba(16,185,129,0.15);}
+/* NOTICE */
+.notice{background:var(--pg2);border:1px solid rgba(16,185,129,0.2);border-left:3px solid var(--pg);padding:10px 12px;margin-bottom:12px;font-family:'Inter',sans-serif;font-size:0.7rem;color:#6EE7B7;}
+/* FORM */
+.fs,.fi2{width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--gbr);color:var(--ch);font-family:'Inter',sans-serif;font-size:0.8rem;outline:none;transition:all 0.3s;}
+.fi2:focus,.fs:focus{border-color:var(--pg);}
+.fi2::placeholder{color:rgba(189,181,166,0.3);}
+.fs option{background:var(--obs3);}
+.aform{background:var(--gb);border:1px solid var(--gbr);padding:15px;margin-bottom:14px;}
+.aform-t{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.6rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.fg2{margin-bottom:11px;}
+.fl2{font-family:'Montserrat',sans-serif;font-size:0.56rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--cd);margin-bottom:5px;display:block;}
+.btn-g{background:linear-gradient(135deg,var(--gold),var(--gg));color:var(--obs);clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);}
+/* TABLE */
+.dtwrap{overflow-x:auto;}
+.dt{width:100%;border-collapse:collapse;font-size:0.68rem;}
+.dt th{font-family:'Montserrat',sans-serif;font-size:0.52rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:var(--pg);padding:7px 8px;border-bottom:1px solid rgba(16,185,129,0.15);text-align:left;white-space:nowrap;}
+.dt td{font-family:'Inter',sans-serif;font-size:0.67rem;color:var(--cd);padding:7px 8px;border-bottom:1px solid rgba(255,255,255,0.03);vertical-align:middle;}
+.dt tr:hover td{color:var(--ch);}
+/* TAGS */
+.tag{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.08em;padding:2px 5px;}
+.tg{background:rgba(255,184,0,0.12);color:var(--gold);}
+.tok{background:rgba(34,197,94,0.12);color:var(--ok);}
+.twarn{background:rgba(245,158,11,0.12);color:var(--warn);}
+.terr{background:rgba(239,68,68,0.12);color:var(--err);}
+/* POSTS */
+.pcard{background:var(--gb);border:1px solid var(--gbr);padding:13px;margin-bottom:7px;}
+.ph{display:flex;align-items:center;gap:7px;margin-bottom:7px;}
+.pav{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.72rem;color:var(--obs);flex-shrink:0;}
+.pau{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.7rem;color:var(--ch);}
+.pt{font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--cd);}
+.pbody{font-family:'Inter',sans-serif;font-size:0.72rem;color:var(--cd);line-height:1.6;}
+/* MSG */
+.msg-card{background:var(--gb);border:1px solid rgba(16,185,129,0.15);padding:12px;margin-bottom:7px;}
+.msg-from{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;color:var(--pg);margin-bottom:3px;}
+.msg-body{font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);line-height:1.5;}
+/* BTN SMALL */
+.btn-sm{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.55rem;letter-spacing:0.08em;padding:5px 10px;border:none;cursor:pointer;text-transform:uppercase;}
+.btn-ok{background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.3);color:var(--ok);}
+.btn-d{background:rgba(239,68,68,0.09);border:1px solid rgba(239,68,68,0.25);color:var(--err);}
+/* TOAST */
+.toast{position:fixed;bottom:16px;right:12px;z-index:9999;background:var(--obs3);border:1px solid var(--gbr);padding:10px 14px;font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--ch);transform:translateY(80px);opacity:0;transition:all 0.3s;pointer-events:none;max-width:270px;}
+.toast.on{transform:translateY(0);opacity:1;}
+.toast.success{border-color:rgba(34,197,94,0.4);color:var(--ok);}
+.toast.error{border-color:rgba(239,68,68,0.4);color:var(--err);}
+.ldr{display:flex;align-items:center;justify-content:center;padding:22px;}
+.lring{width:24px;height:24px;border:3px solid var(--gbr);border-top-color:var(--pg);border-radius:50%;animation:sp 0.8s linear infinite;}
+@keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- AUTH GATE -->
+<div class="gate on" id="gatePg">
+ <div class="gbox">
+  <a class="glogo" href="/"><span>ICON</span>IK</a>
+  <p class="gsub">Sub Admin Control Panel</p>
+  <span class="grole">SUB ADMIN ACCESS</span>
+  <div class="fg"><label class="fl">Your Email</label><input class="fi" type="email" id="ge" placeholder="your@email.com"/></div>
+  <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="gp" placeholder="••••••••"/></div>
+  <button class="btn btn-pg" onclick="doLogin()">Access Sub Admin Panel →</button>
+  <div class="gm" id="gm"></div>
+  <p style="font-family:'Inter',sans-serif;font-size:0.66rem;color:var(--cd);text-align:center;margin-top:12px;"><a href="/app.html" style="color:var(--gold);">← Back to Member Dashboard</a></p>
+ </div>
+</div>
+
+<!-- SUB ADMIN PANEL -->
+<div class="pg" id="adminPg">
+ <div class="tbar">
+  <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;">
+   <a class="tbar-logo" href="/"><span>ICON</span>IK</a>
+   <span class="tbar-badge">SUB ADMIN</span>
+   <span class="tbar-cat" id="tbarCat">—</span>
+  </div>
+  <div class="tbar-right">
+   <div class="tbar-av" id="tbarAv">S</div>
+   <button class="hbg" onclick="togSB()"><span></span><span></span><span></span></button>
+  </div>
+ </div>
+
+ <div class="sb-ov" id="sbOv" onclick="cSB()"></div>
+ <div class="sb" id="sb">
+  <div class="sb-h"><span class="sb-logo">SUB ADMIN</span><button class="sb-x" onclick="cSB()">✕</button></div>
+  <div class="sb-u">
+   <div class="sb-av" id="sbAv">S</div>
+   <div class="sb-nm" id="sbNm">Sub Admin</div>
+   <span class="sb-role">SUB ADMIN</span>
+   <span class="sb-cat" id="sbCat">—</span>
+  </div>
+  <nav class="sb-nav">
+   <div class="sb-sec">My Panel</div>
+   <div class="sb-lnk on" onclick="sV('overview')"><span class="sb-ic">📊</span>Overview</div>
+   <div class="sb-lnk" onclick="sV('members')"><span class="sb-ic">👥</span>Category Members</div>
+   <div class="sb-lnk" onclick="sV('posts')"><span class="sb-ic">📝</span>Create Post</div>
+   <div class="sb-lnk" onclick="sV('messages')"><span class="sb-ic">📩</span>Send Message</div>
+   <div class="sb-lnk" onclick="sV('inbox')"><span class="sb-ic">📬</span>Messages from Admin</div>
+   <div class="sb-sec">More</div>
+   <div class="sb-lnk" onclick="doLogout()"><span class="sb-ic">🚪</span>Sign Out</div>
+  </nav>
+ </div>
+
+ <div class="main">
+
+  <!-- OVERVIEW -->
+  <div class="view on" id="overviewV">
+   <div class="wbar"><span class="wi">🛡️</span><div><div class="wh" id="wH">Sub Admin Panel</div><div class="ws" id="wS">Your assigned category control</div></div></div>
+   <div class="srow">
+    <div class="sbox"><div class="snum" id="ovMembers">—</div><div class="slbl">Members</div></div>
+    <div class="sbox"><div class="snum" id="ovPosts">—</div><div class="slbl">Posts</div></div>
+    <div class="sbox"><div class="snum" id="ovMsgs">—</div><div class="slbl">Messages Sent</div></div>
+   </div>
+   <div class="notice">🛡️ You are a Sub Admin for <strong id="noticeCategory">your assigned category</strong> in region <strong id="noticeRegion">your region</strong>. You can moderate posts, message members, and manage content in your category.</div>
+   <div class="sh">Quick Actions</div>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">
+    <div style="background:var(--gb);border:1px solid var(--gbr);padding:12px;cursor:pointer;text-align:center;" onclick="sV('posts')"><div style="font-size:1.4rem;margin-bottom:5px;">📝</div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;color:var(--ch);">Create Post</div></div>
+    <div style="background:var(--gb);border:1px solid var(--gbr);padding:12px;cursor:pointer;text-align:center;" onclick="sV('messages')"><div style="font-size:1.4rem;margin-bottom:5px;">📩</div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;color:var(--ch);">Send Message</div></div>
+    <div style="background:var(--gb);border:1px solid var(--gbr);padding:12px;cursor:pointer;text-align:center;" onclick="sV('members')"><div style="font-size:1.4rem;margin-bottom:5px;">👥</div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;color:var(--ch);">View Members</div></div>
+    <div style="background:var(--gb);border:1px solid var(--gbr);padding:12px;cursor:pointer;text-align:center;" onclick="sV('inbox')"><div style="font-size:1.4rem;margin-bottom:5px;">📬</div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;color:var(--ch);">Admin Messages</div></div>
+   </div>
+  </div>
+
+  <!-- CATEGORY MEMBERS -->
+  <div class="view" id="membersV">
+   <div class="notice">Showing all members who selected <strong id="membersCatLabel">your category</strong>.</div>
+   <input class="fi2" style="margin-bottom:10px;" type="text" id="mSrch" placeholder="Search members..." oninput="fM()"/>
+   <div class="dtwrap">
+    <table class="dt">
+     <thead><tr><th>Name</th><th>Country</th><th>Tier</th><th>Status</th></tr></thead>
+     <tbody id="mTbody"><tr><td colspan="4" style="text-align:center;padding:16px;"><div class="lring" style="margin:auto;"></div></td></tr></tbody>
+    </table>
+   </div>
+  </div>
+
+  <!-- CREATE POST -->
+  <div class="view" id="postsV">
+   <div class="notice">Posts you create will appear in the <strong id="postCatLabel">your category</strong> community feed, shown as "ICONIK".</div>
+   <div class="aform">
+    <div class="aform-t">📝 Create Category Post</div>
+    <div class="fg2"><label class="fl2">Title</label><input class="fi2" type="text" id="poTit" placeholder="Post headline"/></div>
+    <div class="fg2"><label class="fl2">Content <span style="color:var(--err);">*</span></label><input class="fi2" type="text" id="poCon" placeholder="Write your post content..."/></div>
+    <div class="fg2"><label class="fl2">Post Type</label>
+     <select class="fs" id="poTyp"><option value="update">📢 Update</option><option value="news">📰 News</option><option value="event">🎫 Event</option><option value="discussion">💬 Discussion</option></select>
+    </div>
+    <button class="btn btn-g btn-sm" style="width:100%;margin-top:4px;padding:11px;" onclick="createPost()">Publish Post →</button>
+   </div>
+   <div class="sh">Recent Posts in My Category</div>
+   <div id="catPosts"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- SEND MESSAGE -->
+  <div class="view" id="messagesV">
+   <div class="notice">Send messages to members in your category region. Messages appear in their inbox.</div>
+   <div class="aform">
+    <div class="aform-t">📩 Send Message to Members</div>
+    <div class="fg2"><label class="fl2">Send To</label>
+     <select class="fs" id="msgTo"><option value="all">📢 All Members</option><option value="verified">✅ Verified Members Only</option></select>
+    </div>
+    <div class="fg2"><label class="fl2">Subject <span style="color:var(--err);">*</span></label><input class="fi2" type="text" id="msgSubj" placeholder="Message subject"/></div>
+    <div class="fg2"><label class="fl2">Message <span style="color:var(--err);">*</span></label><textarea class="fi2" id="msgBody" rows="4" placeholder="Write your message..." style="resize:vertical;"></textarea></div>
+    <button class="btn btn-g btn-sm" style="width:100%;padding:11px;" onclick="sendMsg()">Send Message →</button>
+   </div>
+   <div class="sh">Sent Messages</div>
+   <div id="sentMsgs"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- INBOX -->
+  <div class="view" id="inboxV">
+   <div class="sh">Messages from Chief Admin</div>
+   <div id="inboxList"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+ </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import{getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import{getFirestore,collection,doc,getDoc,getDocs,addDoc,deleteDoc,query,orderBy,limit,where,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const cfg={apiKey:"AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",authDomain:"iconik-global.firebaseapp.com",projectId:"iconik-global",storageBucket:"iconik-global.firebasestorage.app",messagingSenderId:"1040054516979",appId:"1:1040054516979:web:33cd5f07ae8fc146a30b86"};
+const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app);
+let cU=null,saData=null,allM=[];
+
+onAuthStateChanged(auth,async u=>{
+ if(u){
+  // Verify this user is actually a Sub Admin
+  const saQ=query(collection(db,'subadmins'),where('email','==',u.email));
+  const saSnap=await getDocs(saQ);
+  if(saSnap.empty){await signOut(auth);showGate();toastF('Access denied — Sub Admins only','error');return;}
+  cU=u;saData=saSnap.docs[0].data();
+  showPanel();
+ }else{cU=null;saData=null;showGate();}
+});
+
+function showGate(){document.getElementById('gatePg').classList.add('on');document.getElementById('adminPg').classList.remove('on');}
+function showPanel(){
+ document.getElementById('gatePg').classList.remove('on');document.getElementById('adminPg').classList.add('on');
+ const nm=saData?.name||cU.displayName||'Sub Admin',cat=saData?.category||'—',reg=saData?.region||'—';
+ const l=nm.charAt(0).toUpperCase();
+ document.getElementById('tbarAv').textContent=l;document.getElementById('tbarCat').textContent=cat;
+ document.getElementById('sbAv').textContent=l;document.getElementById('sbNm').textContent=nm;
+ document.getElementById('sbCat').textContent=cat;
+ document.getElementById('wH').textContent=`Welcome, ${nm.split(' ')[0]}!`;
+ document.getElementById('wS').textContent=`${cat} · ${reg} Region`;
+ document.getElementById('noticeCategory').textContent=cat;
+ document.getElementById('noticeRegion').textContent=reg;
+ document.getElementById('membersCatLabel').textContent=cat;
+ document.getElementById('postCatLabel').textContent=cat;
+ lOverview();
+}
+
+window.doLogin=async function(){
+ const e=document.getElementById('ge').value.trim(),p=document.getElementById('gp').value,m=document.getElementById('gm');
+ if(!e||!p){m.textContent='Please fill all fields';m.style.display='block';return;}
+ try{m.style.display='none';await signInWithEmailAndPassword(auth,e,p);}
+ catch(er){const msgs={'auth/user-not-found':'No account found','auth/wrong-password':'Wrong password','auth/invalid-credential':'Invalid credentials','auth/too-many-requests':'Too many attempts'};m.textContent=msgs[er.code]||'Login failed';m.style.display='block';}
+};
+window.doLogout=async function(){await signOut(auth);cSB();};
+
+async function lOverview(){
+ try{
+  const[ms,ps,msgs]=await Promise.all([getDocs(collection(db,'users')),getDocs(collection(db,'posts')),getDocs(query(collection(db,'messages'),where('fromId','==',cU.uid)))]);
+  // Filter members who chose this category
+  let catMembers=0;ms.forEach(d=>{if((d.data().categories||[]).includes(saData?.category))catMembers++;});
+  document.getElementById('ovMembers').textContent=catMembers;
+  document.getElementById('ovPosts').textContent=ps.size;
+  document.getElementById('ovMsgs').textContent=msgs.size;
+ }catch(e){console.error(e);}
+}
+
+async function lMembers(){
+ try{
+  const s=await getDocs(collection(db,'users'));
+  allM=[];
+  s.forEach(d=>{const data=d.data();if((data.categories||[]).includes(saData?.category))allM.push({id:d.id,...data});});
+  rMT(allM);
+ }catch{}
+}
+function rMT(ms){
+ const el=document.getElementById('mTbody');
+ el.innerHTML=ms.length?ms.map(m=>{
+  const vs=m.verificationStatus||'pending',vc=vs==='verified'?'tok':vs==='rejected'?'terr':'twarn';
+  return`<tr><td><strong style="color:var(--ch);">${m.name||'—'}</strong></td><td>${m.country||'—'}</td><td><span class="tag tg">${m.tier||'Fan'}</span></td><td><span class="tag ${vc}">${vs}</span></td></tr>`;
+ }).join(''):`<tr><td colspan="4" style="text-align:center;padding:16px;color:var(--cd);">No members in this category yet</td></tr>`;
+}
+window.fM=function(){const q=document.getElementById('mSrch').value.toLowerCase();rMT(allM.filter(m=>m.name?.toLowerCase().includes(q)||m.country?.toLowerCase().includes(q)));};
+
+window.createPost=async function(){
+ const con=document.getElementById('poCon').value.trim();
+ if(!con){toastF('Content required','error');return;}
+ try{
+  await addDoc(collection(db,'posts'),{
+   title:document.getElementById('poTit').value.trim(),content:con,
+   category:saData?.category||'',postType:document.getElementById('poTyp').value,
+   authorName:'ICONIK',authorRole:'subadmin',authorId:cU.uid,
+   subAdminCategory:saData?.category,subAdminRegion:saData?.region,
+   likes:0,likedBy:[],commentCount:0,createdAt:serverTimestamp()
+  });
+  toastF('Post published! 📝','success');
+  document.getElementById('poTit').value='';document.getElementById('poCon').value='';
+  lCatPosts();
+ }catch{toastF('Error posting','error');}
+};
+
+async function lCatPosts(){
+ const el=document.getElementById('catPosts');
+ try{
+  const q=query(collection(db,'posts'),orderBy('createdAt','desc'),limit(10));
+  const s=await getDocs(q);
+  if(s.empty){el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:12px;">No posts yet</p></div>`;return;}
+  el.innerHTML='';
+  s.forEach(d=>{
+   const p=d.data(),t=p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString():'—';
+   el.innerHTML+=`<div class="pcard"><div class="ph"><div class="pav">★</div><div><div class="pau">ICONIK ${p.category?`· ${p.category}`:''}</div><div class="pt">${t}</div></div></div>${p.title?`<div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);margin-bottom:4px;">${p.title}</div>`:''}<div class="pbody">${p.content}</div></div>`;
+  });
+ }catch{}
+}
+
+window.sendMsg=async function(){
+ const subj=document.getElementById('msgSubj').value.trim(),body=document.getElementById('msgBody').value.trim();
+ if(!subj||!body){toastF('Subject and message required','error');return;}
+ try{
+  await addDoc(collection(db,'messages'),{
+   to:document.getElementById('msgTo').value,subject:subj,content:body,
+   fromName:saData?.name||'Sub Admin',fromRole:`Sub Admin · ${saData?.category}`,
+   fromId:cU.uid,category:saData?.category,region:saData?.region,
+   createdAt:serverTimestamp()
+  });
+  toastF('Message sent! 📩','success');
+  document.getElementById('msgSubj').value='';document.getElementById('msgBody').value='';
+  lSentMsgs();
+ }catch{toastF('Error sending','error');}
+};
+
+async function lSentMsgs(){
+ const el=document.getElementById('sentMsgs');
+ try{
+  const q=query(collection(db,'messages'),where('fromId','==',cU.uid),orderBy('createdAt','desc'),limit(10));
+  const s=await getDocs(q);
+  if(s.empty){el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:12px;">No messages sent yet</p></div>`;return;}
+  el.innerHTML='';
+  s.forEach(d=>{const m=d.data(),t=m.createdAt?.toDate?m.createdAt.toDate().toLocaleDateString():'—';el.innerHTML+=`<div class="msg-card"><div class="msg-from">${m.subject||'—'} <span style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);font-weight:400;">· ${t}</span></div><div class="msg-body">${m.content}</div></div>`;});
+ }catch{}
+}
+
+async function lInbox(){
+ const el=document.getElementById('inboxList');
+ try{
+  const q=query(collection(db,'messages'),orderBy('createdAt','desc'),limit(15));
+  const s=await getDocs(q);
+  // Filter messages from Chief Admin to sub admins
+  const adminMsgs=[];s.forEach(d=>{const m=d.data();if(m.fromRole==='Chief Admin'||m.to==='all')adminMsgs.push({id:d.id,...m});});
+  if(!adminMsgs.length){el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:12px;">No messages from Admin yet</p></div>`;return;}
+  el.innerHTML='';
+  adminMsgs.forEach(m=>{const t=m.createdAt?.toDate?m.createdAt.toDate().toLocaleDateString():'—';el.innerHTML+=`<div class="msg-card"><div class="msg-from">From: ${m.fromName||'ICONIK Admin'} <span style="font-size:0.56rem;color:var(--cd);">· ${t}</span></div>${m.subject?`<div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);margin-bottom:3px;">${m.subject}</div>`:''}<div class="msg-body">${m.content}</div></div>`;});
+ }catch{}
+}
+
+window.sV=function(nm){
+ document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+ document.querySelectorAll('.sb-lnk').forEach(l=>l.classList.remove('on'));
+ document.getElementById(nm+'V').classList.add('on');cSB();
+ if(nm==='members')lMembers();
+ if(nm==='posts')lCatPosts();
+ if(nm==='messages')lSentMsgs();
+ if(nm==='inbox')lInbox();
+ if(nm==='overview')lOverview();
+};
+window.togSB=function(){document.getElementById('sb').classList.toggle('on');document.getElementById('sbOv').classList.toggle('on');};
+window.cSB=function(){document.getElementById('sb').classList.remove('on');document.getElementById('sbOv').classList.remove('on');};
+function toastF(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='toast on '+type;setTimeout(()=>t.className='toast',3500);}
+</script>
+</body>
+</html>
