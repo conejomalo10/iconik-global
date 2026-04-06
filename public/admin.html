@@ -182,6 +182,10 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-he
    <div class="sb-lnk" onclick="sV('messages')"><span class="sb-ic">📩</span>Send Messages</div>
    <div class="sb-lnk" onclick="sV('events')"><span class="sb-ic">🎟️</span>Events</div>
    <div class="sb-lnk" onclick="sV('vipcontent')"><span class="sb-ic">👑</span>VIP Content</div>
+   <div class="sb-lnk" onclick="sV('polls')"><span class="sb-ic">🗳️</span>Fan Polls</div>
+   <div class="sb-lnk" onclick="sV('competitions')"><span class="sb-ic">🏆</span>Competitions</div>
+   <div class="sb-lnk" onclick="sV('marketplace')"><span class="sb-ic">🏪</span>Marketplace</div>
+   <div class="sb-lnk" onclick="sV('nominations')"><span class="sb-ic">✅</span>Nominations</div>
    <div class="sb-sec">Control</div>
    <div class="sb-lnk" onclick="sV('subadmins')"><span class="sb-ic">🛡️</span>Sub Admins</div>
    <div class="sb-lnk" onclick="sV('images')"><span class="sb-ic">🖼️</span>Category Images</div>
@@ -466,6 +470,63 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-he
    </div>
    <div class="sh">Published VIP Content</div>
    <div id="vipContentAdmin"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- POLLS MANAGEMENT -->
+  <div class="view" id="pollsV">
+   <div class="aform">
+    <div class="aform-t">🗳️ Create Fan Poll</div>
+    <div class="fg"><label class="fl">Question <span class="req">*</span></label><input class="fi" type="text" id="pollQ" placeholder="e.g. Who should ICONIK partner with next?"/></div>
+    <div class="fg"><label class="fl">Option 1 <span class="req">*</span></label><input class="fi" type="text" id="pollO1" placeholder="Option 1"/></div>
+    <div class="fg"><label class="fl">Option 2 <span class="req">*</span></label><input class="fi" type="text" id="pollO2" placeholder="Option 2"/></div>
+    <div class="fg"><label class="fl">Option 3</label><input class="fi" type="text" id="pollO3" placeholder="Option 3 (optional)"/></div>
+    <div class="fg"><label class="fl">Option 4</label><input class="fi" type="text" id="pollO4" placeholder="Option 4 (optional)"/></div>
+    <div class="fg"><label class="fl">Ends On</label><input class="fi" type="date" id="pollEnd"/></div>
+    <button class="btn btn-g" onclick="createPoll()">Create Poll →</button>
+   </div>
+   <div class="sh">Active Polls</div>
+   <div id="adminPollsList"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- COMPETITIONS MANAGEMENT -->
+  <div class="view" id="competitionsV">
+   <div class="aform">
+    <div class="aform-t">🏆 Create Competition</div>
+    <div class="fg"><label class="fl">Title <span class="req">*</span></label><input class="fi" type="text" id="compTitle" placeholder="e.g. Best Fan Art of the Month"/></div>
+    <div class="fg"><label class="fl">Prize <span class="req">*</span></label><input class="fi" type="text" id="compPrize" placeholder="e.g. $100 Cash Prize"/></div>
+    <div class="fg"><label class="fl">Description</label><input class="fi" type="text" id="compDesc" placeholder="Competition details..."/></div>
+    <div class="fg"><label class="fl">Deadline</label><input class="fi" type="date" id="compDeadline"/></div>
+    <button class="btn btn-g" onclick="createComp()">Create Competition →</button>
+   </div>
+   <div class="sh">Active Competitions</div>
+   <div id="adminCompList"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- MARKETPLACE MANAGEMENT -->
+  <div class="view" id="marketplaceV">
+   <div class="aform">
+    <div class="aform-t">🏪 Add Marketplace Item</div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Item Name <span class="req">*</span></label><input class="fi" type="text" id="mkName" placeholder="Item name"/></div>
+     <div class="fg"><label class="fl">Type</label><select class="fs" id="mkType"><option value="merch">👕 Merch</option><option value="digital">🖼️ Digital</option><option value="experience">🎟️ Experience</option><option value="collectible">💎 Collectible</option></select></div>
+    </div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Price</label><input class="fi" type="text" id="mkPrice" placeholder="$45"/></div>
+     <div class="fg"><label class="fl">Icon/Emoji</label><input class="fi" type="text" id="mkIcon" placeholder="👕"/></div>
+    </div>
+    <div class="fg"><label class="fl">Description</label><input class="fi" type="text" id="mkDesc" placeholder="Item description..."/></div>
+    <div class="fg"><label class="fl">Photo URL (optional)</label><input class="fi" type="text" id="mkPhoto" placeholder="https://..."/></div>
+    <button class="btn btn-g" onclick="addMarketItem()">Add Item →</button>
+   </div>
+   <div class="sh">Marketplace Items</div>
+   <div class="dtwrap"><table class="dt"><thead><tr><th>Name</th><th>Type</th><th>Price</th><th>Remove</th></tr></thead><tbody id="mkTbody"><tr><td colspan="4" style="text-align:center;padding:16px;"><div class="lring" style="margin:auto;border-top-color:var(--ab);"></div></td></tr></tbody></table></div>
+  </div>
+
+  <!-- NOMINATIONS -->
+  <div class="view" id="nominationsV">
+   <div class="conly">✅ These are celebrity nominations submitted by members. Review and add approved ones to the Celebrities tab.</div>
+   <div class="sh">Celebrity Nominations</div>
+   <div id="nominationsList"><div class="ldr"><div class="lring"></div></div></div>
   </div>
 
   <!-- IMAGES -->
@@ -873,6 +934,84 @@ async function lVIPContentAdmin(){
 }
 window.delVIPContent=async function(id){try{await deleteDoc(doc(db,'vipContent',id));toastF('Deleted','success');lVIPContentAdmin();}catch{toastF('Error','error');}};
 
+// ── PHASE 6 ADMIN JS ──
+window.createPoll=async function(){
+ const q=document.getElementById('pollQ').value.trim();
+ const o1=document.getElementById('pollO1').value.trim(),o2=document.getElementById('pollO2').value.trim();
+ if(!q||!o1||!o2){toastF('Question and at least 2 options required','error');return;}
+ const opts=[o1,o2];
+ const o3=document.getElementById('pollO3').value.trim(),o4=document.getElementById('pollO4').value.trim();
+ if(o3)opts.push(o3);if(o4)opts.push(o4);
+ try{
+  const endDate=document.getElementById('pollEnd').value;
+  await addDoc(collection(db,'polls'),{question:q,options:opts,votes:{},results:{},totalVotes:0,endsAt:endDate?new Date(endDate):new Date(Date.now()+7*24*60*60*1000),createdAt:serverTimestamp(),createdBy:cU.email});
+  toastF('Poll created! 🗳️','success');
+  ['pollQ','pollO1','pollO2','pollO3','pollO4','pollEnd'].forEach(id=>document.getElementById(id).value='');
+  lAdminPolls();
+ }catch{toastF('Error creating poll','error');}
+};
+async function lAdminPolls(){
+ const el=document.getElementById('adminPollsList');
+ try{
+  const s=await getDocs(query(collection(db,'polls'),orderBy('createdAt','desc'),limit(10)));
+  if(s.empty){el.innerHTML=`<p style="text-align:center;color:var(--cd);padding:14px;">No polls yet</p>`;return;}
+  el.innerHTML='';
+  s.forEach(d=>{const p=d.data();el.innerHTML+=`<div class="pcard"><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.74rem;color:var(--ch);">${p.question}</span><button onclick="delPoll('${d.id}')" style="background:none;border:none;color:var(--err);cursor:pointer;font-size:0.7rem;">✕</button></div><div style="font-family:'Inter',sans-serif;font-size:0.66rem;color:var(--cd);">Options: ${(p.options||[]).join(' · ')} · ${p.totalVotes||0} votes</div></div>`;});
+ }catch{}
+}
+window.delPoll=async function(id){try{await deleteDoc(doc(db,'polls',id));toastF('Poll deleted','success');lAdminPolls();}catch{toastF('Error','error');}};
+
+window.createComp=async function(){
+ const title=document.getElementById('compTitle').value.trim(),prize=document.getElementById('compPrize').value.trim();
+ if(!title||!prize){toastF('Title and prize required','error');return;}
+ try{
+  await addDoc(collection(db,'competitions'),{title,prize,description:document.getElementById('compDesc').value.trim(),deadline:document.getElementById('compDeadline').value,createdAt:serverTimestamp(),createdBy:cU.email});
+  toastF('Competition created! 🏆','success');
+  ['compTitle','compPrize','compDesc','compDeadline'].forEach(id=>document.getElementById(id).value='');
+  lAdminComps();
+ }catch{toastF('Error','error');}
+};
+async function lAdminComps(){
+ const el=document.getElementById('adminCompList');
+ try{
+  const s=await getDocs(query(collection(db,'competitions'),orderBy('createdAt','desc'),limit(10)));
+  if(s.empty){el.innerHTML=`<p style="text-align:center;color:var(--cd);padding:14px;">No competitions yet</p>`;return;}
+  el.innerHTML='';
+  s.forEach(d=>{const c=d.data();el.innerHTML+=`<div class="pcard"><div style="display:flex;justify-content:space-between;margin-bottom:5px;"><strong style="color:var(--ch);font-family:'Montserrat',sans-serif;font-size:0.74rem;">${c.title}</strong><button onclick="delComp('${d.id}')" style="background:none;border:none;color:var(--err);cursor:pointer;font-size:0.7rem;">✕</button></div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;color:var(--ok);">${c.prize}</div><div style="font-family:'Inter',sans-serif;font-size:0.64rem;color:var(--cd);margin-top:3px;">Deadline: ${c.deadline||'TBA'}</div></div>`;});
+ }catch{}
+}
+window.delComp=async function(id){try{await deleteDoc(doc(db,'competitions',id));toastF('Deleted','success');lAdminComps();}catch{toastF('Error','error');}};
+
+window.addMarketItem=async function(){
+ const name=document.getElementById('mkName').value.trim();
+ if(!name){toastF('Item name required','error');return;}
+ try{
+  await addDoc(collection(db,'marketplace'),{name,type:document.getElementById('mkType').value,price:document.getElementById('mkPrice').value.trim(),icon:document.getElementById('mkIcon').value.trim()||'🏪',description:document.getElementById('mkDesc').value.trim(),photo:document.getElementById('mkPhoto').value.trim(),createdAt:serverTimestamp(),addedBy:cU.email});
+  toastF('Item added! 🏪','success');
+  ['mkName','mkPrice','mkIcon','mkDesc','mkPhoto'].forEach(id=>document.getElementById(id).value='');
+  lAdminMarket();
+ }catch{toastF('Error adding item','error');}
+};
+async function lAdminMarket(){
+ const el=document.getElementById('mkTbody');
+ try{
+  const s=await getDocs(collection(db,'marketplace'));
+  el.innerHTML=s.empty?`<tr><td colspan="4" style="text-align:center;padding:14px;color:var(--cd);">No items yet</td></tr>`:
+  [...s.docs].map(d=>{const i=d.data();return`<tr><td><strong style="color:var(--ch);">${i.icon||'🏪'} ${i.name}</strong></td><td><span class="tag tg">${i.type}</span></td><td>${i.price||'—'}</td><td><button class="btn-d" onclick="delMkItem('${d.id}')">Remove</button></td></tr>`;}).join('');
+ }catch{}
+}
+window.delMkItem=async function(id){try{await deleteDoc(doc(db,'marketplace',id));toastF('Removed','success');lAdminMarket();}catch{toastF('Error','error');}};
+
+async function lNominations(){
+ const el=document.getElementById('nominationsList');
+ try{
+  const s=await getDocs(query(collection(db,'nominations'),orderBy('createdAt','desc'),limit(20)));
+  if(s.empty){el.innerHTML=`<p style="text-align:center;color:var(--cd);padding:14px;">No nominations submitted yet</p>`;return;}
+  el.innerHTML='';
+  s.forEach(d=>{const n=d.data(),t=n.createdAt?.toDate?n.createdAt.toDate().toLocaleDateString():'—';el.innerHTML+=`<div class="pcard"><div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:6px;"><strong style="color:var(--ch);font-family:'Montserrat',sans-serif;font-size:0.76rem;">${n.name} <span class="tag tg">${n.category}</span></strong><span style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);">${t}</span></div><div style="font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);margin-bottom:7px;">${n.reason||'No reason given'}</div><div style="font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);">By: ${n.nominatedByName||'Member'}</div></div>`;});
+ }catch{}
+}
+
 // ── UPDATED sV ──
 async function lAnalytics(){
  try{
@@ -950,6 +1089,10 @@ window.sV=function(nm){
  if(nm==='analytics')lAnalytics();
  if(nm==='events')lEventsAdmin();
  if(nm==='vipcontent')lVIPContentAdmin();
+ if(nm==='polls')lAdminPolls();
+ if(nm==='competitions')lAdminComps();
+ if(nm==='marketplace')lAdminMarket();
+ if(nm==='nominations')lNominations();
 };
 
 window.togSB=function(){document.getElementById('sb').classList.toggle('on');document.getElementById('sbOv').classList.toggle('on');};
@@ -959,4 +1102,3 @@ function aE(c){const e={'auth/user-not-found':'No account found','auth/wrong-pas
 </script>
 </body>
 </html>
-
