@@ -218,4 +218,1172 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
 .ucard.cur{border-color:var(--gold);background:rgba(255,184,0,0.06);}
 .uprice{font-family:'Playfair Display',serif;font-weight:900;font-size:1.35rem;color:var(--ch);min-width:42px;text-align:center;}
 .uprice small{font-size:0.66rem;color:var(--cd);}
-.uname{font-family:'Bebas Neue',s
+.uname{font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.09em;color:var(--gold);}
+.ufeats{font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);margin-top:2px;}
+.uact{margin-left:auto;font-family:'Montserrat',sans-serif;font-size:0.55rem;font-weight:800;letter-spacing:0.08em;padding:6px 10px;cursor:pointer;border:none;background:var(--gold);color:var(--obs);white-space:nowrap;}
+/* MSG */
+.msg-card{background:var(--gb);border:1px solid var(--gbr);padding:13px;margin-bottom:7px;}
+.msg-from{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.7rem;color:var(--gold);margin-bottom:3px;display:flex;align-items:center;gap:5px;}
+.msg-badge{font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.08em;color:var(--obs);background:var(--gold);padding:1px 5px;}
+.msg-time{font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-left:auto;}
+.msg-subj{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.75rem;color:var(--ch);margin-bottom:4px;}
+.msg-body{font-family:'Inter',sans-serif;font-size:0.72rem;color:var(--cd);line-height:1.6;}
+/* TOUR BUDDY */
+.tbform{background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:14px;}
+.tbform-t{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.6rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--gold);margin-bottom:11px;}
+/* PROFILE */
+.profform{background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:12px;}
+.profform-t{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.6rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--gold);margin-bottom:11px;}
+/* TOAST */
+.toast{position:fixed;bottom:72px;right:12px;z-index:9999;background:var(--obs3);border:1px solid var(--gbr);padding:10px 14px;font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--ch);transform:translateY(80px);opacity:0;transition:all 0.3s;pointer-events:none;max-width:270px;}
+.toast.on{transform:translateY(0);opacity:1;}
+.toast.success{border-color:rgba(34,197,94,0.4);color:var(--ok);}
+.toast.error{border-color:rgba(239,68,68,0.4);color:var(--err);}
+/* LOADER */
+.ldr{display:flex;align-items:center;justify-content:center;padding:24px;}
+.lring{width:26px;height:26px;border:3px solid var(--gbr);border-top-color:var(--gold);border-radius:50%;animation:sp 0.8s linear infinite;}
+@keyframes sp{to{transform:rotate(360deg)}}
+/* COMMENTS */
+.comments-section{border-top:1px solid rgba(255,255,255,0.05);margin-top:8px;padding-top:8px;}
+.comment{display:flex;gap:7px;margin-bottom:8px;}
+.comment-av{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.6rem;color:var(--obs);flex-shrink:0;margin-top:2px;}
+.comment-body{flex:1;}
+.comment-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.64rem;color:var(--ch);}
+.comment-text{font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);line-height:1.5;}
+.comment-input-row{display:flex;gap:6px;margin-top:8px;}
+.comment-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--gbr);color:var(--ch);font-family:'Inter',sans-serif;font-size:0.72rem;padding:7px 10px;outline:none;}
+.comment-input::placeholder{color:rgba(189,181,166,0.3);}
+.comment-send{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.58rem;letter-spacing:0.08em;padding:7px 11px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;}
+/* NOTIFICATION CARDS */
+.notif-card{background:var(--gb);border:1px solid var(--gbr);border-left:3px solid var(--gold);padding:12px 13px;margin-bottom:7px;display:flex;align-items:flex-start;gap:10px;transition:all 0.2s;}
+.notif-card.unread{border-left-color:var(--gold);background:rgba(255,184,0,0.04);}
+.notif-card.read{border-left-color:var(--gbr);opacity:0.7;}
+.notif-ic{font-size:1.2rem;flex-shrink:0;margin-top:1px;}
+.notif-content{flex:1;}
+.notif-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);margin-bottom:2px;}
+.notif-body{font-family:'Inter',sans-serif;font-size:0.67rem;color:var(--cd);line-height:1.5;}
+.notif-time{font-family:'Inter',sans-serif;font-size:0.58rem;color:rgba(189,181,166,0.4);margin-top:3px;}
+/* MEMBER SEARCH CARDS */
+.member-card{background:var(--gb);border:1px solid var(--gbr);padding:12px;margin-bottom:7px;display:flex;align-items:center;gap:10px;transition:border-color 0.2s;}
+.member-card:hover{border-color:var(--gbri);}
+.member-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.95rem;color:var(--obs);flex-shrink:0;overflow:hidden;}
+.member-av img{width:100%;height:100%;object-fit:cover;}
+.member-info{flex:1;}
+.member-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);}
+.member-meta{font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);margin-top:2px;}
+.member-cats{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;}
+.member-cat-tag{font-family:'Bebas Neue',sans-serif;font-size:0.48rem;letter-spacing:0.07em;color:var(--gold);background:rgba(255,184,0,0.08);border:1px solid rgba(255,184,0,0.15);padding:1px 5px;}
+/* CELEB PAGE CARDS */
+.celeb-page-card{background:var(--gb);border:1px solid var(--gbr);margin-bottom:8px;overflow:hidden;cursor:pointer;transition:all 0.3s;}
+.celeb-page-card:hover{border-color:var(--gbri);transform:translateY(-1px);}
+.celeb-page-banner{width:100%;height:90px;background:linear-gradient(135deg,var(--obs2),var(--obs3));display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative;overflow:hidden;}
+.celeb-page-banner img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.celeb-page-banner-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,13,0.8),transparent);}
+.celeb-page-info{padding:10px;}
+.celeb-page-name{font-family:'Playfair Display',serif;font-weight:700;font-size:0.9rem;color:var(--ch);}
+.celeb-page-cat{font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.1em;color:var(--gold);margin-top:2px;}
+.celeb-page-meta{font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);margin-top:3px;}
+.celeb-page-follow{font-family:'Montserrat',sans-serif;font-size:0.58rem;font-weight:800;letter-spacing:0.08em;padding:5px 11px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;margin-top:8px;}
+/* CELEB SINGLE PAGE */
+.celeb-hero{width:100%;height:160px;background:var(--obs2);display:flex;align-items:center;justify-content:center;font-size:3.5rem;margin-bottom:14px;position:relative;overflow:hidden;}
+.celeb-hero img{width:100%;height:100%;object-fit:cover;}
+.celeb-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,var(--obs),transparent 60%);}
+.celeb-hero-name{position:absolute;bottom:12px;left:14px;font-family:'Playfair Display',serif;font-weight:900;font-size:1.3rem;color:var(--ch);}
+.celeb-hero-cat{position:absolute;bottom:34px;left:14px;font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.12em;color:var(--gold);}
+.celeb-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px;}
+@media(max-width:480px){.abox{padding:22px 14px;}.fr{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<!-- PWA INSTALL BANNER -->
+<div class="pwa-banner" id="pwaBanner">
+ <span class="pwa-icon">📱</span>
+ <div class="pwa-text">
+  <div class="pwa-title">Install ICONIK App</div>
+  <div class="pwa-sub">Add to your home screen for the best experience</div>
+ </div>
+ <div class="pwa-btns">
+  <button class="pwa-install" id="pwaInstallBtn">Install</button>
+  <button class="pwa-dismiss" onclick="dismissPWA()">Later</button>
+ </div>
+</div>
+
+<!-- AUTH PAGE -->
+<div class="auth-pg on" id="authPg">
+ <div class="abox">
+  <a class="alogo" href="/"><span>ICON</span>IK</a>
+  <p class="asub">Find Your Tribe. Follow Your Icon.</p>
+  <div class="atabs">
+   <div class="atab on" onclick="sTab('login')">Sign In</div>
+   <div class="atab" onclick="sTab('register')">Join Free</div>
+  </div>
+  <div id="loginF">
+   <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" id="le" placeholder="your@email.com"/></div>
+   <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="lp" placeholder="••••••••"/></div>
+   <button class="btn btn-g" onclick="doLogin()">Enter ICONIK →</button>
+   <div class="amsg" id="lm"></div>
+   <p style="font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);text-align:center;margin-top:12px;">Chief Admin? <a href="/admin.html" style="color:var(--ab);">Go to Admin Panel →</a></p>
+  </div>
+  <div id="regF" style="display:none;">
+   <div class="vnotice">
+    <div class="vnotice-t">🔒 Why We Verify Your Identity</div>
+    <p>ICONIK is a <strong>world-class global fan platform</strong>. To protect all members and ensure legitimacy, we verify personal details. <strong>Your data is encrypted, strictly private, and only accessible to the ICONIK Chief Admin for verification.</strong></p>
+   </div>
+   <div class="fr">
+    <div class="fg"><label class="fl">Full Name <span class="req">*</span></label><input class="fi" type="text" id="rn" placeholder="Your full name"/></div>
+    <div class="fg"><label class="fl">Phone Number <span class="req">*</span></label><input class="fi" type="tel" id="rph" placeholder="+1 234 567 8900"/></div>
+   </div>
+   <div class="fg"><label class="fl">Email Address <span class="req">*</span></label><input class="fi" type="email" id="re" placeholder="your@email.com"/></div>
+   <div class="fr">
+    <div class="fg"><label class="fl">Country <span class="req">*</span></label><input class="fi" type="text" id="rco" placeholder="Your country"/></div>
+    <div class="fg"><label class="fl">City <span class="req">*</span></label><input class="fi" type="text" id="rci" placeholder="Your city"/></div>
+   </div>
+   <div class="fg"><label class="fl">Home / Office Address <span class="req">*</span></label><input class="fi" type="text" id="rad" placeholder="Street address, area"/><p class="fhint">🔒 Encrypted — Chief Admin verification only</p></div>
+   <div class="idbox">
+    <div class="idbox-t">🪪 Identity Verification — Select ONE</div>
+    <p style="font-family:'Inter',sans-serif;font-size:0.67rem;color:var(--cd);margin-bottom:8px;line-height:1.5;">Required for platform security. Stored securely — never shared externally.</p>
+    <div class="idopts">
+     <div class="idopt" onclick="selId(this,'national')">🪪 National ID</div>
+     <div class="idopt" onclick="selId(this,'drivers')">🚗 Driver's License</div>
+     <div class="idopt" onclick="selId(this,'passport')">📘 Int'l Passport</div>
+    </div>
+    <div class="fg" id="idG" style="display:none;">
+     <label class="fl" id="idL">Document Number <span class="req">*</span></label>
+     <input class="fi" type="text" id="rId" placeholder="Enter document number"/>
+     <p class="fhint">🔒 Chief Admin eyes only. Never shared.</p>
+    </div>
+   </div>
+   <div class="fg"><label class="fl">Password <span class="req">*</span></label><input class="fi" type="password" id="rp" placeholder="Min. 6 characters"/></div>
+   <div class="fg">
+    <label class="fl">Choose Your Communities</label>
+    <div class="catg">
+     <div class="cc" onclick="tC(this)" data-cat="Music"><span class="cc-i">🎵</span><span class="cc-n">Music</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Film"><span class="cc-i">🎬</span><span class="cc-n">Film</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Sports"><span class="cc-i">⚽</span><span class="cc-n">Sports</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Literature"><span class="cc-i">📚</span><span class="cc-n">Books</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Wellness"><span class="cc-i">💪</span><span class="cc-n">Wellness</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Nature"><span class="cc-i">🌿</span><span class="cc-n">Nature</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Fashion"><span class="cc-i">👗</span><span class="cc-n">Fashion</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Food"><span class="cc-i">🍽️</span><span class="cc-n">Food</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Automotive"><span class="cc-i">🚗</span><span class="cc-n">Auto</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Tech"><span class="cc-i">💻</span><span class="cc-n">Tech</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Beauty"><span class="cc-i">💄</span><span class="cc-n">Beauty</span></div>
+     <div class="cc" onclick="tC(this)" data-cat="Leadership"><span class="cc-i">🎓</span><span class="cc-n">Leaders</span></div>
+    </div>
+   </div>
+   <button class="btn btn-g" onclick="doReg()">Create Verified Account →</button>
+   <div class="amsg" id="rm"></div>
+  </div>
+  <p style="font-family:'Inter',sans-serif;font-size:0.69rem;color:var(--cd);text-align:center;margin-top:12px;"><span id="swT">New to ICONIK? </span><a style="color:var(--gold);cursor:pointer;" id="swL" onclick="sTab('register')">Join Free</a></p>
+ </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dash-pg" id="dashPg">
+ <nav class="tnav">
+  <a class="nlogo" href="/"><span>ICON</span>IK</a>
+  <div class="nr">
+   <span class="nun" id="nNm"></span>
+   <div style="position:relative;cursor:pointer;" onclick="sV('notifs')">
+    <span style="font-size:1.2rem;">🔔</span>
+    <span id="notifDot" style="display:none;position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:var(--err);border-radius:50%;"></span>
+   </div>
+   <div class="nav-av" id="nAv" onclick="togSB()">U</div>
+   <button class="hbg" onclick="togSB()"><span></span><span></span><span></span></button>
+  </div>
+ </nav>
+
+ <div class="sb-ov" id="sbOv" onclick="cSB()"></div>
+ <div class="sb" id="sb">
+  <div class="sb-h"><span class="sb-logo">ICONIK</span><button class="sb-x" onclick="cSB()">✕</button></div>
+  <div class="sb-u">
+   <div class="sb-av" id="sbAv">U</div>
+   <div class="sb-nm" id="sbNm">Member</div>
+   <span class="sb-tier" id="sbTier">FAN</span>
+   <span class="sb-vs" id="sbVS" style="display:none;">✓ VERIFIED</span>
+  </div>
+  <nav class="sb-nav">
+   <div class="sb-sec">Main</div>
+   <div class="sb-lnk on" onclick="sV('feed');cSB()"><span class="sb-ic">🏠</span>My Feed</div>
+   <div class="sb-lnk" onclick="sV('explore');cSB()"><span class="sb-ic">🔍</span>Explore Icons</div>
+   <div class="sb-lnk" onclick="sV('search');cSB()"><span class="sb-ic">👥</span>Find Members</div>
+   <div class="sb-lnk" onclick="sV('coms');cSB()"><span class="sb-ic">🌍</span>Communities</div>
+   <div class="sb-lnk" onclick="sV('celebpages');cSB()"><span class="sb-ic">⭐</span>Celebrity Pages</div>
+   <div class="sb-lnk" onclick="sV('news');cSB()"><span class="sb-ic">📰</span>Celebrity News</div>
+   <div class="sb-lnk" onclick="sV('tb');cSB()"><span class="sb-ic">🎫</span>Tour Buddy</div>
+   <div class="sb-lnk" onclick="sV('notifs');cSB()"><span class="sb-ic">🔔</span>Notifications<span class="sb-new" id="notifBadgeSB" style="display:none;">NEW</span></div>
+   <div class="sb-lnk" onclick="sV('msgs');cSB()"><span class="sb-ic">📩</span>Messages<span class="sb-new" id="msgBadge" style="display:none;">NEW</span></div>
+   <div class="sb-sec">Discover</div>
+   <div class="sb-lnk" onclick="sV('wellness');cSB()"><span class="sb-ic">💪</span>Wellness Hub</div>
+   <div class="sb-lnk" onclick="sV('affiliate');cSB()"><span class="sb-ic">🛍️</span>Shop & Earn</div>
+   <div class="sb-sec">Account</div>
+   <div class="sb-lnk" onclick="sV('membership');cSB()"><span class="sb-ic">👑</span>Membership<span class="sb-bdg">UPGRADE</span></div>
+   <div class="sb-lnk" onclick="sV('profile');cSB()"><span class="sb-ic">👤</span>My Profile</div>
+   <div class="sb-sec">More</div>
+   <div class="sb-lnk" onclick="doLogout()"><span class="sb-ic">🚪</span>Sign Out</div>
+  </nav>
+ </div>
+
+ <!-- BOTTOM NAV -->
+ <div class="bnav">
+  <div class="bnav-item on" id="bn-feed" onclick="sV('feed');setBN('feed')"><span class="bnav-ic">🏠</span><span class="bnav-lbl">Feed</span></div>
+  <div class="bnav-item" id="bn-explore" onclick="sV('explore');setBN('explore')"><span class="bnav-ic">⭐</span><span class="bnav-lbl">Icons</span></div>
+  <div class="bnav-item" id="bn-news" onclick="sV('news');setBN('news')"><span class="bnav-ic">📰</span><span class="bnav-lbl">News</span></div>
+  <div class="bnav-item" id="bn-wellness" onclick="sV('wellness');setBN('wellness')"><span class="bnav-ic">💪</span><span class="bnav-lbl">Wellness</span></div>
+  <div class="bnav-item" id="bn-membership" onclick="sV('membership');setBN('membership')"><span class="bnav-ic">👑</span><span class="bnav-lbl">VIP</span></div>
+ </div>
+
+ <div class="main">
+
+  <!-- FEED -->
+  <div class="view on" id="feedV">
+   <div class="wbar"><span class="wi">🌟</span><div><div class="wh" id="wH">Welcome!</div><div class="ws" id="wS">Your personalized icon feed</div></div></div>
+   <div class="vbanner" id="vBanner"></div>
+   <div class="srow">
+    <div class="sbox"><div class="snum" id="sCom">0</div><div class="slbl">Communities</div></div>
+    <div class="sbox"><div class="snum" id="sIco">0</div><div class="slbl">Icons</div></div>
+    <div class="sbox"><div class="snum" id="sPo">0</div><div class="slbl">Posts</div></div>
+   </div>
+   <!-- COMMUNITY POST FORM -->
+   <div class="post-form">
+    <div class="post-form-header">
+     <div class="post-form-av" id="pfAv" style="overflow:hidden;flex-shrink:0;">U</div>
+     <input class="post-form-input" type="text" id="newPostText" placeholder="Share with your communities..."/>
+    </div>
+    <!-- MEDIA PREVIEW -->
+    <div id="mediaPreview" style="display:none;margin:8px 0;position:relative;">
+     <img id="mediaPreviewImg" style="width:100%;max-height:200px;object-fit:cover;display:none;"/>
+     <video id="mediaPreviewVid" controls style="width:100%;max-height:200px;display:none;"></video>
+     <button onclick="clearMedia()" style="position:absolute;top:5px;right:5px;background:rgba(0,0,0,0.7);border:none;color:#fff;width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:0.8rem;">✕</button>
+    </div>
+    <div class="post-form-actions">
+     <select class="post-type-select" id="newPostCat">
+      <option value="">Community...</option>
+      <option>Music</option><option>Film & TV</option><option>Sports</option>
+      <option>Literature</option><option>Wellness</option><option>Fashion</option>
+      <option>Food</option><option>Tech</option><option>Beauty</option>
+     </select>
+     <select class="post-type-select" id="newPostType" style="width:auto;">
+      <option value="text">✏️ Text</option>
+      <option value="fanart">🎨 Fan Art</option>
+      <option value="photo">📸 Photo</option>
+      <option value="video">🎬 Video</option>
+     </select>
+    </div>
+    <!-- MEDIA UPLOAD ROW (VIP only) -->
+    <div id="mediaUploadRow" style="display:none;margin-top:8px;display:flex;gap:7px;align-items:center;flex-wrap:wrap;">
+     <label style="font-family:'Montserrat',sans-serif;font-size:0.58rem;font-weight:700;letter-spacing:0.08em;padding:7px 12px;background:rgba(255,184,0,0.08);border:1px solid var(--gbr);color:var(--gold);cursor:pointer;">
+      📎 Attach Media
+      <input type="file" id="mediaFileInput" accept="image/*,video/*" style="display:none;" onchange="previewMedia(this)"/>
+     </label>
+     <span style="font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--cd);" id="mediaFileName"></span>
+     <button class="post-submit" onclick="submitPost()">Post</button>
+    </div>
+    <div id="basicPostRow" style="display:flex;justify-content:flex-end;margin-top:8px;">
+     <button class="post-submit" onclick="submitPost()">Post</button>
+    </div>
+   </div>
+   <div class="sh">Latest Updates</div>
+   <div id="feedP"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- EXPLORE ICONS -->
+  <div class="view" id="exploreV">
+   <div class="sh">All Icons & Celebrities</div>
+   <input class="fi" style="margin-bottom:10px;" type="text" id="cSrch" placeholder="Search by name or category..." oninput="fCl()"/>
+   <div class="cgrid" id="allC"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- COMMUNITIES -->
+  <div class="view" id="comsV">
+   <div class="sh">My Communities</div>
+   <div class="cgrid" id="myComG"></div>
+  </div>
+
+  <!-- CELEBRITY NEWS -->
+  <div class="view" id="newsV">
+   <div class="wbar"><span class="wi">📰</span><div><div class="wh">Celebrity News</div><div class="ws">Latest from the world of icons</div></div></div>
+   <div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;" id="newsCatFilter">
+    <button class="news-filter-btn on" onclick="filterNews('all',this)" style="white-space:nowrap;font-family:'Montserrat',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.08em;padding:6px 12px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;flex-shrink:0;">All</button>
+    <button class="news-filter-btn" onclick="filterNews('Music',this)" style="white-space:nowrap;font-family:'Montserrat',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.08em;padding:6px 12px;background:transparent;color:var(--cd);border:1px solid var(--gbr);cursor:pointer;flex-shrink:0;">🎵 Music</button>
+    <button class="news-filter-btn" onclick="filterNews('Sports',this)" style="white-space:nowrap;font-family:'Montserrat',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.08em;padding:6px 12px;background:transparent;color:var(--cd);border:1px solid var(--gbr);cursor:pointer;flex-shrink:0;">⚽ Sports</button>
+    <button class="news-filter-btn" onclick="filterNews('Film',this)" style="white-space:nowrap;font-family:'Montserrat',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.08em;padding:6px 12px;background:transparent;color:var(--cd);border:1px solid var(--gbr);cursor:pointer;flex-shrink:0;">🎬 Film</button>
+    <button class="news-filter-btn" onclick="filterNews('Fashion',this)" style="white-space:nowrap;font-family:'Montserrat',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.08em;padding:6px 12px;background:transparent;color:var(--cd);border:1px solid var(--gbr);cursor:pointer;flex-shrink:0;">👗 Fashion</button>
+   </div>
+   <div class="news-grid" id="newsFeed"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- TOUR BUDDY -->
+  <div class="view" id="tbV">
+   <div class="wbar"><span class="wi">🎫</span><div><div class="wh">Tour Buddy Finder</div><div class="ws">Connect with fans at the same events</div></div></div>
+   <div class="tbform">
+    <div class="tbform-t">Post Your Event</div>
+    <div class="fg"><label class="fl">Event / Concert</label><input class="fi" type="text" id="tbe" placeholder="e.g. Beyoncé — Renaissance Tour, London"/></div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Date</label><input class="fi" type="date" id="tbd"/></div>
+     <div class="fg"><label class="fl">City, Country</label><input class="fi" type="text" id="tbc" placeholder="London, UK"/></div>
+    </div>
+    <div class="fg"><label class="fl">Message</label><input class="fi" type="text" id="tbm" placeholder="Looking for fans to attend together!"/></div>
+    <button class="btn btn-g" onclick="postTB()">Post Tour Buddy Request →</button>
+   </div>
+   <div class="sh">Active Requests</div>
+   <div id="tbList"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- MESSAGES -->
+  <div class="view" id="msgsV">
+   <div class="wbar"><span class="wi">📩</span><div><div class="wh">Messages</div><div class="ws">From Admin & Sub Admins</div></div></div>
+   <div class="sh">Inbox</div>
+   <div id="msgsList"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- WELLNESS HUB -->
+  <div class="view" id="wellnessV">
+   <div class="wbar"><span class="wi">💪</span><div><div class="wh">ICONIK Wellness Hub</div><div class="ws">Health · Fitness · Nutrition · Beauty · Anti-Aging</div></div></div>
+   <div class="sh">Wellness Communities</div>
+   <div class="wellness-cats">
+    <div class="wcat" onclick="showWellnessCat('fitness')"><div class="wcat-i">🏋️</div><div class="wcat-n">Fitness & Training</div><div class="wcat-d">Coaches, workouts, gym culture</div></div>
+    <div class="wcat" onclick="showWellnessCat('nutrition')"><div class="wcat-i">🥗</div><div class="wcat-n">Nutrition & Diet</div><div class="wcat-d">Nutritionists, meal plans, health foods</div></div>
+    <div class="wcat" onclick="showWellnessCat('mental')"><div class="wcat-i">🧘</div><div class="wcat-n">Mental Wellness</div><div class="wcat-d">Mindfulness, therapy, meditation</div></div>
+    <div class="wcat" onclick="showWellnessCat('herbal')"><div class="wcat-i">🌿</div><div class="wcat-n">Herbal & Natural</div><div class="wcat-d">Natural remedies, plant-based healing</div></div>
+    <div class="wcat" onclick="showWellnessCat('antiaging')"><div class="wcat-i">✨</div><div class="wcat-n">Anti-Aging & Beauty</div><div class="wcat-d">Skincare science, longevity, aesthetics</div></div>
+    <div class="wcat" onclick="showWellnessCat('medical')"><div class="wcat-i">🩺</div><div class="wcat-n">Medical Wellness</div><div class="wcat-d">Doctors, nurses, evidence-based health</div></div>
+    <div class="wcat" onclick="showWellnessCat('recovery')"><div class="wcat-i">🏃</div><div class="wcat-n">Sports Recovery</div><div class="wcat-d">Physiotherapy, recovery, performance</div></div>
+    <div class="wcat" onclick="showWellnessCat('womens')"><div class="wcat-i">💊</div><div class="wcat-n">Women's Health</div><div class="wcat-d">Hormonal health, maternal wellness</div></div>
+   </div>
+   <div class="sh">Wellness Partners & Coaches</div>
+   <div id="wellnessPartners"><div class="ldr"><div class="lring"></div></div></div>
+   <p style="font-family:'Inter',sans-serif;font-size:0.68rem;color:rgba(189,181,166,0.4);text-align:center;margin-top:8px;line-height:1.5;">⚠️ ICONIK does not provide medical advice. Always consult your healthcare provider.</p>
+  </div>
+
+  <!-- AFFILIATE / SHOP -->
+  <div class="view" id="affiliateV">
+   <div class="wbar"><span class="wi">🛍️</span><div><div class="wh">Shop & Earn</div><div class="ws">Curated products · Affiliate rewards</div></div></div>
+   <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-left:3px solid var(--ok);padding:10px 12px;margin-bottom:14px;">
+    <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ok);margin-bottom:4px;">💰 Earn With ICONIK</div>
+    <div style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);line-height:1.5;">Share products with your network and earn affiliate commissions. VIP Gold members earn bonus revenue sharing.</div>
+   </div>
+   <div class="sh">Featured Products</div>
+   <div class="prod-grid" id="productsGrid">
+    <!-- Static affiliate products - Admin can update via Firestore -->
+    <div class="prod-card">
+     <div class="prod-img">💊</div>
+     <div class="prod-info">
+      <div class="prod-name">Premium Protein Supplement</div>
+      <div class="prod-price">$49.99</div>
+      <div class="prod-commission">✓ 8% commission on sales</div>
+      <button class="prod-btn" onclick="affiliateClick('protein')">Shop & Earn →</button>
+     </div>
+    </div>
+    <div class="prod-card">
+     <div class="prod-img">🏋️</div>
+     <div class="prod-info">
+      <div class="prod-name">Home Gym Resistance Kit</div>
+      <div class="prod-price">$34.99</div>
+      <div class="prod-commission">✓ 6% commission on sales</div>
+      <button class="prod-btn" onclick="affiliateClick('gym')">Shop & Earn →</button>
+     </div>
+    </div>
+    <div class="prod-card">
+     <div class="prod-img">🌿</div>
+     <div class="prod-info">
+      <div class="prod-name">Herbal Immunity Boost</div>
+      <div class="prod-price">$29.99</div>
+      <div class="prod-commission">✓ 10% commission on sales</div>
+      <button class="prod-btn" onclick="affiliateClick('herbal')">Shop & Earn →</button>
+     </div>
+    </div>
+    <div class="prod-card">
+     <div class="prod-img">✨</div>
+     <div class="prod-info">
+      <div class="prod-name">Anti-Aging Serum Kit</div>
+      <div class="prod-price">$79.99</div>
+      <div class="prod-commission">✓ 12% commission on sales</div>
+      <button class="prod-btn" onclick="affiliateClick('serum')">Shop & Earn →</button>
+     </div>
+    </div>
+    <div class="prod-card">
+     <div class="prod-img">📚</div>
+     <div class="prod-info">
+      <div class="prod-name">Wellness Masterclass Course</div>
+      <div class="prod-price">$19.99</div>
+      <div class="prod-commission">✓ 15% commission on sales</div>
+      <button class="prod-btn" onclick="affiliateClick('course')">Shop & Earn →</button>
+     </div>
+    </div>
+    <div class="prod-card">
+     <div class="prod-img">🧴</div>
+     <div class="prod-info">
+      <div class="prod-name">Natural Skincare Bundle</div>
+      <div class="prod-price">$44.99</div>
+      <div class="prod-commission">✓ 9% commission on sales</div>
+      <button class="prod-btn" onclick="affiliateClick('skincare')">Shop & Earn →</button>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <!-- MEMBERSHIP + PAYMENT -->
+  <div class="view" id="membershipV">
+   <div class="sh">Your Membership</div>
+   <div class="upgrid" style="margin-bottom:16px;">
+    <div class="ucard cur"><div class="uprice">$0<small>/mo</small></div><div><div class="uname">Fan Member</div><div class="ufeats">Basic · 3 communities · Feed · Messages</div></div><div class="uact" style="background:var(--gbr);color:var(--cd);">Current</div></div>
+    <div class="ucard" onclick="showPayment('Bronze',5)"><div class="uprice">$5<small>/mo</small></div><div><div class="uname">VIP Bronze</div><div class="ufeats">7 communities · Priority feed · Bronze badge</div></div><button class="uact">Upgrade</button></div>
+    <div class="ucard" onclick="showPayment('Silver',12)"><div class="uprice">$12<small>/mo</small></div><div><div class="uname">VIP Silver ⭐</div><div class="ufeats">Unlimited · VIP lounge · Tour match</div></div><button class="uact">Upgrade</button></div>
+    <div class="ucard" onclick="showPayment('Gold',25)"><div class="uprice">$25<small>/mo</small></div><div><div class="uname">VIP Gold 👑</div><div class="ufeats">All Silver + Sub Admin + Affiliate revenue</div></div><button class="uact">Upgrade</button></div>
+   </div>
+   <!-- PAYMENT SECTION -->
+   <div class="pay-card" id="paymentSection" style="display:none;">
+    <div class="pay-title" id="payTitle">Upgrade to VIP Silver</div>
+    <div class="pay-desc">Complete your upgrade in 3 simple steps. We accept PayPal and all major cryptocurrencies.</div>
+    <div class="sh">Select Payment Method</div>
+    <div class="pay-methods">
+     <div class="pay-method on" onclick="selectPayment(this,'paypal')"><span class="pay-method-icon">🅿️</span><span class="pay-method-name">PayPal</span></div>
+     <div class="pay-method" onclick="selectPayment(this,'bitcoin')"><span class="pay-method-icon">₿</span><span class="pay-method-name">Bitcoin</span></div>
+     <div class="pay-method" onclick="selectPayment(this,'ethereum')"><span class="pay-method-icon">Ξ</span><span class="pay-method-name">Ethereum</span></div>
+     <div class="pay-method" onclick="selectPayment(this,'usdt')"><span class="pay-method-icon">₮</span><span class="pay-method-name">USDT</span></div>
+     <div class="pay-method" onclick="selectPayment(this,'bnb')"><span class="pay-method-icon">🔶</span><span class="pay-method-name">BNB</span></div>
+    </div>
+    <div class="sh">Payment Steps</div>
+    <div class="pay-step"><div class="pay-step-num">STEP 1</div><div class="pay-step-text" id="payStep1">Send <strong id="payAmount">$12</strong> via PayPal to: <strong>iconikglobal01@gmail.com</strong></div></div>
+    <div class="pay-step"><div class="pay-step-num">STEP 2</div><div class="pay-step-text">Send your <strong>payment screenshot/proof</strong> + your registered email to Admin via WhatsApp or the Messages section.</div></div>
+    <div class="pay-step"><div class="pay-step-num">STEP 3</div><div class="pay-step-text">Admin confirms your payment and <strong>upgrades your account within 24 hours</strong>. You receive a confirmation message.</div></div>
+    <button class="btn btn-g" onclick="sendUpgradeRequest()" style="margin-top:12px;">Send Upgrade Request to Admin →</button>
+   </div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="view" id="profileV">
+   <div class="sh">My Profile</div>
+   <!-- PROFILE PICTURE -->
+   <div class="profform" style="text-align:center;margin-bottom:12px;">
+    <div class="profform-t" style="text-align:left;">Profile Picture</div>
+    <div style="position:relative;display:inline-block;margin-bottom:12px;">
+     <div id="profilePicDisplay" style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--obs);overflow:hidden;border:3px solid var(--gbr);margin:0 auto;">U</div>
+     <label style="position:absolute;bottom:0;right:0;width:26px;height:26px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.7rem;">
+      📷
+      <input type="file" id="profilePicInput" accept="image/*" style="display:none;" onchange="uploadProfilePic(this)"/>
+     </label>
+    </div>
+    <div style="font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);">Tap 📷 to change your profile picture</div>
+    <div id="picUploadStatus" style="font-family:'Inter',sans-serif;font-size:0.66rem;margin-top:6px;"></div>
+   </div>
+   <div class="profform">
+    <div class="profform-t">Profile Settings</div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Display Name</label><input class="fi" type="text" id="pNm"/></div>
+     <div class="fg"><label class="fl">Phone</label><input class="fi" type="tel" id="pPh"/></div>
+    </div>
+    <div class="fg"><label class="fl">Email (read only)</label><input class="fi" type="email" id="pEm" readonly style="opacity:0.6;"/></div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Country</label><input class="fi" type="text" id="pCo"/></div>
+     <div class="fg"><label class="fl">City</label><input class="fi" type="text" id="pCi"/></div>
+    </div>
+    <div class="fg"><label class="fl">Address</label><input class="fi" type="text" id="pAd"/></div>
+    <div class="fg"><label class="fl">Bio</label><input class="fi" type="text" id="pBio" placeholder="Tell the community about yourself"/></div>
+    <button class="btn btn-g" onclick="saveP()">Save Profile →</button>
+   </div>
+   <div class="profform">
+    <div class="profform-t">Verification Status</div>
+    <div id="vStatusBlock"></div>
+   </div>
+  </div>
+
+  <!-- NOTIFICATIONS -->
+  <div class="view" id="notifsV">
+   <div class="wbar"><span class="wi">🔔</span><div><div class="wh">Notifications</div><div class="ws">Your latest activity & alerts</div></div></div>
+   <div class="sh">Recent Notifications</div>
+   <div id="notifsList"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- MEMBER SEARCH & DISCOVERY -->
+  <div class="view" id="searchV">
+   <div class="wbar"><span class="wi">👥</span><div><div class="wh">Find Members</div><div class="ws">Discover fans from around the world</div></div></div>
+   <div style="display:flex;gap:7px;margin-bottom:11px;">
+    <input class="fi" style="flex:1;" type="text" id="memberSearchQ" placeholder="Search by name or country..." oninput="searchMembers()"/>
+    <select class="fs" style="width:auto;" id="memberSearchFilter" onchange="searchMembers()">
+     <option value="">All</option>
+     <option value="Music">🎵 Music</option>
+     <option value="Sports">⚽ Sports</option>
+     <option value="Film">🎬 Film</option>
+     <option value="Fashion">👗 Fashion</option>
+     <option value="Tech">💻 Tech</option>
+     <option value="Wellness">💪 Wellness</option>
+    </select>
+   </div>
+   <div class="sh">Members Worldwide</div>
+   <div id="memberSearchResults"><div style="text-align:center;padding:24px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.76rem;">Search for fans by name, country or community 🌍</div></div>
+  </div>
+
+  <!-- CELEBRITY PAGES -->
+  <div class="view" id="celebpagesV">
+   <div class="wbar"><span class="wi">⭐</span><div><div class="wh">Celebrity Pages</div><div class="ws">Dedicated fan hubs for each icon</div></div></div>
+   <input class="fi" style="margin-bottom:11px;" type="text" id="celebPageSearch" placeholder="Search celebrity pages..." oninput="filterCelebPages()"/>
+   <div id="celebPagesList"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- CELEBRITY SINGLE PAGE (modal-style view) -->
+  <div class="view" id="celebSingleV">
+   <button onclick="sV('celebpages')" style="font-family:'Montserrat',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;padding:7px 12px;background:transparent;border:1px solid var(--gbr);color:var(--cd);cursor:pointer;margin-bottom:12px;">← Back to Celebrity Pages</button>
+   <div id="celebSingleContent"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+ </div><!-- /main -->
+</div><!-- /dash -->
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,updateProfile}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,updateDoc,query,orderBy,limit,where,serverTimestamp,increment}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const cfg={apiKey:"AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",authDomain:"iconik-global.firebaseapp.com",projectId:"iconik-global",storageBucket:"iconik-global.firebasestorage.app",messagingSenderId:"1040054516979",appId:"1:1040054516979:web:33cd5f07ae8fc146a30b86"};
+const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app);
+const CHIEF='iconikglobal01@gmail.com';
+let cU=null,cD=null,allC=[],allNews=[],selIdType='',selectedPayMethod='paypal',selectedTier='',selectedTierPrice=0;
+
+// ── PWA SETUP ──
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+ e.preventDefault();deferredPrompt=e;
+ if(!localStorage.getItem('pwa-dismissed'))document.getElementById('pwaBanner').classList.add('show');
+});
+document.getElementById('pwaInstallBtn').addEventListener('click',async()=>{
+ if(!deferredPrompt)return;
+ deferredPrompt.prompt();
+ const{outcome}=await deferredPrompt.userChoice;
+ if(outcome==='accepted')toastF('ICONIK installed! 📱','success');
+ deferredPrompt=null;document.getElementById('pwaBanner').classList.remove('show');
+});
+window.dismissPWA=function(){document.getElementById('pwaBanner').classList.remove('show');localStorage.setItem('pwa-dismissed','1');};
+
+// ── AUTH ──
+onAuthStateChanged(auth,async u=>{
+ if(u){
+  if(u.email===CHIEF){window.location.href='/admin.html';return;}
+  cU=u;cD=await lUD(u);showDash();
+ }else{cU=null;cD=null;showAuth();}
+});
+
+async function lUD(u){
+ try{const s=await getDoc(doc(db,'users',u.uid));return s.exists()?s.data():{name:u.displayName||'Member',tier:'Fan',categories:[],email:u.email};}
+ catch{return{name:u.displayName||'Member',tier:'Fan',categories:[],email:u.email};}
+}
+
+function showAuth(){document.getElementById('authPg').classList.add('on');document.getElementById('dashPg').classList.remove('on');}
+
+function showDash(){
+ document.getElementById('authPg').classList.remove('on');document.getElementById('dashPg').classList.add('on');
+ const nm=cD?.name||cU?.displayName||'Member',l=nm.charAt(0).toUpperCase(),cats=cD?.categories||[],vs=cD?.verificationStatus||'pending';
+ document.getElementById('nNm').textContent=nm;document.getElementById('nAv').textContent=l;
+ document.getElementById('sbAv').textContent=l;document.getElementById('sbNm').textContent=nm;
+ document.getElementById('sbTier').textContent='VIP '+(cD?.tier||'Fan');
+ document.getElementById('pfAv').textContent=l;
+ if(vs==='verified')document.getElementById('sbVS').style.display='inline-block';
+ // Load profile picture if exists
+ if(cD?.profilePic){
+  const picEl=document.getElementById('profilePicDisplay');
+  picEl.innerHTML=`<img src="${cD.profilePic}" style="width:100%;height:100%;object-fit:cover;"/>`;
+  document.getElementById('pfAv').innerHTML=`<img src="${cD.profilePic}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
+  document.getElementById('nAv').innerHTML=`<img src="${cD.profilePic}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
+ }
+ // Show media upload for VIP members
+ const tier=cD?.tier||'Fan';
+ if(tier==='Bronze'||tier==='Silver'||tier==='Gold'){
+  document.getElementById('mediaUploadRow').style.display='flex';
+  document.getElementById('basicPostRow').style.display='none';
+ }
+ document.getElementById('wH').textContent=`Welcome, ${nm.split(' ')[0]}! 👋`;
+ document.getElementById('wS').textContent=`${cats.length} communities · ${cD?.tier||'Fan'} Member`;
+ document.getElementById('sCom').textContent=cats.length;
+ document.getElementById('pNm').value=nm;document.getElementById('pEm').value=cU.email;
+ document.getElementById('pPh').value=cD?.phone||'';document.getElementById('pCo').value=cD?.country||'';
+ document.getElementById('pCi').value=cD?.city||'';document.getElementById('pAd').value=cD?.address||'';
+ document.getElementById('pBio').value=cD?.bio||'';
+ // Verification banner
+ const vb=document.getElementById('vBanner');
+ const vm={pending:'⏳ Account pending verification. Full access unlocks after Admin review.',verified:'✅ Account verified! Welcome to ICONIK.',rejected:'❌ Verification rejected. Contact Admin for help.'};
+ if(vm[vs]){vb.className='vbanner '+vs;vb.textContent=vm[vs];}
+ // Profile verify status
+ const vsc={pending:'twarn',verified:'tok',rejected:'terr'};
+ const vsl={pending:'⏳ Pending — Admin will review your details shortly.',verified:'✅ Verified — Your identity has been confirmed.',rejected:'❌ Rejected — Contact Admin for assistance.'};
+ document.getElementById('vStatusBlock').innerHTML=`<span class="tag ${vsc[vs]||'twarn'}" style="font-size:0.7rem;padding:7px 12px;display:inline-block;">${vsl[vs]||'Pending'}</span>`;
+ lFeed();lCelebs();lNewsFromFirestore();lMsgsCheck();checkNotifs();
+}
+
+// ── LOGIN ──
+window.doLogin=async function(){
+ const e=document.getElementById('le').value.trim(),p=document.getElementById('lp').value,m=document.getElementById('lm');
+ if(!e||!p){sM(m,'Please fill all fields','err');return;}
+ try{m.style.display='none';await signInWithEmailAndPassword(auth,e,p);toastF('Welcome back! 🌟','success');}
+ catch(er){sM(m,aE(er.code),'err');}
+};
+
+// ── REGISTER ──
+window.doReg=async function(){
+ const nm=document.getElementById('rn').value.trim(),ph=document.getElementById('rph').value.trim(),
+  em=document.getElementById('re').value.trim(),co=document.getElementById('rco').value.trim(),
+  ci=document.getElementById('rci').value.trim(),ad=document.getElementById('rad').value.trim(),
+  idN=document.getElementById('rId').value.trim(),pw=document.getElementById('rp').value,
+  cats=[...document.querySelectorAll('.cc.on')].map(c=>c.dataset.cat),m=document.getElementById('rm');
+ if(!nm||!ph||!em||!co||!ci||!ad){sM(m,'Please fill all required fields *','err');return;}
+ if(!selIdType||!idN){sM(m,'Please select an ID type and enter your document number','err');return;}
+ if(pw.length<6){sM(m,'Password must be at least 6 characters','err');return;}
+ try{
+  m.style.display='none';
+  const cr=await createUserWithEmailAndPassword(auth,em,pw);
+  await updateProfile(cr.user,{displayName:nm});
+  await setDoc(doc(db,'users',cr.user.uid),{name:nm,phone:ph,email:em,country:co,city:ci,address:ad,idType:selIdType,idNumber:idN,categories:cats,tier:'Fan',role:'member',verificationStatus:'pending',joinedAt:serverTimestamp(),bio:'',postCount:0,likeCount:0});
+  toastF('Account created! Welcome to ICONIK 🎉','success');
+ }catch(er){sM(m,aE(er.code),'err');}
+};
+
+window.selId=function(el,t){document.querySelectorAll('.idopt').forEach(o=>o.classList.remove('on'));el.classList.add('on');selIdType=t;const lb={national:'National ID Number',drivers:"Driver's License Number",passport:'International Passport Number'};document.getElementById('idL').innerHTML=lb[t]+' <span class="req">*</span>';document.getElementById('idG').style.display='block';};
+window.doLogout=async function(){await signOut(auth);toastF('Signed out 👋');cSB();};
+
+// ── FEED ──
+async function lFeed(){
+ const el=document.getElementById('feedP');
+ try{
+  const q=query(collection(db,'posts'),orderBy('createdAt','desc'),limit(20));
+  const s=await getDocs(q);document.getElementById('sPo').textContent=s.size;
+  if(s.empty){el.innerHTML=`<div class="pcard"><p style="font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--cd);text-align:center;padding:14px;">No posts yet — be the first to post! 🌟</p></div>`;return;}
+  el.innerHTML='';
+  s.forEach(d=>{
+   const p=d.data(),t=p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString():'Just now';
+   // ✅ ICONIK branding for admin posts
+   const isAdmin=p.authorRole==='admin'||p.authorRole==='Chief Admin'||p.authorId===CHIEF;
+   const displayName=isAdmin?'ICONIK':p.authorName||'Member';
+   const displayAv=isAdmin?'★':displayName.charAt(0);
+   const avBg=isAdmin?'background:linear-gradient(135deg,var(--gold),var(--gg));':'background:linear-gradient(135deg,#3B82F6,#1D4ED8);';
+   // Like state — check array safely
+   const likedBy=Array.isArray(p.likedBy)?p.likedBy:[];
+   const liked=cU&&likedBy.includes(cU.uid);
+   const likeCount=p.likes||0;
+   // Media
+   let mediaHtml='';
+   if(p.mediaUrl&&p.mediaType==='video'){mediaHtml=`<video src="${p.mediaUrl}" controls style="width:100%;max-height:220px;margin-bottom:8px;border:1px solid var(--gbr);"></video>`;}
+   else if(p.mediaUrl){mediaHtml=`<img src="${p.mediaUrl}" style="width:100%;max-height:250px;object-fit:cover;margin-bottom:8px;border:1px solid var(--gbr);" onerror="this.style.display='none'"/>`;}
+   // Post type badge
+   const typeBadge=p.postType&&p.postType!=='text'?`<span style="font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.08em;color:var(--purple);background:rgba(139,92,246,0.12);padding:2px 5px;margin-right:4px;">${p.postType==='fanart'?'🎨 FAN ART':p.postType==='photo'?'📸 PHOTO':'🎬 VIDEO'}</span>`:'';
+   el.innerHTML+=`
+   <div class="pcard" id="post-${d.id}">
+    <div class="ph">
+     <div class="pav" style="${avBg}color:var(--obs);">${displayAv}</div>
+     <div>
+      <div class="pau">${displayName}${isAdmin?` <span style="font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.08em;color:var(--obs);background:var(--gold);padding:1px 5px;margin-left:3px;">OFFICIAL</span>`:''}</div>
+      <div class="pt">${t} ${p.category?`· ${p.category}`:''}</div>
+     </div>
+     <div style="margin-left:auto;display:flex;gap:3px;align-items:center;">${typeBadge}${p.category?`<span class="ptag">${p.category}</span>`:''}</div>
+    </div>
+    ${p.title?`<div class="ptitle">${p.title}</div>`:''}
+    ${mediaHtml}
+    <div class="pbody">${p.content||''}</div>
+    <div class="pacts">
+     <button class="pa ${liked?'liked':''}" onclick="toggleLike('${d.id}')" id="likeBtn-${d.id}">
+      ${liked?'❤️':'🤍'} <span id="likeCount-${d.id}">${likeCount}</span>
+     </button>
+     <button class="pa" onclick="toggleComments('${d.id}')">💬 <span id="commentCount-${d.id}">${p.commentCount||0}</span></button>
+     <button class="pa" onclick="sharePost('${d.id}','${(p.content||'').substring(0,50).replace(/'/g,'').replace(/"/g,'')}')">🔗 Share</button>
+    </div>
+    <div class="comments-section" id="comments-${d.id}" style="display:none;">
+     <div id="commentsList-${d.id}"></div>
+     <div class="comment-input-row">
+      <input class="comment-input" type="text" id="commentInput-${d.id}" placeholder="Write a comment..." onkeypress="if(event.key==='Enter')submitComment('${d.id}')"/>
+      <button class="comment-send" onclick="submitComment('${d.id}')">Post</button>
+     </div>
+    </div>
+   </div>`;
+  });
+ }catch(e){el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:14px;">Feed loading... ✨</p></div>`;console.error(e);}
+}
+
+// ── MEDIA PREVIEW ──
+let selectedMediaFile=null;
+window.previewMedia=function(input){
+ const file=input.files[0];if(!file)return;
+ selectedMediaFile=file;
+ document.getElementById('mediaFileName').textContent=file.name;
+ document.getElementById('mediaPreview').style.display='block';
+ const isVideo=file.type.startsWith('video');
+ document.getElementById('mediaPreviewImg').style.display=isVideo?'none':'block';
+ document.getElementById('mediaPreviewVid').style.display=isVideo?'block':'none';
+ const url=URL.createObjectURL(file);
+ if(isVideo)document.getElementById('mediaPreviewVid').src=url;
+ else document.getElementById('mediaPreviewImg').src=url;
+};
+window.clearMedia=function(){
+ selectedMediaFile=null;
+ document.getElementById('mediaPreview').style.display='none';
+ document.getElementById('mediaFileInput').value='';
+ document.getElementById('mediaFileName').textContent='';
+ document.getElementById('mediaPreviewImg').src='';
+ document.getElementById('mediaPreviewVid').src='';
+};
+
+async function uploadToCloudinary(file){
+ const fd=new FormData();
+ fd.append('file',file);
+ fd.append('upload_preset','iconik_uploads');
+ const res=await fetch('https://api.cloudinary.com/v1_1/iconik-global/upload',{method:'POST',body:fd});
+ if(!res.ok)throw new Error('Upload failed');
+ const data=await res.json();
+ return{url:data.secure_url,type:file.type.startsWith('video')?'video':'image'};
+}
+
+// ── SUBMIT POST ──
+window.submitPost=async function(){
+ const text=document.getElementById('newPostText').value.trim();
+ const cat=document.getElementById('newPostCat').value;
+ const postType=document.getElementById('newPostType')?.value||'text';
+ if(!text&&!selectedMediaFile){toastF('Please write something or attach media','error');return;}
+ const submitBtns=document.querySelectorAll('.post-submit');
+ submitBtns.forEach(b=>{b.textContent='Posting...';b.disabled=true;});
+ try{
+  let mediaUrl='',mediaType='';
+  if(selectedMediaFile){
+   toastF('Uploading media... ⏳');
+   try{const up=await uploadToCloudinary(selectedMediaFile);mediaUrl=up.url;mediaType=up.type;}
+   catch{toastF('Media upload failed — posting text only','error');}
+  }
+  await addDoc(collection(db,'posts'),{
+   content:text,category:cat,postType,
+   mediaUrl,mediaType,
+   authorName:cD?.name||'Member',
+   authorId:cU.uid,
+   authorRole:cD?.role||'member',
+   authorTier:cD?.tier||'Fan',
+   likes:0,likedBy:[],commentCount:0,
+   createdAt:serverTimestamp()
+  });
+  toastF('Posted! 🌟','success');
+  document.getElementById('newPostText').value='';
+  clearMedia();
+  lFeed();
+ }catch(e){toastF('Error posting. Try again.','error');console.error(e);}
+ finally{submitBtns.forEach(b=>{b.textContent='Post';b.disabled=false;});}
+};
+
+// ── LIKE — OPTIMISTIC UI (no full reload) ──
+window.toggleLike=async function(postId){
+ if(!cU){toastF('Sign in to like posts','error');return;}
+ const btn=document.getElementById(`likeBtn-${postId}`);
+ const countEl=document.getElementById(`likeCount-${postId}`);
+ const isLiked=btn.classList.contains('liked');
+ const currentCount=parseInt(countEl.textContent)||0;
+ // Optimistic update
+ if(isLiked){
+  btn.classList.remove('liked');btn.innerHTML=`🤍 <span id="likeCount-${postId}">${currentCount-1}</span>`;
+ }else{
+  btn.classList.add('liked');btn.innerHTML=`❤️ <span id="likeCount-${postId}">${currentCount+1}</span>`;
+ }
+ try{
+  const pRef=doc(db,'posts',postId);
+  const snap=await getDoc(pRef);
+  if(!snap.exists())return;
+  const likedBy=Array.isArray(snap.data().likedBy)?snap.data().likedBy:[];
+  if(isLiked){
+   await updateDoc(pRef,{likes:Math.max(0,(snap.data().likes||1)-1),likedBy:likedBy.filter(id=>id!==cU.uid)});
+  }else{
+   if(!likedBy.includes(cU.uid)){
+    await updateDoc(pRef,{likes:(snap.data().likes||0)+1,likedBy:[...likedBy,cU.uid]});
+   }
+  }
+ }catch{
+  // Revert on error
+  if(isLiked){btn.classList.add('liked');btn.innerHTML=`❤️ <span id="likeCount-${postId}">${currentCount}</span>`;}
+  else{btn.classList.remove('liked');btn.innerHTML=`🤍 <span id="likeCount-${postId}">${currentCount}</span>`;}
+  toastF('Error updating like','error');
+ }
+};
+
+// ── COMMENTS ──
+window.toggleComments=async function(postId){
+ const el=document.getElementById(`comments-${postId}`);
+ if(el.style.display==='none'){el.style.display='block';lComments(postId);}
+ else el.style.display='none';
+};
+
+async function lComments(postId){
+ const el=document.getElementById(`commentsList-${postId}`);
+ try{
+  const q=query(collection(db,'posts',postId,'comments'),orderBy('createdAt','asc'),limit(10));
+  const s=await getDocs(q);
+  el.innerHTML='';
+  s.forEach(d=>{const c=d.data();el.innerHTML+=`<div class="comment"><div class="comment-av">${(c.name||'M').charAt(0)}</div><div class="comment-body"><div class="comment-name">${c.name||'Member'}</div><div class="comment-text">${c.text}</div></div></div>`;});
+ }catch{}
+}
+
+window.submitComment=async function(postId){
+ const input=document.getElementById(`commentInput-${postId}`);
+ const text=input.value.trim();
+ if(!text)return;
+ try{
+  await addDoc(collection(db,'posts',postId,'comments'),{text,name:cD?.name||'Member',userId:cU.uid,createdAt:serverTimestamp()});
+  // Increment comment count
+  await updateDoc(doc(db,'posts',postId),{commentCount:increment(1)});
+  input.value='';
+  lComments(postId);
+  const cc=document.getElementById(`commentCount-${postId}`);
+  if(cc)cc.textContent=parseInt(cc.textContent||0)+1;
+ }catch{toastF('Error posting comment','error');}
+};
+
+window.sharePost=function(postId,preview){
+ const url=`${window.location.origin}/app.html#post-${postId}`;
+ if(navigator.share){navigator.share({title:'ICONIK Post',text:preview+'...',url}).catch(()=>{});}
+ else{navigator.clipboard?.writeText(url);toastF('Link copied! 🔗','success');}
+};
+
+// ── CELEBS ──
+async function lCelebs(){
+ try{
+  const s=await getDocs(collection(db,'celebrities'));
+  allC=[];s.forEach(d=>allC.push({id:d.id,...d.data()}));
+  document.getElementById('sIco').textContent=allC.length;
+  rAll();
+ }catch{}
+}
+const mCC=c=>`<div class="ccard"><div class="cimg">${c.photo?`<img src="${c.photo}" alt="${c.name}" onerror="this.parentElement.innerHTML='⭐'"/>`:'⭐'}</div><div class="ci"><div class="cn">${c.name}</div><div class="ccat">${c.category||''}</div><div class="cmeta">${c.country||''} ${c.followers?'· '+c.followers:''}</div></div></div>`;
+function rAll(){document.getElementById('allC').innerHTML=allC.length?allC.map(mCC).join(''):`<div style="grid-column:span 2;text-align:center;padding:22px;color:var(--cd);">Icons coming soon! ⭐</div>`;}
+window.fCl=function(){const q=document.getElementById('cSrch').value.toLowerCase();document.getElementById('allC').innerHTML=allC.filter(c=>c.name?.toLowerCase().includes(q)||c.category?.toLowerCase().includes(q)).map(mCC).join('')||`<div style="grid-column:span 2;text-align:center;padding:16px;color:var(--cd);">No results</div>`;};
+
+// ── CELEBRITY NEWS (from Firestore + static fallback) ──
+async function lNewsFromFirestore(){
+ try{
+  const s=await getDocs(query(collection(db,'celebrityNews'),orderBy('publishedAt','desc'),limit(20)));
+  if(!s.empty){allNews=[];s.forEach(d=>allNews.push({id:d.id,...d.data()}));rNews(allNews);return;}
+ }catch{}
+ // Fallback static news
+ allNews=[
+  {title:'New Album Drop Alert — Global Music Charts Shaken',category:'Music',summary:'A massive new release is taking the world by storm across all streaming platforms.',icon:'🎵',time:'Today'},
+  {title:'World Cup Qualifier Results — Historic Win for Underdogs',category:'Sports',summary:'Shock results across multiple qualifying rounds as new champions emerge.',icon:'⚽',time:'Yesterday'},
+  {title:'Box Office Record Shattered by New Blockbuster',category:'Film',summary:'The global film industry witnesses one of the biggest opening weekends in history.',icon:'🎬',time:'2 days ago'},
+  {title:'Paris Fashion Week — Top Looks of the Season',category:'Fashion',summary:'Designers from around the world unveil stunning collections at this year\'s biggest fashion event.',icon:'👗',time:'3 days ago'},
+  {title:'Sports Star Signs Historic $500M Contract',category:'Sports',summary:'A landmark deal reshapes the economics of professional sports globally.',icon:'🏆',time:'4 days ago'},
+  {title:'Grammy Nominations Announced — Surprises Abound',category:'Music',summary:'This year\'s Grammy nominations include several unexpected artists from around the world.',icon:'🎤',time:'5 days ago'},
+  {title:'Streaming Wars — New Platform Launches Globally',category:'Film',summary:'A major new streaming service launches with exclusive celebrity content and live events.',icon:'📺',time:'6 days ago'},
+  {title:'Wellness Trend — Celebrity Coaches Go Viral',category:'Wellness',summary:'Several fitness coaches gain millions of followers overnight with revolutionary workout methods.',icon:'💪',time:'1 week ago'},
+ ];
+ rNews(allNews);
+}
+
+function rNews(news){
+ const el=document.getElementById('newsFeed');
+ el.innerHTML=news.map(n=>`
+  <div class="news-card">
+   <div class="news-thumb">${n.icon||'📰'}</div>
+   <div class="news-content">
+    <div class="news-cat">${n.category||'ICONIK NEWS'}</div>
+    <div class="news-title">${n.title}</div>
+    <div class="news-meta">${n.time||''} ${n.source?'· '+n.source:''}</div>
+   </div>
+  </div>`).join('');
+}
+window.filterNews=function(cat,btn){
+ document.querySelectorAll('.news-filter-btn').forEach(b=>{b.style.background='transparent';b.style.color='var(--cd)';b.style.border='1px solid var(--gbr)';});
+ btn.style.background='var(--gold)';btn.style.color='var(--obs)';btn.style.border='1px solid var(--gold)';
+ rNews(cat==='all'?allNews:allNews.filter(n=>n.category?.toLowerCase().includes(cat.toLowerCase())));
+};
+
+// ── TOUR BUDDY ──
+window.postTB=async function(){
+ const ev=document.getElementById('tbe').value.trim(),ci=document.getElementById('tbc').value.trim();
+ if(!ev||!ci){toastF('Event and city required','error');return;}
+ try{await addDoc(collection(db,'tourbuddy'),{event:ev,date:document.getElementById('tbd').value,city:ci,message:document.getElementById('tbm').value.trim(),userName:cD?.name||'Member',userId:cU.uid,createdAt:serverTimestamp()});toastF('Posted! 🎫','success');['tbe','tbc','tbm'].forEach(id=>document.getElementById(id).value='');lTB();}
+ catch{toastF('Error posting','error');}
+};
+async function lTB(){
+ const el=document.getElementById('tbList');
+ try{const q=query(collection(db,'tourbuddy'),orderBy('createdAt','desc'),limit(10));const s=await getDocs(q);if(s.empty){el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;padding:12px;">No requests yet 🎫</p></div>`;return;}el.innerHTML='';s.forEach(d=>{const b=d.data();el.innerHTML+=`<div class="pcard"><div class="ph"><div class="pav">${(b.userName||'M').charAt(0)}</div><div><div class="pau">${b.userName||'Member'}</div><div class="pt">${b.date||''} · ${b.city||''}</div></div></div><div class="ptitle">🎫 ${b.event}</div><div class="pbody">${b.message||''}</div></div>`;});}
+ catch{}
+}
+
+// ── MESSAGES ──
+async function lMsgsCheck(){
+ try{const q=query(collection(db,'messages'),orderBy('createdAt','desc'),limit(1));const s=await getDocs(q);if(!s.empty)document.getElementById('msgBadge').style.display='inline-block';}
+ catch{}
+}
+async function lMsgs(){
+ const el=document.getElementById('msgsList');
+ try{
+  document.getElementById('msgBadge').style.display='none';
+  const q=query(collection(db,'messages'),orderBy('createdAt','desc'),limit(20));
+  const s=await getDocs(q);
+  if(s.empty){el.innerHTML=`<div class="msg-card"><p style="font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--cd);text-align:center;padding:12px;">No messages yet. Admin will reach out when needed. 📩</p></div>`;return;}
+  el.innerHTML='';
+  s.forEach(d=>{const m=d.data(),t=m.createdAt?.toDate?m.createdAt.toDate().toLocaleDateString():'Just now';el.innerHTML+=`<div class="msg-card"><div class="msg-from"><span>${m.fromName||'ICONIK Admin'}</span><span class="msg-badge">${m.fromRole||'ADMIN'}</span><span class="msg-time">${t}</span></div>${m.subject?`<div class="msg-subj">${m.subject}</div>`:''}<div class="msg-body">${m.content||''}</div></div>`;});
+ }catch{el.innerHTML=`<div class="msg-card"><p style="text-align:center;color:var(--cd);padding:12px;">Loading messages...</p></div>`;}
+}
+
+// ── WELLNESS ──
+window.showWellnessCat=function(cat){
+ const names={fitness:'Fitness & Training',nutrition:'Nutrition & Diet',mental:'Mental Wellness',herbal:'Herbal & Natural',antiaging:'Anti-Aging & Beauty',medical:'Medical Wellness',recovery:'Sports Recovery',womens:"Women's Health"};
+ toastF(`${names[cat]} community coming soon! Stay tuned. 💪`,'success');
+};
+async function lWellnessPartners(){
+ const el=document.getElementById('wellnessPartners');
+ try{const s=await getDocs(collection(db,'wellnessPartners'));if(s.empty){el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;padding:12px;">Wellness partners coming soon! Admin adds verified coaches & products. 💪</p></div>`;return;}el.innerHTML='';s.forEach(d=>{const p=d.data();el.innerHTML+=`<div class="pcard"><div class="ph"><div class="pav">${(p.name||'W').charAt(0)}</div><div><div class="pau">${p.name}</div><div class="pt">${p.specialty||''} · ${p.country||''}</div></div></div><div class="pbody">${p.bio||''}</div></div>`;});}
+ catch{el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:12px;">Wellness Hub loading... 💪</p></div>`;}
+}
+
+// ── AFFILIATE ──
+window.affiliateClick=function(product){toastF(`Redirecting to ${product} affiliate link... Admin will configure links in Admin Panel. 🛍️`,'success');};
+
+// ── PAYMENT ──
+window.showPayment=function(tier,price){
+ selectedTier=tier;selectedTierPrice=price;
+ document.getElementById('payTitle').textContent=`Upgrade to VIP ${tier}`;
+ document.getElementById('payAmount').textContent=`$${price}`;
+ document.getElementById('payStep1').innerHTML=`Send <strong>$${price}</strong> via PayPal to: <strong>iconikglobal01@gmail.com</strong>`;
+ document.getElementById('paymentSection').style.display='block';
+ document.getElementById('paymentSection').scrollIntoView({behavior:'smooth'});
+};
+window.selectPayment=function(el,method){
+ selectedPayMethod=method;
+ document.querySelectorAll('.pay-method').forEach(m=>m.classList.remove('on'));
+ el.classList.add('on');
+ const instructions={
+  paypal:`Send <strong>$${selectedTierPrice}</strong> via PayPal to: <strong>iconikglobal01@gmail.com</strong>`,
+  bitcoin:`Send <strong>$${selectedTierPrice}</strong> worth of Bitcoin (BTC). Contact Admin via WhatsApp for wallet address.`,
+  ethereum:`Send <strong>$${selectedTierPrice}</strong> worth of Ethereum (ETH). Contact Admin via WhatsApp for wallet address.`,
+  usdt:`Send <strong>$${selectedTierPrice}</strong> USDT (TRC20 or ERC20). Contact Admin via WhatsApp for wallet address.`,
+  bnb:`Send <strong>$${selectedTierPrice}</strong> worth of BNB. Contact Admin via WhatsApp for wallet address.`,
+ };
+ document.getElementById('payStep1').innerHTML=instructions[method]||instructions.paypal;
+};
+window.sendUpgradeRequest=async function(){
+ if(!selectedTier){toastF('Please select a membership tier','error');return;}
+ try{
+  await addDoc(collection(db,'messages'),{to:CHIEF,subject:`Upgrade Request — VIP ${selectedTier}`,content:`Member ${cD?.name||'Member'} (${cU.email}) is requesting upgrade to VIP ${selectedTier} ($${selectedTierPrice}/mo) via ${selectedPayMethod}. Please confirm payment and process upgrade.`,fromName:cD?.name||'Member',fromRole:'Member',fromId:cU.uid,type:'upgrade_request',createdAt:serverTimestamp()});
+  toastF(`Upgrade request sent to Admin! 🎉 You will be upgraded within 24 hours after payment confirmation.`,'success');
+ }catch{toastF('Error sending request','error');}
+};
+
+// ── PROFILE PICTURE UPLOAD ──
+window.uploadProfilePic=async function(input){
+ const file=input.files[0];if(!file)return;
+ const status=document.getElementById('picUploadStatus');
+ status.textContent='Uploading...';status.style.color='var(--warn)';
+ try{
+  const fd=new FormData();
+  fd.append('file',file);
+  fd.append('upload_preset','iconik_uploads');
+  const res=await fetch('https://api.cloudinary.com/v1_1/iconik-global/upload',{method:'POST',body:fd});
+  if(!res.ok)throw new Error('Upload failed');
+  const data=await res.json();
+  const picUrl=data.secure_url;
+  // Save to Firestore
+  await updateDoc(doc(db,'users',cU.uid),{profilePic:picUrl});
+  cD={...cD,profilePic:picUrl};
+  // Update all avatar displays
+  const imgTag=`<img src="${picUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
+  document.getElementById('profilePicDisplay').innerHTML=imgTag;
+  document.getElementById('pfAv').innerHTML=imgTag;
+  document.getElementById('nAv').innerHTML=imgTag;
+  document.getElementById('sbAv').innerHTML=imgTag.replace('border-radius:50%;','');
+  status.textContent='✅ Profile picture updated!';status.style.color='var(--ok)';
+  toastF('Profile picture updated! 📸','success');
+ }catch(e){status.textContent='❌ Upload failed. Check your internet and try again.';status.style.color='var(--err)';console.error(e);}
+};
+
+// ── SAVE PROFILE ──
+window.saveP=async function(){
+ try{
+  const d={name:document.getElementById('pNm').value.trim(),phone:document.getElementById('pPh').value.trim(),country:document.getElementById('pCo').value.trim(),city:document.getElementById('pCi').value.trim(),address:document.getElementById('pAd').value.trim(),bio:document.getElementById('pBio').value.trim()};
+  await updateDoc(doc(db,'users',cU.uid),d);
+  await updateProfile(cU,{displayName:d.name});
+  cD={...cD,...d};document.getElementById('sbNm').textContent=d.name;document.getElementById('nNm').textContent=d.name;
+  toastF('Profile saved! ✅','success');
+ }catch{toastF('Error saving','error');}
+};
+
+// ── COMMUNITIES ──
+function lMyComs(){
+ const cats=cD?.categories||[];
+ const ic={'Music':'🎵','Film':'🎬','Sports':'⚽','Literature':'📚','Wellness':'💪','Nature':'🌿','Fashion':'👗','Food':'🍽️','Automotive':'🚗','Tech':'💻','Beauty':'💄','Leadership':'🎓','Entertainment':'🎭'};
+ document.getElementById('myComG').innerHTML=cats.length?cats.map(c=>`<div class="ccard" style="cursor:default;"><div class="cimg">${ic[c]||'🌟'}</div><div class="ci"><div class="cn">${c}</div><div class="ccat">Your Community</div></div></div>`).join(''):`<div style="grid-column:span 2;text-align:center;padding:22px;color:var(--cd);">No communities yet. Update your profile.</div>`;
+}
+
+// ── NOTIFICATIONS ──
+async function lNotifs(){
+ const el=document.getElementById('notifsList');
+ try{
+  // Build notifications from likes, comments, messages, verification status
+  const notifs=[];
+  // Check messages
+  const msgQ=query(collection(db,'messages'),orderBy('createdAt','desc'),limit(5));
+  const msgSnap=await getDocs(msgQ);
+  msgSnap.forEach(d=>{const m=d.data();notifs.push({icon:'📩',title:`Message from ${m.fromName||'Admin'}`,body:m.subject||m.content?.substring(0,60)||'',time:m.createdAt?.toDate?m.createdAt.toDate().toLocaleDateString():'Recently',type:'message'});});
+  // Verification status notification
+  const vs=cD?.verificationStatus||'pending';
+  if(vs==='verified')notifs.unshift({icon:'✅',title:'Account Verified!',body:'Your identity has been confirmed by Admin. Welcome to full ICONIK access.',time:'Account',type:'verify'});
+  else if(vs==='pending')notifs.push({icon:'⏳',title:'Verification Pending',body:'Admin is reviewing your identity documents. You will be notified when approved.',time:'Account',type:'verify'});
+  else if(vs==='rejected')notifs.push({icon:'❌',title:'Verification Rejected',body:'Please contact Admin for assistance with your account verification.',time:'Account',type:'verify'});
+  // Welcome notification
+  notifs.push({icon:'🌟',title:'Welcome to ICONIK!',body:`You are now part of ${(cD?.categories||[]).length} fan communities. Explore icons, post updates, and connect with fans worldwide.`,time:'Welcome',type:'welcome'});
+  if(!notifs.length){el.innerHTML=`<div style="text-align:center;padding:24px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.76rem;">No notifications yet 🔔</div>`;return;}
+  el.innerHTML=notifs.map(n=>`
+   <div class="notif-card unread">
+    <span class="notif-ic">${n.icon}</span>
+    <div class="notif-content">
+     <div class="notif-title">${n.title}</div>
+     <div class="notif-body">${n.body}</div>
+     <div class="notif-time">${n.time}</div>
+    </div>
+   </div>`).join('');
+  // Hide notification dot after viewing
+  document.getElementById('notifDot').style.display='none';
+  document.getElementById('notifBadgeSB').style.display='none';
+ }catch(e){el.innerHTML=`<div style="text-align:center;padding:18px;color:var(--cd);">Loading notifications...</div>`;console.error(e);}
+}
+
+async function checkNotifs(){
+ try{
+  const q=query(collection(db,'messages'),orderBy('createdAt','desc'),limit(1));
+  const s=await getDocs(q);
+  if(!s.empty){
+   document.getElementById('notifDot').style.display='block';
+   document.getElementById('notifBadgeSB').style.display='inline-block';
+  }
+ }catch{}
+}
+
+// ── MEMBER SEARCH ──
+let allMembersCache=[];
+async function loadAllMembers(){
+ if(allMembersCache.length)return;
+ try{
+  const s=await getDocs(collection(db,'users'));
+  s.forEach(d=>allMembersCache.push({id:d.id,...d.data()}));
+ }catch{}
+}
+
+window.searchMembers=async function(){
+ await loadAllMembers();
+ const q=document.getElementById('memberSearchQ').value.toLowerCase();
+ const cat=document.getElementById('memberSearchFilter').value;
+ const el=document.getElementById('memberSearchResults');
+ let results=allMembersCache.filter(m=>m.id!==cU?.uid); // exclude self
+ if(q)results=results.filter(m=>m.name?.toLowerCase().includes(q)||m.country?.toLowerCase().includes(q)||m.city?.toLowerCase().includes(q));
+ if(cat)results=results.filter(m=>(m.categories||[]).some(c=>c.toLowerCase().includes(cat.toLowerCase())));
+ results=results.slice(0,20); // show max 20
+ if(!results.length){el.innerHTML=`<div style="text-align:center;padding:22px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.76rem;">No members found. Try a different search. 🌍</div>`;return;}
+ el.innerHTML=results.map(m=>{
+  const av=m.profilePic?`<img src="${m.profilePic}" alt="${m.name}"/>`:(m.name||'M').charAt(0);
+  const cats=(m.categories||[]).slice(0,3).map(c=>`<span class="member-cat-tag">${c}</span>`).join('');
+  return`<div class="member-card">
+   <div class="member-av">${av}</div>
+   <div class="member-info">
+    <div class="member-name">${m.name||'Member'}</div>
+    <div class="member-meta">${m.city?m.city+', ':''}${m.country||'—'} · ${m.tier||'Fan'}</div>
+    <div class="member-cats">${cats}</div>
+   </div>
+  </div>`;
+ }).join('');
+};
+
+// ── CELEBRITY PAGES ──
+let allCelebsCache=[];
+async function lCelebPages(){
+ const el=document.getElementById('celebPagesList');
+ try{
+  const s=await getDocs(collection(db,'celebrities'));
+  allCelebsCache=[];s.forEach(d=>allCelebsCache.push({id:d.id,...d.data()}));
+  rCelebPages(allCelebsCache);
+ }catch{el.innerHTML=`<div style="text-align:center;padding:22px;color:var(--cd);">Celebrity pages coming soon! ⭐</div>`;}
+}
+
+function rCelebPages(celebs){
+ const el=document.getElementById('celebPagesList');
+ if(!celebs.length){el.innerHTML=`<div style="text-align:center;padding:22px;color:var(--cd);">No celebrity pages yet. Admin adds celebrities from Admin Panel. ⭐</div>`;return;}
+ el.innerHTML=celebs.map(c=>`
+  <div class="celeb-page-card" onclick="openCelebPage('${c.id}')">
+   <div class="celeb-page-banner">
+    ${c.photo?`<img src="${c.photo}" alt="${c.name}" onerror="this.style.display='none'"/>`:'⭐'}
+    <div class="celeb-page-banner-overlay"></div>
+   </div>
+   <div class="celeb-page-info">
+    <div class="celeb-page-name">${c.name}</div>
+    <div class="celeb-page-cat">${c.category||''} ${c.country?'· '+c.country:''}</div>
+    <div class="celeb-page-meta">${c.followers?c.followers+' Followers':''} ${c.bio?'· '+c.bio.substring(0,50)+'...':''}</div>
+    <button class="celeb-page-follow" onclick="event.stopPropagation();followCeleb('${c.id}','${c.name}')">⭐ Follow</button>
+   </div>
+  </div>`).join('');
+}
+
+window.filterCelebPages=function(){
+ const q=document.getElementById('celebPageSearch').value.toLowerCase();
+ rCelebPages(allCelebsCache.filter(c=>c.name?.toLowerCase().includes(q)||c.category?.toLowerCase().includes(q)||c.country?.toLowerCase().includes(q)));
+};
+
+window.openCelebPage=async function(celebId){
+ sV('celebSingle');
+ const el=document.getElementById('celebSingleContent');
+ el.innerHTML=`<div class="ldr"><div class="lring"></div></div>`;
+ try{
+  const c=allCelebsCache.find(x=>x.id===celebId)||{};
+  // Get posts related to this celeb's category
+  const postsQ=query(collection(db,'posts'),orderBy('createdAt','desc'),limit(5));
+  const postsSnap=await getDocs(postsQ);
+  const catPosts=[];postsSnap.forEach(d=>{const p=d.data();if(p.category===c.category)catPosts.push({id:d.id,...p});});
+  el.innerHTML=`
+   <div class="celeb-hero">
+    ${c.photo?`<img src="${c.photo}" alt="${c.name}" onerror="this.style.display='none'"/>`:'⭐'}
+    <div class="celeb-hero-overlay"></div>
+    <div class="celeb-hero-cat">${c.category||''}</div>
+    <div class="celeb-hero-name">${c.name||''}</div>
+   </div>
+   <div class="celeb-stats-row">
+    <div class="sbox"><div class="snum">${c.followers||'—'}</div><div class="slbl">Followers</div></div>
+    <div class="sbox"><div class="snum">${c.country||'—'}</div><div class="slbl">Origin</div></div>
+    <div class="sbox"><div class="snum" style="font-size:0.9rem;">${c.status||'Active'}</div><div class="slbl">Status</div></div>
+   </div>
+   ${c.bio?`<div class="pcard" style="margin-bottom:12px;"><div class="pbody">${c.bio}</div></div>`:''}
+   <button class="celeb-page-follow" style="width:100%;margin-bottom:14px;padding:11px;" onclick="followCeleb('${celebId}','${c.name}')">⭐ Follow ${c.name}</button>
+   <div class="sh">Latest from ${c.category||'Community'}</div>
+   ${catPosts.length?catPosts.map(p=>`<div class="pcard"><div class="ph"><div class="pav">★</div><div><div class="pau">ICONIK</div><div class="pt">${p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString():''}</div></div></div>${p.title?`<div class="ptitle">${p.title}</div>`:''}<div class="pbody">${p.content||''}</div></div>`).join(''):`<div class="pcard"><p style="text-align:center;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;padding:12px;">No posts yet in ${c.category||'this community'}.</p></div>`}`;
+ }catch(e){el.innerHTML=`<div style="text-align:center;padding:22px;color:var(--cd);">Error loading celebrity page</div>`;console.error(e);}
+};
+
+window.followCeleb=async function(celebId,name){
+ try{
+  await addDoc(collection(db,'follows'),{userId:cU.uid,userName:cD?.name,celebId,celebName:name,followedAt:serverTimestamp()});
+  toastF(`Now following ${name}! ⭐`,'success');
+ }catch{toastF(`Following ${name}! ⭐`,'success');}
+};
+
+// ── UPDATE sV to handle new views ──
+window.sV=function(nm){
+ document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+ document.getElementById(nm+'V').classList.add('on');
+ if(nm==='coms')lMyComs();if(nm==='tb')lTB();if(nm==='msgs')lMsgs();
+ if(nm==='wellness')lWellnessPartners();if(nm==='news')lNewsFromFirestore();
+ if(nm==='notifs')lNotifs();
+ if(nm==='search')searchMembers();
+ if(nm==='celebpages')lCelebPages();
+};
+window.setBN=function(nm){document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('on'));document.getElementById('bn-'+nm)?.classList.add('on');};
+
+// ── AUTH TAB ──
+window.sTab=function(t){
+ document.querySelectorAll('.atab').forEach(a=>a.classList.remove('on'));
+ document.querySelectorAll('.atab')[t==='login'?0:1].classList.add('on');
+ document.getElementById('loginF').style.display=t==='login'?'block':'none';
+ document.getElementById('regF').style.display=t==='register'?'block':'none';
+ document.getElementById('swT').textContent=t==='login'?'New to ICONIK? ':'Already a member? ';
+ document.getElementById('swL').textContent=t==='login'?'Join Free':'Sign In';
+ document.getElementById('swL').onclick=()=>sTab(t==='login'?'register':'login');
+};
+
+window.togSB=function(){document.getElementById('sb').classList.toggle('on');document.getElementById('sbOv').classList.toggle('on');};
+window.cSB=function(){document.getElementById('sb').classList.remove('on');document.getElementById('sbOv').classList.remove('on');};
+window.tC=function(el){el.classList.toggle('on');};
+function toastF(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='toast on '+type;setTimeout(()=>t.className='toast',3500);}
+function sM(el,msg,type){el.textContent=msg;el.className='amsg '+type;el.style.display='block';}
+function aE(c){const e={'auth/user-not-found':'No account found','auth/wrong-password':'Incorrect password','auth/email-already-in-use':'Email already registered','auth/weak-password':'Min. 6 characters','auth/invalid-email':'Invalid email','auth/too-many-requests':'Too many attempts. Try later','auth/invalid-credential':'Invalid email or password'};return e[c]||'Something went wrong.';}
+</script>
+</body>
+</html>
