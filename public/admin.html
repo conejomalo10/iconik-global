@@ -180,6 +180,8 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-he
    <div class="sb-lnk" onclick="sV('celebs')"><span class="sb-ic">⭐</span>Celebrities</div>
    <div class="sb-lnk" onclick="sV('posts')"><span class="sb-ic">📝</span>Posts</div>
    <div class="sb-lnk" onclick="sV('messages')"><span class="sb-ic">📩</span>Send Messages</div>
+   <div class="sb-lnk" onclick="sV('events')"><span class="sb-ic">🎟️</span>Events</div>
+   <div class="sb-lnk" onclick="sV('vipcontent')"><span class="sb-ic">👑</span>VIP Content</div>
    <div class="sb-sec">Control</div>
    <div class="sb-lnk" onclick="sV('subadmins')"><span class="sb-ic">🛡️</span>Sub Admins</div>
    <div class="sb-lnk" onclick="sV('images')"><span class="sb-ic">🖼️</span>Category Images</div>
@@ -418,6 +420,52 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-he
      <tbody id="saTbody"><tr><td colspan="7" style="text-align:center;padding:18px;color:var(--cd);">No Sub Admins yet</td></tr></tbody>
     </table>
    </div>
+  </div>
+
+  <!-- EVENTS MANAGEMENT -->
+  <div class="view" id="eventsV">
+   <div class="aform">
+    <div class="aform-t">🎟️ Add Event</div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Event Name <span class="req">*</span></label><input class="fi" type="text" id="evName" placeholder="Event name"/></div>
+     <div class="fg"><label class="fl">Type</label>
+      <select class="fs" id="evType"><option value="concert">🎵 Concert</option><option value="tour">🌍 Tour</option><option value="fanmeet">🤝 Fan Meet</option><option value="sports">⚽ Sports</option><option value="other">🎟️ Other</option></select>
+     </div>
+    </div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Venue</label><input class="fi" type="text" id="evVenue" placeholder="Venue name, City"/></div>
+     <div class="fg"><label class="fl">Date</label><input class="fi" type="date" id="evDate"/></div>
+    </div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Price</label><input class="fi" type="text" id="evPrice" placeholder="e.g. $85 or Free"/></div>
+     <div class="fg"><label class="fl">Category</label><select class="fs" id="evCat"><option>Music</option><option>Sports</option><option>Fashion</option><option>Film & TV</option><option>All</option></select></div>
+    </div>
+    <div class="fg"><label class="fl">Icon / Emoji</label><input class="fi" type="text" id="evIcon" placeholder="🎵"/></div>
+    <div class="fg"><label class="fl">Description</label><input class="fi" type="text" id="evDesc" placeholder="Event description..."/></div>
+    <div class="fg"><label class="fl">Ticket Link (optional)</label><input class="fi" type="text" id="evLink" placeholder="https://..."/></div>
+    <button class="btn btn-g" onclick="addEvent()">Add Event →</button>
+   </div>
+   <div class="sh">All Events</div>
+   <div class="dtwrap"><table class="dt"><thead><tr><th>Event</th><th>Type</th><th>Date</th><th>Price</th><th>Remove</th></tr></thead><tbody id="evTbody"><tr><td colspan="5" style="text-align:center;padding:16px;"><div class="lring" style="margin:auto;border-top-color:var(--ab);"></div></td></tr></tbody></table></div>
+  </div>
+
+  <!-- VIP CONTENT MANAGEMENT -->
+  <div class="view" id="vipcontentV">
+   <div class="conly">👑 <strong>VIP Content</strong> — Only visible to VIP Bronze, Silver and Gold members.</div>
+   <div class="aform">
+    <div class="aform-t">👑 Post VIP Exclusive Content</div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Content Type</label>
+      <select class="fs" id="vcType"><option>EXCLUSIVE UPDATE</option><option>EARLY ACCESS</option><option>BEHIND THE SCENES</option><option>VIP ANNOUNCEMENT</option><option>SPECIAL OFFER</option></select>
+     </div>
+     <div class="fg"><label class="fl">Category</label><select class="fs" id="vcCat"><option value="">All VIP</option><option>Music</option><option>Sports</option><option>Fashion</option><option>Film & TV</option></select></div>
+    </div>
+    <div class="fg"><label class="fl">Title <span class="req">*</span></label><input class="fi" type="text" id="vcTitle" placeholder="VIP content title"/></div>
+    <div class="fg"><label class="fl">Content <span class="req">*</span></label><textarea class="fi" id="vcContent" rows="4" placeholder="Exclusive content for VIP members..." style="resize:vertical;"></textarea></div>
+    <button class="btn btn-g" onclick="addVIPContent()">Post VIP Content →</button>
+   </div>
+   <div class="sh">Published VIP Content</div>
+   <div id="vipContentAdmin"><div class="ldr"><div class="lring"></div></div></div>
   </div>
 
   <!-- IMAGES -->
@@ -780,7 +828,52 @@ window.saveImgs=async function(){
  }catch{toastF('Error saving images','error');}
 };
 
-// ── ANALYTICS ──
+// ── EVENTS ──
+window.addEvent=async function(){
+ const nm=document.getElementById('evName').value.trim();
+ if(!nm){toastF('Event name required','error');return;}
+ try{
+  await addDoc(collection(db,'events'),{name:nm,type:document.getElementById('evType').value,venue:document.getElementById('evVenue').value.trim(),eventDate:document.getElementById('evDate').value,price:document.getElementById('evPrice').value.trim(),category:document.getElementById('evCat').value,icon:document.getElementById('evIcon').value.trim()||'🎟️',description:document.getElementById('evDesc').value.trim(),ticketLink:document.getElementById('evLink').value.trim(),createdAt:serverTimestamp(),addedBy:cU.email});
+  toastF('Event added! 🎟️','success');
+  ['evName','evVenue','evDate','evPrice','evIcon','evDesc','evLink'].forEach(id=>document.getElementById(id).value='');
+  lEventsAdmin();
+ }catch{toastF('Error adding event','error');}
+};
+
+async function lEventsAdmin(){
+ const el=document.getElementById('evTbody');
+ try{
+  const s=await getDocs(query(collection(db,'events'),orderBy('eventDate','asc')));
+  el.innerHTML=s.empty?`<tr><td colspan="5" style="text-align:center;padding:16px;color:var(--cd);">No events yet</td></tr>`:
+  [...s.docs].map(d=>{const e=d.data();return`<tr><td><strong style="color:var(--ch);">${e.icon||'🎟️'} ${e.name}</strong></td><td><span class="tag tg">${e.type}</span></td><td style="font-size:0.62rem;">${e.eventDate||'—'}</td><td>${e.price||'—'}</td><td><button class="btn-d" onclick="delEvent('${d.id}')">Remove</button></td></tr>`;}).join('');
+ }catch{}
+}
+window.delEvent=async function(id){if(!confirm('Remove event?'))return;try{await deleteDoc(doc(db,'events',id));toastF('Removed','success');lEventsAdmin();}catch{toastF('Error','error');}};
+
+// ── VIP CONTENT ──
+window.addVIPContent=async function(){
+ const title=document.getElementById('vcTitle').value.trim(),content=document.getElementById('vcContent').value.trim();
+ if(!title||!content){toastF('Title and content required','error');return;}
+ try{
+  await addDoc(collection(db,'vipContent'),{type:document.getElementById('vcType').value,category:document.getElementById('vcCat').value,title,content,createdAt:serverTimestamp(),addedBy:cU.email});
+  toastF('VIP content posted! 👑','success');
+  document.getElementById('vcTitle').value='';document.getElementById('vcContent').value='';
+  lVIPContentAdmin();
+ }catch{toastF('Error posting','error');}
+};
+
+async function lVIPContentAdmin(){
+ const el=document.getElementById('vipContentAdmin');
+ try{
+  const s=await getDocs(query(collection(db,'vipContent'),orderBy('createdAt','desc'),limit(10)));
+  if(s.empty){el.innerHTML=`<p style="text-align:center;color:var(--cd);padding:14px;">No VIP content yet</p>`;return;}
+  el.innerHTML='';
+  s.forEach(d=>{const c=d.data(),t=c.createdAt?.toDate?c.createdAt.toDate().toLocaleDateString():'—';el.innerHTML+=`<div class="pcard"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.1em;color:var(--gold);">👑 ${c.type}</span><div style="display:flex;gap:6px;align-items:center;"><span style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);">${t}</span><button onclick="delVIPContent('${d.id}')" style="background:none;border:none;color:var(--err);cursor:pointer;font-size:0.7rem;">✕</button></div></div><div class="ptitle">${c.title}</div><div class="pbody">${c.content}</div></div>`;});
+ }catch{}
+}
+window.delVIPContent=async function(id){try{await deleteDoc(doc(db,'vipContent',id));toastF('Deleted','success');lVIPContentAdmin();}catch{toastF('Error','error');}};
+
+// ── UPDATED sV ──
 async function lAnalytics(){
  try{
   const[ms,ps,cs,sas]=await Promise.all([getDocs(collection(db,'users')),getDocs(collection(db,'posts')),getDocs(collection(db,'celebrities')),getDocs(collection(db,'subadmins'))]);
@@ -855,6 +948,8 @@ window.sV=function(nm){
  if(nm==='images')lImgForm();
  if(nm==='overview')lOverview();
  if(nm==='analytics')lAnalytics();
+ if(nm==='events')lEventsAdmin();
+ if(nm==='vipcontent')lVIPContentAdmin();
 };
 
 window.togSB=function(){document.getElementById('sb').classList.toggle('on');document.getElementById('sbOv').classList.toggle('on');};
@@ -864,3 +959,4 @@ function aE(c){const e={'auth/user-not-found':'No account found','auth/wrong-pas
 </script>
 </body>
 </html>
+
