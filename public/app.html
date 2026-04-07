@@ -401,12 +401,34 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
    <div class="atab on" onclick="sTab('login')">Sign In</div>
    <div class="atab" onclick="sTab('register')">Join Free</div>
   </div>
+
+  <!-- LOGIN -->
   <div id="loginF">
    <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" id="le" placeholder="your@email.com"/></div>
-   <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="lp" placeholder="••••••••"/></div>
+   <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="lp" placeholder="••••••••" onkeypress="if(event.key==='Enter')doLogin()"/></div>
    <button class="btn btn-g" onclick="doLogin()">Enter ICONIK →</button>
    <div class="amsg" id="lm"></div>
-   <p style="font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);text-align:center;margin-top:12px;">Chief Admin? <a href="/admin.html" style="color:var(--ab);">Go to Admin Panel →</a></p>
+   <p style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);text-align:center;margin-top:12px;">
+    <a onclick="sTab('forgot')" style="color:var(--warn);cursor:pointer;">🔑 Forgot Password?</a>
+   </p>
+   <p style="font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);text-align:center;margin-top:6px;">Chief Admin? <a href="/admin.html" style="color:var(--ab);">Go to Admin Panel →</a></p>
+  </div>
+
+  <!-- FORGOT PASSWORD -->
+  <div id="forgotF" style="display:none;">
+   <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-left:4px solid var(--warn);padding:13px;margin-bottom:16px;">
+    <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--warn);margin-bottom:6px;">🔑 Reset Your Password</div>
+    <p style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);line-height:1.6;">Enter your registered email address. We will send you a password reset link. <strong style="color:var(--ch);">Check your inbox and spam/junk folder</strong> for the reset email.</p>
+   </div>
+   <div class="fg">
+    <label class="fl">Registered Email Address</label>
+    <input class="fi" type="email" id="resetEmail" placeholder="your@email.com" onkeypress="if(event.key==='Enter')doReset()"/>
+   </div>
+   <button class="btn btn-g" onclick="doReset()">Send Reset Link →</button>
+   <div class="amsg" id="resetMsg"></div>
+   <p style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);text-align:center;margin-top:12px;">
+    <a onclick="sTab('login')" style="color:var(--gold);cursor:pointer;">← Back to Sign In</a>
+   </p>
   </div>
   <div id="regF" style="display:none;">
    <div class="vnotice">
@@ -1084,7 +1106,7 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,updateProfile}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,updateProfile,sendPasswordResetEmail}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,updateDoc,query,orderBy,limit,where,serverTimestamp,increment}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const cfg={apiKey:"AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",authDomain:"iconik-global.firebaseapp.com",projectId:"iconik-global",storageBucket:"iconik-global.firebasestorage.app",messagingSenderId:"1040054516979",appId:"1:1040054516979:web:33cd5f07ae8fc146a30b86"};
@@ -1167,6 +1189,31 @@ window.doLogin=async function(){
  if(!e||!p){sM(m,'Please fill all fields','err');return;}
  try{m.style.display='none';await signInWithEmailAndPassword(auth,e,p);toastF('Welcome back! 🌟','success');}
  catch(er){sM(m,aE(er.code),'err');}
+};
+
+// ── FORGOT PASSWORD ──
+window.doReset=async function(){
+ const e=document.getElementById('resetEmail').value.trim();
+ const m=document.getElementById('resetMsg');
+ if(!e){sM(m,'Please enter your email address','err');return;}
+ try{
+  m.style.display='none';
+  await sendPasswordResetEmail(auth,e,{
+   url:'https://iconik-global.web.app/app.html',
+   handleCodeInApp:false
+  });
+  m.style.display='block';
+  m.className='amsg ok';
+  m.innerHTML='✅ Reset link sent! Check your <strong>inbox and spam/junk folder</strong> for an email from ICONIK. Click the link to set a new password.';
+  document.getElementById('resetEmail').value='';
+ }catch(er){
+  const msgs={
+   'auth/user-not-found':'No account found with this email address.',
+   'auth/invalid-email':'Please enter a valid email address.',
+   'auth/too-many-requests':'Too many attempts. Please wait a few minutes and try again.'
+  };
+  sM(m,msgs[er.code]||'Error sending reset email. Please try again.','err');
+ }
 };
 
 // ── REGISTER ──
@@ -1717,13 +1764,32 @@ window.setBN=function(nm){document.querySelectorAll('.bnav-item').forEach(b=>b.c
 
 // ── AUTH TAB ──
 window.sTab=function(t){
+ // Hide all auth forms
+ document.getElementById('loginF').style.display='none';
+ document.getElementById('regF').style.display='none';
+ document.getElementById('forgotF').style.display='none';
+ // Reset tab highlights
  document.querySelectorAll('.atab').forEach(a=>a.classList.remove('on'));
- document.querySelectorAll('.atab')[t==='login'?0:1].classList.add('on');
- document.getElementById('loginF').style.display=t==='login'?'block':'none';
- document.getElementById('regF').style.display=t==='register'?'block':'none';
- document.getElementById('swT').textContent=t==='login'?'New to ICONIK? ':'Already a member? ';
- document.getElementById('swL').textContent=t==='login'?'Join Free':'Sign In';
- document.getElementById('swL').onclick=()=>sTab(t==='login'?'register':'login');
+ if(t==='login'){
+  document.getElementById('loginF').style.display='block';
+  document.querySelectorAll('.atab')[0].classList.add('on');
+  document.getElementById('swT').textContent='New to ICONIK? ';
+  document.getElementById('swL').textContent='Join Free';
+  document.getElementById('swL').onclick=()=>sTab('register');
+ }else if(t==='register'){
+  document.getElementById('regF').style.display='block';
+  document.querySelectorAll('.atab')[1].classList.add('on');
+  document.getElementById('swT').textContent='Already a member? ';
+  document.getElementById('swL').textContent='Sign In';
+  document.getElementById('swL').onclick=()=>sTab('login');
+ }else if(t==='forgot'){
+  document.getElementById('forgotF').style.display='block';
+  document.getElementById('swT').textContent='Remember your password? ';
+  document.getElementById('swL').textContent='Sign In';
+  document.getElementById('swL').onclick=()=>sTab('login');
+  // Clear previous messages
+  const m=document.getElementById('resetMsg');m.style.display='none';
+ }
 };
 
 // ══════════════════════════════════════
@@ -2227,3 +2293,4 @@ function aE(c){const e={'auth/user-not-found':'No account found','auth/wrong-pas
 </script>
 </body>
 </html>
+
