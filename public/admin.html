@@ -186,6 +186,7 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-he
    <div class="sb-lnk" onclick="sV('competitions')"><span class="sb-ic">🏆</span>Competitions</div>
    <div class="sb-lnk" onclick="sV('marketplace')"><span class="sb-ic">🏪</span>Marketplace</div>
    <div class="sb-lnk" onclick="sV('nominations')"><span class="sb-ic">✅</span>Nominations</div>
+   <div class="sb-lnk" onclick="sV('magazine')"><span class="sb-ic">📖</span>Magazine</div>
    <div class="sb-sec">Control</div>
    <div class="sb-lnk" onclick="sV('subadmins')"><span class="sb-ic">🛡️</span>Sub Admins</div>
    <div class="sb-lnk" onclick="sV('images')"><span class="sb-ic">🖼️</span>Category Images</div>
@@ -527,6 +528,31 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-he
    <div class="conly">✅ These are celebrity nominations submitted by members. Review and add approved ones to the Celebrities tab.</div>
    <div class="sh">Celebrity Nominations</div>
    <div id="nominationsList"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- MAGAZINE MANAGEMENT -->
+  <div class="view" id="magazineV">
+   <div class="aform">
+    <div class="aform-t">📖 Publish Magazine Article</div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Headline <span class="req">*</span></label><input class="fi" type="text" id="magTitle" placeholder="Article headline"/></div>
+     <div class="fg"><label class="fl">Category</label>
+      <select class="fs" id="magCat"><option value="exclusive">⭐ Exclusive</option><option value="interview">🎤 Interview</option><option value="culture">🌍 Culture</option><option value="fashion">👗 Fashion</option><option value="music">🎵 Music</option><option value="sports">⚽ Sports</option></select>
+     </div>
+    </div>
+    <div class="fg"><label class="fl">Tag/Label</label><input class="fi" type="text" id="magTag" placeholder="e.g. EXCLUSIVE, INTERVIEW, BREAKING"/></div>
+    <div class="fg"><label class="fl">Author</label><input class="fi" type="text" id="magAuthor" placeholder="e.g. ICONIK Editorial" value="ICONIK Editorial"/></div>
+    <div class="fg"><label class="fl">Excerpt / Summary <span class="req">*</span></label><textarea class="fi" id="magExcerpt" rows="3" placeholder="Brief article summary..." style="resize:vertical;"></textarea></div>
+    <div class="fg"><label class="fl">Full Content</label><textarea class="fi" id="magContent" rows="5" placeholder="Full article content..." style="resize:vertical;"></textarea></div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Icon/Emoji</label><input class="fi" type="text" id="magIcon" placeholder="📰"/></div>
+     <div class="fg"><label class="fl">Read Time</label><input class="fi" type="text" id="magRead" placeholder="5 min"/></div>
+    </div>
+    <div class="fg"><label class="fl">Cover Image URL (optional)</label><input class="fi" type="text" id="magImage" placeholder="https://..."/></div>
+    <button class="btn btn-g" onclick="publishArticle()">Publish Article →</button>
+   </div>
+   <div class="sh">Published Articles</div>
+   <div id="magArticlesList"><div class="ldr"><div class="lring"></div></div></div>
   </div>
 
   <!-- IMAGES -->
@@ -934,7 +960,43 @@ async function lVIPContentAdmin(){
 }
 window.delVIPContent=async function(id){try{await deleteDoc(doc(db,'vipContent',id));toastF('Deleted','success');lVIPContentAdmin();}catch{toastF('Error','error');}};
 
-// ── PHASE 6 ADMIN JS ──
+// ── MAGAZINE ──
+window.publishArticle=async function(){
+ const title=document.getElementById('magTitle').value.trim();
+ const excerpt=document.getElementById('magExcerpt').value.trim();
+ if(!title||!excerpt){toastF('Headline and excerpt required','error');return;}
+ try{
+  await addDoc(collection(db,'magazine'),{
+   title,excerpt,
+   content:document.getElementById('magContent').value.trim(),
+   category:document.getElementById('magCat').value,
+   tag:document.getElementById('magTag').value.trim()||'ICONIK',
+   author:document.getElementById('magAuthor').value.trim()||'ICONIK Editorial',
+   icon:document.getElementById('magIcon').value.trim()||'📖',
+   readTime:document.getElementById('magRead').value.trim()||'3 min',
+   image:document.getElementById('magImage').value.trim(),
+   publishedAt:serverTimestamp(),publishedBy:cU.email
+  });
+  toastF('Article published! 📖','success');
+  ['magTitle','magTag','magExcerpt','magContent','magIcon','magRead','magImage'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('magAuthor').value='ICONIK Editorial';
+  lMagAdmin();
+ }catch{toastF('Error publishing','error');}
+};
+async function lMagAdmin(){
+ const el=document.getElementById('magArticlesList');
+ try{
+  const s=await getDocs(query(collection(db,'magazine'),orderBy('publishedAt','desc'),limit(10)));
+  if(s.empty){el.innerHTML=`<p style="text-align:center;color:var(--cd);padding:14px;">No articles yet</p>`;return;}
+  el.innerHTML='';
+  s.forEach(d=>{const a=d.data(),t=a.publishedAt?.toDate?a.publishedAt.toDate().toLocaleDateString():'—';
+   el.innerHTML+=`<div class="pcard"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.1em;color:var(--gold);">${a.icon||'📖'} ${a.tag||'ICONIK'}</span><div style="display:flex;gap:7px;align-items:center;"><span style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);">${t}</span><button onclick="delArticle('${d.id}')" style="background:none;border:none;color:var(--err);cursor:pointer;font-size:0.7rem;">✕</button></div></div><div class="ptitle">${a.title}</div><div class="pbody">${(a.excerpt||'').substring(0,80)}...</div></div>`;
+  });
+ }catch{}
+}
+window.delArticle=async function(id){try{await deleteDoc(doc(db,'magazine',id));toastF('Deleted','success');lMagAdmin();}catch{toastF('Error','error');}};
+
+// ── UPDATED sV ──
 window.createPoll=async function(){
  const q=document.getElementById('pollQ').value.trim();
  const o1=document.getElementById('pollO1').value.trim(),o2=document.getElementById('pollO2').value.trim();
@@ -1093,6 +1155,7 @@ window.sV=function(nm){
  if(nm==='competitions')lAdminComps();
  if(nm==='marketplace')lAdminMarket();
  if(nm==='nominations')lNominations();
+ if(nm==='magazine')lMagAdmin();
 };
 
 window.togSB=function(){document.getElementById('sb').classList.toggle('on');document.getElementById('sbOv').classList.toggle('on');};
