@@ -12,7 +12,23 @@
 <meta name="apple-mobile-web-app-title" content="ICONIK"/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@400;600;800;900&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-:root{--obs:#07070D;--obs2:#0F0F1A;--obs3:#141420;--gold:#FFB800;--gg:#FF9500;--gl:#FFD060;--ch:#F5F0E8;--cd:#BDB5A6;--gb:rgba(255,184,0,0.04);--gbr:rgba(255,184,0,0.15);--gbri:rgba(255,184,0,0.4);--ok:#22C55E;--err:#EF4444;--ab:#3B82F6;--warn:#F59E0B;--purple:#8B5CF6;}
+:root{--obs:#07070D;--obs2:#0F0F1A;--obs3:#141420;--gold:#FFB800;--gg:#FF9500;--gl:#FFD060;--ch:#F5F0E8;--cd:#BDB5A6;--gb:rgba(255,184,0,0.04);--gbr:rgba(255,184,0,0.15);--gbri:rgba(255,184,0,0.4);--ok:#22C55E;--err:#EF4444;--ab:#3B82F6;--warn:#F59E0B;--purple:#8B5CF6;--bg-page:var(--obs);--bg-card:var(--obs3);--bg-card2:var(--obs2);--text-main:var(--ch);--text-dim:var(--cd);}
+body.light-mode{--obs:#F5F5F0;--obs2:#EBEBЕ4;--obs3:#FFFFFF;--ch:#0A0A12;--cd:#5A5A6A;--gb:rgba(0,0,0,0.03);--gbr:rgba(0,0,0,0.1);--gbri:rgba(255,184,0,0.6);--bg-page:#F0F0EA;--bg-card:#FFFFFF;--bg-card2:#F5F5EE;}
+body.light-mode .tnav{background:rgba(245,245,240,0.95);}
+body.light-mode .sb{background:#FFFFFF;border-right-color:rgba(0,0,0,0.1);}
+body.light-mode .bnav{background:rgba(245,245,240,0.97);}
+body.light-mode .auth-pg{background:linear-gradient(135deg,#E8E8E2,#F0F0EA);}
+body.light-mode .abox{background:#FFFFFF;border-color:rgba(0,0,0,0.1);}
+body.light-mode .fi,body.light-mode .fs{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.12);color:var(--ch);}
+body.light-mode .fi::placeholder{color:rgba(10,10,18,0.3);}
+body.light-mode .fi:focus,body.light-mode .fs:focus{border-color:var(--gold);}
+body.light-mode .pcard,body.light-mode .msg-card,body.light-mode .sbox{background:#FFFFFF;border-color:rgba(0,0,0,0.08);}
+body.light-mode .cgrid .ccard{background:#FFFFFF;border-color:rgba(0,0,0,0.08);}
+body.light-mode .cimg{background:#F0F0EA;}
+body.light-mode .toast{background:#FFFFFF;border-color:rgba(0,0,0,0.15);color:var(--ch);}
+body.light-mode .sb-lnk{color:#5A5A6A;}
+body.light-mode .sb-lnk:hover,body.light-mode .sb-lnk.on{color:var(--gold);background:rgba(255,184,0,0.08);}
+body.light-mode .wbar{background:linear-gradient(135deg,rgba(255,184,0,0.12),rgba(255,149,0,0.06));}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overflow-x:hidden;min-height:100vh;}
@@ -374,6 +390,53 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
 .comp-desc{font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);line-height:1.5;margin-bottom:9px;}
 .comp-deadline{font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;color:var(--warn);margin-bottom:8px;}
 .comp-btn{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.6rem;letter-spacing:0.1em;padding:8px 14px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;}
+/* PHASE 7 */
+/* DM BUBBLES */
+.dm-msg{display:flex;gap:6px;margin-bottom:7px;}
+.dm-msg.mine{flex-direction:row-reverse;}
+.dm-av{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.58rem;color:var(--obs);flex-shrink:0;margin-top:2px;}
+.dm-bubble{max-width:78%;padding:8px 11px;font-family:'Inter',sans-serif;font-size:0.72rem;line-height:1.5;}
+.dm-msg:not(.mine) .dm-bubble{background:var(--obs3);border:1px solid var(--gbr);color:var(--ch);border-radius:0 8px 8px 8px;}
+.dm-msg.mine .dm-bubble{background:linear-gradient(135deg,var(--gold),var(--gg));color:var(--obs);border-radius:8px 0 8px 8px;}
+.dm-time{font-family:'Inter',sans-serif;font-size:0.52rem;color:rgba(189,181,166,0.4);margin-top:2px;}
+.dm-thread{background:var(--gb);border:1px solid var(--gbr);padding:12px;margin-bottom:7px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all 0.2s;}
+.dm-thread:hover{border-color:var(--gbri);}
+.dm-thread-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.88rem;color:var(--obs);flex-shrink:0;}
+.dm-thread-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.74rem;color:var(--ch);}
+.dm-thread-preview{font-family:'Inter',sans-serif;font-size:0.64rem;color:var(--cd);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;}
+.dm-thread-time{font-family:'Inter',sans-serif;font-size:0.56rem;color:var(--cd);margin-left:auto;white-space:nowrap;}
+.dm-unread{width:8px;height:8px;background:var(--gold);border-radius:50%;flex-shrink:0;}
+/* MAGAZINE */
+.mag-featured{background:var(--obs2);border:1px solid var(--gbr);position:relative;overflow:hidden;cursor:pointer;}
+.mag-featured-img{width:100%;height:160px;object-fit:cover;display:block;}
+.mag-featured-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,13,0.92) 0%,transparent 50%);}
+.mag-featured-content{position:absolute;bottom:0;left:0;right:0;padding:14px;}
+.mag-featured-tag{font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--obs);background:var(--gold);padding:2px 7px;margin-bottom:6px;display:inline-block;}
+.mag-featured-title{font-family:'Playfair Display',serif;font-weight:700;font-size:1.05rem;color:#fff;line-height:1.3;}
+.mag-featured-meta{font-family:'Inter',sans-serif;font-size:0.62rem;color:rgba(255,255,255,0.6);margin-top:4px;}
+.mag-card{background:var(--gb);border:1px solid var(--gbr);padding:13px;margin-bottom:8px;display:flex;gap:11px;cursor:pointer;transition:all 0.2s;}
+.mag-card:hover{border-color:var(--gbri);}
+.mag-thumb{width:70px;height:70px;background:var(--obs2);border-radius:2px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.6rem;overflow:hidden;}
+.mag-thumb img{width:100%;height:100%;object-fit:cover;}
+.mag-tag{font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.1em;color:var(--gold);margin-bottom:3px;}
+.mag-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.74rem;color:var(--ch);line-height:1.3;margin-bottom:4px;}
+.mag-excerpt{font-family:'Inter',sans-serif;font-size:0.64rem;color:var(--cd);line-height:1.4;}
+.mag-meta{font-family:'Inter',sans-serif;font-size:0.58rem;color:rgba(189,181,166,0.4);margin-top:4px;}
+/* SEARCH CHIPS */
+.search-chip{font-family:'Montserrat',sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.07em;padding:6px 11px;background:transparent;color:var(--cd);border:1px solid var(--gbr);cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.search-chip.on{background:var(--gold);color:var(--obs);border-color:var(--gold);}
+.search-result-section{margin-bottom:16px;}
+.search-result-title{font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.14em;color:var(--gold);margin-bottom:8px;}
+/* SETTINGS TOGGLES */
+.settings-row{display:flex;align-items:center;justify-content:space-between;}
+.settings-label{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);}
+.settings-sub{font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);margin-top:1px;}
+.toggle{position:relative;display:inline-block;width:40px;height:22px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,0.1);border:1px solid var(--gbr);transition:.3s;border-radius:22px;}
+.toggle-slider:before{position:absolute;content:'';height:16px;width:16px;left:2px;bottom:2px;background:var(--cd);transition:.3s;border-radius:50%;}
+.toggle input:checked+.toggle-slider{background:var(--gold);border-color:var(--gold);}
+.toggle input:checked+.toggle-slider:before{transform:translateX(18px);background:var(--obs);}
 @media(max-width:480px){.abox{padding:22px 14px;}.fr{grid-template-columns:1fr;}}
 </style>
 </head>
@@ -490,8 +553,9 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
   <a class="nlogo" href="/"><span>ICON</span>IK</a>
   <div class="nr">
    <span class="nun" id="nNm"></span>
+   <button id="themeBtn" onclick="toggleTheme()" style="background:none;border:none;cursor:pointer;font-size:1.1rem;padding:2px;" title="Toggle Light/Dark">🌙</button>
    <div style="position:relative;cursor:pointer;" onclick="sV('notifs')">
-    <span style="font-size:1.2rem;">🔔</span>
+    <span style="font-size:1.1rem;">🔔</span>
     <span id="notifDot" style="display:none;position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:var(--err);border-radius:50%;"></span>
    </div>
    <div class="nav-av" id="nAv" onclick="togSB()">U</div>
@@ -532,7 +596,11 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
    <div class="sb-lnk" onclick="sV('appdownload');cSB()"><span class="sb-ic">📱</span>Get the App</div>
    <div class="sb-lnk" onclick="sV('wellness');cSB()"><span class="sb-ic">💪</span>Wellness Hub</div>
    <div class="sb-lnk" onclick="sV('affiliate');cSB()"><span class="sb-ic">🛍️</span>Shop & Earn</div>
-   <div class="sb-sec">Account</div>
+   <div class="sb-lnk" onclick="sV('dms');cSB()"><span class="sb-ic">✉️</span>Direct Messages</div>
+   <div class="sb-lnk" onclick="sV('magazine');cSB()"><span class="sb-ic">📖</span>ICONIK Magazine</div>
+   <div class="sb-lnk" onclick="sV('asearch');cSB()"><span class="sb-ic">🔎</span>Advanced Search</div>
+   <div class="sb-sec">Settings</div>
+   <div class="sb-lnk" onclick="sV('settings');cSB()"><span class="sb-ic">⚙️</span>Settings</div>
    <div class="sb-lnk" onclick="sV('membership');cSB()"><span class="sb-ic">👑</span>Membership<span class="sb-bdg">UPGRADE</span></div>
    <div class="sb-lnk" onclick="sV('profile');cSB()"><span class="sb-ic">👤</span>My Profile</div>
    <div class="sb-sec">More</div>
@@ -1099,6 +1167,138 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
    <div id="competitionsList"><div class="ldr"><div class="lring"></div></div></div>
   </div>
 
+  <!-- DIRECT MESSAGES (DMs) -->
+  <div class="view" id="dmsV">
+   <div class="wbar"><span class="wi">✉️</span><div><div class="wh">Direct Messages</div><div class="ws">Private conversations with other fans</div></div></div>
+   <div id="dmContainer" style="display:flex;flex-direction:column;height:calc(100vh - 180px);">
+    <!-- DM INBOX LIST -->
+    <div id="dmInbox" style="display:block;">
+     <div class="sh">Conversations</div>
+     <button onclick="showNewDM()" style="width:100%;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.64rem;letter-spacing:0.1em;padding:10px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;margin-bottom:12px;">✉️ New Message →</button>
+     <div id="dmNewForm" style="display:none;background:var(--gb);border:1px solid var(--gbr);padding:13px;margin-bottom:12px;">
+      <div class="fg"><label class="fl">Recipient Email or Name</label><input class="fi" type="text" id="dmTo" placeholder="Search member email or name..."/></div>
+      <div class="fg"><label class="fl">Message</label><input class="fi" type="text" id="dmFirstMsg" placeholder="Write your first message..."/></div>
+      <div style="display:flex;gap:7px;"><button class="btn btn-g btn-sm" style="flex:1;" onclick="startDM()">Send →</button><button onclick="hideDMForm()" style="font-family:'Montserrat',sans-serif;font-size:0.6rem;font-weight:700;padding:6px 11px;background:transparent;border:1px solid var(--gbr);color:var(--cd);cursor:pointer;">Cancel</button></div>
+     </div>
+     <div id="dmList"><div class="ldr"><div class="lring"></div></div></div>
+    </div>
+    <!-- DM CHAT WINDOW -->
+    <div id="dmChat" style="display:none;flex-direction:column;height:100%;">
+     <div style="display:flex;align-items:center;gap:9px;padding-bottom:10px;border-bottom:1px solid var(--gbr);margin-bottom:10px;">
+      <button onclick="backToDMInbox()" style="background:none;border:none;color:var(--cd);cursor:pointer;font-size:1rem;">←</button>
+      <div class="dm-chat-av" id="dmChatAv" style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.82rem;color:var(--obs);">U</div>
+      <div><div id="dmChatName" style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.8rem;color:var(--ch);">Member</div><div style="font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--cd);">Direct Message</div></div>
+     </div>
+     <div id="dmMessages" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;min-height:280px;max-height:340px;padding:4px 0;"></div>
+     <div style="display:flex;gap:7px;margin-top:10px;">
+      <input class="fi" type="text" id="dmInput" placeholder="Write a message..." style="flex:1;" onkeypress="if(event.key==='Enter')sendDM()"/>
+      <button onclick="sendDM()" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.1em;padding:10px 13px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;">Send</button>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <!-- ICONIK MAGAZINE -->
+  <div class="view" id="magazineV">
+   <div class="wbar"><span class="wi">📖</span><div><div class="wh">ICONIK Magazine</div><div class="ws">Stories · Interviews · Exclusives · Culture</div></div></div>
+   <!-- FEATURED STORY -->
+   <div id="magazineFeatured" style="margin-bottom:16px;"></div>
+   <!-- CATEGORY TABS -->
+   <div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;">
+    <button class="chat-tab-btn on" onclick="filterMag('all',this)">All</button>
+    <button class="chat-tab-btn" onclick="filterMag('interview',this)">🎤 Interviews</button>
+    <button class="chat-tab-btn" onclick="filterMag('exclusive',this)">⭐ Exclusives</button>
+    <button class="chat-tab-btn" onclick="filterMag('culture',this)">🌍 Culture</button>
+    <button class="chat-tab-btn" onclick="filterMag('fashion',this)">👗 Fashion</button>
+    <button class="chat-tab-btn" onclick="filterMag('music',this)">🎵 Music</button>
+    <button class="chat-tab-btn" onclick="filterMag('sports',this)">⚽ Sports</button>
+   </div>
+   <div class="sh">Latest Stories</div>
+   <div id="magazineList"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- ADVANCED SEARCH -->
+  <div class="view" id="asearchV">
+   <div class="wbar"><span class="wi">🔎</span><div><div class="wh">Advanced Search</div><div class="ws">Search everything on ICONIK</div></div></div>
+   <!-- SEARCH INPUT -->
+   <div style="position:relative;margin-bottom:14px;">
+    <input class="fi" type="text" id="advSearchQ" placeholder="Search members, celebrities, posts, events..." style="padding-left:36px;" oninput="runAdvSearch()"/>
+    <span style="position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:0.9rem;">🔎</span>
+   </div>
+   <!-- FILTER CHIPS -->
+   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
+    <button class="search-chip on" onclick="setSearchFilter('all',this)">All</button>
+    <button class="search-chip" onclick="setSearchFilter('members',this)">👥 Members</button>
+    <button class="search-chip" onclick="setSearchFilter('celebrities',this)">⭐ Icons</button>
+    <button class="search-chip" onclick="setSearchFilter('posts',this)">📝 Posts</button>
+    <button class="search-chip" onclick="setSearchFilter('events',this)">🎟️ Events</button>
+   </div>
+   <div id="advSearchResults">
+    <div style="text-align:center;padding:28px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.76rem;">Start typing to search everything on ICONIK 🔎</div>
+   </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="view" id="settingsV">
+   <div class="wbar"><span class="wi">⚙️</span><div><div class="wh">Settings</div><div class="ws">Customize your ICONIK experience</div></div></div>
+
+   <!-- APPEARANCE -->
+   <div class="sh">Appearance</div>
+   <div style="background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+     <div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);">Theme</div><div style="font-family:'Inter',sans-serif;font-size:0.66rem;color:var(--cd);margin-top:2px;">Switch between Dark and Light mode</div></div>
+     <div style="display:flex;gap:7px;">
+      <button id="darkThemeBtn" onclick="setTheme('dark')" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.6rem;letter-spacing:0.08em;padding:7px 12px;background:var(--obs3);border:1px solid var(--gold);color:var(--gold);cursor:pointer;">🌙 Dark</button>
+      <button id="lightThemeBtn" onclick="setTheme('light')" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.6rem;letter-spacing:0.08em;padding:7px 12px;background:transparent;border:1px solid var(--gbr);color:var(--cd);cursor:pointer;">☀️ Light</button>
+     </div>
+    </div>
+    <!-- LANGUAGE -->
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+     <div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);">Language</div><div style="font-family:'Inter',sans-serif;font-size:0.66rem;color:var(--cd);margin-top:2px;">Choose your display language</div></div>
+     <select id="langSelect" onchange="setLanguage(this.value)" style="background:var(--obs3);border:1px solid var(--gbr);color:var(--ch);font-family:'Inter',sans-serif;font-size:0.72rem;padding:7px 10px;outline:none;">
+      <option value="en">🇬🇧 English</option>
+      <option value="es">🇪🇸 Español</option>
+      <option value="fr">🇫🇷 Français</option>
+      <option value="pt">🇧🇷 Português</option>
+      <option value="ar">🇸🇦 العربية</option>
+      <option value="zh">🇨🇳 中文</option>
+      <option value="ja">🇯🇵 日本語</option>
+      <option value="ko">🇰🇷 한국어</option>
+      <option value="de">🇩🇪 Deutsch</option>
+      <option value="it">🇮🇹 Italiano</option>
+      <option value="ru">🇷🇺 Русский</option>
+      <option value="hi">🇮🇳 हिन्दी</option>
+      <option value="yo">🇳🇬 Yorùbá</option>
+      <option value="sw">🇰🇪 Swahili</option>
+     </select>
+    </div>
+   </div>
+
+   <!-- NOTIFICATIONS -->
+   <div class="sh">Notifications</div>
+   <div style="background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:12px;">
+    <div class="settings-row"><div><div class="settings-label">New Messages</div><div class="settings-sub">Alert when you receive a message</div></div><label class="toggle"><input type="checkbox" id="notifMsgs" checked onchange="saveSetting('notifMsgs',this.checked)"/><span class="toggle-slider"></span></label></div>
+    <div class="settings-row" style="margin-top:12px;"><div><div class="settings-label">New Posts</div><div class="settings-sub">Alert when community posts are added</div></div><label class="toggle"><input type="checkbox" id="notifPosts" checked onchange="saveSetting('notifPosts',this.checked)"/><span class="toggle-slider"></span></label></div>
+    <div class="settings-row" style="margin-top:12px;"><div><div class="settings-label">Events & Tickets</div><div class="settings-sub">Alert about new events near you</div></div><label class="toggle"><input type="checkbox" id="notifEvents" onchange="saveSetting('notifEvents',this.checked)"/><span class="toggle-slider"></span></label></div>
+   </div>
+
+   <!-- PRIVACY -->
+   <div class="sh">Privacy</div>
+   <div style="background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:12px;">
+    <div class="settings-row"><div><div class="settings-label">Show in Member Search</div><div class="settings-sub">Other fans can find your profile</div></div><label class="toggle"><input type="checkbox" id="showInSearch" checked onchange="saveSetting('showInSearch',this.checked)"/><span class="toggle-slider"></span></label></div>
+    <div class="settings-row" style="margin-top:12px;"><div><div class="settings-label">Allow Direct Messages</div><div class="settings-sub">Members can send you DMs</div></div><label class="toggle"><input type="checkbox" id="allowDMs" checked onchange="saveSetting('allowDMs',this.checked)"/><span class="toggle-slider"></span></label></div>
+    <div class="settings-row" style="margin-top:12px;"><div><div class="settings-label">Show Country on Profile</div><div class="settings-sub">Display your country publicly</div></div><label class="toggle"><input type="checkbox" id="showCountry" checked onchange="saveSetting('showCountry',this.checked)"/><span class="toggle-slider"></span></label></div>
+   </div>
+
+   <!-- ACCOUNT ACTIONS -->
+   <div class="sh">Account</div>
+   <div style="background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:12px;">
+    <button onclick="sTab('forgot');showAuth()" style="width:100%;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;padding:10px;background:transparent;border:1px solid var(--gbr);color:var(--cd);cursor:pointer;margin-bottom:8px;text-align:left;">🔑 Change Password</button>
+    <button onclick="doLogout()" style="width:100%;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;padding:10px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:var(--err);cursor:pointer;text-align:left;">🚪 Sign Out of ICONIK</button>
+   </div>
+   <p style="font-family:'Inter',sans-serif;font-size:0.62rem;color:rgba(189,181,166,0.35);text-align:center;margin-top:12px;">ICONIK Global v7.0 · iconik-global.web.app</p>
+  </div>
+
  </div><!-- /main -->
 </div><!-- /dash -->
 
@@ -1180,7 +1380,7 @@ function showDash(){
  const vsc={pending:'twarn',verified:'tok',rejected:'terr'};
  const vsl={pending:'⏳ Pending — Admin will review your details shortly.',verified:'✅ Verified — Your identity has been confirmed.',rejected:'❌ Rejected — Contact Admin for assistance.'};
  document.getElementById('vStatusBlock').innerHTML=`<span class="tag ${vsc[vs]||'twarn'}" style="font-size:0.7rem;padding:7px 12px;display:inline-block;">${vsl[vs]||'Pending'}</span>`;
- lFeed();lCelebs();lNewsFromFirestore();lMsgsCheck();checkNotifs();
+ lFeed();lCelebs();lNewsFromFirestore();lMsgsCheck();checkNotifs();initTheme();
 }
 
 // ── LOGIN ──
@@ -2000,8 +2200,327 @@ window.shareApp=function(){
 };
 
 // ══════════════════════════════════════
-// PHASE 6 FEATURES
+// PHASE 7 FEATURES
 // ══════════════════════════════════════
+
+// ── THEME TOGGLE ──
+function initTheme(){
+ const saved=localStorage.getItem('iconik-theme')||'dark';
+ setTheme(saved,true);
+ const savedLang=localStorage.getItem('iconik-lang')||'en';
+ if(document.getElementById('langSelect'))document.getElementById('langSelect').value=savedLang;
+}
+
+window.toggleTheme=function(){
+ const isDark=!document.body.classList.contains('light-mode');
+ setTheme(isDark?'light':'dark');
+};
+
+window.setTheme=function(theme,silent){
+ const btn=document.getElementById('themeBtn');
+ const darkBtn=document.getElementById('darkThemeBtn');
+ const lightBtn=document.getElementById('lightThemeBtn');
+ if(theme==='light'){
+  document.body.classList.add('light-mode');
+  if(btn)btn.textContent='☀️';
+  if(darkBtn){darkBtn.style.background='transparent';darkBtn.style.borderColor='var(--gbr)';darkBtn.style.color='var(--cd)';}
+  if(lightBtn){lightBtn.style.background='var(--obs3)';lightBtn.style.borderColor='var(--gold)';lightBtn.style.color='var(--gold)';}
+ }else{
+  document.body.classList.remove('light-mode');
+  if(btn)btn.textContent='🌙';
+  if(darkBtn){darkBtn.style.background='var(--obs3)';darkBtn.style.borderColor='var(--gold)';darkBtn.style.color='var(--gold)';}
+  if(lightBtn){lightBtn.style.background='transparent';lightBtn.style.borderColor='var(--gbr)';lightBtn.style.color='var(--cd)';}
+ }
+ localStorage.setItem('iconik-theme',theme);
+};
+
+// ── LANGUAGE ──
+const TRANSLATIONS={
+ en:{feed:'My Feed',icons:'Icons & Celebs',coms:'Communities',news:'Celebrity News',tb:'Tour Buddy',msgs:'Messages',wellness:'Wellness Hub',membership:'Membership',profile:'My Profile',welcome:'Welcome back',signIn:'Sign In',joinFree:'Join Free'},
+ es:{feed:'Mi Feed',icons:'Íconos y Celebs',coms:'Comunidades',news:'Noticias de Celebs',tb:'Tour Buddy',msgs:'Mensajes',wellness:'Bienestar',membership:'Membresía',profile:'Mi Perfil',welcome:'Bienvenido de nuevo',signIn:'Iniciar Sesión',joinFree:'Únete Gratis'},
+ fr:{feed:'Mon Fil',icons:'Icônes & Célébs',coms:'Communautés',news:'Actualités Célébrités',tb:'Tour Buddy',msgs:'Messages',wellness:'Bien-être',membership:'Adhésion',profile:'Mon Profil',welcome:'Bon retour',signIn:'Se Connecter',joinFree:'Rejoindre Gratuitement'},
+ pt:{feed:'Meu Feed',icons:'Ícones & Celebs',coms:'Comunidades',news:'Notícias de Celebs',tb:'Tour Buddy',msgs:'Mensagens',wellness:'Bem-estar',membership:'Associação',profile:'Meu Perfil',welcome:'Bem-vindo de volta',signIn:'Entrar',joinFree:'Junte-se Grátis'},
+ ar:{feed:'خلاصتي',icons:'أيقونات ونجوم',coms:'المجتمعات',news:'أخبار المشاهير',tb:'رفيق الجولة',msgs:'الرسائل',wellness:'الصحة',membership:'العضوية',profile:'ملفي',welcome:'مرحباً بعودتك',signIn:'تسجيل الدخول',joinFree:'انضم مجاناً'},
+ zh:{feed:'我的动态',icons:'图标与明星',coms:'社区',news:'明星新闻',tb:'巡演伙伴',msgs:'消息',wellness:'健康',membership:'会员',profile:'我的主页',welcome:'欢迎回来',signIn:'登录',joinFree:'免费加入'},
+ ja:{feed:'フィード',icons:'アイコン&セレブ',coms:'コミュニティ',news:'セレブニュース',tb:'ツアーバディ',msgs:'メッセージ',wellness:'ウェルネス',membership:'メンバーシップ',profile:'プロフィール',welcome:'おかえりなさい',signIn:'サインイン',joinFree:'無料参加'},
+ ko:{feed:'피드',icons:'아이콘 & 셀럽',coms:'커뮤니티',news:'셀럽 뉴스',tb:'투어 버디',msgs:'메시지',wellness:'웰니스',membership:'멤버십',profile:'내 프로필',welcome:'다시 오신 것을 환영합니다',signIn:'로그인',joinFree:'무료 가입'},
+ de:{feed:'Mein Feed',icons:'Icons & Stars',coms:'Communities',news:'Promi-News',tb:'Tour Buddy',msgs:'Nachrichten',wellness:'Wellness',membership:'Mitgliedschaft',profile:'Mein Profil',welcome:'Willkommen zurück',signIn:'Anmelden',joinFree:'Kostenlos beitreten'},
+ it:{feed:'Il Mio Feed',icons:'Icone & Celebs',coms:'Comunità',news:'Notizie Celebrity',tb:'Tour Buddy',msgs:'Messaggi',wellness:'Benessere',membership:'Iscrizione',profile:'Il Mio Profilo',welcome:'Bentornato',signIn:'Accedi',joinFree:'Iscriviti Gratis'},
+ yo:{feed:'Ifunpa Mi',icons:'Awọn Aami & Olokiki',coms:'Awọn Ẹgbẹ',news:'Iroyin Olokiki',tb:'Ẹlẹgbẹ Irin-ajo',msgs:'Awọn Ifiranṣẹ',wellness:'Ilera',membership:'Ọmọ Ẹgbẹ',profile:'Profaili Mi',welcome:'Ẹ káàbọ̀ padà',signIn:'Wọle',joinFree:'Darapọ Mọ Ọfẹ'},
+ sw:{feed:'Mlisho Wangu',icons:'Icons & Wasomi',coms:'Jamii',news:'Habari za Wasomi',tb:'Rafiki wa Safari',msgs:'Ujumbe',wellness:'Afya',membership:'Uanachama',profile:'Wasifu Wangu',welcome:'Karibu tena',signIn:'Ingia',joinFree:'Jiunge Bure'},
+};
+
+window.setLanguage=function(lang){
+ localStorage.setItem('iconik-lang',lang);
+ const t=TRANSLATIONS[lang]||TRANSLATIONS.en;
+ // Update sidebar links
+ const links=document.querySelectorAll('.sb-lnk');
+ links.forEach(l=>{
+  const ic=l.querySelector('.sb-ic');
+  if(!ic)return;
+  const txt=ic.textContent;
+  if(txt==='🏠')l.childNodes[1]&&(l.childNodes[1].textContent=t.feed||'My Feed');
+ });
+ // Update auth tabs
+ const tabs=document.querySelectorAll('.atab');
+ if(tabs[0])tabs[0].textContent=t.signIn||'Sign In';
+ if(tabs[1])tabs[1].textContent=t.joinFree||'Join Free';
+ // Update welcome
+ if(cD){
+  const nm=cD?.name?.split(' ')[0]||'';
+  const wH=document.getElementById('wH');
+  if(wH)wH.textContent=`${t.welcome||'Welcome back'}, ${nm}! 👋`;
+ }
+ toastF(`Language updated! 🌍`,'success');
+};
+
+// ── DIRECT MESSAGES ──
+let currentDMThread=null;
+let dmInterval=null;
+
+async function lDMThreads(){
+ const el=document.getElementById('dmList');
+ try{
+  const q=query(collection(db,'dms'),where('participants','array-contains',cU.uid),orderBy('lastMessageAt','desc'),limit(20));
+  const s=await getDocs(q);
+  if(s.empty){el.innerHTML=`<div style="text-align:center;padding:22px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;">No conversations yet. Tap "New Message" to start chatting! ✉️</div>`;return;}
+  el.innerHTML='';
+  s.forEach(d=>{
+   const t=d.data();
+   const otherName=t.participantNames?.find(n=>n!==cD?.name)||'Member';
+   const otherInitial=otherName.charAt(0).toUpperCase();
+   const hasUnread=t.lastSenderId!==cU.uid&&!t.readBy?.[cU.uid];
+   const time=t.lastMessageAt?.toDate?t.lastMessageAt.toDate().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'';
+   el.innerHTML+=`<div class="dm-thread" onclick="openDMThread('${d.id}','${otherName}','${otherInitial}')">
+    <div class="dm-thread-av">${otherInitial}</div>
+    <div style="flex:1;min-width:0;">
+     <div class="dm-thread-name">${otherName}</div>
+     <div class="dm-thread-preview">${t.lastMessage||'Start a conversation'}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+     <span class="dm-thread-time">${time}</span>
+     ${hasUnread?`<span class="dm-unread"></span>`:''}
+    </div>
+   </div>`;
+  });
+ }catch(e){el.innerHTML=`<div style="text-align:center;padding:18px;color:var(--cd);">Loading messages...</div>`;console.error(e);}
+}
+
+window.showNewDM=function(){document.getElementById('dmNewForm').style.display='block';};
+window.hideDMForm=function(){document.getElementById('dmNewForm').style.display='none';};
+
+window.startDM=async function(){
+ const to=document.getElementById('dmTo').value.trim();
+ const msg=document.getElementById('dmFirstMsg').value.trim();
+ if(!to||!msg){toastF('Recipient and message required','error');return;}
+ try{
+  // Find recipient
+  const usersSnap=await getDocs(query(collection(db,'users'),where('email','==',to)));
+  let recipientId=null,recipientName=to;
+  if(!usersSnap.empty){const r=usersSnap.docs[0];recipientId=r.id;recipientName=r.data().name||to;}
+  else{toastF('Member not found. Try their exact email address.','error');return;}
+  // Create/get thread
+  const threadId=[cU.uid,recipientId].sort().join('_');
+  const threadRef=doc(db,'dms',threadId);
+  await setDoc(threadRef,{
+   participants:[cU.uid,recipientId],
+   participantNames:[cD?.name||'Member',recipientName],
+   lastMessage:msg,lastSenderId:cU.uid,
+   lastMessageAt:serverTimestamp(),
+   readBy:{[cU.uid]:true}
+  },{merge:true});
+  // Add message
+  await addDoc(collection(db,'dms',threadId,'messages'),{text:msg,senderId:cU.uid,senderName:cD?.name||'Member',createdAt:serverTimestamp()});
+  toastF(`Message sent to ${recipientName}! ✉️`,'success');
+  hideDMForm();
+  document.getElementById('dmTo').value='';document.getElementById('dmFirstMsg').value='';
+  openDMThread(threadId,recipientName,recipientName.charAt(0));
+ }catch(e){toastF('Error sending message','error');console.error(e);}
+};
+
+window.openDMThread=async function(threadId,name,initial){
+ currentDMThread=threadId;
+ document.getElementById('dmInbox').style.display='none';
+ document.getElementById('dmChat').style.display='flex';
+ document.getElementById('dmChatName').textContent=name;
+ document.getElementById('dmChatAv').textContent=initial;
+ lDMMessages(threadId);
+ if(dmInterval)clearInterval(dmInterval);
+ dmInterval=setInterval(()=>lDMMessages(threadId),4000);
+ // Mark as read
+ try{await updateDoc(doc(db,'dms',threadId),{[`readBy.${cU.uid}`]:true});}catch{}
+};
+
+window.backToDMInbox=function(){
+ document.getElementById('dmInbox').style.display='block';
+ document.getElementById('dmChat').style.display='none';
+ if(dmInterval){clearInterval(dmInterval);dmInterval=null;}
+ currentDMThread=null;
+ lDMThreads();
+};
+
+async function lDMMessages(threadId){
+ const el=document.getElementById('dmMessages');
+ try{
+  const q=query(collection(db,'dms',threadId,'messages'),orderBy('createdAt','asc'),limit(50));
+  const s=await getDocs(q);
+  if(s.empty){el.innerHTML=`<div style="text-align:center;padding:16px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.72rem;">Send your first message! 💬</div>`;return;}
+  const wasAtBottom=el.scrollHeight-el.scrollTop<=el.clientHeight+50;
+  el.innerHTML='';
+  s.forEach(d=>{
+   const m=d.data(),isMine=m.senderId===cU.uid;
+   const t=m.createdAt?.toDate?m.createdAt.toDate().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'';
+   el.innerHTML+=`<div class="dm-msg ${isMine?'mine':''}">
+    <div class="dm-av">${(m.senderName||'M').charAt(0)}</div>
+    <div><div class="dm-bubble">${m.text}</div><div class="dm-time ${isMine?'':''}\" style="${isMine?'text-align:right;':''}">${t}</div></div>
+   </div>`;
+  });
+  if(wasAtBottom||s.size<=5)el.scrollTop=el.scrollHeight;
+ }catch(e){console.error(e);}
+}
+
+window.sendDM=async function(){
+ const input=document.getElementById('dmInput');
+ const text=input.value.trim();
+ if(!text||!currentDMThread)return;
+ try{
+  await addDoc(collection(db,'dms',currentDMThread,'messages'),{text,senderId:cU.uid,senderName:cD?.name||'Member',createdAt:serverTimestamp()});
+  await updateDoc(doc(db,'dms',currentDMThread),{lastMessage:text,lastSenderId:cU.uid,lastMessageAt:serverTimestamp()});
+  input.value='';
+  lDMMessages(currentDMThread);
+ }catch{toastF('Error sending','error');}
+};
+
+// ── ICONIK MAGAZINE ──
+let allMagArticles=[];
+async function lMagazine(){
+ try{
+  const s=await getDocs(query(collection(db,'magazine'),orderBy('publishedAt','desc'),limit(20)));
+  if(!s.empty){allMagArticles=[];s.forEach(d=>allMagArticles.push({id:d.id,...d.data()}));rMagazine(allMagArticles);return;}
+ }catch{}
+ // Static magazine content
+ allMagArticles=[
+  {title:'Bad Bunny — The Icon Who Redefined Latin Music Forever',tag:'EXCLUSIVE',category:'exclusive',excerpt:'From Santurce to global superstardom — how one artist changed the world of music and fan culture.',icon:'🎵',readTime:'5 min',author:'ICONIK Editorial'},
+  {title:'Inside the World of K-Pop Fandom — A Global Phenomenon',tag:'CULTURE',category:'culture',excerpt:'How Korean pop music built the most dedicated fan communities on the planet and what ICONIK can learn from it.',icon:'🎤',readTime:'7 min',author:'Cultural Desk'},
+  {title:'Exclusive Interview — Rising Sports Star on Fan Connection',tag:'INTERVIEW',category:'interview',excerpt:'We sit down with one of sport\'s brightest new stars to talk about what fan support means to their career.',icon:'⚽',readTime:'4 min',author:'Sports Desk'},
+  {title:'The Future of Fan Culture — What Comes After Social Media',tag:'EXCLUSIVE',category:'exclusive',excerpt:'ICONIK explores how fan communities are evolving beyond traditional social platforms into something entirely new.',icon:'🌍',readTime:'6 min',author:'ICONIK Editorial'},
+  {title:'Paris Fashion Week 2026 — The Moments That Defined the Season',tag:'FASHION',category:'fashion',excerpt:'From the front row to the after parties — ICONIK covers every unforgettable moment of fashion\'s biggest week.',icon:'👗',readTime:'3 min',author:'Fashion Desk'},
+  {title:'Music Charts Report — Who\'s Dominating Global Streaming in 2026',tag:'MUSIC',category:'music',excerpt:'A deep dive into the artists topping charts across every continent — and what their fans are saying.',icon:'📊',readTime:'4 min',author:'Music Desk'},
+  {title:'World Cup 2026 — Fan Communities That Will Define the Tournament',tag:'SPORTS',category:'sports',excerpt:'The most passionate fan bases heading into the most watched sporting event on Earth.',icon:'🏆',readTime:'5 min',author:'Sports Desk'},
+  {title:'Wellness Icons — The Coaches and Doctors Changing How We Live',tag:'CULTURE',category:'culture',excerpt:'Meet the wellness professionals who have built global followings by making health accessible to everyone.',icon:'💪',readTime:'4 min',author:'Wellness Desk'},
+ ];
+ rMagazine(allMagArticles);
+}
+
+function rMagazine(articles){
+ if(!articles.length)return;
+ const featured=articles[0];
+ document.getElementById('magazineFeatured').innerHTML=`
+  <div class="mag-featured" onclick="openArticle('${featured.id||'0'}')">
+   <div style="width:100%;height:160px;background:linear-gradient(135deg,var(--obs2),var(--obs3));display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative;">
+    ${featured.image?`<img src="${featured.image}" class="mag-featured-img" onerror="this.style.display='none'"/>`:featured.icon||'📖'}
+    <div class="mag-featured-overlay"></div>
+   </div>
+   <div class="mag-featured-content">
+    <span class="mag-featured-tag">${featured.tag||'FEATURED'}</span>
+    <div class="mag-featured-title">${featured.title}</div>
+    <div class="mag-featured-meta">${featured.author||'ICONIK'} · ${featured.readTime||'3 min'} read</div>
+   </div>
+  </div>`;
+ const el=document.getElementById('magazineList');
+ el.innerHTML=articles.slice(1).map(a=>`
+  <div class="mag-card" onclick="openArticle('${a.id||'0'}')">
+   <div class="mag-thumb">${a.image?`<img src="${a.image}" onerror="this.style.display='none'"/>`:''} ${a.icon||'📖'}</div>
+   <div style="flex:1;min-width:0;">
+    <div class="mag-tag">${a.tag||'ICONIK'}</div>
+    <div class="mag-title">${a.title}</div>
+    <div class="mag-excerpt">${(a.excerpt||'').substring(0,80)}...</div>
+    <div class="mag-meta">${a.author||'ICONIK'} · ${a.readTime||'3 min'} read</div>
+   </div>
+  </div>`).join('');
+}
+
+window.filterMag=function(cat,btn){
+ document.querySelectorAll('.chat-tab-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+ rMagazine(cat==='all'?allMagArticles:allMagArticles.filter(a=>a.category===cat));
+};
+
+window.openArticle=function(id){
+ const a=allMagArticles.find(x=>x.id===id)||allMagArticles[0];
+ if(!a)return;
+ toastF(`Opening: ${a.title.substring(0,40)}... 📖`,'success');
+};
+
+// ── ADVANCED SEARCH ──
+let searchFilter='all';
+window.setSearchFilter=function(f,btn){
+ searchFilter=f;
+ document.querySelectorAll('.search-chip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+ runAdvSearch();
+};
+
+window.runAdvSearch=async function(){
+ const q=document.getElementById('advSearchQ').value.trim().toLowerCase();
+ const el=document.getElementById('advSearchResults');
+ if(!q){el.innerHTML=`<div style="text-align:center;padding:22px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;">Start typing to search everything on ICONIK 🔎</div>`;return;}
+ el.innerHTML=`<div class="ldr"><div class="lring"></div></div>`;
+ try{
+  let html='';
+  // Search members
+  if(searchFilter==='all'||searchFilter==='members'){
+   const ms=await getDocs(collection(db,'users'));
+   const found=[];ms.forEach(d=>{const m=d.data();if(m.name?.toLowerCase().includes(q)||m.country?.toLowerCase().includes(q))found.push({id:d.id,...m});});
+   if(found.length){
+    html+=`<div class="search-result-section"><div class="search-result-title">👥 MEMBERS (${found.length})</div>`;
+    found.slice(0,5).forEach(m=>{html+=`<div class="member-card"><div class="member-av">${m.profilePic?`<img src="${m.profilePic}"/>`:(m.name||'M').charAt(0)}</div><div class="member-info"><div class="member-name">${m.name||'—'}</div><div class="member-meta">${m.country||'—'} · ${m.tier||'Fan'}</div></div></div>`;});
+    html+=`</div>`;
+   }
+  }
+  // Search celebrities
+  if(searchFilter==='all'||searchFilter==='celebrities'){
+   const cs=await getDocs(collection(db,'celebrities'));
+   const found=[];cs.forEach(d=>{const c=d.data();if(c.name?.toLowerCase().includes(q)||c.category?.toLowerCase().includes(q))found.push({id:d.id,...c});});
+   if(found.length){
+    html+=`<div class="search-result-section"><div class="search-result-title">⭐ CELEBRITIES (${found.length})</div>`;
+    found.slice(0,4).forEach(c=>{html+=`<div class="celeb-verified-card" onclick="sV('celebpages')"><div class="celeb-v-av">${c.photo?`<img src="${c.photo}"/>`:(c.name||'?').charAt(0)}</div><div><div class="celeb-v-name">${c.name}</div><div class="celeb-v-cat">${c.category||''} · ${c.country||''}</div></div></div>`;});
+    html+=`</div>`;
+   }
+  }
+  // Search posts
+  if(searchFilter==='all'||searchFilter==='posts'){
+   const ps=await getDocs(query(collection(db,'posts'),orderBy('createdAt','desc'),limit(50)));
+   const found=[];ps.forEach(d=>{const p=d.data();if(p.content?.toLowerCase().includes(q)||p.title?.toLowerCase().includes(q))found.push({id:d.id,...p});});
+   if(found.length){
+    html+=`<div class="search-result-section"><div class="search-result-title">📝 POSTS (${found.length})</div>`;
+    found.slice(0,4).forEach(p=>{html+=`<div class="pcard"><div class="ptitle">${p.title||''}</div><div class="pbody">${(p.content||'').substring(0,100)}...</div></div>`;});
+    html+=`</div>`;
+   }
+  }
+  el.innerHTML=html||`<div style="text-align:center;padding:22px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;">No results found for "<strong style="color:var(--ch);">${q}</strong>"</div>`;
+ }catch(e){el.innerHTML=`<div style="text-align:center;padding:18px;color:var(--cd);">Search error. Try again.</div>`;console.error(e);}
+};
+
+// ── SETTINGS ──
+window.saveSetting=async function(key,val){
+ try{
+  localStorage.setItem(`iconik-setting-${key}`,val);
+  await updateDoc(doc(db,'users',cU.uid),{[`settings.${key}`]:val});
+  toastF('Setting saved ✅','success');
+ }catch{localStorage.setItem(`iconik-setting-${key}`,val);}
+};
+
+function loadSettings(){
+ const keys=['notifMsgs','notifPosts','notifEvents','showInSearch','allowDMs','showCountry'];
+ keys.forEach(k=>{
+  const el=document.getElementById(k);
+  if(el){const saved=localStorage.getItem(`iconik-setting-${k}`);if(saved!==null)el.checked=saved==='true';}
+ });
+ const savedLang=localStorage.getItem('iconik-lang')||'en';
+ const langEl=document.getElementById('langSelect');
+ if(langEl)langEl.value=savedLang;
+}
+
+
 
 // ── FAN VOTING ──
 async function lPolls(){
@@ -2264,6 +2783,7 @@ window.sV=function(nm){
  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
  document.getElementById(nm+'V').classList.add('on');
  if(p5ChatInterval){clearInterval(p5ChatInterval);p5ChatInterval=null;}
+ if(dmInterval&&nm!=='dms'){clearInterval(dmInterval);dmInterval=null;}
  if(nm==='coms')lMyComs();
  if(nm==='tb')lTB();
  if(nm==='msgs')lMsgs();
@@ -2281,6 +2801,10 @@ window.sV=function(nm){
  if(nm==='marketplace')lMarketplace();
  if(nm==='rankings')lRankings('global');
  if(nm==='monetize')lMonetize();
+ // Phase 7
+ if(nm==='dms'){lDMThreads();}
+ if(nm==='magazine')lMagazine();
+ if(nm==='settings')loadSettings();
 };
 window.setBN=function(nm){document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('on'));document.getElementById('bn-'+nm)?.classList.add('on');};
 window.togSB=function(){document.getElementById('sb').classList.toggle('on');document.getElementById('sbOv').classList.toggle('on');};
@@ -2293,4 +2817,3 @@ function aE(c){const e={'auth/user-not-found':'No account found','auth/wrong-pas
 </script>
 </body>
 </html>
-
