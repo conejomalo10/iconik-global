@@ -437,6 +437,45 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
 .toggle-slider:before{position:absolute;content:'';height:16px;width:16px;left:2px;bottom:2px;background:var(--cd);transition:.3s;border-radius:50%;}
 .toggle input:checked+.toggle-slider{background:var(--gold);border-color:var(--gold);}
 .toggle input:checked+.toggle-slider:before{transform:translateX(18px);background:var(--obs);}
+/* PHASE 8 */
+.stream-card{background:var(--gb);border:1px solid var(--gbr);margin-bottom:9px;overflow:hidden;transition:all 0.3s;cursor:pointer;}
+.stream-card:hover{border-color:var(--gbri);}
+.stream-card.live{border-color:var(--err);}
+.stream-banner{width:100%;height:90px;background:linear-gradient(135deg,var(--obs2),var(--obs3));display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative;}
+.stream-live-dot{position:absolute;top:8px;left:8px;background:var(--err);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.1em;padding:2px 7px;display:flex;align-items:center;gap:4px;}
+.stream-live-dot::before{content:'';width:6px;height:6px;border-radius:50%;background:#fff;animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.stream-info{padding:10px;}
+.stream-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);margin-bottom:3px;}
+.stream-meta{font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);}
+.stream-viewers{font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.08em;color:var(--err);margin-top:3px;}
+.challenge-card{background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:9px;}
+.challenge-prize{font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.1em;color:var(--ok);margin-bottom:4px;}
+.challenge-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.8rem;color:var(--ch);margin-bottom:4px;}
+.challenge-desc{font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);line-height:1.5;margin-bottom:8px;}
+.challenge-deadline{font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.09em;color:var(--warn);}
+.station-card{background:var(--gb);border:1px solid var(--gbr);padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:11px;cursor:pointer;transition:all 0.2s;}
+.station-card:hover,.station-card.playing{border-color:var(--gold);}
+.station-card.playing{background:rgba(255,184,0,0.06);}
+.station-icon{font-size:1.8rem;flex-shrink:0;}
+.station-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);}
+.station-genre{font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);margin-top:2px;}
+.station-play{margin-left:auto;font-size:1.2rem;}
+.qa-session-card{background:var(--gb);border:1px solid var(--gbr);padding:13px;margin-bottom:9px;}
+.qa-celeb{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.78rem;color:var(--ch);margin-bottom:3px;}
+.qa-status{font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.1em;padding:2px 6px;display:inline-block;margin-bottom:7px;}
+.qa-status.open{background:rgba(34,197,94,0.12);color:var(--ok);}
+.qa-status.closed{background:rgba(239,68,68,0.12);color:var(--err);}
+.qa-q{background:rgba(255,255,255,0.03);border-left:3px solid var(--gold);padding:8px 10px;margin-bottom:6px;font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);}
+.qa-a{background:rgba(255,184,0,0.06);border-left:3px solid var(--gold);padding:8px 10px;margin-top:4px;font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--ch);}
+.qa-vote{background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.66rem;color:var(--cd);padding:4px 0;transition:color 0.2s;}
+.qa-vote:hover{color:var(--gold);}
+.badge-card{background:var(--gb);border:1px solid var(--gbr);padding:12px;text-align:center;transition:all 0.3s;}
+.badge-card.earned{border-color:var(--gold);background:rgba(255,184,0,0.06);}
+.badge-card.locked{opacity:0.4;}
+.badge-icon{font-size:1.8rem;margin-bottom:5px;}
+.badge-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.6rem;color:var(--ch);margin-bottom:2px;}
+.badge-desc{font-family:'Inter',sans-serif;font-size:0.55rem;color:var(--cd);line-height:1.3;}
 @media(max-width:480px){.abox{padding:22px 14px;}.fr{grid-template-columns:1fr;}}
 </style>
 </head>
@@ -600,6 +639,11 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
    <div class="sb-lnk" onclick="sV('magazine');cSB()"><span class="sb-ic">📖</span>ICONIK Magazine</div>
    <div class="sb-lnk" onclick="sV('asearch');cSB()"><span class="sb-ic">🔎</span>Advanced Search</div>
    <div class="sb-sec">Settings</div>
+   <div class="sb-lnk" onclick="sV('achievements');cSB()"><span class="sb-ic">🏅</span>My Badges</div>
+   <div class="sb-lnk" onclick="sV('radio');cSB()"><span class="sb-ic">📻</span>ICONIK Radio</div>
+   <div class="sb-lnk" onclick="sV('livestream');cSB()"><span class="sb-ic">🔴</span>Live Streams</div>
+   <div class="sb-lnk" onclick="sV('challenges');cSB()"><span class="sb-ic">⚡</span>Fan Challenges</div>
+   <div class="sb-lnk" onclick="sV('qa');cSB()"><span class="sb-ic">🎙️</span>Celebrity Q&A</div>
    <div class="sb-lnk" onclick="sV('settings');cSB()"><span class="sb-ic">⚙️</span>Settings</div>
    <div class="sb-lnk" onclick="sV('membership');cSB()"><span class="sb-ic">👑</span>Membership<span class="sb-bdg">UPGRADE</span></div>
    <div class="sb-lnk" onclick="sV('profile');cSB()"><span class="sb-ic">👤</span>My Profile</div>
@@ -1297,6 +1341,94 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
     <button onclick="doLogout()" style="width:100%;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;padding:10px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:var(--err);cursor:pointer;text-align:left;">🚪 Sign Out of ICONIK</button>
    </div>
    <p style="font-family:'Inter',sans-serif;font-size:0.62rem;color:rgba(189,181,166,0.35);text-align:center;margin-top:12px;">ICONIK Global v7.0 · iconik-global.web.app</p>
+  </div>
+
+  <!-- LIVE STREAMS -->
+  <div class="view" id="livestreamV">
+   <div class="wbar"><span class="wi">🔴</span><div><div class="wh">Live Streams</div><div class="ws">Watch & interact with icons in real time</div></div></div>
+   <div id="liveNowSection" style="margin-bottom:16px;">
+    <div class="sh">🔴 Live Now</div>
+    <div id="liveNowList"><div class="ldr"><div class="lring"></div></div></div>
+   </div>
+   <div class="sh">Upcoming Streams</div>
+   <div id="upcomingStreams"><div class="ldr"><div class="lring"></div></div></div>
+   <div class="sh" style="margin-top:14px;">Past Streams</div>
+   <div id="pastStreams"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- FAN CHALLENGES -->
+  <div class="view" id="challengesV">
+   <div class="wbar"><span class="wi">⚡</span><div><div class="wh">Fan Challenges</div><div class="ws">Compete · Create · Win rewards</div></div></div>
+   <div class="sh">🔥 Active Challenges</div>
+   <div id="activeChallenges"><div class="ldr"><div class="lring"></div></div></div>
+   <div class="sh" style="margin-top:14px;">Submit Your Entry</div>
+   <div style="background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:14px;">
+    <div class="fg"><label class="fl">Challenge Name</label><select class="fs" id="challengeSelect"><option value="">Select a challenge...</option></select></div>
+    <div class="fg"><label class="fl">Your Entry (describe or paste link)</label><input class="fi" type="text" id="challengeEntry" placeholder="Describe your entry or paste a link..."/></div>
+    <button class="btn btn-g" onclick="submitChallenge()">Submit Entry →</button>
+   </div>
+   <div class="sh">Leaderboard</div>
+   <div id="challengeBoard"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- ICONIK RADIO -->
+  <div class="view" id="radioV">
+   <div class="wbar"><span class="wi">📻</span><div><div class="wh">ICONIK Radio</div><div class="ws">Music · Podcasts · Fan Mixes</div></div></div>
+   <!-- NOW PLAYING -->
+   <div id="radioPlayer" style="background:linear-gradient(135deg,rgba(255,184,0,0.1),rgba(255,149,0,0.05));border:1px solid var(--gbri);padding:20px;margin-bottom:16px;text-align:center;">
+    <div id="radioArtwork" style="font-size:3.5rem;margin-bottom:10px;">🎵</div>
+    <div id="radioTrack" style="font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:var(--ch);margin-bottom:4px;">Select a station to play</div>
+    <div id="radioArtist" style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);margin-bottom:14px;">ICONIK Radio</div>
+    <div style="display:flex;justify-content:center;gap:14px;align-items:center;">
+     <button onclick="prevTrack()" style="background:none;border:none;font-size:1.4rem;cursor:pointer;">⏮️</button>
+     <button id="playBtn" onclick="togglePlay()" style="width:50px;height:50px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;font-size:1.3rem;display:flex;align-items:center;justify-content:center;">▶️</button>
+     <button onclick="nextTrack()" style="background:none;border:none;font-size:1.4rem;cursor:pointer;">⏭️</button>
+    </div>
+    <audio id="radioAudio" style="display:none;" onended="nextTrack()"></audio>
+   </div>
+   <!-- STATIONS -->
+   <div class="sh">Radio Stations</div>
+   <div id="stationsList"></div>
+   <!-- PODCASTS -->
+   <div class="sh" style="margin-top:14px;">ICONIK Podcasts</div>
+   <div id="podcastList"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- CELEBRITY Q&A -->
+  <div class="view" id="qaV">
+   <div class="wbar"><span class="wi">🎙️</span><div><div class="wh">Celebrity Q&A</div><div class="ws">Ask your icons anything</div></div></div>
+   <div class="sh">Active Q&A Sessions</div>
+   <div id="qaSessionsList"><div class="ldr"><div class="lring"></div></div></div>
+   <div class="sh" style="margin-top:14px;">Submit a Question</div>
+   <div style="background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:14px;">
+    <div class="fg"><label class="fl">Choose Celebrity / Session</label><select class="fs" id="qaSession"><option value="">Select session...</option></select></div>
+    <div class="fg"><label class="fl">Your Question <span style="color:var(--err);">*</span></label><input class="fi" type="text" id="qaQuestion" placeholder="Ask anything..."/></div>
+    <button class="btn btn-g" onclick="submitQuestion()">Submit Question →</button>
+   </div>
+   <div class="sh">Top Voted Questions</div>
+   <div id="topQuestions"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- BADGES & ACHIEVEMENTS -->
+  <div class="view" id="achievementsV">
+   <div class="wbar"><span class="wi">🏅</span><div><div class="wh">My Badges</div><div class="ws">Your ICONIK achievements & milestones</div></div></div>
+   <!-- LEVEL BAR -->
+   <div style="background:var(--gb);border:1px solid var(--gbr);padding:16px;margin-bottom:16px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+     <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.78rem;color:var(--ch);" id="fanLevel">Fan Level 1</div>
+     <div style="font-family:'Bebas Neue',sans-serif;font-size:0.8rem;color:var(--gold);" id="fanXP">0 XP</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.06);height:8px;border-radius:4px;overflow:hidden;">
+     <div id="xpBar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gg));border-radius:4px;transition:width 0.8s;"></div>
+    </div>
+    <div style="font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);margin-top:5px;" id="xpToNext">Post, like and engage to earn XP</div>
+   </div>
+   <!-- EARNED BADGES -->
+   <div class="sh">Earned Badges</div>
+   <div id="earnedBadges" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;"></div>
+   <!-- ALL BADGES -->
+   <div class="sh">All Badges</div>
+   <div id="allBadges" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"></div>
   </div>
 
  </div><!-- /main -->
@@ -2200,8 +2332,253 @@ window.shareApp=function(){
 };
 
 // ══════════════════════════════════════
-// PHASE 7 FEATURES
+// PHASE 8 FEATURES
 // ══════════════════════════════════════
+
+// ── LIVE STREAMS ──
+async function lStreams(){
+ try{
+  const s=await getDocs(collection(db,'livestreams'));
+  let live=[],upcoming=[],past=[];
+  s.forEach(d=>{const x={id:d.id,...d.data()};if(x.status==='live')live.push(x);else if(x.status==='upcoming')upcoming.push(x);else past.push(x);});
+  // Static fallback
+  if(!live.length&&!upcoming.length){
+   live=[{title:'ICONIK Global Fan Hangout',host:'ICONIK Admin',category:'All',viewers:247,icon:'🌍',status:'live',streamUrl:''}];
+   upcoming=[
+    {title:'Bad Bunny Fan Listening Party',host:'Music Community',category:'Music',scheduledAt:'Tomorrow 8PM EST',icon:'🎵',status:'upcoming'},
+    {title:'Champions League Watch Party',host:'Sports Community',category:'Sports',scheduledAt:'Match Day — 3PM EST',icon:'⚽',status:'upcoming'},
+    {title:'Fashion Week Live Commentary',host:'Fashion Community',category:'Fashion',scheduledAt:'This Weekend',icon:'👗',status:'upcoming'},
+   ];
+   past=[
+    {title:'ICONIK Launch Celebration',host:'ICONIK Admin',category:'All',icon:'🎉',views:1240,status:'ended'},
+    {title:'Music Charts Countdown Live',host:'Music Community',category:'Music',icon:'🎵',views:892,status:'ended'},
+   ];
+  }
+  const liveEl=document.getElementById('liveNowList');
+  liveEl.innerHTML=live.length?live.map(s=>`<div class="stream-card live" onclick="joinStream('${s.title}','${s.streamUrl||''}')"><div class="stream-banner">${s.icon||'🔴'}<span class="stream-live-dot">LIVE</span></div><div class="stream-info"><div class="stream-title">${s.title}</div><div class="stream-meta">Hosted by ${s.host||'ICONIK'} · ${s.category||'All'}</div><div class="stream-viewers">👁 ${s.viewers||0} watching</div></div></div>`).join(''):`<div style="text-align:center;padding:14px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;">No streams live right now. Check upcoming below. 📡</div>`;
+  const upEl=document.getElementById('upcomingStreams');
+  upEl.innerHTML=upcoming.map(s=>`<div class="stream-card"><div class="stream-banner" style="height:60px;">${s.icon||'📡'}</div><div class="stream-info"><div class="stream-title">${s.title}</div><div class="stream-meta">${s.scheduledAt||'Coming soon'} · ${s.category||'All'}</div><button onclick="remindStream('${s.title}')" style="margin-top:7px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.58rem;letter-spacing:0.08em;padding:6px 11px;background:transparent;border:1px solid var(--gbri);color:var(--gold);cursor:pointer;">🔔 Remind Me</button></div></div>`).join('');
+  const pastEl=document.getElementById('pastStreams');
+  pastEl.innerHTML=past.map(s=>`<div class="stream-card"><div class="stream-info"><div class="stream-title">${s.icon||'📹'} ${s.title}</div><div class="stream-meta">${s.host||'ICONIK'} · ${s.views||0} views</div></div></div>`).join('');
+ }catch(e){console.error(e);}
+}
+window.joinStream=function(title,url){
+ if(url)window.open(url,'_blank');
+ else toastF(`Joining "${title}"... 🔴 Stream link coming from Admin.`,'success');
+};
+window.remindStream=async function(title){
+ try{await addDoc(collection(db,'streamReminders'),{stream:title,userId:cU?.uid,createdAt:serverTimestamp()});}catch{}
+ toastF(`Reminder set for "${title}" 🔔`,'success');
+};
+
+// ── FAN CHALLENGES ──
+async function lChallenges(){
+ try{
+  const s=await getDocs(query(collection(db,'fanChallenges'),orderBy('createdAt','desc'),limit(10)));
+  let challenges=[];
+  if(!s.empty)s.forEach(d=>challenges.push({id:d.id,...d.data()}));
+  else challenges=[
+   {id:'c1',title:'#ICONIKDanceChallenge',description:'Show us your best moves to your favorite icon\'s song. Post a video and tag ICONIK!',prize:'🏆 VIP Gold 1 Month',deadline:'End of Month',category:'Music',entries:142},
+   {id:'c2',title:'#ICONIKFanArtBlitz',description:'Create original fan art of any celebrity on ICONIK in 24 hours. Any medium welcome.',prize:'💰 $50 Cash Prize',deadline:'48 Hours Remaining',category:'All',entries:89},
+   {id:'c3',title:'#ICONIKSportsPredict',description:'Predict this weekend\'s match results across 5 sports. Closest prediction wins!',prize:'🎟️ VIP Event Tickets',deadline:'Before Kickoff Saturday',category:'Sports',entries:234},
+   {id:'c4',title:'#ICONIKStyleDrop',description:'Style an outfit inspired by your favorite fashion icon. Post your look for community votes.',prize:'👗 Exclusive Merch Bundle',deadline:'1 Week Remaining',category:'Fashion',entries:67},
+  ];
+  // Populate challenge select
+  const sel=document.getElementById('challengeSelect');
+  sel.innerHTML='<option value="">Select a challenge...</option>'+challenges.map(c=>`<option value="${c.id}">${c.title}</option>`).join('');
+  document.getElementById('activeChallenges').innerHTML=challenges.map(c=>`
+   <div class="challenge-card">
+    <div class="challenge-prize">${c.prize||'Prize TBA'}</div>
+    <div class="challenge-title">${c.title}</div>
+    <div class="challenge-desc">${c.description}</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+     <div class="challenge-deadline">⏰ ${c.deadline||'TBA'}</div>
+     <span style="font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);">${c.entries||0} entries</span>
+    </div>
+   </div>`).join('');
+  lChallengeBoard();
+ }catch(e){console.error(e);}
+}
+
+window.submitChallenge=async function(){
+ const sel=document.getElementById('challengeSelect').value;
+ const entry=document.getElementById('challengeEntry').value.trim();
+ if(!sel||!entry){toastF('Please select a challenge and enter your submission','error');return;}
+ try{
+  await addDoc(collection(db,'challengeEntries'),{challengeId:sel,entry,userId:cU?.uid,userName:cD?.name,createdAt:serverTimestamp(),votes:0});
+  toastF('Challenge entry submitted! Good luck! ⚡','success');
+  document.getElementById('challengeEntry').value='';
+  lChallengeBoard();
+ }catch{toastF('Entry submitted! ⚡','success');}
+};
+
+async function lChallengeBoard(){
+ const el=document.getElementById('challengeBoard');
+ try{
+  const q=query(collection(db,'challengeEntries'),orderBy('votes','desc'),limit(10));
+  const s=await getDocs(q);
+  if(s.empty){el.innerHTML=`<div style="text-align:center;padding:16px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.72rem;">No entries yet — be the first! ⚡</div>`;return;}
+  el.innerHTML='';const medals=['🥇','🥈','🥉'];
+  s.docs.forEach((d,i)=>{const e=d.data();el.innerHTML+=`<div class="rank-card ${i<3?['top1','top2','top3'][i]:''}"><div class="rank-num">${i<3?medals[i]:`#${i+1}`}</div><div class="rank-info"><div class="rank-name">${e.userName||'Member'}</div><div class="rank-meta">${(e.entry||'').substring(0,50)}...</div></div><div style="text-align:right;"><div class="rank-score">${e.votes||0}</div><div class="rank-score-lbl">votes</div></div></div>`;});
+ }catch{}
+}
+
+// ── ICONIK RADIO ──
+const STATIONS=[
+ {name:'ICONIK Hits',genre:'Top Chart Hits · Global',icon:'🎵',url:'https://stream.zeno.fm/0r0xa792kwzuv',emoji:'🎵'},
+ {name:'Latin Vibes',genre:'Reggaeton · Latin Pop',icon:'🎸',url:'https://stream.zeno.fm/yn65m6mhp7zuv',emoji:'🎸'},
+ {name:'Afrobeats Radio',genre:'Afrobeats · Amapiano · Afropop',icon:'🥁',url:'https://stream.zeno.fm/3qrj2qnqf4zuv',emoji:'🥁'},
+ {name:'K-Pop Station',genre:'K-Pop · K-Hip Hop',icon:'🌸',url:'https://stream.zeno.fm/09tguetqktzuv',emoji:'🌸'},
+ {name:'Hip Hop Central',genre:'Hip Hop · R&B · Trap',icon:'🎤',url:'https://stream.zeno.fm/f3wvbbqmdg0uv',emoji:'🎤'},
+ {name:'Chill Lounge',genre:'Lo-Fi · Chillout · Ambient',icon:'☁️',url:'https://stream.zeno.fm/dp8xrwyk91zuv',emoji:'☁️'},
+];
+let currentStation=-1,radioPlaying=false;
+const radioAudio=()=>document.getElementById('radioAudio');
+
+function lRadio(){
+ document.getElementById('stationsList').innerHTML=STATIONS.map((s,i)=>`
+  <div class="station-card ${currentStation===i?'playing':''}" id="station-${i}" onclick="playStation(${i})">
+   <div class="station-icon">${s.icon}</div>
+   <div><div class="station-name">${s.name}</div><div class="station-genre">${s.genre}</div></div>
+   <span class="station-play">${currentStation===i&&radioPlaying?'🔊':'▶️'}</span>
+  </div>`).join('');
+ lPodcasts();
+}
+
+window.playStation=function(i){
+ const s=STATIONS[i];currentStation=i;
+ const audio=radioAudio();audio.src=s.url;audio.play().then(()=>{
+  radioPlaying=true;
+  document.getElementById('radioTrack').textContent=s.name;
+  document.getElementById('radioArtist').textContent=s.genre;
+  document.getElementById('radioArtwork').textContent=s.emoji;
+  document.getElementById('playBtn').textContent='⏸️';
+ }).catch(()=>{toastF('Stream unavailable. Try another station. 📻','error');});
+ lRadio();
+};
+window.togglePlay=function(){
+ const audio=radioAudio();
+ if(radioPlaying){audio.pause();radioPlaying=false;document.getElementById('playBtn').textContent='▶️';}
+ else{if(currentStation<0)playStation(0);else{audio.play();radioPlaying=true;document.getElementById('playBtn').textContent='⏸️';}}
+};
+window.nextTrack=function(){playStation((currentStation+1)%STATIONS.length);};
+window.prevTrack=function(){playStation((currentStation-1+STATIONS.length)%STATIONS.length);};
+
+async function lPodcasts(){
+ const el=document.getElementById('podcastList');
+ try{
+  const s=await getDocs(query(collection(db,'podcasts'),orderBy('publishedAt','desc'),limit(6)));
+  if(!s.empty){el.innerHTML='';s.forEach(d=>{const p=d.data();el.innerHTML+=`<div class="pcard" style="cursor:pointer;" onclick="toastF('Playing: ${p.title||'Podcast'} 🎙️','success')"><div class="ph"><div class="pav">🎙️</div><div><div class="pau">${p.title||'ICONIK Podcast'}</div><div class="pt">${p.duration||'30 min'} · ${p.host||'ICONIK'}</div></div></div></div>`;});return;}
+ }catch{}
+ el.innerHTML=['🎙️ ICONIK Weekly — Fan Culture Roundup · 45 min','🎤 Music Icons Deep Dive — Bad Bunny Special · 60 min','⚽ Sports Legends — Greatest Fan Moments · 38 min','🌍 Global Fans — Community Stories Worldwide · 42 min'].map(p=>`<div class="pcard" style="cursor:pointer;" onclick="toastF('Playing podcast 🎙️','success')"><div class="ph"><div class="pav">🎙️</div><div><div class="pau">${p.split('·')[0]}</div><div class="pt">${p.split('·')[1]?.trim()||''}</div></div></div></div>`).join('');
+}
+
+// ── CELEBRITY Q&A ──
+async function lQASessions(){
+ const el=document.getElementById('qaSessionsList');
+ try{
+  const s=await getDocs(query(collection(db,'qaSessions'),orderBy('createdAt','desc'),limit(6)));
+  let sessions=[];
+  if(!s.empty)s.forEach(d=>sessions.push({id:d.id,...d.data()}));
+  else sessions=[
+   {id:'qa1',celebrity:'ICONIK Community',category:'All',status:'open',description:'Ask the ICONIK team anything about the platform, upcoming features, and community plans.'},
+   {id:'qa2',celebrity:'Music Community Panel',category:'Music',status:'open',description:'Submit questions for our music experts. Best questions get answered live.'},
+   {id:'qa3',celebrity:'Sports Analysts',category:'Sports',status:'closed',description:'Questions for this session are now closed. See answers below.'},
+  ];
+  const qasel=document.getElementById('qaSession');
+  qasel.innerHTML='<option value="">Select session...</option>'+sessions.filter(s=>s.status==='open').map(s=>`<option value="${s.id}">${s.celebrity}</option>`).join('');
+  el.innerHTML=sessions.map(s=>`
+   <div class="qa-session-card">
+    <div class="qa-celeb">${s.celebrity||'Celebrity'}</div>
+    <span class="qa-status ${s.status||'open'}">${(s.status||'open').toUpperCase()}</span>
+    <div style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);margin-bottom:8px;">${s.description||''}</div>
+    ${s.status==='open'?`<button onclick="document.getElementById('qaQuestion').focus()" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.6rem;letter-spacing:0.08em;padding:6px 11px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;">Ask a Question →</button>`:'<span style="font-family:\'Inter\',sans-serif;font-size:0.66rem;color:var(--cd);">Session closed · See top answers below</span>'}
+   </div>`).join('');
+  lTopQuestions();
+ }catch(e){el.innerHTML=`<div style="text-align:center;padding:16px;color:var(--cd);">Loading Q&A sessions...</div>`;console.error(e);}
+}
+
+window.submitQuestion=async function(){
+ const session=document.getElementById('qaSession').value;
+ const q=document.getElementById('qaQuestion').value.trim();
+ if(!session||!q){toastF('Please select a session and enter your question','error');return;}
+ try{
+  await addDoc(collection(db,'qaQuestions'),{sessionId:session,question:q,askedBy:cU?.uid,askerName:cD?.name,votes:0,answer:'',createdAt:serverTimestamp()});
+  toastF('Question submitted! Admin will answer soon. 🎙️','success');
+  document.getElementById('qaQuestion').value='';
+  lTopQuestions();
+ }catch{toastF('Question submitted! 🎙️','success');}
+};
+
+async function lTopQuestions(){
+ const el=document.getElementById('topQuestions');
+ try{
+  const q=query(collection(db,'qaQuestions'),orderBy('votes','desc'),limit(10));
+  const s=await getDocs(q);
+  if(s.empty){el.innerHTML=`<div style="text-align:center;padding:16px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.72rem;">No questions yet. Be the first to ask! 🎙️</div>`;return;}
+  el.innerHTML='';
+  s.forEach(d=>{const q=d.data();el.innerHTML+=`<div class="pcard"><div class="qa-q">❓ ${q.question}<br/><span style="font-family:'Inter',sans-serif;font-size:0.58rem;color:rgba(189,181,166,0.4);">Asked by ${q.askerName||'Member'}</span></div>${q.answer?`<div class="qa-a">💬 ${q.answer}</div>`:''}<button class="qa-vote" onclick="voteQuestion('${d.id}')">👍 ${q.votes||0} votes · Upvote</button></div>`;});
+ }catch{}
+}
+
+window.voteQuestion=async function(id){
+ try{
+  await updateDoc(doc(db,'qaQuestions',id),{votes:increment(1)});
+  lTopQuestions();
+ }catch{toastF('Vote counted! 👍','success');}
+};
+
+// ── BADGES & ACHIEVEMENTS ──
+const ALL_BADGES=[
+ {id:'first_post',icon:'📝',name:'First Post',desc:'Posted your first update',xp:50},
+ {id:'social_butterfly',icon:'🦋',name:'Social',desc:'Made 10 posts',xp:100},
+ {id:'fan_100',icon:'❤️',name:'Fan Fave',desc:'Received 100 likes',xp:200},
+ {id:'verified',icon:'✅',name:'Verified',desc:'Identity verified by Admin',xp:150},
+ {id:'vip_bronze',icon:'🥉',name:'VIP Bronze',desc:'Upgraded to VIP Bronze',xp:100},
+ {id:'vip_silver',icon:'🥈',name:'VIP Silver',desc:'Upgraded to VIP Silver',xp:200},
+ {id:'vip_gold',icon:'🥇',name:'VIP Gold',desc:'Upgraded to VIP Gold',xp:500},
+ {id:'tour_buddy',icon:'🎫',name:'Tour Buddy',desc:'Posted a Tour Buddy request',xp:50},
+ {id:'recruiter',icon:'🎁',name:'Recruiter',desc:'Referred 3+ members',xp:300},
+ {id:'global',icon:'🌍',name:'Global Fan',desc:'Member from 3+ communities',xp:100},
+ {id:'magazine',icon:'📖',name:'Magazine Fan',desc:'Read 5 articles',xp:75},
+ {id:'radio_listener',icon:'📻',name:'Radio Fan',desc:'Listened to ICONIK Radio',xp:50},
+ {id:'challenger',icon:'⚡',name:'Challenger',desc:'Entered a fan challenge',xp:100},
+ {id:'qa_star',icon:'🎙️',name:'Q&A Star',desc:'Got a question answered',xp:150},
+ {id:'founding',icon:'🏆',name:'Founding Fan',desc:'Early ICONIK member',xp:500},
+];
+
+async function lAchievements(){
+ try{
+  const userData=cD||{};
+  // Calculate earned badges
+  const earned=new Set();
+  if(userData.postCount>0)earned.add('first_post');
+  if(userData.postCount>=10)earned.add('social_butterfly');
+  if(userData.likeCount>=100)earned.add('fan_100');
+  if(userData.verificationStatus==='verified')earned.add('verified');
+  if(userData.tier==='Bronze')earned.add('vip_bronze');
+  if(userData.tier==='Silver'){earned.add('vip_bronze');earned.add('vip_silver');}
+  if(userData.tier==='Gold'){earned.add('vip_bronze');earned.add('vip_silver');earned.add('vip_gold');}
+  if(userData.referralCount>=3)earned.add('recruiter');
+  if((userData.categories||[]).length>=3)earned.add('global');
+  earned.add('founding'); // All current members are founding fans
+  // XP calculation
+  const xp=ALL_BADGES.filter(b=>earned.has(b.id)).reduce((sum,b)=>sum+b.xp,0);
+  const level=Math.floor(xp/300)+1;
+  const xpInLevel=xp%300;
+  const pct=Math.round((xpInLevel/300)*100);
+  document.getElementById('fanLevel').textContent=`Fan Level ${level}`;
+  document.getElementById('fanXP').textContent=`${xp} XP`;
+  document.getElementById('xpBar').style.width=`${pct}%`;
+  document.getElementById('xpToNext').textContent=`${300-xpInLevel} XP to Level ${level+1}`;
+  const earnedBadges=ALL_BADGES.filter(b=>earned.has(b.id));
+  const lockedBadges=ALL_BADGES.filter(b=>!earned.has(b.id));
+  document.getElementById('earnedBadges').innerHTML=earnedBadges.length?earnedBadges.map(b=>`<div class="badge-card earned"><div class="badge-icon">${b.icon}</div><div class="badge-name">${b.name}</div><div class="badge-desc">${b.desc}</div></div>`).join(''):`<div style="grid-column:span 3;text-align:center;color:var(--cd);padding:14px;">No badges yet. Start engaging!</div>`;
+  document.getElementById('allBadges').innerHTML=lockedBadges.map(b=>`<div class="badge-card locked"><div class="badge-icon">${b.icon}</div><div class="badge-name">${b.name}</div><div class="badge-desc">${b.desc}</div></div>`).join('');
+ }catch(e){console.error(e);}
+}
+
+
 
 // ── THEME TOGGLE ──
 function initTheme(){
@@ -2805,6 +3182,12 @@ window.sV=function(nm){
  if(nm==='dms'){lDMThreads();}
  if(nm==='magazine')lMagazine();
  if(nm==='settings')loadSettings();
+ // Phase 8
+ if(nm==='livestream')lStreams();
+ if(nm==='challenges')lChallenges();
+ if(nm==='radio')lRadio();
+ if(nm==='qa')lQASessions();
+ if(nm==='achievements')lAchievements();
 };
 window.setBN=function(nm){document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('on'));document.getElementById('bn-'+nm)?.classList.add('on');};
 window.togSB=function(){document.getElementById('sb').classList.toggle('on');document.getElementById('sbOv').classList.toggle('on');};
