@@ -190,6 +190,9 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-he
    <div class="sb-lnk" onclick="sV('livestreams')"><span class="sb-ic">🔴</span>Live Streams</div>
    <div class="sb-lnk" onclick="sV('fanChallenges')"><span class="sb-ic">⚡</span>Fan Challenges</div>
    <div class="sb-lnk" onclick="sV('qaSessions')"><span class="sb-ic">🎙️</span>Q&A Sessions</div>
+   <div class="sb-lnk" onclick="sV('storeOrders')"><span class="sb-ic">🛒</span>Store Orders</div>
+   <div class="sb-lnk" onclick="sV('ticketBookings')"><span class="sb-ic">🎫</span>Ticket Bookings</div>
+   <div class="sb-lnk" onclick="sV('fanGroups')"><span class="sb-ic">👥</span>Fan Groups</div>
    <div class="sb-sec">Control</div>
    <div class="sb-lnk" onclick="sV('subadmins')"><span class="sb-ic">🛡️</span>Sub Admins</div>
    <div class="sb-lnk" onclick="sV('images')"><span class="sb-ic">🖼️</span>Category Images</div>
@@ -612,6 +615,26 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-he
    <div id="qaAdminQuestions"><div class="ldr"><div class="lring"></div></div></div>
   </div>
 
+  <!-- STORE ORDERS -->
+  <div class="view" id="storeOrdersV">
+   <div class="conly">🛒 <strong>Store Orders</strong> — Members who placed orders. Contact them to process payment and delivery.</div>
+   <div class="sh">All Orders</div>
+   <div class="dtwrap"><table class="dt"><thead><tr><th>Member</th><th>Item</th><th>Price</th><th>Email</th><th>Date</th><th>Status</th></tr></thead><tbody id="ordersTbody"><tr><td colspan="6" style="text-align:center;padding:14px;"><div class="lring" style="margin:auto;border-top-color:var(--ab);"></div></td></tr></tbody></table></div>
+  </div>
+
+  <!-- TICKET BOOKINGS -->
+  <div class="view" id="ticketBookingsV">
+   <div class="conly">🎫 <strong>Ticket Bookings</strong> — All event ticket booking requests from members.</div>
+   <div class="sh">All Bookings</div>
+   <div class="dtwrap"><table class="dt"><thead><tr><th>Ref</th><th>Member</th><th>Event</th><th>Qty</th><th>Total</th><th>Date</th></tr></thead><tbody id="bookingsTbody"><tr><td colspan="6" style="text-align:center;padding:14px;"><div class="lring" style="margin:auto;border-top-color:var(--ab);"></div></td></tr></tbody></table></div>
+  </div>
+
+  <!-- FAN GROUPS ADMIN -->
+  <div class="view" id="fanGroupsV">
+   <div class="sh">All Fan Groups</div>
+   <div class="dtwrap"><table class="dt"><thead><tr><th>Group</th><th>Category</th><th>Members</th><th>Privacy</th><th>Created By</th><th>Remove</th></tr></thead><tbody id="groupsTbody"><tr><td colspan="6" style="text-align:center;padding:14px;"><div class="lring" style="margin:auto;border-top-color:var(--ab);"></div></td></tr></tbody></table></div>
+  </div>
+
   <!-- IMAGES -->
   <div class="view" id="imagesV">
    <div class="aform">
@@ -1017,7 +1040,36 @@ async function lVIPContentAdmin(){
 }
 window.delVIPContent=async function(id){try{await deleteDoc(doc(db,'vipContent',id));toastF('Deleted','success');lVIPContentAdmin();}catch{toastF('Error','error');}};
 
-// ── PHASE 8 ADMIN ──
+// ── PHASE 9 ADMIN ──
+async function lStoreOrders(){
+ const el=document.getElementById('ordersTbody');
+ try{
+  const s=await getDocs(query(collection(db,'storeOrders'),orderBy('orderedAt','desc'),limit(30)));
+  el.innerHTML=s.empty?`<tr><td colspan="6" style="text-align:center;padding:14px;color:var(--cd);">No orders yet</td></tr>`:
+  [...s.docs].map(d=>{const o=d.data(),t=o.orderedAt?.toDate?o.orderedAt.toDate().toLocaleDateString():'—';return`<tr><td><strong style="color:var(--ch);">${o.userName||'—'}</strong></td><td>${o.item||'—'}</td><td style="color:var(--gold);font-family:'Bebas Neue',sans-serif;">${o.price||'—'}</td><td style="font-size:0.62rem;">${o.email||'—'}</td><td style="font-size:0.62rem;">${t}</td><td><span class="tag ${o.status==='confirmed'?'tok':'twarn'}">${o.status||'pending'}</span></td></tr>`;}).join('');
+ }catch{}
+}
+
+async function lTicketBookings(){
+ const el=document.getElementById('bookingsTbody');
+ try{
+  const s=await getDocs(query(collection(db,'bookings'),orderBy('bookedAt','desc'),limit(30)));
+  el.innerHTML=s.empty?`<tr><td colspan="6" style="text-align:center;padding:14px;color:var(--cd);">No bookings yet</td></tr>`:
+  [...s.docs].map(d=>{const b=d.data(),t=b.bookedAt?.toDate?b.bookedAt.toDate().toLocaleDateString():'—';return`<tr><td style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;color:var(--gold);">${b.bookingRef||'—'}</td><td><strong style="color:var(--ch);">${b.userName||'—'}</strong></td><td>${b.eventName||'—'}</td><td>${b.qty||1}</td><td style="color:var(--gold);font-family:'Bebas Neue',sans-serif;">${b.totalPrice||b.price||'—'}</td><td style="font-size:0.62rem;">${t}</td></tr>`;}).join('');
+ }catch{}
+}
+
+async function lFanGroupsAdmin(){
+ const el=document.getElementById('groupsTbody');
+ try{
+  const s=await getDocs(query(collection(db,'fanGroups'),orderBy('memberCount','desc'),limit(20)));
+  el.innerHTML=s.empty?`<tr><td colspan="6" style="text-align:center;padding:14px;color:var(--cd);">No groups yet</td></tr>`:
+  [...s.docs].map(d=>{const g=d.data();return`<tr><td><strong style="color:var(--ch);">${g.icon||'👥'} ${g.name}</strong></td><td><span class="tag tg">${g.category||'—'}</span></td><td>${g.memberCount||0}</td><td>${g.privacy||'public'}</td><td>${g.creatorName||'—'}</td><td><button class="btn-d" onclick="delGroup('${d.id}')">Remove</button></td></tr>`;}).join('');
+ }catch{}
+}
+window.delGroup=async function(id){if(!confirm('Remove this group?'))return;try{await deleteDoc(doc(db,'fanGroups',id));toastF('Group removed','success');lFanGroupsAdmin();}catch{toastF('Error','error');}};
+
+// ── UPDATED sV ──
 window.addStream=async function(){
  const title=document.getElementById('stTitle').value.trim();
  if(!title){toastF('Title required','error');return;}
@@ -1260,6 +1312,9 @@ window.sV=function(nm){
  if(nm==='livestreams')lStreamsAdmin();
  if(nm==='fanChallenges')lFCAdmin();
  if(nm==='qaSessions')lQAAdmin();
+ if(nm==='storeOrders')lStoreOrders();
+ if(nm==='ticketBookings')lTicketBookings();
+ if(nm==='fanGroups')lFanGroupsAdmin();
 };
 
 window.togSB=function(){document.getElementById('sb').classList.toggle('on');document.getElementById('sbOv').classList.toggle('on');};
