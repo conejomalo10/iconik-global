@@ -187,6 +187,9 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-he
    <div class="sb-lnk" onclick="sV('marketplace')"><span class="sb-ic">🏪</span>Marketplace</div>
    <div class="sb-lnk" onclick="sV('nominations')"><span class="sb-ic">✅</span>Nominations</div>
    <div class="sb-lnk" onclick="sV('magazine')"><span class="sb-ic">📖</span>Magazine</div>
+   <div class="sb-lnk" onclick="sV('livestreams')"><span class="sb-ic">🔴</span>Live Streams</div>
+   <div class="sb-lnk" onclick="sV('fanChallenges')"><span class="sb-ic">⚡</span>Fan Challenges</div>
+   <div class="sb-lnk" onclick="sV('qaSessions')"><span class="sb-ic">🎙️</span>Q&A Sessions</div>
    <div class="sb-sec">Control</div>
    <div class="sb-lnk" onclick="sV('subadmins')"><span class="sb-ic">🛡️</span>Sub Admins</div>
    <div class="sb-lnk" onclick="sV('images')"><span class="sb-ic">🖼️</span>Category Images</div>
@@ -553,6 +556,60 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-he
    </div>
    <div class="sh">Published Articles</div>
    <div id="magArticlesList"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- LIVE STREAMS ADMIN -->
+  <div class="view" id="livestreamsV">
+   <div class="aform">
+    <div class="aform-t">🔴 Add Live Stream</div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Title <span class="req">*</span></label><input class="fi" type="text" id="stTitle" placeholder="Stream title"/></div>
+     <div class="fg"><label class="fl">Status</label><select class="fs" id="stStatus"><option value="upcoming">📅 Upcoming</option><option value="live">🔴 Live Now</option><option value="ended">✅ Ended</option></select></div>
+    </div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Host</label><input class="fi" type="text" id="stHost" placeholder="ICONIK Admin"/></div>
+     <div class="fg"><label class="fl">Category</label><select class="fs" id="stCat"><option>All</option><option>Music</option><option>Sports</option><option>Fashion</option><option>Film</option></select></div>
+    </div>
+    <div class="fg"><label class="fl">Stream URL (YouTube/Twitch etc.)</label><input class="fi" type="text" id="stUrl" placeholder="https://youtube.com/live/..."/></div>
+    <div class="fg"><label class="fl">Scheduled Time (for upcoming)</label><input class="fi" type="text" id="stTime" placeholder="Tomorrow 8PM EST"/></div>
+    <div class="fg"><label class="fl">Icon/Emoji</label><input class="fi" type="text" id="stIcon" placeholder="🔴"/></div>
+    <button class="btn btn-g" onclick="addStream()">Add Stream →</button>
+   </div>
+   <div class="sh">All Streams</div>
+   <div class="dtwrap"><table class="dt"><thead><tr><th>Title</th><th>Status</th><th>Host</th><th>Remove</th></tr></thead><tbody id="stTbody"><tr><td colspan="4" style="text-align:center;padding:14px;"><div class="lring" style="margin:auto;border-top-color:var(--ab);"></div></td></tr></tbody></table></div>
+  </div>
+
+  <!-- FAN CHALLENGES ADMIN -->
+  <div class="view" id="fanChallengesV">
+   <div class="aform">
+    <div class="aform-t">⚡ Create Fan Challenge</div>
+    <div class="fg"><label class="fl">Challenge Name <span class="req">*</span></label><input class="fi" type="text" id="fcTitle" placeholder="#ICONIKChallenge"/></div>
+    <div class="fg"><label class="fl">Description <span class="req">*</span></label><input class="fi" type="text" id="fcDesc" placeholder="What fans need to do..."/></div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Prize</label><input class="fi" type="text" id="fcPrize" placeholder="🏆 VIP Gold 1 Month"/></div>
+     <div class="fg"><label class="fl">Deadline</label><input class="fi" type="text" id="fcDeadline" placeholder="End of Month"/></div>
+    </div>
+    <div class="fg"><label class="fl">Category</label><select class="fs" id="fcCat"><option>All</option><option>Music</option><option>Sports</option><option>Fashion</option><option>Art</option></select></div>
+    <button class="btn btn-g" onclick="addChallenge()">Create Challenge →</button>
+   </div>
+   <div class="sh">Active Challenges</div>
+   <div id="fcList"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- Q&A SESSIONS ADMIN -->
+  <div class="view" id="qaSessionsV">
+   <div class="aform">
+    <div class="aform-t">🎙️ Create Q&A Session</div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Celebrity / Panel <span class="req">*</span></label><input class="fi" type="text" id="qaTitle" placeholder="e.g. Bad Bunny Fan Q&A"/></div>
+     <div class="fg"><label class="fl">Status</label><select class="fs" id="qaStatus"><option value="open">Open</option><option value="closed">Closed</option></select></div>
+    </div>
+    <div class="fg"><label class="fl">Description</label><input class="fi" type="text" id="qaDesc" placeholder="Submit your questions for..."/></div>
+    <div class="fg"><label class="fl">Category</label><select class="fs" id="qaCatAdmin"><option>All</option><option>Music</option><option>Sports</option><option>Fashion</option></select></div>
+    <button class="btn btn-g" onclick="addQASession()">Create Session →</button>
+   </div>
+   <div class="sh">Questions to Answer</div>
+   <div id="qaAdminQuestions"><div class="ldr"><div class="lring"></div></div></div>
   </div>
 
   <!-- IMAGES -->
@@ -960,7 +1017,51 @@ async function lVIPContentAdmin(){
 }
 window.delVIPContent=async function(id){try{await deleteDoc(doc(db,'vipContent',id));toastF('Deleted','success');lVIPContentAdmin();}catch{toastF('Error','error');}};
 
-// ── MAGAZINE ──
+// ── PHASE 8 ADMIN ──
+window.addStream=async function(){
+ const title=document.getElementById('stTitle').value.trim();
+ if(!title){toastF('Title required','error');return;}
+ try{await addDoc(collection(db,'livestreams'),{title,status:document.getElementById('stStatus').value,host:document.getElementById('stHost').value.trim()||'ICONIK Admin',category:document.getElementById('stCat').value,streamUrl:document.getElementById('stUrl').value.trim(),scheduledAt:document.getElementById('stTime').value.trim(),icon:document.getElementById('stIcon').value.trim()||'🔴',viewers:0,createdAt:serverTimestamp(),addedBy:cU.email});toastF('Stream added! 🔴','success');['stTitle','stHost','stUrl','stTime','stIcon'].forEach(id=>document.getElementById(id).value='');lStreamsAdmin();}catch{toastF('Error','error');}
+};
+async function lStreamsAdmin(){
+ const el=document.getElementById('stTbody');
+ try{const s=await getDocs(query(collection(db,'livestreams'),orderBy('createdAt','desc')));el.innerHTML=s.empty?`<tr><td colspan="4" style="text-align:center;padding:14px;color:var(--cd);">No streams yet</td></tr>`:[...s.docs].map(d=>{const x=d.data();return`<tr><td><strong style="color:var(--ch);">${x.icon||'🔴'} ${x.title}</strong></td><td><span class="tag ${x.status==='live'?'terr':x.status==='upcoming'?'twarn':'tok'}">${x.status}</span></td><td>${x.host||'—'}</td><td><button class="btn-d" onclick="delStream('${d.id}')">Remove</button></td></tr>`;}).join('');}catch{}
+}
+window.delStream=async function(id){try{await deleteDoc(doc(db,'livestreams',id));toastF('Removed','success');lStreamsAdmin();}catch{toastF('Error','error');}};
+
+window.addChallenge=async function(){
+ const title=document.getElementById('fcTitle').value.trim(),desc=document.getElementById('fcDesc').value.trim();
+ if(!title||!desc){toastF('Title and description required','error');return;}
+ try{await addDoc(collection(db,'fanChallenges'),{title,description:desc,prize:document.getElementById('fcPrize').value.trim(),deadline:document.getElementById('fcDeadline').value.trim(),category:document.getElementById('fcCat').value,entries:0,createdAt:serverTimestamp(),createdBy:cU.email});toastF('Challenge created! ⚡','success');['fcTitle','fcDesc','fcPrize','fcDeadline'].forEach(id=>document.getElementById(id).value='');lFCAdmin();}catch{toastF('Error','error');}
+};
+async function lFCAdmin(){
+ const el=document.getElementById('fcList');
+ try{const s=await getDocs(query(collection(db,'fanChallenges'),orderBy('createdAt','desc'),limit(10)));el.innerHTML=s.empty?`<p style="text-align:center;color:var(--cd);padding:14px;">No challenges yet</p>`:[...s.docs].map(d=>{const c=d.data();return`<div class="pcard"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;"><strong style="color:var(--ch);font-family:'Montserrat',sans-serif;font-size:0.74rem;">${c.title}</strong><button onclick="delFC('${d.id}')" style="background:none;border:none;color:var(--err);cursor:pointer;">✕</button></div><div style="font-family:'Inter',sans-serif;font-size:0.66rem;color:var(--cd);">${c.prize||'—'} · Deadline: ${c.deadline||'TBA'}</div></div>`;}).join('');}catch{}
+}
+window.delFC=async function(id){try{await deleteDoc(doc(db,'fanChallenges',id));toastF('Removed','success');lFCAdmin();}catch{toastF('Error','error');}};
+
+window.addQASession=async function(){
+ const title=document.getElementById('qaTitle').value.trim();
+ if(!title){toastF('Title required','error');return;}
+ try{await addDoc(collection(db,'qaSessions'),{celebrity:title,description:document.getElementById('qaDesc').value.trim(),status:document.getElementById('qaStatus').value,category:document.getElementById('qaCatAdmin').value,createdAt:serverTimestamp(),createdBy:cU.email});toastF('Q&A Session created! 🎙️','success');['qaTitle','qaDesc'].forEach(id=>document.getElementById(id).value='');lQAAdmin();}catch{toastF('Error','error');}
+};
+async function lQAAdmin(){
+ const el=document.getElementById('qaAdminQuestions');
+ try{
+  const q=query(collection(db,'qaQuestions'),orderBy('votes','desc'),limit(20));
+  const s=await getDocs(q);
+  if(s.empty){el.innerHTML=`<p style="text-align:center;color:var(--cd);padding:14px;">No questions submitted yet</p>`;return;}
+  el.innerHTML='';
+  s.forEach(d=>{const q=d.data();el.innerHTML+=`<div class="pcard"><div class="qa-q">❓ ${q.question}<br/><span style="font-family:'Inter',sans-serif;font-size:0.58rem;color:rgba(189,181,166,0.4);">${q.askerName||'Member'} · ${q.votes||0} votes</span></div>${q.answer?`<div class="qa-a">✅ ${q.answer}</div>`:`<div style="display:flex;gap:6px;margin-top:7px;"><input class="fi" type="text" id="ans-${d.id}" placeholder="Type answer..." style="flex:1;font-size:0.72rem;padding:7px 10px;"/><button onclick="answerQ('${d.id}')" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.58rem;padding:7px 11px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;">Answer</button></div>`}</div>`;});
+ }catch{}
+}
+window.answerQ=async function(id){
+ const ans=document.getElementById(`ans-${id}`)?.value.trim();
+ if(!ans){toastF('Please type an answer','error');return;}
+ try{await updateDoc(doc(db,'qaQuestions',id),{answer:ans,answeredAt:serverTimestamp(),answeredBy:cU.email});toastF('Answer published! 🎙️','success');lQAAdmin();}catch{toastF('Error','error');}
+};
+
+// ── UPDATED sV ──
 window.publishArticle=async function(){
  const title=document.getElementById('magTitle').value.trim();
  const excerpt=document.getElementById('magExcerpt').value.trim();
@@ -1156,6 +1257,9 @@ window.sV=function(nm){
  if(nm==='marketplace')lAdminMarket();
  if(nm==='nominations')lNominations();
  if(nm==='magazine')lMagAdmin();
+ if(nm==='livestreams')lStreamsAdmin();
+ if(nm==='fanChallenges')lFCAdmin();
+ if(nm==='qaSessions')lQAAdmin();
 };
 
 window.togSB=function(){document.getElementById('sb').classList.toggle('on');document.getElementById('sbOv').classList.toggle('on');};
