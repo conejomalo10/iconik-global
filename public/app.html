@@ -519,6 +519,50 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
 .profile-stat{text-align:center;background:rgba(255,255,255,0.03);padding:7px;}
 .profile-stat-num{font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--gold);}
 .profile-stat-lbl{font-family:'Inter',sans-serif;font-size:0.52rem;color:var(--cd);}
+/* PHASE 10 */
+.tv-card{background:var(--gb);border:1px solid var(--gbr);margin-bottom:8px;overflow:hidden;cursor:pointer;transition:all 0.3s;}
+.tv-card:hover{border-color:var(--gbri);transform:translateY(-2px);}
+.tv-thumb{width:100%;height:100px;background:var(--obs2);display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative;overflow:hidden;}
+.tv-thumb img{width:100%;height:100%;object-fit:cover;}
+.tv-play-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;}
+.tv-card:hover .tv-play-overlay{opacity:1;}
+.tv-play-btn{font-size:2rem;}
+.tv-duration{position:absolute;bottom:6px;right:7px;font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.06em;background:rgba(0,0,0,0.8);color:#fff;padding:2px 5px;}
+.tv-info{padding:9px;}
+.tv-cat{font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.1em;color:var(--gold);}
+.tv-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);margin-bottom:3px;line-height:1.3;}
+.tv-meta{font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--cd);}
+.tv-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.tv-featured{background:var(--obs2);border:1px solid var(--gbri);position:relative;cursor:pointer;overflow:hidden;}
+.tv-featured-thumb{width:100%;height:170px;background:var(--obs3);display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative;}
+.tv-featured-thumb img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.tv-featured-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,13,0.9),transparent 50%);}
+.tv-featured-info{position:absolute;bottom:0;left:0;right:0;padding:14px;}
+.tv-featured-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;border-radius:50%;background:rgba(255,184,0,0.9);display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
+.bd-card{background:var(--gb);border:1px solid var(--gbr);padding:12px;margin-bottom:7px;display:flex;align-items:center;gap:11px;}
+.bd-today{border-color:var(--gold);background:rgba(255,184,0,0.06);}
+.bd-av{width:44px;height:44px;border-radius:50%;background:var(--obs2);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;overflow:hidden;}
+.bd-av img{width:100%;height:100%;object-fit:cover;}
+.bd-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);}
+.bd-date{font-family:'Inter',sans-serif;font-size:0.64rem;color:var(--cd);margin-top:2px;}
+.bd-age{font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.08em;color:var(--gold);margin-left:auto;flex-shrink:0;}
+.bd-wish-btn{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.56rem;padding:5px 10px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;white-space:nowrap;}
+.map-continent{background:var(--gb);border:1px solid var(--gbr);padding:12px;margin-bottom:8px;}
+.map-continent-name{font-family:'Bebas Neue',sans-serif;font-size:0.68rem;letter-spacing:0.1em;color:var(--gold);margin-bottom:6px;}
+.map-continent-bar{height:6px;background:rgba(255,184,0,0.1);border-radius:3px;margin-bottom:4px;overflow:hidden;}
+.map-continent-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gg));border-radius:3px;transition:width 0.8s;}
+.map-continent-meta{font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);}
+.points-redeem-card{background:var(--gb);border:1px solid var(--gbr);padding:13px;display:flex;align-items:center;gap:11px;}
+.points-redeem-cost{font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--gold);min-width:60px;text-align:center;}
+.points-redeem-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);}
+.points-redeem-desc{font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);margin-top:2px;}
+.points-redeem-btn{margin-left:auto;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.56rem;letter-spacing:0.07em;padding:6px 10px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.pts-history-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.pts-history-label{font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);}
+.pts-history-time{font-family:'Inter',sans-serif;font-size:0.58rem;color:rgba(189,181,166,0.35);}
+.pts-history-amount{font-family:'Bebas Neue',sans-serif;font-size:0.82rem;}
+.pts-history-amount.earn{color:var(--ok);}
+.pts-history-amount.spend{color:var(--err);}
 @media(max-width:480px){.abox{padding:22px 14px;}.fr{grid-template-columns:1fr;}}
 </style>
 </head>
@@ -682,6 +726,11 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
    <div class="sb-lnk" onclick="sV('magazine');cSB()"><span class="sb-ic">📖</span>ICONIK Magazine</div>
    <div class="sb-lnk" onclick="sV('asearch');cSB()"><span class="sb-ic">🔎</span>Advanced Search</div>
    <div class="sb-sec">Discover</div>
+   <div class="sb-lnk" onclick="sV('icontv');cSB()"><span class="sb-ic">📺</span>ICONIK TV</div>
+   <div class="sb-lnk" onclick="sV('birthdays');cSB()"><span class="sb-ic">🎂</span>Celebrity Birthdays</div>
+   <div class="sb-lnk" onclick="sV('fanmap');cSB()"><span class="sb-ic">🗺️</span>Global Fan Map</div>
+   <div class="sb-lnk" onclick="sV('points');cSB()"><span class="sb-ic">💎</span>ICONIK Points</div>
+   <div class="sb-lnk" onclick="sV('pollsboard');cSB()"><span class="sb-ic">📊</span>Polls Leaderboard</div>
    <div class="sb-lnk" onclick="sV('groups');cSB()"><span class="sb-ic">👥</span>Fan Groups</div>
    <div class="sb-lnk" onclick="sV('store');cSB()"><span class="sb-ic">🛒</span>ICONIK Store</div>
    <div class="sb-lnk" onclick="sV('tickets');cSB()"><span class="sb-ic">🎫</span>Book Tickets</div>
@@ -1561,6 +1610,119 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
   <div class="view" id="memberProfileV">
    <button onclick="sV('profiles')" style="font-family:'Montserrat',sans-serif;font-size:0.6rem;font-weight:700;padding:7px 12px;background:transparent;border:1px solid var(--gbr);color:var(--cd);cursor:pointer;margin-bottom:12px;">← Back to Profiles</button>
    <div id="memberProfileContent"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- ICONIK TV -->
+  <div class="view" id="icontvV">
+   <div class="wbar"><span class="wi">📺</span><div><div class="wh">ICONIK TV</div><div class="ws">Watch · Discover · React</div></div></div>
+   <div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;">
+    <button class="chat-tab-btn on" onclick="filterTV('all',this)">All</button>
+    <button class="chat-tab-btn" onclick="filterTV('music',this)">🎵 Music</button>
+    <button class="chat-tab-btn" onclick="filterTV('sports',this)">⚽ Sports</button>
+    <button class="chat-tab-btn" onclick="filterTV('interview',this)">🎤 Interviews</button>
+    <button class="chat-tab-btn" onclick="filterTV('fanmade',this)">🎨 Fan Made</button>
+    <button class="chat-tab-btn" onclick="filterTV('documentary',this)">🎬 Docs</button>
+   </div>
+   <div class="sh">🔥 Featured</div>
+   <div id="tvFeatured" style="margin-bottom:14px;"></div>
+   <div class="sh">All Videos</div>
+   <div id="tvGrid"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- TV PLAYER VIEW -->
+  <div class="view" id="tvPlayerV">
+   <button onclick="sV('icontv')" style="font-family:'Montserrat',sans-serif;font-size:0.6rem;font-weight:700;padding:7px 12px;background:transparent;border:1px solid var(--gbr);color:var(--cd);cursor:pointer;margin-bottom:11px;">← Back to ICONIK TV</button>
+   <div id="tvPlayerContent"></div>
+  </div>
+
+  <!-- CELEBRITY BIRTHDAYS -->
+  <div class="view" id="birthdaysV">
+   <div class="wbar"><span class="wi">🎂</span><div><div class="wh">Celebrity Birthdays</div><div class="ws">Never miss your icon's special day</div></div></div>
+   <!-- TODAY -->
+   <div class="sh">🎉 Today's Birthdays</div>
+   <div id="bdToday" style="margin-bottom:14px;"></div>
+   <!-- THIS MONTH -->
+   <div class="sh">📅 This Month</div>
+   <div id="bdMonth" style="margin-bottom:14px;"></div>
+   <!-- UPCOMING -->
+   <div class="sh">⏰ Coming Soon</div>
+   <div id="bdUpcoming"></div>
+  </div>
+
+  <!-- GLOBAL FAN MAP -->
+  <div class="view" id="fanmapV">
+   <div class="wbar"><span class="wi">🗺️</span><div><div class="wh">Global Fan Map</div><div class="ws">ICONIK fans across every continent</div></div></div>
+   <!-- STATS -->
+   <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px;">
+    <div class="sbox"><div class="snum" id="mapTotalMembers">—</div><div class="slbl">Total Members</div></div>
+    <div class="sbox"><div class="snum" id="mapCountries">—</div><div class="slbl">Countries</div></div>
+   </div>
+   <!-- VISUAL MAP (SVG text-based) -->
+   <div style="background:var(--obs2);border:1px solid var(--gbr);padding:16px;margin-bottom:14px;text-align:center;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.14em;color:var(--gold);margin-bottom:12px;">ICONIK MEMBERS WORLDWIDE</div>
+    <div id="mapVisual" style="font-size:0.72rem;font-family:'Inter',sans-serif;line-height:2.2;color:var(--cd);"></div>
+   </div>
+   <!-- COUNTRY BREAKDOWN -->
+   <div class="sh">Top Countries</div>
+   <div id="countryList"></div>
+   <!-- CONTINENT BREAKDOWN -->
+   <div class="sh" style="margin-top:14px;">By Continent</div>
+   <div id="continentList"></div>
+  </div>
+
+  <!-- ICONIK POINTS ECONOMY -->
+  <div class="view" id="pointsV">
+   <div class="wbar"><span class="wi">💎</span><div><div class="wh">ICONIK Points</div><div class="ws">Earn · Spend · Redeem</div></div></div>
+   <!-- BALANCE -->
+   <div style="background:linear-gradient(135deg,rgba(255,184,0,0.12),rgba(255,149,0,0.06));border:1px solid var(--gbri);padding:20px;text-align:center;margin-bottom:16px;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.14em;color:var(--gold);margin-bottom:6px;">YOUR ICONIK POINTS BALANCE</div>
+    <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:2.8rem;color:var(--ch);" id="pointsBalance">0</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.1em;color:var(--gold);">💎 ICONIK POINTS</div>
+    <div style="font-family:'Inter',sans-serif;font-size:0.66rem;color:var(--cd);margin-top:6px;" id="pointsValue">≈ $0.00 value</div>
+   </div>
+   <!-- HOW TO EARN -->
+   <div class="sh">How To Earn Points</div>
+   <div style="display:grid;gap:7px;margin-bottom:14px;">
+    <div style="background:var(--gb);border:1px solid var(--gbr);padding:11px;display:flex;justify-content:space-between;align-items:center;">
+     <div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">📝 Post in community</div><div style="font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);">Each post earns points</div></div>
+     <div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--gold);">+10 pts</div>
+    </div>
+    <div style="background:var(--gb);border:1px solid var(--gbr);padding:11px;display:flex;justify-content:space-between;align-items:center;">
+     <div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">❤️ Receive a like</div><div style="font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);">Per like received on your posts</div></div>
+     <div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--gold);">+5 pts</div>
+    </div>
+    <div style="background:var(--gb);border:1px solid var(--gbr);padding:11px;display:flex;justify-content:space-between;align-items:center;">
+     <div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">🎁 Successful referral</div><div style="font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);">When referral joins ICONIK</div></div>
+     <div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--gold);">+100 pts</div>
+    </div>
+    <div style="background:var(--gb);border:1px solid var(--gbr);padding:11px;display:flex;justify-content:space-between;align-items:center;">
+     <div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">💬 Daily chat message</div><div style="font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);">Participate in community chat</div></div>
+     <div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--gold);">+2 pts</div>
+    </div>
+    <div style="background:var(--gb);border:1px solid var(--gbr);padding:11px;display:flex;justify-content:space-between;align-items:center;">
+     <div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">🗳️ Vote in a poll</div><div style="font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);">Each poll participation</div></div>
+     <div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--gold);">+5 pts</div>
+    </div>
+    <div style="background:var(--gb);border:1px solid var(--gbr);padding:11px;display:flex;justify-content:space-between;align-items:center;">
+     <div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">👑 VIP Membership</div><div style="font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);">Monthly VIP bonus points</div></div>
+     <div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--gold);">+50-200 pts</div>
+    </div>
+   </div>
+   <!-- REDEEM -->
+   <div class="sh">Redeem Points</div>
+   <div id="redeemOptions" style="display:grid;gap:7px;margin-bottom:14px;"></div>
+   <!-- HISTORY -->
+   <div class="sh">Points History</div>
+   <div id="pointsHistory"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- POLLS LEADERBOARD -->
+  <div class="view" id="pollsboardV">
+   <div class="wbar"><span class="wi">📊</span><div><div class="wh">Polls Leaderboard</div><div class="ws">Most voted · Top results · Community opinion</div></div></div>
+   <div class="sh">Most Active Voters</div>
+   <div id="pollVotersBoard" style="margin-bottom:14px;"></div>
+   <div class="sh">Poll Results Summary</div>
+   <div id="pollResultsSummary"></div>
   </div>
 
  </div><!-- /main -->
@@ -2464,8 +2626,235 @@ window.shareApp=function(){
 };
 
 // ══════════════════════════════════════
-// PHASE 9 FEATURES
+// PHASE 10 — FINAL PHASE
 // ══════════════════════════════════════
+
+// ── ICONIK TV ──
+let allVideos=[];
+async function lTV(){
+ try{
+  const s=await getDocs(query(collection(db,'iconikTV'),orderBy('publishedAt','desc'),limit(20)));
+  if(!s.empty){allVideos=[];s.forEach(d=>allVideos.push({id:d.id,...d.data()}));rTV(allVideos);return;}
+ }catch{}
+ allVideos=[
+  {title:'Bad Bunny — Debí Tirar Más Fotos (Official Music Video)',cat:'music',duration:'4:32',icon:'🎵',views:'12M',channel:'Music Channel',desc:'The latest visual from the global icon.',embedId:'dQw4w9WgXcQ'},
+  {title:'Ronaldo Top 50 Goals — All Time Greatest Compilation',cat:'sports',duration:'18:24',icon:'⚽',views:'45M',channel:'Sports Central',desc:'The most iconic goals from the greatest of all time.'},
+  {title:'Exclusive Fan Interview — What It Means to Be an ICONIK Member',cat:'interview',duration:'12:08',icon:'🎤',views:'892K',channel:'ICONIK Official',desc:'Fans from 15 countries share their ICONIK story.'},
+  {title:'Fan Made — BTS ARMY ICONIK Fan Art Compilation 2026',cat:'fanmade',duration:'8:15',icon:'🎨',views:'2.1M',channel:'Fan Community',desc:'The best fan art from the global BTS community on ICONIK.'},
+  {title:'The Rise of Global Fan Culture — ICONIK Documentary',cat:'documentary',duration:'34:50',icon:'🎬',views:'3.4M',channel:'ICONIK Studios',desc:'How fan communities are reshaping celebrity culture worldwide.'},
+  {title:'Paris Fashion Week 2026 — Best Moments Live',cat:'fashion',duration:'22:17',icon:'👗',views:'5.7M',channel:'Fashion Desk',desc:'Every unmissable moment from the season\'s biggest event.'},
+  {title:'K-Pop World Stage 2026 — Full Performance',cat:'music',duration:'45:00',icon:'🌸',views:'28M',channel:'Music Channel',desc:'The biggest K-Pop performance of the year, live from Seoul.'},
+  {title:'Champions League Final 2026 — Match Highlights',cat:'sports',duration:'15:30',icon:'🏆',views:'67M',channel:'Sports Central',desc:'Every goal, every save from the greatest final in years.'},
+ ];
+ rTV(allVideos);
+}
+
+function rTV(videos){
+ if(!videos.length)return;
+ const featured=videos[0];
+ document.getElementById('tvFeatured').innerHTML=`
+  <div class="tv-featured" onclick="openVideo('${featured.id||'0'}')">
+   <div class="tv-featured-thumb">${featured.thumbnail?`<img src="${featured.thumbnail}"/>`:featured.icon||'📺'}<div class="tv-featured-overlay"></div><div class="tv-featured-play">▶️</div></div>
+   <div class="tv-featured-info">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.1em;color:var(--gold);margin-bottom:4px;">${(featured.cat||'VIDEO').toUpperCase()} · ${featured.duration||''}</div>
+    <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:0.95rem;color:#fff;line-height:1.3;">${featured.title}</div>
+    <div style="font-family:'Inter',sans-serif;font-size:0.6rem;color:rgba(255,255,255,0.6);margin-top:4px;">${featured.views||''} views · ${featured.channel||'ICONIK'}</div>
+   </div>
+  </div>`;
+ document.getElementById('tvGrid').innerHTML=`<div class="tv-grid">${videos.slice(1).map(v=>`
+  <div class="tv-card" onclick="openVideo('${v.id||'0'}')">
+   <div class="tv-thumb">${v.thumbnail?`<img src="${v.thumbnail}" onerror="this.style.display='none'"/>`:''}<span style="position:relative;z-index:1;">${v.icon||'📺'}</span><div class="tv-play-overlay"><span class="tv-play-btn">▶️</span></div><span class="tv-duration">${v.duration||''}</span></div>
+   <div class="tv-info"><div class="tv-cat">${(v.cat||'VIDEO').toUpperCase()}</div><div class="tv-title">${v.title}</div><div class="tv-meta">${v.views||''} views · ${v.channel||'ICONIK'}</div></div>
+  </div>`).join('')}</div>`;
+}
+window.filterTV=function(cat,btn){
+ document.querySelectorAll('.chat-tab-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+ rTV(cat==='all'?allVideos:allVideos.filter(v=>v.cat===cat));
+};
+window.openVideo=function(id){
+ const v=allVideos.find(x=>x.id===id)||allVideos[0];
+ sV('tvPlayer');
+ document.getElementById('tvPlayerContent').innerHTML=`
+  <div style="background:var(--obs2);width:100%;padding-top:56.25%;position:relative;margin-bottom:13px;border:1px solid var(--gbr);">
+   ${v.embedId?`<iframe src="https://www.youtube.com/embed/${v.embedId}?autoplay=1" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" allowfullscreen></iframe>`:`<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;"><span style="font-size:3rem;">${v.icon||'📺'}</span><span style="font-family:'Inter',sans-serif;font-size:0.72rem;color:var(--cd);">Video content added by Admin</span></div>`}
+  </div>
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.1em;color:var(--gold);margin-bottom:5px;">${(v.cat||'VIDEO').toUpperCase()} · ${v.duration||''} · ${v.views||''} views</div>
+  <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:var(--ch);margin-bottom:5px;">${v.title}</div>
+  <div style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);line-height:1.6;margin-bottom:12px;">${v.desc||''}</div>
+  <div style="display:flex;gap:9px;">
+   <button onclick="toastF('Liked! ❤️','success')" style="flex:1;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;padding:9px;background:transparent;border:1px solid var(--gbr);color:var(--cd);cursor:pointer;">❤️ Like</button>
+   <button onclick="sharePost('tv-${id}','${v.title.substring(0,40)}')" style="flex:1;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;padding:9px;background:transparent;border:1px solid var(--gbr);color:var(--cd);cursor:pointer;">🔗 Share</button>
+   <button onclick="toastF('Added to watchlist 📺','success')" style="flex:1;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;padding:9px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;">+ Watchlist</button>
+  </div>`;
+};
+
+// ── CELEBRITY BIRTHDAYS ──
+async function lBirthdays(){
+ const now=new Date();
+ const todayMD=`${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+ const thisMonth=String(now.getMonth()+1).padStart(2,'0');
+ try{
+  const s=await getDocs(collection(db,'celebrities'));
+  let celebs=[];s.forEach(d=>celebs.push({id:d.id,...d.data()}));
+  // If no birthdays stored, use static
+  if(celebs.every(c=>!c.birthday)){
+   celebs=[
+    {name:'Bad Bunny',birthday:'03-10',year:1994,category:'Music',photo:''},
+    {name:'Beyoncé',birthday:'09-04',year:1981,category:'Music',photo:''},
+    {name:'Cristiano Ronaldo',birthday:'02-05',year:1985,category:'Sports',photo:''},
+    {name:'BTS — RM',birthday:'09-12',year:1994,category:'Music',photo:''},
+    {name:'Serena Williams',birthday:'09-26',year:1981,category:'Sports',photo:''},
+    {name:'Rihanna',birthday:'02-20',year:1988,category:'Music',photo:''},
+    {name:'Lionel Messi',birthday:'06-24',year:1987,category:'Sports',photo:''},
+    {name:'Kendall Jenner',birthday:'11-03',year:1995,category:'Fashion',photo:''},
+    {name:'Drake',birthday:'10-24',year:1986,category:'Music',photo:''},
+    {name:'Naomi Osaka',birthday:'10-16',year:1997,category:'Sports',photo:''},
+    {name:'Taylor Swift',birthday:'12-13',year:1989,category:'Music',photo:''},
+    {name:'LeBron James',birthday:'12-30',year:1984,category:'Sports',photo:''},
+   ];
+  }
+  const today=celebs.filter(c=>c.birthday===todayMD);
+  const month=celebs.filter(c=>c.birthday?.startsWith(thisMonth)&&c.birthday!==todayMD);
+  const upcoming=celebs.filter(c=>!c.birthday?.startsWith(thisMonth)).slice(0,4);
+  const bdCard=(c,isToday)=>{
+   const age=c.year?now.getFullYear()-c.year:null;
+   return`<div class="bd-card ${isToday?'bd-today':''}">
+    <div class="bd-av">${c.photo?`<img src="${c.photo}"/>`:c.name?.charAt(0)||'⭐'}</div>
+    <div style="flex:1;"><div class="bd-name">${c.name}${isToday?' 🎂':''}</div><div class="bd-date">${c.category||''} · Born ${c.birthday||'—'}${age?` · Turns ${age} today`:''}</div></div>
+    ${isToday?`<button class="bd-wish-btn" onclick="wishBirthday('${c.name}')">🎂 Wish</button>`:`<span class="bd-age">${c.birthday?.substring(0,5)||'—'}</span>`}
+   </div>`;
+  };
+  document.getElementById('bdToday').innerHTML=today.length?today.map(c=>bdCard(c,true)).join(''):`<div style="text-align:center;padding:14px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.72rem;">No celebrity birthdays today 🎂</div>`;
+  document.getElementById('bdMonth').innerHTML=month.length?month.map(c=>bdCard(c,false)).join(''):`<div style="text-align:center;padding:14px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.72rem;">No more birthdays this month</div>`;
+  document.getElementById('bdUpcoming').innerHTML=upcoming.map(c=>bdCard(c,false)).join('');
+ }catch(e){console.error(e);}
+}
+window.wishBirthday=async function(name){
+ try{await addDoc(collection(db,'birthdayWishes'),{celebrity:name,from:cD?.name,userId:cU?.uid,createdAt:serverTimestamp()});}catch{}
+ toastF(`🎂 Happy Birthday wish sent for ${name}!`,'success');
+};
+
+// ── GLOBAL FAN MAP ──
+async function lFanMap(){
+ try{
+  const s=await getDocs(collection(db,'users'));
+  const countries={},continents={Africa:0,Asia:0,Europe:0,'North America':0,'South America':0,Oceania:0,Other:0};
+  const continentMap={Nigeria:'Africa',Ghana:'Africa',Kenya:'Africa','South Africa':'Africa',Egypt:'Africa',Ethiopia:'Africa',Tanzania:'Africa',Uganda:'Africa',Senegal:'Africa','Côte d\'Ivoire':'Africa',Cameroon:'Africa',Zimbabwe:'Africa',Rwanda:'Africa',Angola:'Africa',Mozambique:'Africa',USA:'North America','United States':'North America',Canada:'North America',Mexico:'North America',Jamaica:'North America','Trinidad and Tobago':'North America',Brazil:'South America',Argentina:'South America',Colombia:'South America',Chile:'South America',Venezuela:'South America',Peru:'South America',UK:'Europe','United Kingdom':'Europe',France:'Europe',Germany:'Europe',Italy:'Europe',Spain:'Europe',Portugal:'Europe',Netherlands:'Europe',Belgium:'Europe',Sweden:'Europe',Norway:'Europe',Switzerland:'Europe',Russia:'Europe',Poland:'Europe',China:'Asia',Japan:'Asia','South Korea':'Asia',India:'Asia',Indonesia:'Asia',Philippines:'Asia',Vietnam:'Asia',Thailand:'Asia',Pakistan:'Asia',Bangladesh:'Asia','Saudi Arabia':'Asia',UAE:'Asia',Qatar:'Asia',Turkey:'Asia',Iran:'Asia',Australia:'Oceania','New Zealand':'Oceania'};
+  let total=0;
+  s.forEach(d=>{
+   const country=d.data().country;
+   if(country){countries[country]=(countries[country]||0)+1;const cont=continentMap[country]||'Other';continents[cont]=(continents[cont]||0)+1;}
+   total++;
+  });
+  document.getElementById('mapTotalMembers').textContent=total;
+  document.getElementById('mapCountries').textContent=Object.keys(countries).length;
+  // Visual text map
+  const flags={'Nigeria':'🇳🇬','USA':'🇺🇸','UK':'🇬🇧','Brazil':'🇧🇷','Ghana':'🇬🇭','Kenya':'🇰🇪','South Africa':'🇿🇦','France':'🇫🇷','Germany':'🇩🇪','Mexico':'🇲🇽','Argentina':'🇦🇷','India':'🇮🇳','Australia':'🇦🇺','Canada':'🇨🇦','Japan':'🇯🇵','South Korea':'🇰🇷','Spain':'🇪🇸','Italy':'🇮🇹','Netherlands':'🇳🇱','Belgium':'🇧🇪'};
+  const topCountries=Object.entries(countries).sort((a,b)=>b[1]-a[1]).slice(0,12);
+  document.getElementById('mapVisual').innerHTML=topCountries.map(([c,n])=>`${flags[c]||'🌍'} <strong style="color:var(--ch);">${c}</strong> <span style="color:var(--gold);font-family:'Bebas Neue',sans-serif;">${n}</span>`).join('  ·  ')||'🌍 Member countries will appear here';
+  // Country bars
+  const maxC=Math.max(...Object.values(countries),1);
+  document.getElementById('countryList').innerHTML=topCountries.map(([c,n])=>`
+   <div style="margin-bottom:9px;">
+    <div style="display:flex;justify-content:space-between;font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--ch);margin-bottom:3px;"><span>${flags[c]||'🌍'} ${c}</span><span style="color:var(--gold);font-family:'Bebas Neue',sans-serif;">${n} members</span></div>
+    <div style="height:5px;background:rgba(255,184,0,0.1);border-radius:2px;"><div style="height:100%;width:${Math.round((n/maxC)*100)}%;background:var(--gold);border-radius:2px;"></div></div>
+   </div>`).join('');
+  // Continent breakdown
+  const contEmojis={Africa:'🌍',Asia:'🌏',Europe:'🌍','North America':'🌎','South America':'🌎',Oceania:'🌏',Other:'🌐'};
+  const maxCont=Math.max(...Object.values(continents),1);
+  document.getElementById('continentList').innerHTML=Object.entries(continents).filter(([,n])=>n>0).sort((a,b)=>b[1]-a[1]).map(([c,n])=>`
+   <div class="map-continent">
+    <div class="map-continent-name">${contEmojis[c]||'🌍'} ${c}</div>
+    <div class="map-continent-bar"><div class="map-continent-fill" style="width:${Math.round((n/maxCont)*100)}%;"></div></div>
+    <div class="map-continent-meta">${n} members · ${Math.round((n/total)*100)}% of ICONIK</div>
+   </div>`).join('');
+ }catch(e){console.error(e);}
+}
+
+// ── ICONIK POINTS ECONOMY ──
+const REDEEM_OPTIONS=[
+ {cost:500,name:'1 Week VIP Bronze',desc:'Upgrade your account for 7 days',icon:'🥉'},
+ {cost:1000,name:'1 Month VIP Bronze',desc:'Full month VIP Bronze membership',icon:'🥉'},
+ {cost:2500,name:'1 Month VIP Silver',desc:'Full month VIP Silver membership',icon:'🥈'},
+ {cost:500,name:'ICONIK Digital Badge',desc:'Exclusive digital collector badge',icon:'🏅'},
+ {cost:1500,name:'Priority Verification',desc:'Skip the queue — get verified faster',icon:'✅'},
+ {cost:300,name:'5 Raffle Tickets',desc:'Enter monthly prize draw',icon:'🎟️'},
+ {cost:2000,name:'Fan Art Feature',desc:'Your art featured on ICONIK homepage',icon:'🎨'},
+ {cost:5000,name:'$10 Cash Reward',desc:'Redeemable via PayPal or Crypto',icon:'💰'},
+];
+
+async function lPoints(){
+ try{
+  // Calculate points from user activity
+  const m=cD||{};
+  const tierBonus={Fan:0,Bronze:50,Silver:100,Gold:200};
+  const pts=((m.postCount||0)*10)+((m.likeCount||0)*5)+((m.referralCount||0)*100)+(tierBonus[m.tier]||0);
+  document.getElementById('pointsBalance').textContent=pts.toLocaleString();
+  document.getElementById('pointsValue').textContent=`≈ $${(pts*0.001).toFixed(2)} value`;
+  // Redeem options
+  document.getElementById('redeemOptions').innerHTML=REDEEM_OPTIONS.map(r=>`
+   <div class="points-redeem-card">
+    <div class="points-redeem-cost">${r.icon}<br/>${r.cost.toLocaleString()}<br/><span style="font-family:'Inter',sans-serif;font-size:0.5rem;color:var(--cd);">pts</span></div>
+    <div style="flex:1;"><div class="points-redeem-name">${r.name}</div><div class="points-redeem-desc">${r.desc}</div></div>
+    <button class="points-redeem-btn" onclick="redeemPoints('${r.name}',${r.cost},${pts})">${pts>=r.cost?'Redeem':'Need More'}</button>
+   </div>`).join('');
+  // Points history (simulated from activity)
+  const history=[];
+  if(m.postCount>0)history.push({label:`${m.postCount} posts created`,amount:`+${m.postCount*10}`,type:'earn',time:'This month'});
+  if(m.likeCount>0)history.push({label:`${m.likeCount} likes received`,amount:`+${m.likeCount*5}`,type:'earn',time:'This month'});
+  if(m.tier&&m.tier!=='Fan')history.push({label:`VIP ${m.tier} monthly bonus`,amount:`+${tierBonus[m.tier]}`,type:'earn',time:'This month'});
+  history.push({label:'Joined ICONIK',amount:'+50',type:'earn',time:'Welcome bonus'});
+  document.getElementById('pointsHistory').innerHTML=history.length?history.map(h=>`
+   <div class="pts-history-row">
+    <div><div class="pts-history-label">${h.label}</div><div class="pts-history-time">${h.time}</div></div>
+    <div class="pts-history-amount ${h.type}">${h.amount} pts</div>
+   </div>`).join(''):`<div style="text-align:center;padding:16px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.72rem;">No points history yet. Start posting!</div>`;
+ }catch(e){console.error(e);}
+}
+
+window.redeemPoints=async function(item,cost,balance){
+ if(balance<cost){toastF(`You need ${cost.toLocaleString()} points for this reward. Keep earning! 💎`,'error');return;}
+ try{
+  await addDoc(collection(db,'pointsRedemptions'),{item,cost,userId:cU?.uid,userName:cD?.name,email:cU?.email,redeemedAt:serverTimestamp(),status:'pending'});
+  toastF(`"${item}" redeemed! Admin will process within 48 hours. 💎`,'success');
+ }catch{toastF(`Redemption request sent for "${item}"! 💎`,'success');}
+};
+
+// ── POLLS LEADERBOARD ──
+async function lPollsBoard(){
+ try{
+  // Most active voters
+  const q=await getDocs(collection(db,'polls'));
+  const voterCount={};
+  q.forEach(d=>{const votes=d.data().votes||{};Object.keys(votes).forEach(uid=>{voterCount[uid]=(voterCount[uid]||0)+1;});});
+  const topVoters=Object.entries(voterCount).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const usersSnap=await getDocs(collection(db,'users'));
+  const userMap={};usersSnap.forEach(d=>userMap[d.id]={name:d.data().name||'Member',tier:d.data().tier||'Fan'});
+  const medals=['🥇','🥈','🥉'];
+  document.getElementById('pollVotersBoard').innerHTML=topVoters.length?topVoters.map(([uid,cnt],i)=>`
+   <div class="rank-card ${i<3?['top1','top2','top3'][i]:''}">
+    <div class="rank-num">${i<3?medals[i]:`#${i+1}`}</div>
+    <div class="rank-av">${(userMap[uid]?.name||'M').charAt(0)}</div>
+    <div class="rank-info"><div class="rank-name">${userMap[uid]?.name||'Member'}</div><div class="rank-meta">VIP ${userMap[uid]?.tier||'Fan'}</div></div>
+    <div style="text-align:right;"><div class="rank-score">${cnt}</div><div class="rank-score-lbl">votes</div></div>
+   </div>`).join(''):`<div style="text-align:center;padding:16px;color:var(--cd);">No votes recorded yet 🗳️</div>`;
+  // Poll results summary
+  const pollsSnap=await getDocs(query(collection(db,'polls'),orderBy('totalVotes','desc'),limit(5)));
+  let pollsHtml='';
+  if(!pollsSnap.empty){
+   pollsSnap.forEach(d=>{
+    const p=d.data();
+    const results=p.results||{};
+    const total=p.totalVotes||1;
+    const topOption=Object.entries(results).sort((a,b)=>b[1]-a[1])[0];
+    pollsHtml+=`<div class="poll-card"><div class="poll-question">${p.question}</div><div style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);">🏆 Leading: <strong style="color:var(--ch);">${topOption?topOption[0]:'—'}</strong> ${topOption?`(${Math.round((topOption[1]/total)*100)}%)`:''}</div><div style="font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);margin-top:4px;">${total} total votes</div></div>`;
+   });
+  }else{pollsHtml=`<div style="text-align:center;padding:16px;color:var(--cd);">No poll results yet 📊</div>`;}
+  document.getElementById('pollResultsSummary').innerHTML=pollsHtml;
+ }catch(e){console.error(e);}
+}
+
+
 
 // ── FAN GROUPS ──
 let allGroups=[],currentGroupId=null,groupInterval=null;
@@ -3625,6 +4014,13 @@ window.sV=function(nm){
  if(nm==='tickets')lTickets();
  if(nm==='profiles')lProfiles();
  if(nm!=='groupChat'&&groupInterval){clearInterval(groupInterval);groupInterval=null;}
+ // Phase 10
+ if(nm==='icontv')lTV();
+ if(nm==='tvPlayer'){} // loaded by openVideo
+ if(nm==='birthdays')lBirthdays();
+ if(nm==='fanmap')lFanMap();
+ if(nm==='points')lPoints();
+ if(nm==='pollsboard')lPollsBoard();
 };
 window.setBN=function(nm){document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('on'));document.getElementById('bn-'+nm)?.classList.add('on');};
 window.togSB=function(){document.getElementById('sb').classList.toggle('on');document.getElementById('sbOv').classList.toggle('on');};
