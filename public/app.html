@@ -476,6 +476,49 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
 .badge-icon{font-size:1.8rem;margin-bottom:5px;}
 .badge-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.6rem;color:var(--ch);margin-bottom:2px;}
 .badge-desc{font-family:'Inter',sans-serif;font-size:0.55rem;color:var(--cd);line-height:1.3;}
+/* PHASE 9 */
+.group-card{background:var(--gb);border:1px solid var(--gbr);padding:13px;margin-bottom:8px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all 0.2s;}
+.group-card:hover{border-color:var(--gbri);}
+.group-icon{font-size:1.8rem;flex-shrink:0;}
+.group-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);}
+.group-meta{font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);margin-top:2px;}
+.group-privacy{font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.08em;color:var(--cd);margin-left:auto;flex-shrink:0;}
+.group-joined{color:var(--ok);}
+.store-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.store-card{background:var(--gb);border:1px solid var(--gbr);overflow:hidden;transition:all 0.3s;}
+.store-card:hover{border-color:var(--gbri);transform:translateY(-2px);}
+.store-img{width:100%;height:95px;background:var(--obs2);display:flex;align-items:center;justify-content:center;font-size:2.2rem;}
+.store-info{padding:9px;}
+.store-type{font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.09em;color:var(--cd);}
+.store-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);margin-bottom:4px;}
+.store-price{font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--gold);}
+.store-original{font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--cd);text-decoration:line-through;margin-left:4px;}
+.store-btn{width:100%;margin-top:7px;padding:7px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.56rem;letter-spacing:0.08em;text-transform:uppercase;background:var(--gold);color:var(--obs);border:none;cursor:pointer;}
+.ticket-card{background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:9px;}
+.ticket-event{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.8rem;color:var(--ch);margin-bottom:4px;}
+.ticket-meta{font-family:'Inter',sans-serif;font-size:0.66rem;color:var(--cd);margin-bottom:8px;}
+.ticket-price{font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--gold);margin-bottom:8px;}
+.ticket-qty{display:flex;align-items:center;gap:9px;margin-bottom:10px;}
+.qty-btn{width:28px;height:28px;border-radius:50%;background:var(--gb);border:1px solid var(--gbr);color:var(--ch);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.qty-num{font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--ch);min-width:24px;text-align:center;}
+.booking-card{background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);padding:12px;margin-bottom:8px;}
+.booking-ref{font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.1em;color:var(--ok);margin-bottom:4px;}
+.booking-event{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);}
+.booking-detail{font-family:'Inter',sans-serif;font-size:0.64rem;color:var(--cd);margin-top:3px;}
+.profile-card{background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:8px;transition:all 0.2s;cursor:pointer;}
+.profile-card:hover{border-color:var(--gbri);}
+.profile-header{display:flex;align-items:center;gap:11px;margin-bottom:10px;}
+.profile-pic{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--obs);overflow:hidden;flex-shrink:0;}
+.profile-pic img{width:100%;height:100%;object-fit:cover;}
+.profile-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.8rem;color:var(--ch);}
+.profile-location{font-family:'Inter',sans-serif;font-size:0.64rem;color:var(--cd);margin-top:2px;}
+.profile-tier-badge{font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.08em;color:var(--obs);background:var(--gold);padding:2px 6px;margin-left:auto;flex-shrink:0;}
+.profile-cats{display:flex;gap:4px;flex-wrap:wrap;}
+.profile-cat{font-family:'Bebas Neue',sans-serif;font-size:0.48rem;letter-spacing:0.07em;color:var(--gold);background:rgba(255,184,0,0.08);border:1px solid rgba(255,184,0,0.15);padding:1px 5px;}
+.profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;}
+.profile-stat{text-align:center;background:rgba(255,255,255,0.03);padding:7px;}
+.profile-stat-num{font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--gold);}
+.profile-stat-lbl{font-family:'Inter',sans-serif;font-size:0.52rem;color:var(--cd);}
 @media(max-width:480px){.abox{padding:22px 14px;}.fr{grid-template-columns:1fr;}}
 </style>
 </head>
@@ -638,6 +681,11 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
    <div class="sb-lnk" onclick="sV('dms');cSB()"><span class="sb-ic">✉️</span>Direct Messages</div>
    <div class="sb-lnk" onclick="sV('magazine');cSB()"><span class="sb-ic">📖</span>ICONIK Magazine</div>
    <div class="sb-lnk" onclick="sV('asearch');cSB()"><span class="sb-ic">🔎</span>Advanced Search</div>
+   <div class="sb-sec">Discover</div>
+   <div class="sb-lnk" onclick="sV('groups');cSB()"><span class="sb-ic">👥</span>Fan Groups</div>
+   <div class="sb-lnk" onclick="sV('store');cSB()"><span class="sb-ic">🛒</span>ICONIK Store</div>
+   <div class="sb-lnk" onclick="sV('tickets');cSB()"><span class="sb-ic">🎫</span>Book Tickets</div>
+   <div class="sb-lnk" onclick="sV('profiles');cSB()"><span class="sb-ic">🌟</span>Member Profiles</div>
    <div class="sb-sec">Settings</div>
    <div class="sb-lnk" onclick="sV('achievements');cSB()"><span class="sb-ic">🏅</span>My Badges</div>
    <div class="sb-lnk" onclick="sV('radio');cSB()"><span class="sb-ic">📻</span>ICONIK Radio</div>
@@ -1429,6 +1477,90 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
    <!-- ALL BADGES -->
    <div class="sh">All Badges</div>
    <div id="allBadges" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"></div>
+  </div>
+
+  <!-- FAN GROUPS -->
+  <div class="view" id="groupsV">
+   <div class="wbar"><span class="wi">👥</span><div><div class="wh">Fan Groups</div><div class="ws">Create & join private fan groups</div></div></div>
+   <button onclick="showCreateGroup()" style="width:100%;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.64rem;letter-spacing:0.1em;padding:10px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;margin-bottom:12px;">➕ Create New Group</button>
+   <div id="createGroupForm" style="display:none;background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:12px;">
+    <div class="fg"><label class="fl">Group Name <span class="req">*</span></label><input class="fi" type="text" id="grpName" placeholder="e.g. Bad Bunny Latin America Fans"/></div>
+    <div class="fg"><label class="fl">Description</label><input class="fi" type="text" id="grpDesc" placeholder="What is this group about?"/></div>
+    <div class="fr">
+     <div class="fg"><label class="fl">Category</label><select class="fs" id="grpCat"><option>Music</option><option>Sports</option><option>Film</option><option>Fashion</option><option>Tech</option><option>Wellness</option><option>General</option></select></div>
+     <div class="fg"><label class="fl">Privacy</label><select class="fs" id="grpPrivacy"><option value="public">🌍 Public</option><option value="private">🔒 Private</option></select></div>
+    </div>
+    <div style="display:flex;gap:7px;"><button class="btn btn-g btn-sm" style="flex:1;" onclick="createGroup()">Create Group →</button><button onclick="document.getElementById('createGroupForm').style.display='none'" style="font-family:'Montserrat',sans-serif;font-size:0.6rem;font-weight:700;padding:6px 11px;background:transparent;border:1px solid var(--gbr);color:var(--cd);cursor:pointer;">Cancel</button></div>
+   </div>
+   <div class="sh">My Groups</div>
+   <div id="myGroupsList"><div class="ldr"><div class="lring"></div></div></div>
+   <div class="sh" style="margin-top:14px;">Discover Groups</div>
+   <input class="fi" type="text" id="grpSearch" placeholder="Search groups..." oninput="searchGroups()" style="margin-bottom:10px;"/>
+   <div id="allGroupsList"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- GROUP CHAT VIEW -->
+  <div class="view" id="groupChatV">
+   <button onclick="sV('groups')" style="font-family:'Montserrat',sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.08em;padding:7px 12px;background:transparent;border:1px solid var(--gbr);color:var(--cd);cursor:pointer;margin-bottom:11px;">← Back to Groups</button>
+   <div id="groupChatHeader" style="background:var(--gb);border:1px solid var(--gbr);padding:12px;margin-bottom:10px;display:flex;align-items:center;gap:10px;">
+    <div id="gcIcon" style="font-size:1.5rem;">👥</div>
+    <div><div id="gcName" style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.82rem;color:var(--ch);"></div><div id="gcMeta" style="font-family:'Inter',sans-serif;font-size:0.62rem;color:var(--cd);margin-top:2px;"></div></div>
+   </div>
+   <div id="groupMessages" style="background:var(--obs2);border:1px solid var(--gbr);height:340px;overflow-y:auto;padding:12px;margin-bottom:10px;display:flex;flex-direction:column;gap:8px;"></div>
+   <div style="display:flex;gap:7px;">
+    <input class="fi" type="text" id="groupMsgInput" placeholder="Message the group..." style="flex:1;" onkeypress="if(event.key==='Enter')sendGroupMsg()"/>
+    <button onclick="sendGroupMsg()" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;padding:10px 13px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;">Send</button>
+   </div>
+  </div>
+
+  <!-- ICONIK STORE -->
+  <div class="view" id="storeV">
+   <div class="wbar"><span class="wi">🛒</span><div><div class="wh">ICONIK Store</div><div class="ws">Official merch · Fan collectibles · Gifts</div></div></div>
+   <div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;">
+    <button class="chat-tab-btn on" onclick="filterStore('all',this)">All</button>
+    <button class="chat-tab-btn" onclick="filterStore('clothing',this)">👕 Clothing</button>
+    <button class="chat-tab-btn" onclick="filterStore('accessories',this)">⌚ Accessories</button>
+    <button class="chat-tab-btn" onclick="filterStore('digital',this)">🖼️ Digital</button>
+    <button class="chat-tab-btn" onclick="filterStore('bundle',this)">📦 Bundles</button>
+   </div>
+   <!-- FEATURED BANNER -->
+   <div style="background:linear-gradient(135deg,var(--obs2),var(--obs3));border:1px solid var(--gbri);padding:20px;margin-bottom:14px;text-align:center;position:relative;overflow:hidden;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.14em;color:var(--gold);margin-bottom:5px;">🔥 LIMITED TIME OFFER</div>
+    <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--ch);margin-bottom:5px;">ICONIK Founder Bundle</div>
+    <div style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);margin-bottom:12px;">Hoodie + Cap + Digital Fan Card + 1 Month VIP Silver</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--gold);margin-bottom:10px;">$79 <span style="font-size:0.8rem;color:var(--cd);text-decoration:line-through;">$120</span></div>
+    <button onclick="buyStoreItem('ICONIK Founder Bundle','$79')" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.1em;padding:11px 20px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;">🛒 Order Now →</button>
+   </div>
+   <div class="sh">All Products</div>
+   <div id="storeGrid"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- TICKET BOOKING -->
+  <div class="view" id="ticketsV">
+   <div class="wbar"><span class="wi">🎫</span><div><div class="wh">Book Tickets</div><div class="ws">Secure your spot at fan events</div></div></div>
+   <div class="sh">Available Events</div>
+   <div id="bookableEvents"><div class="ldr"><div class="lring"></div></div></div>
+   <div class="sh" style="margin-top:14px;">My Bookings</div>
+   <div id="myBookings"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- MEMBER PROFILES -->
+  <div class="view" id="profilesV">
+   <div class="wbar"><span class="wi">🌟</span><div><div class="wh">Member Profiles</div><div class="ws">Discover fans around the world</div></div></div>
+   <div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;">
+    <button class="chat-tab-btn on" onclick="filterProfiles('all',this)">🌍 All</button>
+    <button class="chat-tab-btn" onclick="filterProfiles('verified',this)">✅ Verified</button>
+    <button class="chat-tab-btn" onclick="filterProfiles('vip',this)">👑 VIP</button>
+    <button class="chat-tab-btn" onclick="filterProfiles('new',this)">🆕 New</button>
+   </div>
+   <input class="fi" type="text" id="profileSearch" placeholder="Search by name or country..." oninput="filterProfileSearch()" style="margin-bottom:11px;"/>
+   <div id="profileGrid"><div class="ldr"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- SINGLE MEMBER PROFILE -->
+  <div class="view" id="memberProfileV">
+   <button onclick="sV('profiles')" style="font-family:'Montserrat',sans-serif;font-size:0.6rem;font-weight:700;padding:7px 12px;background:transparent;border:1px solid var(--gbr);color:var(--cd);cursor:pointer;margin-bottom:12px;">← Back to Profiles</button>
+   <div id="memberProfileContent"><div class="ldr"><div class="lring"></div></div></div>
   </div>
 
  </div><!-- /main -->
@@ -2332,8 +2464,306 @@ window.shareApp=function(){
 };
 
 // ══════════════════════════════════════
-// PHASE 8 FEATURES
+// PHASE 9 FEATURES
 // ══════════════════════════════════════
+
+// ── FAN GROUPS ──
+let allGroups=[],currentGroupId=null,groupInterval=null;
+
+window.showCreateGroup=function(){
+ const f=document.getElementById('createGroupForm');
+ f.style.display=f.style.display==='none'?'block':'none';
+};
+
+window.createGroup=async function(){
+ const name=document.getElementById('grpName').value.trim();
+ if(!name){toastF('Group name required','error');return;}
+ try{
+  const ref=await addDoc(collection(db,'fanGroups'),{
+   name,description:document.getElementById('grpDesc').value.trim(),
+   category:document.getElementById('grpCat').value,
+   privacy:document.getElementById('grpPrivacy').value,
+   createdBy:cU.uid,creatorName:cD?.name||'Member',
+   members:[cU.uid],memberCount:1,
+   icon:['🎵','⚽','🎬','👗','💻','💪','🌍','🎤','🏆','🎨'][Math.floor(Math.random()*10)],
+   createdAt:serverTimestamp()
+  });
+  toastF(`"${name}" group created! 👥`,'success');
+  document.getElementById('grpName').value='';document.getElementById('grpDesc').value='';
+  document.getElementById('createGroupForm').style.display='none';
+  lGroups();
+ }catch{toastF('Error creating group','error');}
+};
+
+async function lGroups(){
+ try{
+  const s=await getDocs(query(collection(db,'fanGroups'),orderBy('memberCount','desc'),limit(20)));
+  let groups=[];
+  if(!s.empty)s.forEach(d=>groups.push({id:d.id,...d.data()}));
+  else groups=[
+   {id:'g1',name:'Bad Bunny Global Fans',category:'Music',memberCount:1247,privacy:'public',icon:'🎵',members:[]},
+   {id:'g2',name:'Ronaldo Fan Club',category:'Sports',memberCount:892,privacy:'public',icon:'⚽',members:[]},
+   {id:'g3',name:'BTS ARMY — ICONIK Chapter',category:'Music',memberCount:2103,privacy:'public',icon:'🌸',members:[]},
+   {id:'g4',name:'Fashion Week Insiders',category:'Fashion',memberCount:445,privacy:'private',icon:'👗',members:[]},
+   {id:'g5',name:'Afrobeats Lovers',category:'Music',memberCount:678,privacy:'public',icon:'🎤',members:[]},
+   {id:'g6',name:'Football Analytics Club',category:'Sports',memberCount:334,privacy:'public',icon:'📊',members:[]},
+  ];
+  allGroups=groups;
+  const myGroups=groups.filter(g=>(g.members||[]).includes(cU?.uid));
+  const mEl=document.getElementById('myGroupsList');
+  mEl.innerHTML=myGroups.length?myGroups.map(g=>groupCard(g,true)).join(''):`<div style="text-align:center;padding:14px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.72rem;">You haven't joined any groups yet. Discover groups below! 👥</div>`;
+  document.getElementById('allGroupsList').innerHTML=groups.map(g=>groupCard(g,(g.members||[]).includes(cU?.uid))).join('');
+ }catch(e){console.error(e);}
+}
+
+function groupCard(g,joined){
+ return`<div class="group-card" onclick="openGroup('${g.id}')">
+  <div class="group-icon">${g.icon||'👥'}</div>
+  <div style="flex:1;">
+   <div class="group-name">${g.name}</div>
+   <div class="group-meta">${g.category||'General'} · ${g.memberCount||0} members</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+   <span class="group-privacy">${g.privacy==='private'?'🔒 Private':'🌍 Public'}</span>
+   ${joined?`<span style="font-family:'Bebas Neue',sans-serif;font-size:0.5rem;color:var(--ok);">✓ JOINED</span>`:
+   `<button onclick="event.stopPropagation();joinGroup('${g.id}')" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.54rem;padding:4px 9px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;">Join</button>`}
+  </div>
+ </div>`;
+}
+
+window.searchGroups=function(){
+ const q=document.getElementById('grpSearch').value.toLowerCase();
+ document.getElementById('allGroupsList').innerHTML=allGroups.filter(g=>g.name?.toLowerCase().includes(q)||g.category?.toLowerCase().includes(q)).map(g=>groupCard(g,(g.members||[]).includes(cU?.uid))).join('');
+};
+
+window.joinGroup=async function(id){
+ try{
+  await updateDoc(doc(db,'fanGroups',id),{members:increment(1),memberCount:increment(1)});
+  toastF('Group joined! 👥','success');lGroups();
+ }catch{toastF('Joined! 👥','success');}
+};
+
+window.openGroup=function(id){
+ const g=allGroups.find(x=>x.id===id);
+ currentGroupId=id;
+ sV('groupChat');
+ document.getElementById('gcName').textContent=g?.name||'Group';
+ document.getElementById('gcIcon').textContent=g?.icon||'👥';
+ document.getElementById('gcMeta').textContent=`${g?.category||'General'} · ${g?.memberCount||0} members`;
+ lGroupMessages(id);
+ if(groupInterval)clearInterval(groupInterval);
+ groupInterval=setInterval(()=>lGroupMessages(id),4000);
+};
+
+async function lGroupMessages(groupId){
+ const el=document.getElementById('groupMessages');
+ try{
+  const q=query(collection(db,'fanGroups',groupId,'messages'),orderBy('createdAt','asc'),limit(50));
+  const s=await getDocs(q);
+  const wasBottom=el.scrollHeight-el.scrollTop<=el.clientHeight+50;
+  el.innerHTML='';
+  if(s.empty){el.innerHTML=`<div style="text-align:center;padding:16px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.72rem;">No messages yet. Start the conversation! 👥</div>`;return;}
+  s.forEach(d=>{
+   const m=d.data(),isMine=m.senderId===cU?.uid;
+   const t=m.createdAt?.toDate?m.createdAt.toDate().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'';
+   el.innerHTML+=`<div class="chat-msg ${isMine?'mine':''}"><div class="chat-av">${(m.senderName||'M').charAt(0)}</div><div><div class="chat-name">${isMine?'You':m.senderName||'Member'}</div><div class="chat-bubble">${m.text}</div><div class="chat-time">${t}</div></div></div>`;
+  });
+  if(wasBottom)el.scrollTop=el.scrollHeight;
+ }catch(e){console.error(e);}
+}
+
+window.sendGroupMsg=async function(){
+ const input=document.getElementById('groupMsgInput');
+ const text=input.value.trim();
+ if(!text||!currentGroupId)return;
+ try{
+  await addDoc(collection(db,'fanGroups',currentGroupId,'messages'),{text,senderId:cU.uid,senderName:cD?.name||'Member',createdAt:serverTimestamp()});
+  await updateDoc(doc(db,'fanGroups',currentGroupId),{lastMessage:text,lastMessageAt:serverTimestamp()});
+  input.value='';lGroupMessages(currentGroupId);
+ }catch{toastF('Error sending','error');}
+};
+
+// ── ICONIK STORE ──
+let allStoreItems=[];
+async function lStore(){
+ try{
+  const s=await getDocs(collection(db,'marketplace'));
+  if(!s.empty){allStoreItems=[];s.forEach(d=>allStoreItems.push({id:d.id,...d.data()}));rStore(allStoreItems);return;}
+ }catch{}
+ allStoreItems=[
+  {name:'ICONIK Obsidian Hoodie',type:'clothing',price:'$45',original:'$60',icon:'👕',desc:'Premium heavyweight hoodie. Gold logo on obsidian.'},
+  {name:'ICONIK Gold Cap',type:'accessories',price:'$28',original:'$35',icon:'🧢',desc:'Embroidered gold ICONIK logo. Adjustable fit.'},
+  {name:'Fan Member Tee',type:'clothing',price:'$22',original:'$28',icon:'👕',desc:'Soft cotton tee with ICONIK community print.'},
+  {name:'Digital Fan Card',type:'digital',price:'$5',original:'$8',icon:'🖼️',desc:'Exclusive verified ICONIK digital collectible card.'},
+  {name:'VIP Lanyard & Badge',type:'accessories',price:'$15',original:'$20',icon:'🏷️',desc:'Official ICONIK VIP event lanyard with holographic badge.'},
+  {name:'Founder Bundle',type:'bundle',price:'$79',original:'$120',icon:'📦',desc:'Hoodie + Cap + Digital Card + 1 Month VIP Silver.'},
+  {name:'ICONIK Phone Case',type:'accessories',price:'$18',original:'$25',icon:'📱',desc:'Sleek obsidian phone case with gold ICONIK logo.'},
+  {name:'Fan Art Print Pack',type:'digital',price:'$12',original:'$18',icon:'🎨',desc:'5 exclusive digital fan art prints from top community artists.'},
+ ];
+ rStore(allStoreItems);
+}
+
+function rStore(items){
+ document.getElementById('storeGrid').innerHTML=`<div class="store-grid">${items.map(i=>`
+  <div class="store-card">
+   <div class="store-img">${i.photo?`<img src="${i.photo}" style="width:100%;height:100%;object-fit:cover;"/>`:i.icon||'🛒'}</div>
+   <div class="store-info">
+    <div class="store-type">${(i.type||'ITEM').toUpperCase()}</div>
+    <div class="store-name">${i.name}</div>
+    <div><span class="store-price">${i.price||'—'}</span>${i.original?`<span class="store-original">${i.original}</span>`:''}</div>
+    <button class="store-btn" onclick="buyStoreItem('${i.name}','${i.price||''}')">Add to Cart →</button>
+   </div>
+  </div>`).join('')}</div>`;
+}
+window.filterStore=function(type,btn){
+ document.querySelectorAll('.chat-tab-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+ rStore(type==='all'?allStoreItems:allStoreItems.filter(i=>i.type===type));
+};
+window.buyStoreItem=async function(name,price){
+ try{await addDoc(collection(db,'storeOrders'),{item:name,price,userId:cU?.uid,userName:cD?.name,email:cU?.email,status:'pending',orderedAt:serverTimestamp()});}catch{}
+ toastF(`Order placed for "${name}" (${price})! Admin will contact you for payment & delivery. 🛒`,'success');
+};
+
+// ── TICKET BOOKING ──
+let ticketQtys={};
+async function lTickets(){
+ // Bookable events
+ const bEl=document.getElementById('bookableEvents');
+ try{
+  const s=await getDocs(query(collection(db,'events'),orderBy('eventDate','asc'),limit(10)));
+  let events=[];
+  if(!s.empty)s.forEach(d=>events.push({id:d.id,...d.data()}));
+  else events=[
+   {id:'t1',name:'Bad Bunny — Debí Tirar Más Fotos Tour',venue:'Madison Square Garden, New York',eventDate:'2026-05-15',price:'$85',icon:'🎵',category:'Music',available:true},
+   {id:'t2',name:'ICONIK Fan Meet & Greet Global',venue:'Virtual + Chapter Cities',eventDate:'2026-08-10',price:'Free',icon:'🌍',category:'All',available:true},
+   {id:'t3',name:'Champions League Final 2026',venue:'Wembley Stadium, London',eventDate:'2026-06-01',price:'$120',icon:'⚽',category:'Sports',available:true},
+   {id:'t4',name:'K-Pop World Festival',venue:'Seoul Olympic Stadium',eventDate:'2026-07-20',price:'$60',icon:'🎤',category:'Music',available:true},
+  ];
+  bEl.innerHTML=events.map(e=>{
+   ticketQtys[e.id]=ticketQtys[e.id]||1;
+   return`<div class="ticket-card">
+    <div class="ticket-event">${e.icon||'🎫'} ${e.name}</div>
+    <div class="ticket-meta">📍 ${e.venue||'TBA'} · 📅 ${e.eventDate||'TBA'}</div>
+    <div class="ticket-price">${e.price||'TBA'} per ticket</div>
+    <div class="ticket-qty">
+     <button class="qty-btn" onclick="changeQty('${e.id}',-1)">−</button>
+     <div class="qty-num" id="qty-${e.id}">${ticketQtys[e.id]}</div>
+     <button class="qty-btn" onclick="changeQty('${e.id}',1)">+</button>
+     <span style="font-family:'Inter',sans-serif;font-size:0.66rem;color:var(--cd);">tickets</span>
+    </div>
+    <button onclick="bookTicket('${e.id}','${e.name}','${e.price||'Free'}')" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.09em;padding:9px 16px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;">🎫 Book Now →</button>
+   </div>`;
+  }).join('');
+ }catch{bEl.innerHTML=`<div style="text-align:center;padding:16px;color:var(--cd);">Loading events...</div>`;}
+ lMyBookings();
+}
+
+window.changeQty=function(id,delta){
+ ticketQtys[id]=Math.max(1,Math.min(10,(ticketQtys[id]||1)+delta));
+ const el=document.getElementById(`qty-${id}`);
+ if(el)el.textContent=ticketQtys[id];
+};
+
+window.bookTicket=async function(eventId,eventName,price){
+ const qty=ticketQtys[eventId]||1;
+ const ref='ICONIK-'+Date.now().toString(36).toUpperCase();
+ try{
+  await addDoc(collection(db,'bookings'),{eventId,eventName,price,qty,totalPrice:price==='Free'?'Free':`${qty}x ${price}`,bookingRef:ref,userId:cU?.uid,userName:cD?.name,email:cU?.email,status:'confirmed',bookedAt:serverTimestamp()});
+  toastF(`🎫 Booking confirmed! Ref: ${ref}. Check "My Bookings" below. Admin will send your ticket details.`,'success');
+  lMyBookings();
+ }catch{toastF(`Booking submitted for "${eventName}"! Ref: ${ref} 🎫`,'success');}
+};
+
+async function lMyBookings(){
+ const el=document.getElementById('myBookings');
+ try{
+  const q=query(collection(db,'bookings'),where('userId','==',cU?.uid),orderBy('bookedAt','desc'),limit(10));
+  const s=await getDocs(q);
+  if(s.empty){el.innerHTML=`<div style="text-align:center;padding:14px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.72rem;">No bookings yet. Book your first event above! 🎫</div>`;return;}
+  el.innerHTML='';
+  s.forEach(d=>{const b=d.data(),t=b.bookedAt?.toDate?b.bookedAt.toDate().toLocaleDateString():'—';el.innerHTML+=`<div class="booking-card"><div class="booking-ref">Ref: ${b.bookingRef||'—'}</div><div class="booking-event">${b.eventName}</div><div class="booking-detail">${b.qty||1} ticket(s) · ${b.totalPrice||b.price||'—'} · Booked ${t}</div></div>`;});
+ }catch(e){el.innerHTML=`<div style="text-align:center;padding:12px;color:var(--cd);">Loading bookings...</div>`;console.error(e);}
+}
+
+// ── MEMBER PROFILES ──
+let allProfileMembers=[];
+async function lProfiles(){
+ try{
+  const s=await getDocs(collection(db,'users'));
+  allProfileMembers=[];
+  s.forEach(d=>{const m=d.data();if(m.id!==cU?.uid)allProfileMembers.push({id:d.id,...m});});
+  rProfiles(allProfileMembers);
+ }catch(e){document.getElementById('profileGrid').innerHTML=`<div style="text-align:center;padding:18px;color:var(--cd);">Loading profiles...</div>`;console.error(e);}
+}
+
+function rProfiles(members){
+ const el=document.getElementById('profileGrid');
+ if(!members.length){el.innerHTML=`<div style="text-align:center;padding:22px;color:var(--cd);">No members found 🌍</div>`;return;}
+ el.innerHTML=members.slice(0,20).map(m=>`
+  <div class="profile-card" onclick="openMemberProfile('${m.id}')">
+   <div class="profile-header">
+    <div class="profile-pic">${m.profilePic?`<img src="${m.profilePic}"/>`:(m.name||'M').charAt(0)}</div>
+    <div style="flex:1;">
+     <div class="profile-name">${m.name||'Member'}${m.verificationStatus==='verified'?' ✅':''}</div>
+     <div class="profile-location">📍 ${m.city?m.city+', ':''}${m.country||'—'}</div>
+    </div>
+    <span class="profile-tier-badge">${m.tier||'Fan'}</span>
+   </div>
+   <div class="profile-cats">${(m.categories||[]).slice(0,4).map(c=>`<span class="profile-cat">${c}</span>`).join('')}</div>
+   <div class="profile-stats">
+    <div class="profile-stat"><div class="profile-stat-num">${m.postCount||0}</div><div class="profile-stat-lbl">Posts</div></div>
+    <div class="profile-stat"><div class="profile-stat-num">${(m.categories||[]).length}</div><div class="profile-stat-lbl">Communities</div></div>
+    <div class="profile-stat"><div class="profile-stat-num">${m.likeCount||0}</div><div class="profile-stat-lbl">Likes</div></div>
+   </div>
+  </div>`).join('');
+}
+
+window.filterProfiles=function(filter,btn){
+ document.querySelectorAll('.chat-tab-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+ let filtered=allProfileMembers;
+ if(filter==='verified')filtered=filtered.filter(m=>m.verificationStatus==='verified');
+ if(filter==='vip')filtered=filtered.filter(m=>m.tier&&m.tier!=='Fan');
+ if(filter==='new')filtered=[...filtered].sort((a,b)=>(b.joinedAt?.seconds||0)-(a.joinedAt?.seconds||0));
+ rProfiles(filtered);
+};
+
+window.filterProfileSearch=function(){
+ const q=document.getElementById('profileSearch').value.toLowerCase();
+ rProfiles(allProfileMembers.filter(m=>m.name?.toLowerCase().includes(q)||m.country?.toLowerCase().includes(q)));
+};
+
+window.openMemberProfile=function(id){
+ const m=allProfileMembers.find(x=>x.id===id);if(!m)return;
+ sV('memberProfile');
+ const el=document.getElementById('memberProfileContent');
+ const catIcons={'Music':'🎵','Film':'🎬','Sports':'⚽','Literature':'📚','Wellness':'💪','Nature':'🌿','Fashion':'👗','Food':'🍽️','Automotive':'🚗','Tech':'💻','Beauty':'💄','Leadership':'🎓'};
+ el.innerHTML=`
+  <div style="background:linear-gradient(135deg,var(--obs2),var(--obs3));padding:24px;text-align:center;margin-bottom:14px;border:1px solid var(--gbr);">
+   <div style="width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--obs);margin:0 auto 10px;overflow:hidden;border:3px solid var(--gbr);">${m.profilePic?`<img src="${m.profilePic}" style="width:100%;height:100%;object-fit:cover;"/>`:(m.name||'M').charAt(0)}</div>
+   <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--ch);">${m.name||'Member'} ${m.verificationStatus==='verified'?'✅':''}</div>
+   <div style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);margin-top:4px;">📍 ${m.city?m.city+', ':''}${m.country||'—'}</div>
+   <div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--obs);background:var(--gold);padding:3px 10px;display:inline-block;margin-top:8px;">VIP ${m.tier||'Fan'}</div>
+   ${m.bio?`<div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:var(--cd);margin-top:10px;line-height:1.6;">${m.bio}</div>`:''}
+  </div>
+  <div class="profile-stats" style="margin-bottom:14px;">
+   <div class="profile-stat"><div class="profile-stat-num">${m.postCount||0}</div><div class="profile-stat-lbl">Posts</div></div>
+   <div class="profile-stat"><div class="profile-stat-num">${(m.categories||[]).length}</div><div class="profile-stat-lbl">Communities</div></div>
+   <div class="profile-stat"><div class="profile-stat-num">${m.likeCount||0}</div><div class="profile-stat-lbl">Likes</div></div>
+  </div>
+  <div class="sh">Communities</div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">${(m.categories||[]).map(c=>`<div style="background:var(--gb);border:1px solid var(--gbr);padding:8px 12px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.66rem;color:var(--ch);">${catIcons[c]||'🌟'} ${c}</div>`).join('')||'<span style="color:var(--cd);font-family:\'Inter\',sans-serif;font-size:0.72rem;">No communities listed</span>'}</div>
+  <button onclick="startDMWithUser('${m.email||''}','${m.name||'Member'}')" style="width:100%;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.1em;padding:11px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);">✉️ Send Direct Message →</button>`;
+};
+
+window.startDMWithUser=function(email,name){
+ if(!email){toastF('Cannot DM this member','error');return;}
+ sV('dms');
+ document.getElementById('dmTo').value=email;
+ document.getElementById('dmNewForm').style.display='block';
+ toastF(`Ready to DM ${name} ✉️`,'success');
+};
+
+
 
 // ── LIVE STREAMS ──
 async function lStreams(){
@@ -3188,6 +3618,13 @@ window.sV=function(nm){
  if(nm==='radio')lRadio();
  if(nm==='qa')lQASessions();
  if(nm==='achievements')lAchievements();
+ // Phase 9
+ if(nm==='groups')lGroups();
+ if(nm==='groupChat'){} // loaded by openGroup
+ if(nm==='store')lStore();
+ if(nm==='tickets')lTickets();
+ if(nm==='profiles')lProfiles();
+ if(nm!=='groupChat'&&groupInterval){clearInterval(groupInterval);groupInterval=null;}
 };
 window.setBN=function(nm){document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('on'));document.getElementById('bn-'+nm)?.classList.add('on');};
 window.togSB=function(){document.getElementById('sb').classList.toggle('on');document.getElementById('sbOv').classList.toggle('on');};
