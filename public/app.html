@@ -93,7 +93,7 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
 .nlogo span{color:var(--ch);}
 .nr{display:flex;align-items:center;gap:7px;}
 .nun{font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);}
-.nav-av{width:29px;height:29px;background:linear-gradient(135deg,var(--gold),var(--gg));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.78rem;color:var(--obs);cursor:pointer;}
+.nav-av{width:34px;height:34px;background:linear-gradient(135deg,var(--gold),var(--gg));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1rem;font-weight:900;color:var(--obs);cursor:pointer;border:2px solid rgba(255,184,0,0.5);}
 .hbg{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:3px;}
 .hbg span{display:block;width:16px;height:2px;background:var(--gold);}
 /* SIDEBAR */
@@ -120,8 +120,8 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
 .bnav{position:fixed;bottom:0;left:0;right:0;z-index:999;background:rgba(7,7,13,0.96);backdrop-filter:blur(20px);border-top:1px solid var(--gbr);display:flex;padding:6px 0;}
 .bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:6px 0;cursor:pointer;transition:all 0.2s;}
 .bnav-item.on .bnav-ic,.bnav-item.on .bnav-lbl{color:var(--gold);}
-.bnav-ic{font-size:1.1rem;margin-bottom:2px;}
-.bnav-lbl{font-family:'Montserrat',sans-serif;font-size:0.48rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--cd);}
+.bnav-ic{font-size:1.3rem;margin-bottom:3px;}
+.bnav-lbl{font-family:'Montserrat',sans-serif;font-size:0.56rem;font-weight:800;letter-spacing:0.07em;text-transform:uppercase;color:var(--cd);}
 /* MAIN */
 .main{padding:62px 13px 80px;}
 .view{display:none;}
@@ -699,6 +699,8 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
    <span class="sb-vs" id="sbVS" style="display:none;">✓ VERIFIED</span>
   </div>
   <nav class="sb-nav">
+   <div class="sb-sec">Account</div>
+   <div class="sb-lnk" onclick="sV('profile');cSB()"><span class="sb-ic">👤</span>My Profile</div>
    <div class="sb-sec">Main</div>
    <div class="sb-lnk on" onclick="sV('feed');cSB()"><span class="sb-ic">🏠</span>My Feed</div>
    <div class="sb-lnk" onclick="sV('explore');cSB()"><span class="sb-ic">🔍</span>Explore Icons</div>
@@ -726,6 +728,11 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
    <div class="sb-lnk" onclick="sV('magazine');cSB()"><span class="sb-ic">📖</span>ICONIK Magazine</div>
    <div class="sb-lnk" onclick="sV('asearch');cSB()"><span class="sb-ic">🔎</span>Advanced Search</div>
    <div class="sb-sec">Discover</div>
+   <div class="sb-lnk" onclick="sV('achievements');cSB()"><span class="sb-ic">🏅</span>My Badges</div>
+   <div class="sb-lnk" onclick="sV('radio');cSB()"><span class="sb-ic">📻</span>ICONIK Radio</div>
+   <div class="sb-lnk" onclick="sV('livestream');cSB()"><span class="sb-ic">🔴</span>Live Streams</div>
+   <div class="sb-lnk" onclick="sV('challenges');cSB()"><span class="sb-ic">⚡</span>Fan Challenges</div>
+   <div class="sb-lnk" onclick="sV('qa');cSB()"><span class="sb-ic">🎙️</span>Celebrity Q&A</div>
    <div class="sb-lnk" onclick="sV('icontv');cSB()"><span class="sb-ic">📺</span>ICONIK TV</div>
    <div class="sb-lnk" onclick="sV('birthdays');cSB()"><span class="sb-ic">🎂</span>Celebrity Birthdays</div>
    <div class="sb-lnk" onclick="sV('fanmap');cSB()"><span class="sb-ic">🗺️</span>Global Fan Map</div>
@@ -736,14 +743,8 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
    <div class="sb-lnk" onclick="sV('tickets');cSB()"><span class="sb-ic">🎫</span>Book Tickets</div>
    <div class="sb-lnk" onclick="sV('profiles');cSB()"><span class="sb-ic">🌟</span>Member Profiles</div>
    <div class="sb-sec">Settings</div>
-   <div class="sb-lnk" onclick="sV('achievements');cSB()"><span class="sb-ic">🏅</span>My Badges</div>
-   <div class="sb-lnk" onclick="sV('radio');cSB()"><span class="sb-ic">📻</span>ICONIK Radio</div>
-   <div class="sb-lnk" onclick="sV('livestream');cSB()"><span class="sb-ic">🔴</span>Live Streams</div>
-   <div class="sb-lnk" onclick="sV('challenges');cSB()"><span class="sb-ic">⚡</span>Fan Challenges</div>
-   <div class="sb-lnk" onclick="sV('qa');cSB()"><span class="sb-ic">🎙️</span>Celebrity Q&A</div>
    <div class="sb-lnk" onclick="sV('settings');cSB()"><span class="sb-ic">⚙️</span>Settings</div>
    <div class="sb-lnk" onclick="sV('membership');cSB()"><span class="sb-ic">👑</span>Membership<span class="sb-bdg">UPGRADE</span></div>
-   <div class="sb-lnk" onclick="sV('profile');cSB()"><span class="sb-ic">👤</span>My Profile</div>
    <div class="sb-sec">More</div>
    <div class="sb-lnk" onclick="doLogout()"><span class="sb-ic">🚪</span>Sign Out</div>
   </nav>
@@ -1948,7 +1949,7 @@ async function uploadToCloudinary(file){
  const fd=new FormData();
  fd.append('file',file);
  fd.append('upload_preset','iconik_uploads');
- const res=await fetch('https://api.cloudinary.com/v1_1/iconik-global/upload',{method:'POST',body:fd});
+ const res=await fetch('https://api.cloudinary.com/v1_1/dhazrf2xr/upload',{method:'POST',body:fd});
  if(!res.ok)throw new Error('Upload failed');
  const data=await res.json();
  return{url:data.secure_url,type:file.type.startsWith('video')?'video':'image'};
@@ -2192,14 +2193,17 @@ window.uploadProfilePic=async function(input){
   const fd=new FormData();
   fd.append('file',file);
   fd.append('upload_preset','iconik_uploads');
-  const res=await fetch('https://api.cloudinary.com/v1_1/iconik-global/upload',{method:'POST',body:fd});
-  if(!res.ok)throw new Error('Upload failed');
+  // Try both cloud names — dhazrf2xr is your verified Cloudinary account
+  const cloudName='dhazrf2xr';
+  const res=await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/upload`,{method:'POST',body:fd});
+  if(!res.ok){
+   const errData=await res.json().catch(()=>({}));
+   throw new Error(errData.error?.message||'Upload failed — ensure iconik_uploads preset is set to Unsigned in Cloudinary dashboard');
+  }
   const data=await res.json();
   const picUrl=data.secure_url;
-  // Save to Firestore
   await updateDoc(doc(db,'users',cU.uid),{profilePic:picUrl});
   cD={...cD,profilePic:picUrl};
-  // Update all avatar displays
   const imgTag=`<img src="${picUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
   document.getElementById('profilePicDisplay').innerHTML=imgTag;
   document.getElementById('pfAv').innerHTML=imgTag;
@@ -2207,7 +2211,10 @@ window.uploadProfilePic=async function(input){
   document.getElementById('sbAv').innerHTML=imgTag.replace('border-radius:50%;','');
   status.textContent='✅ Profile picture updated!';status.style.color='var(--ok)';
   toastF('Profile picture updated! 📸','success');
- }catch(e){status.textContent='❌ Upload failed. Check your internet and try again.';status.style.color='var(--err)';console.error(e);}
+ }catch(e){
+  status.textContent=`❌ ${e.message||'Upload failed. Set iconik_uploads preset to Unsigned in Cloudinary.'}`;
+  status.style.color='var(--err)';console.error(e);
+ }
 };
 
 // ── SAVE PROFILE ──
@@ -2274,23 +2281,36 @@ async function checkNotifs(){
 
 // ── MEMBER SEARCH ──
 let allMembersCache=[];
+let membersLoading=false;
 async function loadAllMembers(){
  if(allMembersCache.length)return;
+ if(membersLoading)return;
+ membersLoading=true;
  try{
   const s=await getDocs(collection(db,'users'));
+  allMembersCache=[];
   s.forEach(d=>allMembersCache.push({id:d.id,...d.data()}));
- }catch{}
+ }catch(e){console.error('Members load error:',e);}
+ finally{membersLoading=false;}
 }
 
 window.searchMembers=async function(){
- await loadAllMembers();
- const q=document.getElementById('memberSearchQ').value.toLowerCase();
- const cat=document.getElementById('memberSearchFilter').value;
  const el=document.getElementById('memberSearchResults');
- let results=allMembersCache.filter(m=>m.id!==cU?.uid); // exclude self
+ const q=document.getElementById('memberSearchQ')?.value.toLowerCase()||'';
+ const cat=document.getElementById('memberSearchFilter')?.value||'';
+ // Show loading state immediately
+ if(!allMembersCache.length){
+  el.innerHTML=`<div class="ldr"><div class="lring"></div></div>`;
+  await loadAllMembers();
+ }
+ if(!allMembersCache.length){
+  el.innerHTML=`<div style="text-align:center;padding:22px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;">Could not load members. Check your connection and try again.</div>`;
+  return;
+ }
+ let results=allMembersCache.filter(m=>m.id!==cU?.uid);
  if(q)results=results.filter(m=>m.name?.toLowerCase().includes(q)||m.country?.toLowerCase().includes(q)||m.city?.toLowerCase().includes(q));
  if(cat)results=results.filter(m=>(m.categories||[]).some(c=>c.toLowerCase().includes(cat.toLowerCase())));
- results=results.slice(0,20); // show max 20
+ results=results.slice(0,20);
  if(!results.length){el.innerHTML=`<div style="text-align:center;padding:22px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.76rem;">No members found. Try a different search. 🌍</div>`;return;}
  el.innerHTML=results.map(m=>{
   const av=m.profilePic?`<img src="${m.profilePic}" alt="${m.name}"/>`:(m.name||'M').charAt(0);
@@ -2298,8 +2318,8 @@ window.searchMembers=async function(){
   return`<div class="member-card">
    <div class="member-av">${av}</div>
    <div class="member-info">
-    <div class="member-name">${m.name||'Member'}</div>
-    <div class="member-meta">${m.city?m.city+', ':''}${m.country||'—'} · ${m.tier||'Fan'}</div>
+    <div class="member-name">${m.name||'Member'}${m.verificationStatus==='verified'?' <span style="color:var(--ok);font-size:0.7rem;">✅</span>':''}</div>
+    <div class="member-meta">${m.city?m.city+', ':''}${m.country||'—'} · <span style="color:var(--gold);">${m.tier||'Fan'}</span></div>
     <div class="member-cats">${cats}</div>
    </div>
   </div>`;
@@ -2886,10 +2906,13 @@ window.createGroup=async function(){
 
 async function lGroups(){
  try{
-  const s=await getDocs(query(collection(db,'fanGroups'),orderBy('memberCount','desc'),limit(20)));
+  // Simple query without compound index
+  const s=await getDocs(query(collection(db,'fanGroups'),limit(30)));
   let groups=[];
-  if(!s.empty)s.forEach(d=>groups.push({id:d.id,...d.data()}));
-  else groups=[
+  if(!s.empty){
+   s.forEach(d=>groups.push({id:d.id,...d.data()}));
+   groups.sort((a,b)=>(b.memberCount||0)-(a.memberCount||0));
+  }else groups=[
    {id:'g1',name:'Bad Bunny Global Fans',category:'Music',memberCount:1247,privacy:'public',icon:'🎵',members:[]},
    {id:'g2',name:'Ronaldo Fan Club',category:'Sports',memberCount:892,privacy:'public',icon:'⚽',members:[]},
    {id:'g3',name:'BTS ARMY — ICONIK Chapter',category:'Music',memberCount:2103,privacy:'public',icon:'🌸',members:[]},
@@ -2902,7 +2925,7 @@ async function lGroups(){
   const mEl=document.getElementById('myGroupsList');
   mEl.innerHTML=myGroups.length?myGroups.map(g=>groupCard(g,true)).join(''):`<div style="text-align:center;padding:14px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.72rem;">You haven't joined any groups yet. Discover groups below! 👥</div>`;
   document.getElementById('allGroupsList').innerHTML=groups.map(g=>groupCard(g,(g.members||[]).includes(cU?.uid))).join('');
- }catch(e){console.error(e);}
+ }catch(e){console.error('Groups error:',e);document.getElementById('allGroupsList').innerHTML=`<div style="text-align:center;padding:14px;color:var(--cd);">Could not load groups. Try refreshing.</div>`;}
 }
 
 function groupCard(g,joined){
@@ -3077,12 +3100,18 @@ async function lMyBookings(){
 // ── MEMBER PROFILES ──
 let allProfileMembers=[];
 async function lProfiles(){
+ const el=document.getElementById('profileGrid');
+ el.innerHTML=`<div class="ldr"><div class="lring"></div></div>`;
  try{
-  const s=await getDocs(collection(db,'users'));
-  allProfileMembers=[];
-  s.forEach(d=>{const m=d.data();if(m.id!==cU?.uid)allProfileMembers.push({id:d.id,...m});});
+  // Reuse members cache if already loaded
+  if(allMembersCache.length){
+   allProfileMembers=allMembersCache.filter(m=>m.id!==cU?.uid);
+  }else{
+   await loadAllMembers();
+   allProfileMembers=allMembersCache.filter(m=>m.id!==cU?.uid);
+  }
   rProfiles(allProfileMembers);
- }catch(e){document.getElementById('profileGrid').innerHTML=`<div style="text-align:center;padding:18px;color:var(--cd);">Loading profiles...</div>`;console.error(e);}
+ }catch(e){el.innerHTML=`<div style="text-align:center;padding:18px;color:var(--cd);">Could not load profiles. Check your connection.</div>`;console.error(e);}
 }
 
 function rProfiles(members){
@@ -3477,17 +3506,20 @@ let dmInterval=null;
 async function lDMThreads(){
  const el=document.getElementById('dmList');
  try{
-  const q=query(collection(db,'dms'),where('participants','array-contains',cU.uid),orderBy('lastMessageAt','desc'),limit(20));
-  const s=await getDocs(q);
-  if(s.empty){el.innerHTML=`<div style="text-align:center;padding:22px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;">No conversations yet. Tap "New Message" to start chatting! ✉️</div>`;return;}
+  // Simple query without compound index requirement
+  const s=await getDocs(query(collection(db,'dms'),limit(50)));
+  // Filter client-side for threads involving this user
+  const myThreads=[];
+  s.forEach(d=>{const t=d.data();if((t.participants||[]).includes(cU.uid))myThreads.push({id:d.id,...t});});
+  myThreads.sort((a,b)=>(b.lastMessageAt?.seconds||0)-(a.lastMessageAt?.seconds||0));
+  if(!myThreads.length){el.innerHTML=`<div style="text-align:center;padding:22px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;">No conversations yet. Tap "New Message" to start chatting! ✉️</div>`;return;}
   el.innerHTML='';
-  s.forEach(d=>{
-   const t=d.data();
+  myThreads.forEach(t=>{
    const otherName=t.participantNames?.find(n=>n!==cD?.name)||'Member';
    const otherInitial=otherName.charAt(0).toUpperCase();
    const hasUnread=t.lastSenderId!==cU.uid&&!t.readBy?.[cU.uid];
    const time=t.lastMessageAt?.toDate?t.lastMessageAt.toDate().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'';
-   el.innerHTML+=`<div class="dm-thread" onclick="openDMThread('${d.id}','${otherName}','${otherInitial}')">
+   el.innerHTML+=`<div class="dm-thread" onclick="openDMThread('${t.id}','${otherName}','${otherInitial}')">
     <div class="dm-thread-av">${otherInitial}</div>
     <div style="flex:1;min-width:0;">
      <div class="dm-thread-name">${otherName}</div>
@@ -3499,7 +3531,7 @@ async function lDMThreads(){
     </div>
    </div>`;
   });
- }catch(e){el.innerHTML=`<div style="text-align:center;padding:18px;color:var(--cd);">Loading messages...</div>`;console.error(e);}
+ }catch(e){el.innerHTML=`<div style="text-align:center;padding:18px;color:var(--cd);">Loading messages... If this persists, try refreshing.</div>`;console.error(e);}
 }
 
 window.showNewDM=function(){document.getElementById('dmNewForm').style.display='block';};
