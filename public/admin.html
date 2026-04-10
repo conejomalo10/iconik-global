@@ -36,18 +36,18 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-he
 .sb-ov{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1999;display:none;}
 .sb-ov.on{display:block;}
 .sb-h{padding:16px;border-bottom:1px solid rgba(59,130,246,0.15);display:flex;align-items:center;justify-content:space-between;}
-.sb-logo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.1em;color:var(--ab);}
+.sb-logo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.1em;color:var(--ab);}
 .sb-x{background:none;border:none;color:var(--cd);font-size:1rem;cursor:pointer;}
 .sb-u{padding:13px 16px;border-bottom:1px solid rgba(59,130,246,0.15);}
-.sb-av{width:40px;height:40px;background:linear-gradient(135deg,var(--ab),#1D4ED8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.95rem;color:#fff;margin-bottom:6px;}
-.sb-nm{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);margin-bottom:3px;}
-.sb-role{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.1em;color:#fff;background:var(--ab);padding:2px 7px;}
+.sb-av{width:40px;height:40px;background:linear-gradient(135deg,var(--ab),#1D4ED8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.1rem;font-weight:900;color:#fff;margin-bottom:7px;border:2px solid rgba(59,130,246,0.4);}
+.sb-nm{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.84rem;color:var(--ch);margin-bottom:4px;}
+.sb-role{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.64rem;letter-spacing:0.12em;color:#fff;background:var(--ab);padding:3px 9px;font-weight:700;}
 .sb-nav{padding:8px 0;}
-.sb-sec{font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.24em;color:rgba(189,181,166,0.28);padding:5px 15px 2px;}
-.sb-lnk{display:flex;align-items:center;gap:8px;padding:10px 15px;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--cd);transition:all 0.2s;border-left:3px solid transparent;}
+.sb-sec{font-family:'Montserrat',sans-serif;font-size:0.64rem;font-weight:900;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,240,232,0.75);padding:12px 15px 5px;border-top:1px solid rgba(255,255,255,0.05);margin-top:3px;}
+.sb-lnk{display:flex;align-items:center;gap:9px;padding:11px 15px;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:600;color:rgba(189,181,166,0.9);transition:all 0.2s;border-left:3px solid transparent;}
 .sb-lnk:hover,.sb-lnk.on{color:var(--ab);background:var(--ab2);border-left-color:var(--ab);}
 .sb-ic{font-size:0.86rem;width:15px;text-align:center;}
-.sb-cnt{margin-left:auto;font-family:'Bebas Neue',sans-serif;font-size:0.52rem;background:var(--ab);color:#fff;padding:1px 5px;border-radius:2px;}
+.sb-cnt{margin-left:auto;font-family:'Bebas Neue',sans-serif;font-size:0.58rem;background:var(--ab);color:#fff;padding:2px 7px;border-radius:2px;}
 /* MAIN */
 .main{padding:64px 14px 32px;}
 .view{display:none;}
@@ -208,29 +208,32 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-he
 
   <!-- ANALYTICS -->
   <div class="view" id="analyticsV">
+   <!-- SCAM WARNING -->
+   <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.3);border-left:4px solid var(--err);padding:13px;margin-bottom:14px;">
+    <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--err);margin-bottom:5px;">⚠️ ANTI-SCAM NOTICE — PIN FOR ALL MEMBERS</div>
+    <div style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);line-height:1.6;"><strong style="color:var(--ch);">Beware of scams:</strong> Only subscribe directly through the official ICONIK website. Ignore anyone offering "cheap verification" or "VIP upgrades" outside the official platform — they are fake and fraudulent. Report any such accounts to Admin immediately.</div>
+   </div>
    <div style="background:linear-gradient(135deg,rgba(59,130,246,0.08),rgba(59,130,246,0.03));border:1px solid rgba(59,130,246,0.18);padding:14px;margin-bottom:16px;">
     <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:var(--ch);margin-bottom:3px;">📈 ICONIK Analytics</div>
     <div style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);">Platform performance · Member growth · Community insights</div>
    </div>
-   <!-- STAT CARDS -->
    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;" id="analyticsStats">
     <div class="stat-box"><div class="stat-num" id="aTotalMembers">—</div><div class="stat-lbl">Total Members</div></div>
-    <div class="stat-box"><div class="stat-num" id="aVerified">—</div><div class="stat-lbl">Verified</div></div>
-    <div class="stat-box"><div class="stat-num" id="aPending">—</div><div class="stat-lbl">Pending</div></div>
-    <div class="stat-box"><div class="stat-num" id="aVIP">—</div><div class="stat-lbl">VIP Members</div></div>
+    <div class="stat-box" style="border-color:rgba(34,197,94,0.3);"><div class="stat-num" id="aVerified" style="color:var(--ok);">—</div><div class="stat-lbl">✅ Verified</div></div>
+    <div class="stat-box"><div class="stat-num" id="aPending" style="color:var(--warn);">—</div><div class="stat-lbl">⏳ Pending</div></div>
+    <div class="stat-box" style="border-color:var(--gbri);"><div class="stat-num" id="aVIP">—</div><div class="stat-lbl">👑 VIP Members</div></div>
     <div class="stat-box"><div class="stat-num" id="aTotalPosts">—</div><div class="stat-lbl">Total Posts</div></div>
-    <div class="stat-box"><div class="stat-num" id="aCelebs">—</div><div class="stat-lbl">Celebrities</div></div>
+    <div class="stat-box"><div class="stat-num" id="aCelebs">—</div><div class="stat-lbl">⭐ Celebrities</div></div>
    </div>
-   <!-- TOP COUNTRIES -->
+   <!-- VERIFIED MEMBERS WITH BADGES -->
+   <div class="sh">✅ Verified Members by Tier</div>
+   <div id="verifiedByTier" style="margin-bottom:16px;"></div>
    <div class="sh">Top Countries</div>
    <div id="topCountries" style="margin-bottom:16px;"></div>
-   <!-- TOP COMMUNITIES -->
    <div class="sh">Most Popular Communities</div>
    <div id="topCommunities" style="margin-bottom:16px;"></div>
-   <!-- MEMBERSHIP BREAKDOWN -->
    <div class="sh">Membership Breakdown</div>
    <div id="membershipBreakdown" style="margin-bottom:16px;"></div>
-   <!-- RECENT JOINS -->
    <div class="sh">Recent Member Joins</div>
    <div id="recentJoins"><div class="ldr"><div class="lring"></div></div></div>
   </div>
@@ -314,12 +317,26 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-he
      <div class="fg"><label class="fl">Country / Origin</label><input class="fi" type="text" id="cCo" placeholder="e.g. USA, South Korea, Nigeria"/></div>
      <div class="fg"><label class="fl">Followers (approx)</label><input class="fi" type="text" id="cFol" placeholder="e.g. 50M"/></div>
     </div>
-    <div class="fg"><label class="fl">Photo URL</label><input class="fi" type="text" id="cPh" placeholder="https://..."/></div>
+    <div class="fg"><label class="fl">Photo URL <span style="color:var(--cd);font-weight:400;">(paste URL)</span></label><input class="fi" type="text" id="cPh" placeholder="https://..."/></div>
+    <div class="fg">
+     <label class="fl">OR Upload Photo Directly</label>
+     <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:rgba(255,255,255,0.03);border:1px dashed var(--gbr);cursor:pointer;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;">
+      📎 Choose celebrity photo (JPG/PNG)
+      <input type="file" id="cPhFile" accept="image/*" style="display:none;" onchange="previewCelebPhoto(this)"/>
+     </label>
+     <div id="cPhPreview" style="display:none;margin-top:7px;position:relative;">
+      <img id="cPhPreviewImg" style="width:100%;max-height:140px;object-fit:cover;"/>
+      <button onclick="clearCelebPhoto()" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.7);border:none;color:#fff;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:0.7rem;">✕</button>
+     </div>
+     <p style="font-family:'Inter',sans-serif;font-size:0.62rem;color:rgba(189,181,166,0.4);margin-top:4px;">⚠️ Requires Cloudinary preset "iconik_uploads" set to Unsigned in your Cloudinary dashboard.</p>
+    </div>
+    <div class="fg"><label class="fl">Birthday (MM-DD)</label><input class="fi" type="text" id="cBirthday" placeholder="e.g. 03-10 (optional)"/></div>
+    <div class="fg"><label class="fl">Birth Year</label><input class="fi" type="number" id="cBirthYear" placeholder="e.g. 1994 (optional)"/></div>
     <div class="fg"><label class="fl">Bio / Description</label><input class="fi" type="text" id="cBio" placeholder="Brief description of this icon"/></div>
     <div class="fg"><label class="fl">Status</label>
      <select class="fs" id="cSt"><option value="active">Active / Trending</option><option value="rising">Rising Star</option><option value="legend">Legend</option></select>
     </div>
-    <button class="btn btn-g" onclick="addCeleb()">Add to ICONIK →</button>
+    <button class="btn btn-g" onclick="addCeleb()" id="addCelebBtn">Add to ICONIK →</button>
    </div>
    <div class="sh">All Celebrities</div>
    <input class="fi" style="margin-bottom:10px;" type="text" id="cSrch" placeholder="Search celebrities..." oninput="fCelebs()"/>
@@ -611,7 +628,7 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-he
      <div class="fg"><label class="fl">Status</label><select class="fs" id="qaStatus"><option value="open">Open</option><option value="closed">Closed</option></select></div>
     </div>
     <div class="fg"><label class="fl">Description</label><input class="fi" type="text" id="qaDesc" placeholder="Submit your questions for..."/></div>
-    <div class="fg"><label class="fl">Category</label><select class="fs" id="qaCatAdmin"><option>All</option><option>Music</option><option>Sports</option><option>Fashion</option></select></div>
+    <div class="fg"><label class="fl">Category</label><select class="fs" id="qaCatAdmin"><option value="All">🌍 All Communities</option><option>🎵 Music</option><option>🎬 Film & TV</option><option>⚽ Sports</option><option>📚 Literature & Knowledge</option><option>💪 Fitness, Health & Wellness</option><option>🌿 Nature & Exploration</option><option>👗 Fashion</option><option>🍽️ Food & Culinary</option><option>🚗 Automotive & Lifestyle</option><option>💻 Tech & Innovation</option><option>💄 Beauty & Aesthetics</option><option>🎭 Entertainment & Talent</option><option>🎓 Thought Leadership</option></select></div>
     <button class="btn btn-g" onclick="addQASession()">Create Session →</button>
    </div>
    <div class="sh">Questions to Answer</div>
@@ -861,15 +878,59 @@ function rCT(cs){
  el.innerHTML=cs.length?cs.map(c=>`<tr><td><strong style="color:var(--ch);">${c.name}</strong></td><td><span class="tag tg">${c.category}</span></td><td>${c.country||'—'}</td><td>${c.followers||'—'}</td><td><span class="tag ${c.status==='active'?'tok':c.status==='rising'?'tbl':'tg'}">${c.status||'active'}</span></td><td><button class="btn-d" onclick="delCeleb('${c.id}')">Remove</button></td></tr>`).join(''):`<tr><td colspan="6" style="text-align:center;padding:18px;color:var(--cd);">No celebrities yet</td></tr>`;
 }
 window.fCelebs=function(){const q=document.getElementById('cSrch').value.toLowerCase();rCT(allC.filter(c=>c.name?.toLowerCase().includes(q)||c.category?.toLowerCase().includes(q)));};
+// ── CELEB PHOTO UPLOAD ──
+let celebPhotoFile=null;
+window.previewCelebPhoto=function(input){
+ const file=input.files[0];if(!file)return;
+ celebPhotoFile=file;
+ document.getElementById('cPhPreview').style.display='block';
+ document.getElementById('cPhPreviewImg').src=URL.createObjectURL(file);
+ document.getElementById('cPh').value='';// clear URL field if file chosen
+};
+window.clearCelebPhoto=function(){
+ celebPhotoFile=null;
+ document.getElementById('cPhPreview').style.display='none';
+ document.getElementById('cPhFile').value='';
+ document.getElementById('cPhPreviewImg').src='';
+};
+
 window.addCeleb=async function(){
  const nm=document.getElementById('cNm').value.trim(),cat=document.getElementById('cCat').value;
  if(!nm||!cat){toastF('Name and category required','error');return;}
+ const btn=document.getElementById('addCelebBtn');
+ btn.textContent='Adding...';btn.disabled=true;
  try{
-  await addDoc(collection(db,'celebrities'),{name:nm,category:cat,country:document.getElementById('cCo').value.trim(),followers:document.getElementById('cFol').value.trim(),photo:document.getElementById('cPh').value.trim(),bio:document.getElementById('cBio').value.trim(),status:document.getElementById('cSt').value,addedAt:serverTimestamp(),addedBy:cU.email});
+  let photoUrl=document.getElementById('cPh').value.trim();
+  // Upload file if chosen
+  if(celebPhotoFile){
+   toastF('Uploading photo... ⏳');
+   try{
+    const fd=new FormData();
+    fd.append('file',celebPhotoFile);
+    fd.append('upload_preset','iconik_uploads');
+    const res=await fetch('https://api.cloudinary.com/v1_1/iconik-global/upload',{method:'POST',body:fd});
+    if(res.ok){const d=await res.json();photoUrl=d.secure_url;}
+    else{toastF('Photo upload failed — using URL if provided','error');}
+   }catch{toastF('Upload error — check Cloudinary preset is set to Unsigned','error');}
+  }
+  await addDoc(collection(db,'celebrities'),{
+   name:nm,category:cat,
+   country:document.getElementById('cCo').value.trim(),
+   followers:document.getElementById('cFol').value.trim(),
+   photo:photoUrl,
+   bio:document.getElementById('cBio').value.trim(),
+   status:document.getElementById('cSt').value,
+   birthday:document.getElementById('cBirthday')?.value.trim()||'',
+   year:parseInt(document.getElementById('cBirthYear')?.value)||null,
+   verified:true,
+   addedAt:serverTimestamp(),addedBy:cU.email
+  });
   toastF(`${nm} added to ICONIK! ⭐`,'success');
-  ['cNm','cCo','cFol','cPh','cBio'].forEach(id=>document.getElementById(id).value='');
+  ['cNm','cCo','cFol','cPh','cBio','cBirthday','cBirthYear'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  clearCelebPhoto();
   lCelebs();lOverview();
  }catch{toastF('Error adding celebrity','error');}
+ finally{btn.textContent='Add to ICONIK →';btn.disabled=false;}
 };
 window.delCeleb=async function(id){
  if(!confirm('Remove this celebrity from ICONIK?'))return;
@@ -1343,6 +1404,18 @@ async function lAnalytics(){
   document.getElementById('aVIP').textContent=vip;
   document.getElementById('aTotalPosts').textContent=ps.size;
   document.getElementById('aCelebs').textContent=cs.size;
+  // Verified members by tier breakdown
+  const tierColors={Fan:'var(--cd)',Bronze:'#CD7F32',Silver:'#C0C0C0',Gold:'var(--gold)'};
+  const verifiedTiers={Fan:0,Bronze:0,Silver:0,Gold:0};
+  const totalTiers={Fan:0,Bronze:0,Silver:0,Gold:0};
+  members.forEach(m=>{const t=m.tier||'Fan';if(totalTiers[t]!==undefined){totalTiers[t]++;if(m.verificationStatus==='verified')verifiedTiers[t]++;}});
+  document.getElementById('verifiedByTier').innerHTML=Object.entries(totalTiers).map(([t,total])=>{
+   const ver=verifiedTiers[t]||0;const pct=total?Math.round((ver/total)*100):0;
+   return`<div style="display:flex;align-items:center;gap:10px;padding:9px;background:var(--gb);border:1px solid var(--gbr);margin-bottom:6px;">
+    <span style="font-family:'Bebas Neue',sans-serif;font-size:0.66rem;letter-spacing:0.08em;color:${tierColors[t]};width:52px;">${t}</span>
+    <div style="flex:1;"><div style="display:flex;justify-content:space-between;font-family:'Inter',sans-serif;font-size:0.64rem;color:var(--cd);margin-bottom:3px;"><span><span style="color:var(--ok);">✅ ${ver} verified</span> / ${total} total</span><span style="color:var(--ok);">${pct}%</span></div><div style="height:5px;background:rgba(255,255,255,0.05);border-radius:2px;"><div style="height:100%;width:${pct}%;background:var(--ok);border-radius:2px;"></div></div></div>
+   </div>`;
+  }).join('');
   // Top countries
   const countries={};members.forEach(m=>{if(m.country)countries[m.country]=(countries[m.country]||0)+1;});
   const topC=Object.entries(countries).sort((a,b)=>b[1]-a[1]).slice(0,8);
@@ -1367,7 +1440,6 @@ async function lAnalytics(){
   // Membership breakdown
   const tiers={Fan:0,Bronze:0,Silver:0,Gold:0};
   members.forEach(m=>{const t=m.tier||'Fan';if(tiers[t]!==undefined)tiers[t]++;});
-  const tierColors={Fan:'var(--cd)',Bronze:'#CD7F32',Silver:'#C0C0C0',Gold:'var(--gold)'};
   document.getElementById('membershipBreakdown').innerHTML=Object.entries(tiers).map(([t,n])=>`
    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
     <span style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.1em;color:${tierColors[t]};width:50px;">${t}</span>
