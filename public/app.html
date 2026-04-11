@@ -981,6 +981,13 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
   <!-- PROFILE -->
   <div class="view" id="profileV">
    <div class="sh">My Profile</div>
+   <!-- FOLLOWERS / FOLLOWING STATS -->
+   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:14px;">
+    <div class="sbox" style="cursor:pointer;" onclick="showFollowers('me')"><div class="snum" id="myFollowersCount">0</div><div class="slbl">Followers</div></div>
+    <div class="sbox" style="cursor:pointer;" onclick="showFollowing('me')"><div class="snum" id="myFollowingCount">0</div><div class="slbl">Following</div></div>
+    <div class="sbox"><div class="snum" id="myPostCount">0</div><div class="slbl">Posts</div></div>
+    <div class="sbox"><div class="snum" id="myLikeCount">0</div><div class="slbl">Likes</div></div>
+   </div>
    <!-- PROFILE PICTURE -->
    <div class="profform" style="text-align:center;margin-bottom:12px;">
     <div class="profform-t" style="text-align:left;">Profile Picture</div>
@@ -1734,7 +1741,7 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,updateProfile,sendPasswordResetEmail}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,updateDoc,query,orderBy,limit,where,serverTimestamp,increment}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,updateDoc,deleteDoc,query,orderBy,limit,where,serverTimestamp,increment}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const cfg={apiKey:"AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",authDomain:"iconik-global.firebaseapp.com",projectId:"iconik-global",storageBucket:"iconik-global.firebasestorage.app",messagingSenderId:"1040054516979",appId:"1:1040054516979:web:33cd5f07ae8fc146a30b86"};
 const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app);
@@ -2397,17 +2404,6 @@ window.followCeleb=async function(celebId,name){
 };
 
 // ── UPDATE sV to handle new views ──
-window.sV=function(nm){
- document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
- document.getElementById(nm+'V').classList.add('on');
- if(nm==='coms')lMyComs();if(nm==='tb')lTB();if(nm==='msgs')lMsgs();
- if(nm==='wellness')lWellnessPartners();if(nm==='news')lNewsFromFirestore();
- if(nm==='notifs')lNotifs();
- if(nm==='search')searchMembers();
- if(nm==='celebpages')lCelebPages();
-};
-window.setBN=function(nm){document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('on'));document.getElementById('bn-'+nm)?.classList.add('on');};
-
 // ── AUTH TAB ──
 window.sTab=function(t){
  // Hide all auth forms
@@ -3150,28 +3146,125 @@ window.filterProfileSearch=function(){
  rProfiles(allProfileMembers.filter(m=>m.name?.toLowerCase().includes(q)||m.country?.toLowerCase().includes(q)));
 };
 
-window.openMemberProfile=function(id){
+window.openMemberProfile=async function(id){
  const m=allProfileMembers.find(x=>x.id===id);if(!m)return;
  sV('memberProfile');
  const el=document.getElementById('memberProfileContent');
- const catIcons={'Music':'🎵','Film':'🎬','Sports':'⚽','Literature':'📚','Wellness':'💪','Nature':'🌿','Fashion':'👗','Food':'🍽️','Automotive':'🚗','Tech':'💻','Beauty':'💄','Leadership':'🎓'};
+ el.innerHTML=`<div class="ldr"><div class="lring"></div></div>`;
+ const catIcons={'Music':'🎵','Film':'🎬','Sports':'⚽','Literature':'📚','Wellness':'💪','Nature':'🌿','Fashion':'👗','Food':'🍽️','Automotive':'🚗','Tech':'💻','Beauty':'💄','Leadership':'🎓','Entertainment':'🎭'};
+ // Check if current user follows this member
+ let isFollowing=false;
+ let followersCount=m.followersCount||0;
+ let followingCount=m.followingCount||0;
+ try{
+  const fDoc=await getDoc(doc(db,'follows',`${cU.uid}_${id}`));
+  isFollowing=fDoc.exists();
+  // Get real counts
+  const fSnap=await getDocs(query(collection(db,'follows'),where('followingId','==',id)));
+  followersCount=fSnap.size;
+  const fgSnap=await getDocs(query(collection(db,'follows'),where('followerId','==',id)));
+  followingCount=fgSnap.size;
+ }catch{}
  el.innerHTML=`
   <div style="background:linear-gradient(135deg,var(--obs2),var(--obs3));padding:24px;text-align:center;margin-bottom:14px;border:1px solid var(--gbr);">
-   <div style="width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--obs);margin:0 auto 10px;overflow:hidden;border:3px solid var(--gbr);">${m.profilePic?`<img src="${m.profilePic}" style="width:100%;height:100%;object-fit:cover;"/>`:(m.name||'M').charAt(0)}</div>
-   <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--ch);">${m.name||'Member'} ${m.verificationStatus==='verified'?'✅':''}</div>
+   <div style="width:74px;height:74px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.9rem;font-weight:900;color:var(--obs);margin:0 auto 10px;overflow:hidden;border:3px solid ${m.verificationStatus==='verified'?'var(--ok)':'var(--gbr)'};">${m.profilePic?`<img src="${m.profilePic}" style="width:100%;height:100%;object-fit:cover;"/>`:(m.name||'M').charAt(0)}</div>
+   <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--ch);">${m.name||'Member'} ${m.verificationStatus==='verified'?'<span style="color:var(--ok);font-size:0.9rem;">✅</span>':''}</div>
    <div style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);margin-top:4px;">📍 ${m.city?m.city+', ':''}${m.country||'—'}</div>
    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--obs);background:var(--gold);padding:3px 10px;display:inline-block;margin-top:8px;">VIP ${m.tier||'Fan'}</div>
    ${m.bio?`<div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:var(--cd);margin-top:10px;line-height:1.6;">${m.bio}</div>`:''}
   </div>
-  <div class="profile-stats" style="margin-bottom:14px;">
-   <div class="profile-stat"><div class="profile-stat-num">${m.postCount||0}</div><div class="profile-stat-lbl">Posts</div></div>
-   <div class="profile-stat"><div class="profile-stat-num">${(m.categories||[]).length}</div><div class="profile-stat-lbl">Communities</div></div>
-   <div class="profile-stat"><div class="profile-stat-num">${m.likeCount||0}</div><div class="profile-stat-lbl">Likes</div></div>
+  <!-- FOLLOW STATS -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:12px;">
+   <div class="sbox" style="cursor:pointer;" onclick="showMemberFollowers('${id}')"><div class="snum">${followersCount}</div><div class="slbl">Followers</div></div>
+   <div class="sbox" style="cursor:pointer;" onclick="showMemberFollowing('${id}')"><div class="snum">${followingCount}</div><div class="slbl">Following</div></div>
+   <div class="sbox"><div class="snum">${m.postCount||0}</div><div class="slbl">Posts</div></div>
+   <div class="sbox"><div class="snum">${m.likeCount||0}</div><div class="slbl">Likes</div></div>
+  </div>
+  <!-- FOLLOW + DM BUTTONS -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+   <button id="followBtn-${id}" onclick="toggleFollow('${id}','${m.name||'Member'}')" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.1em;padding:11px;border:none;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);${isFollowing?'background:var(--obs3);color:var(--gold);border:1px solid var(--gbri);':'background:var(--gold);color:var(--obs);'}">
+    ${isFollowing?'✓ Following':'+ Follow'}
+   </button>
+   <button onclick="startDMWithUser('${m.email||''}','${m.name||'Member'}')" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.1em;padding:11px;background:transparent;border:1px solid var(--gbri);color:var(--gold);cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);">✉️ Message</button>
   </div>
   <div class="sh">Communities</div>
-  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">${(m.categories||[]).map(c=>`<div style="background:var(--gb);border:1px solid var(--gbr);padding:8px 12px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.66rem;color:var(--ch);">${catIcons[c]||'🌟'} ${c}</div>`).join('')||'<span style="color:var(--cd);font-family:\'Inter\',sans-serif;font-size:0.72rem;">No communities listed</span>'}</div>
-  <button onclick="startDMWithUser('${m.email||''}','${m.name||'Member'}')" style="width:100%;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.1em;padding:11px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);">✉️ Send Direct Message →</button>`;
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">${(m.categories||[]).map(c=>`<div style="background:var(--gb);border:1px solid var(--gbr);padding:8px 12px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.66rem;color:var(--ch);">${catIcons[c]||'🌟'} ${c}</div>`).join('')||`<span style="color:var(--cd);font-family:'Inter',sans-serif;font-size:0.72rem;">No communities listed</span>`}</div>`;
 };
+
+// ── FOLLOW / UNFOLLOW ──
+window.toggleFollow=async function(targetId,targetName){
+ const btn=document.getElementById(`followBtn-${targetId}`);
+ const followId=`${cU.uid}_${targetId}`;
+ try{
+  const fDoc=await getDoc(doc(db,'follows',followId));
+  if(fDoc.exists()){
+   // Unfollow
+   await deleteDoc(doc(db,'follows',followId));
+   await updateDoc(doc(db,'users',cU.uid),{followingCount:increment(-1)}).catch(()=>{});
+   await updateDoc(doc(db,'users',targetId),{followersCount:increment(-1)}).catch(()=>{});
+   if(btn){btn.textContent='+ Follow';btn.style.background='var(--gold)';btn.style.color='var(--obs)';}
+   toastF(`Unfollowed ${targetName}`,'success');
+  }else{
+   // Follow
+   await setDoc(doc(db,'follows',followId),{followerId:cU.uid,followerName:cD?.name||'Member',followerPic:cD?.profilePic||'',followingId:targetId,followingName:targetName,createdAt:serverTimestamp()});
+   await updateDoc(doc(db,'users',cU.uid),{followingCount:increment(1)}).catch(()=>{});
+   await updateDoc(doc(db,'users',targetId),{followersCount:increment(1)}).catch(()=>{});
+   // Send notification to followed user
+   await addDoc(collection(db,'notifications'),{userId:targetId,type:'follow',message:`${cD?.name||'A member'} started following you`,fromId:cU.uid,fromName:cD?.name||'Member',createdAt:serverTimestamp(),read:false}).catch(()=>{});
+   if(btn){btn.textContent='✓ Following';btn.style.background='var(--obs3)';btn.style.color='var(--gold)';}
+   toastF(`Now following ${targetName}! 🌟`,'success');
+  }
+  lMyProfile();// refresh own counts
+ }catch(e){toastF('Error — try again','error');console.error(e);}
+};
+
+window.showMemberFollowers=async function(id){
+ try{
+  const s=await getDocs(query(collection(db,'follows'),where('followingId','==',id)));
+  let names=[];s.forEach(d=>names.push(d.data().followerName||'Member'));
+  toastF(names.length?`Followers: ${names.slice(0,5).join(', ')}${names.length>5?` +${names.length-5} more`:''}`:' No followers yet','success');
+ }catch{toastF('Could not load followers','error');}
+};
+window.showMemberFollowing=async function(id){
+ try{
+  const s=await getDocs(query(collection(db,'follows'),where('followerId','==',id)));
+  let names=[];s.forEach(d=>names.push(d.data().followingName||'Member'));
+  toastF(names.length?`Following: ${names.slice(0,5).join(', ')}${names.length>5?` +${names.length-5} more`:''}`:' Not following anyone yet','success');
+ }catch{toastF('Could not load following','error');}
+};
+
+window.showFollowers=async function(){
+ try{
+  const s=await getDocs(query(collection(db,'follows'),where('followingId','==',cU.uid)));
+  let names=[];s.forEach(d=>names.push(d.data().followerName||'Member'));
+  toastF(names.length?`Your followers: ${names.slice(0,5).join(', ')}${names.length>5?` +${names.length-5} more`:''}`:' No followers yet. Share your profile!','success');
+ }catch{}
+};
+window.showFollowing=async function(){
+ try{
+  const s=await getDocs(query(collection(db,'follows'),where('followerId','==',cU.uid)));
+  let names=[];s.forEach(d=>names.push(d.data().followingName||'Member'));
+  toastF(names.length?`You follow: ${names.slice(0,5).join(', ')}${names.length>5?` +${names.length-5} more`:''}`:' You are not following anyone yet','success');
+ }catch{}
+};
+
+// ── LOAD MY PROFILE STATS ──
+async function lMyProfile(){
+ try{
+  const [fersSnap,fingSnap]=await Promise.all([
+   getDocs(query(collection(db,'follows'),where('followingId','==',cU.uid))),
+   getDocs(query(collection(db,'follows'),where('followerId','==',cU.uid)))
+  ]);
+  const fEl=document.getElementById('myFollowersCount');
+  const gEl=document.getElementById('myFollowingCount');
+  if(fEl)fEl.textContent=fersSnap.size;
+  if(gEl)gEl.textContent=fingSnap.size;
+  const pEl=document.getElementById('myPostCount');
+  const lEl=document.getElementById('myLikeCount');
+  if(pEl)pEl.textContent=cD?.postCount||0;
+  if(lEl)lEl.textContent=cD?.likeCount||0;
+ }catch(e){console.error(e);}
+}
 
 window.startDMWithUser=function(email,name){
  if(!email){toastF('Cannot DM this member','error');return;}
@@ -4008,10 +4101,18 @@ window.requestPayout=async function(){
 
 
 window.sV=function(nm){
+ // ALWAYS close sidebar on any navigation
+ document.getElementById('sb').classList.remove('on');
+ document.getElementById('sbOv').classList.remove('on');
+ // Switch view
  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
- document.getElementById(nm+'V').classList.add('on');
+ const target=document.getElementById(nm+'V');
+ if(target)target.classList.add('on');
+ // Clear intervals
  if(p5ChatInterval){clearInterval(p5ChatInterval);p5ChatInterval=null;}
  if(dmInterval&&nm!=='dms'){clearInterval(dmInterval);dmInterval=null;}
+ if(nm!=='groupChat'&&groupInterval){clearInterval(groupInterval);groupInterval=null;}
+ // Load view data
  if(nm==='coms')lMyComs();
  if(nm==='tb')lTB();
  if(nm==='msgs')lMsgs();
@@ -4029,30 +4130,24 @@ window.sV=function(nm){
  if(nm==='marketplace')lMarketplace();
  if(nm==='rankings')lRankings('global');
  if(nm==='monetize')lMonetize();
- // Phase 7
- if(nm==='dms'){lDMThreads();}
+ if(nm==='dms')lDMThreads();
  if(nm==='magazine')lMagazine();
  if(nm==='settings')loadSettings();
- // Phase 8
  if(nm==='livestream')lStreams();
  if(nm==='challenges')lChallenges();
  if(nm==='radio')lRadio();
  if(nm==='qa')lQASessions();
  if(nm==='achievements')lAchievements();
- // Phase 9
  if(nm==='groups')lGroups();
- if(nm==='groupChat'){} // loaded by openGroup
  if(nm==='store')lStore();
  if(nm==='tickets')lTickets();
  if(nm==='profiles')lProfiles();
- if(nm!=='groupChat'&&groupInterval){clearInterval(groupInterval);groupInterval=null;}
- // Phase 10
  if(nm==='icontv')lTV();
- if(nm==='tvPlayer'){} // loaded by openVideo
  if(nm==='birthdays')lBirthdays();
  if(nm==='fanmap')lFanMap();
  if(nm==='points')lPoints();
  if(nm==='pollsboard')lPollsBoard();
+ if(nm==='profile')lMyProfile();
 };
 window.setBN=function(nm){document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('on'));document.getElementById('bn-'+nm)?.classList.add('on');};
 window.togSB=function(){document.getElementById('sb').classList.toggle('on');document.getElementById('sbOv').classList.toggle('on');};
