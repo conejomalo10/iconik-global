@@ -1747,6 +1747,19 @@ import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,updateDoc,delete
 
 const cfg={apiKey:"AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",authDomain:"iconik-global.firebaseapp.com",projectId:"iconik-global",storageBucket:"iconik-global.firebasestorage.app",messagingSenderId:"1040054516979",appId:"1:1040054516979:web:33cd5f07ae8fc146a30b86"};
 const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app);
+
+// ── SAFE FIRESTORE FETCH — 5 second timeout, NEVER hangs ──
+async function safeGet(qRef){
+ try{
+  return await Promise.race([
+   getDocs(qRef),
+   new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),5000))
+  ]);
+ }catch(e){
+  console.warn('Firestore:',e.message);
+  return{empty:true,size:0,forEach:()=>{},docs:[]};
+ }
+}
 const CHIEF='iconikglobal01@gmail.com';
 let cU=null,cD=null,allC=[],allNews=[],selIdType='',selectedPayMethod='paypal',selectedTier='',selectedTierPrice=0;
 
@@ -1879,7 +1892,7 @@ async function lFeed(){
  const el=document.getElementById('feedP');
  try{
   const q=query(collection(db,'posts'),limit(20));
-  const s=await getDocs(q);document.getElementById('sPo').textContent=s.size;
+  const s=await safeGet(q);document.getElementById('sPo').textContent=s.size;
   if(s.empty){el.innerHTML=`<div class="pcard"><p style="font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--cd);text-align:center;padding:14px;">No posts yet — be the first to post! 🌟</p></div>`;return;}
   el.innerHTML='';
   s.forEach(d=>{
@@ -2041,7 +2054,7 @@ async function lComments(postId){
  const el=document.getElementById(`commentsList-${postId}`);
  try{
   const q=query(collection(db,'posts',postId,'comments'),limit(20));
-  const s=await getDocs(q);
+  const s=await safeGet(q);
   el.innerHTML='';
   s.forEach(d=>{const c=d.data();el.innerHTML+=`<div class="comment"><div class="comment-av">${(c.name||'M').charAt(0)}</div><div class="comment-body"><div class="comment-name">${c.name||'Member'}</div><div class="comment-text">${c.text}</div></div></div>`;});
  }catch{}
@@ -2071,7 +2084,7 @@ window.sharePost=function(postId,preview){
 // ── CELEBS ──
 async function lCelebs(){
  try{
-  const s=await getDocs(collection(db,'celebrities'));
+  const s=await safeGet(collection(db,'celebrities'));
   allC=[];s.forEach(d=>allC.push({id:d.id,...d.data()}));
   document.getElementById('sIco').textContent=allC.length;
   rAll();
@@ -2098,7 +2111,7 @@ window.fCl=function(){const q=document.getElementById('cSrch').value.toLowerCase
 // ── CELEBRITY NEWS (from Firestore + static fallback) ──
 async function lNewsFromFirestore(){
  try{
-  const s=await getDocs(query(collection(db,'celebrityNews'),limit(20)));
+  const s=await safeGet(query(collection(db,'celebrityNews'),limit(20)));
   if(!s.empty){
    allNews=[];
    const arr=[];s.forEach(d=>arr.push({id:d.id,...d.data()}));
@@ -2122,16 +2135,34 @@ async function lNewsFromFirestore(){
 
 function rNews(news){
  const el=document.getElementById('newsFeed');
- el.innerHTML=news.map(n=>`
-  <div class="news-card">
+ el.innerHTML=news.map((n,i)=>`
+  <div class="news-card" onclick="openNewsItem(${i})" style="cursor:pointer;">
    <div class="news-thumb">${n.icon||'📰'}</div>
    <div class="news-content">
     <div class="news-cat">${n.category||'ICONIK NEWS'}</div>
     <div class="news-title">${n.title}</div>
     <div class="news-meta">${n.time||''} ${n.source?'· '+n.source:''}</div>
    </div>
+   <div style="margin-left:auto;color:var(--cd);font-size:0.9rem;flex-shrink:0;">›</div>
   </div>`).join('');
 }
+
+window.openNewsItem=function(idx){
+ const n=allNews[idx];if(!n)return;
+ // Show full article in a modal overlay
+ const overlay=document.createElement('div');
+ overlay.style.cssText='position:fixed;inset:0;background:rgba(7,7,13,0.96);z-index:9999;overflow-y:auto;padding:20px;';
+ overlay.innerHTML=`
+  <div style="max-width:480px;margin:0 auto;">
+   <button onclick="this.closest('[style]').remove()" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.1em;padding:8px 14px;background:transparent;border:1px solid var(--gbr);color:var(--cd);cursor:pointer;margin-bottom:16px;">← Back to News</button>
+   ${n.imageUrl?`<img src="${n.imageUrl}" style="width:100%;max-height:220px;object-fit:cover;margin-bottom:14px;border-radius:4px;" onerror="this.style.display='none'"/>`:`<div style="text-align:center;font-size:3rem;margin-bottom:14px;">${n.icon||'📰'}</div>`}
+   <div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.14em;color:var(--gold);margin-bottom:8px;">${n.category||'ICONIK NEWS'} · ${n.time||''}</div>
+   <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--ch);line-height:1.3;margin-bottom:14px;">${n.title}</div>
+   <div style="font-family:'Inter',sans-serif;font-size:0.78rem;color:var(--cd);line-height:1.8;">${n.summary||n.content||'Full article content coming soon. Admin can add full content from the Admin Panel under Celebrity News.'}</div>
+   ${n.source?`<div style="font-family:'Inter',sans-serif;font-size:0.64rem;color:rgba(189,181,166,0.4);margin-top:14px;">Source: ${n.source}</div>`:''}
+  </div>`;
+ document.body.appendChild(overlay);
+};
 window.filterNews=function(cat,btn){
  document.querySelectorAll('.news-filter-btn').forEach(b=>{b.style.background='transparent';b.style.color='var(--cd)';b.style.border='1px solid var(--gbr)';});
  btn.style.background='var(--gold)';btn.style.color='var(--obs)';btn.style.border='1px solid var(--gold)';
@@ -2149,7 +2180,7 @@ async function lTB(){
  const el=document.getElementById('tbList');
  el.innerHTML=`<div class="ldr"><div class="lring"></div></div>`;
  try{
-  const s=await getDocs(query(collection(db,'tourbuddy'),limit(20)));
+  const s=await safeGet(query(collection(db,'tourbuddy'),limit(20)));
   if(s.empty){el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;padding:12px;">No tour buddy requests yet. Be the first! 🎫</p></div>`;return;}
   const arr=[];s.forEach(d=>arr.push({id:d.id,...d.data()}));
   arr.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
@@ -2159,14 +2190,14 @@ async function lTB(){
 
 // ── MESSAGES ──
 async function lMsgsCheck(){
- try{const s=await getDocs(query(collection(db,'messages'),limit(5)));if(!s.empty)document.getElementById('msgBadge').style.display='inline-block';}catch{}
+ try{const s=await safeGet(query(collection(db,'messages'),limit(5)));if(!s.empty)document.getElementById('msgBadge').style.display='inline-block';}catch{}
 }
 async function lMsgs(){
  const el=document.getElementById('msgsList');
  el.innerHTML=`<div class="ldr"><div class="lring"></div></div>`;
  try{
   document.getElementById('msgBadge').style.display='none';
-  const s=await getDocs(query(collection(db,'messages'),limit(30)));
+  const s=await safeGet(query(collection(db,'messages'),limit(30)));
   if(s.empty){el.innerHTML=`<div class="msg-card"><p style="font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--cd);text-align:center;padding:12px;">No messages yet. Admin will reach out when needed. 📩</p></div>`;return;}
   const msgs=[];s.forEach(d=>msgs.push({id:d.id,...d.data()}));
   msgs.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
@@ -2177,12 +2208,39 @@ async function lMsgs(){
 
 // ── WELLNESS ──
 window.showWellnessCat=function(cat){
- const names={fitness:'Fitness & Training',nutrition:'Nutrition & Diet',mental:'Mental Wellness',herbal:'Herbal & Natural',antiaging:'Anti-Aging & Beauty',medical:'Medical Wellness',recovery:'Sports Recovery',womens:"Women's Health"};
- toastF(`${names[cat]} community coming soon! Stay tuned. 💪`,'success');
+ const content={
+  fitness:{title:'Fitness & Training',icon:'🏋️',text:'Build strength, endurance and athletic performance. Top coaches, workout plans and fitness icons from around the world. Follow certified trainers and get inspired by the world\'s fittest athletes.'},
+  nutrition:{title:'Nutrition & Diet',icon:'🥗',text:'Science-backed nutrition advice, meal plans and dietary guidance. Connect with certified nutritionists and dietitians. Discover the eating habits of elite performers and wellness icons.'},
+  mental:{title:'Mental Wellness',icon:'🧘',text:'Mindfulness, meditation and mental health awareness. Reduce stress, improve focus and build resilience. Follow psychologists, therapists and mindfulness coaches making a difference globally.'},
+  herbal:{title:'Herbal & Natural',icon:'🌿',text:'Traditional and herbal remedies, natural health practices and holistic wellness. Connect with herbalists, naturopaths and natural health advocates around the world.'},
+  antiaging:{title:'Anti-Aging & Beauty',icon:'✨',text:'Skincare science, anti-aging treatments and beauty wellness. Follow dermatologists, estheticians and beauty icons who are redefining how we age gracefully.'},
+  medical:{title:'Medical Wellness',icon:'🏥',text:'Expert medical guidance, health education and preventive care. Connect with doctors, surgeons and medical professionals who share knowledge to keep communities healthy.'},
+  recovery:{title:'Sports Recovery',icon:'💆',text:'Recovery science for athletes — physiotherapy, sports massage, sleep optimization and injury prevention. Follow the recovery specialists trusted by elite athletes worldwide.'},
+  womens:{title:"Women's Health",icon:'👩',text:"Dedicated women's health community — reproductive health, hormonal balance, fitness and nutrition tailored for women. Connect with women's health specialists and advocates worldwide."},
+ };
+ const c=content[cat]||{title:cat,icon:'💪',text:'Content coming soon. Admin adds wellness partners and content from the Admin Panel.'};
+ const overlay=document.createElement('div');
+ overlay.style.cssText='position:fixed;inset:0;background:rgba(7,7,13,0.96);z-index:9999;overflow-y:auto;padding:20px;';
+ overlay.innerHTML=`
+  <div style="max-width:480px;margin:0 auto;">
+   <button onclick="this.closest('[style]').remove()" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.1em;padding:8px 14px;background:transparent;border:1px solid var(--gbr);color:var(--cd);cursor:pointer;margin-bottom:16px;">← Back</button>
+   <div style="text-align:center;font-size:3rem;margin-bottom:12px;">${c.icon}</div>
+   <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--ch);text-align:center;margin-bottom:14px;">${c.title}</div>
+   <div style="font-family:'Inter',sans-serif;font-size:0.78rem;color:var(--cd);line-height:1.8;margin-bottom:20px;">${c.text}</div>
+   <div id="wellnessCatContent"><div class="ldr"><div class="lring"></div></div></div>
+  </div>`;
+ document.body.appendChild(overlay);
+ // Load wellness partners for this category
+ safeGet(query(collection(db,'wellnessPartners'),limit(10))).then(s=>{
+  const el=overlay.querySelector('#wellnessCatContent');
+  if(s.empty){el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:12px;">Wellness coaches for ${c.title} coming soon! 💪</p></div>`;return;}
+  el.innerHTML='';s.forEach(d=>{const p=d.data();if(p.category===cat||!p.category)el.innerHTML+=`<div class="pcard"><div class="ph"><div class="pav">${(p.name||'W').charAt(0)}</div><div><div class="pau">${p.name}</div><div class="pt">${p.specialty||''}</div></div></div><div class="pbody">${p.bio||''}</div></div>`;});
+  if(!el.innerHTML)el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:12px;">No coaches listed yet for ${c.title}. Check back soon! 💪</p></div>`;
+ });
 };
 async function lWellnessPartners(){
  const el=document.getElementById('wellnessPartners');
- try{const s=await getDocs(collection(db,'wellnessPartners'));if(s.empty){el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;padding:12px;">Wellness partners coming soon! Admin adds verified coaches & products. 💪</p></div>`;return;}el.innerHTML='';s.forEach(d=>{const p=d.data();el.innerHTML+=`<div class="pcard"><div class="ph"><div class="pav">${(p.name||'W').charAt(0)}</div><div><div class="pau">${p.name}</div><div class="pt">${p.specialty||''} · ${p.country||''}</div></div></div><div class="pbody">${p.bio||''}</div></div>`;});}
+ try{const s=await safeGet(collection(db,'wellnessPartners'));if(s.empty){el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;padding:12px;">Wellness partners coming soon! Admin adds verified coaches & products. 💪</p></div>`;return;}el.innerHTML='';s.forEach(d=>{const p=d.data();el.innerHTML+=`<div class="pcard"><div class="ph"><div class="pav">${(p.name||'W').charAt(0)}</div><div><div class="pau">${p.name}</div><div class="pt">${p.specialty||''} · ${p.country||''}</div></div></div><div class="pbody">${p.bio||''}</div></div>`;});}
  catch{el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:12px;">Wellness Hub loading... 💪</p></div>`;}
 }
 
@@ -2311,11 +2369,11 @@ async function lNotifs(){
   const notifs=[];
   // Load follow notifications + messages without orderBy
   try{
-   const nSnap=await getDocs(query(collection(db,'notifications'),limit(50)));// filter client-side
+   const nSnap=await safeGet(query(collection(db,'notifications'),limit(50)));// filter client-side
    nSnap.forEach(d=>{const n=d.data();if(n.userId&&n.userId!==cU.uid)return;notifs.push({icon:'🔔',title:n.message||'New notification',body:n.fromName?`From ${n.fromName}`:'',time:n.createdAt?.toDate?n.createdAt.toDate().toLocaleDateString():'Recently',type:n.type||'notif'});});
   }catch{}
   try{
-   const msgSnap=await getDocs(query(collection(db,'messages'),limit(5)));
+   const msgSnap=await safeGet(query(collection(db,'messages'),limit(5)));
    const msgs=[];msgSnap.forEach(d=>msgs.push(d.data()));
    msgs.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
    msgs.slice(0,3).forEach(m=>notifs.unshift({icon:'📩',title:`Message from ${m.fromName||'Admin'}`,body:m.subject||m.content?.substring(0,60)||'',time:m.createdAt?.toDate?m.createdAt.toDate().toLocaleDateString():'Recently',type:'message'}));
@@ -2340,7 +2398,7 @@ async function lNotifs(){
 }
 
 async function checkNotifs(){
- try{const s=await getDocs(query(collection(db,'messages'),limit(1)));if(!s.empty){document.getElementById('notifDot').style.display='block';document.getElementById('notifBadgeSB').style.display='inline-block';}}catch{}
+ try{const s=await safeGet(query(collection(db,'messages'),limit(1)));if(!s.empty){document.getElementById('notifDot').style.display='block';document.getElementById('notifBadgeSB').style.display='inline-block';}}catch{}
 }
 
 // ── MEMBER SEARCH ──
@@ -2351,7 +2409,7 @@ async function loadAllMembers(){
  if(membersLoading)return;
  membersLoading=true;
  try{
-  const s=await getDocs(collection(db,'users'));
+  const s=await safeGet(collection(db,'users'));
   allMembersCache=[];
   s.forEach(d=>allMembersCache.push({id:d.id,...d.data()}));
  }catch(e){console.error('Members load error:',e);}
@@ -2398,7 +2456,7 @@ let allCelebsCache=[];
 async function lCelebPages(){
  const el=document.getElementById('celebPagesList');
  try{
-  const s=await getDocs(collection(db,'celebrities'));
+  const s=await safeGet(collection(db,'celebrities'));
   allCelebsCache=[];s.forEach(d=>allCelebsCache.push({id:d.id,...d.data()}));
   rCelebPages(allCelebsCache);
  }catch{el.innerHTML=`<div style="text-align:center;padding:22px;color:var(--cd);">Celebrity pages coming soon! ⭐</div>`;}
@@ -2434,7 +2492,7 @@ window.openCelebPage=async function(celebId){
  try{
   const c=allCelebsCache.find(x=>x.id===celebId)||{};
   // Get posts without orderBy
-  const postsSnap=await getDocs(query(collection(db,'posts'),limit(20)));
+  const postsSnap=await safeGet(query(collection(db,'posts'),limit(20)));
   const catPosts=[];
   postsSnap.forEach(d=>{const p=d.data();if(p.category===c.category||p.title?.toLowerCase().includes((c.name||'').toLowerCase()))catPosts.push({id:d.id,...p});});
   catPosts.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
@@ -2512,7 +2570,7 @@ window.switchChat=function(room,btn){
 async function lChat(){
  const el=document.getElementById('chatRoom');
  try{
-  const s=await getDocs(query(collection(db,'chat_'+currentChatRoom),limit(60)));
+  const s=await safeGet(query(collection(db,'chat_'+currentChatRoom),limit(60)));
   el.innerHTML='';
   if(s.empty){el.innerHTML=`<div style="text-align:center;padding:20px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;">No messages yet. Start the conversation! 💬</div>`;return;}
   const msgs=[];s.forEach(d=>msgs.push({id:d.id,...d.data()}));
@@ -2549,7 +2607,7 @@ window.sendChat=async function(){
 async function lVIPChat(){
  const el=document.getElementById('vipChatRoom');
  try{
-  const s=await getDocs(query(collection(db,'chat_vip'),limit(40)));
+  const s=await safeGet(query(collection(db,'chat_vip'),limit(40)));
   const msgs=[];s.forEach(d=>msgs.push({id:d.id,...d.data()}));
   msgs.sort((a,b)=>(a.createdAt?.seconds||0)-(b.createdAt?.seconds||0));
   el.innerHTML='';
@@ -2577,22 +2635,20 @@ let allEvents=[];
 async function lEvents(){
  const el=document.getElementById('eventsList');
  el.innerHTML=`<div class="ldr"><div class="lring"></div></div>`;
- try{
-  const s=await getDocs(query(collection(db,'events'),limit(20)));
-  if(!s.empty){
-   allEvents=[];s.forEach(d=>allEvents.push({id:d.id,...d.data()}));
-   allEvents.sort((a,b)=>(a.eventDate||'').localeCompare(b.eventDate||''));
-   rEvents(allEvents);return;
-  }
- }catch{}
- // Static fallback events
+ const s=await safeGet(query(collection(db,'events'),limit(20)));
+ if(!s.empty){
+  allEvents=[];s.forEach(d=>allEvents.push({id:d.id,...d.data()}));
+  allEvents.sort((a,b)=>(a.eventDate||'').localeCompare(b.eventDate||''));
+  rEvents(allEvents);return;
+ }
+ // Static fallback — always shows
  allEvents=[
-  {name:'Bad Bunny — Debí Tirar Más Fotos World Tour',venue:'Madison Square Garden, New York',eventDate:'2026-05-15',type:'concert',price:'$85',icon:'🎵',category:'Music',description:'The most anticipated Latin music event of 2026. Experience Bad Bunny live in concert.'},
-  {name:'Champions League Final 2026',venue:'Wembley Stadium, London',eventDate:'2026-06-01',type:'sports',price:'$120',icon:'⚽',category:'Sports',description:'The biggest club football match in the world. Witness history live at Wembley.'},
-  {name:'Met Gala Fan Experience',venue:'Metropolitan Museum, New York',eventDate:'2026-05-05',type:'fanmeet',price:'$45',icon:'👗',category:'Fashion',description:'Get exclusive behind-the-scenes access to the world\'s most iconic fashion event.'},
-  {name:'K-Pop World Festival',venue:'Seoul Olympic Stadium',eventDate:'2026-07-20',type:'concert',price:'$60',icon:'🎤',category:'Music',description:'Celebrate the global K-Pop phenomenon with the biggest stars from South Korea and beyond.'},
-  {name:'ICONIK Fan Meet & Greet',venue:'Virtual + Global Chapters',eventDate:'2026-08-10',type:'fanmeet',price:'Free',icon:'🌍',category:'All',description:'Connect with ICONIK fans from around the world. Virtual and in-person chapters simultaneously.'},
-  {name:'Formula 1 — Monaco Grand Prix',venue:'Circuit de Monaco',eventDate:'2026-05-28',type:'sports',price:'$200',icon:'🏎️',category:'Sports',description:'The crown jewel of Formula 1. Experience the most glamorous race weekend on the calendar.'},
+  {name:'Bad Bunny — Debí Tirar Más Fotos World Tour',venue:'Madison Square Garden, New York',eventDate:'2026-05-15',type:'concert',price:'$85',icon:'🎵',category:'Music',description:'The most anticipated Latin music event of 2026.'},
+  {name:'Champions League Final 2026',venue:'Wembley Stadium, London',eventDate:'2026-06-01',type:'sports',price:'$120',icon:'⚽',category:'Sports',description:'The biggest club football match in the world.'},
+  {name:'Met Gala Fan Experience',venue:'Metropolitan Museum, New York',eventDate:'2026-05-05',type:'fanmeet',price:'$45',icon:'👗',category:'Fashion',description:'Exclusive behind-the-scenes access to the world\'s most iconic fashion event.'},
+  {name:'K-Pop World Festival',venue:'Seoul Olympic Stadium',eventDate:'2026-07-20',type:'concert',price:'$60',icon:'🎤',category:'Music',description:'Celebrate the global K-Pop phenomenon.'},
+  {name:'ICONIK Fan Meet & Greet',venue:'Virtual + Global Chapters',eventDate:'2026-08-10',type:'fanmeet',price:'Free',icon:'🌍',category:'All',description:'Connect with ICONIK fans from around the world.'},
+  {name:'Formula 1 — Monaco Grand Prix',venue:'Circuit de Monaco',eventDate:'2026-05-28',type:'sports',price:'$200',icon:'🏎️',category:'Sports',description:'The crown jewel of Formula 1.'},
  ];
  rEvents(allEvents);
 }
@@ -2634,7 +2690,7 @@ async function lVIPContent(){
  if(!isVIP)return;
  const el=document.getElementById('vipContentList');
  try{
-  const s=await getDocs(query(collection(db,'vipContent'),limit(15)));
+  const s=await safeGet(query(collection(db,'vipContent'),limit(15)));
   if(!s.empty){
    el.innerHTML='';
    s.forEach(d=>{const c=d.data();el.innerHTML+=`<div class="vip-content-card"><div class="vip-content-type">👑 ${c.type||'EXCLUSIVE'}</div><div class="vip-content-title">${c.title||''}</div><div class="vip-content-body">${c.content||''}</div></div>`;});
@@ -2677,7 +2733,7 @@ async function lReferralData(){
  try{
   buildReferralLink();
   const q=query(collection(db,'referrals'),limit(100));
-  const s=await getDocs(q);
+  const s=await safeGet(q);
   document.getElementById('refTotal').textContent=s.size;
   let joined=0;s.forEach(d=>{if(d.data().status==='joined')joined++;});
   document.getElementById('refJoined').textContent=joined;
@@ -2714,7 +2770,7 @@ window.shareApp=function(){
 let allVideos=[];
 async function lTV(){
  try{
-  const s=await getDocs(query(collection(db,'iconikTV'),limit(20)));
+  const s=await safeGet(query(collection(db,'iconikTV'),limit(20)));
   if(!s.empty){allVideos=[];s.forEach(d=>allVideos.push({id:d.id,...d.data()}));rTV(allVideos);return;}
  }catch{}
  allVideos=[
@@ -2775,7 +2831,7 @@ async function lBirthdays(){
  const todayMD=`${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
  const thisMonth=String(now.getMonth()+1).padStart(2,'0');
  try{
-  const s=await getDocs(collection(db,'celebrities'));
+  const s=await safeGet(collection(db,'celebrities'));
   let celebs=[];s.forEach(d=>celebs.push({id:d.id,...d.data()}));
   // If no birthdays stored, use static
   if(celebs.every(c=>!c.birthday)){
@@ -2818,7 +2874,7 @@ window.wishBirthday=async function(name){
 // ── GLOBAL FAN MAP ──
 async function lFanMap(){
  try{
-  const s=await getDocs(collection(db,'users'));
+  const s=await safeGet(collection(db,'users'));
   const countries={},continents={Africa:0,Asia:0,Europe:0,'North America':0,'South America':0,Oceania:0,Other:0};
   const continentMap={Nigeria:'Africa',Ghana:'Africa',Kenya:'Africa','South Africa':'Africa',Egypt:'Africa',Ethiopia:'Africa',Tanzania:'Africa',Uganda:'Africa',Senegal:'Africa','Côte d\'Ivoire':'Africa',Cameroon:'Africa',Zimbabwe:'Africa',Rwanda:'Africa',Angola:'Africa',Mozambique:'Africa',USA:'North America','United States':'North America',Canada:'North America',Mexico:'North America',Jamaica:'North America','Trinidad and Tobago':'North America',Brazil:'South America',Argentina:'South America',Colombia:'South America',Chile:'South America',Venezuela:'South America',Peru:'South America',UK:'Europe','United Kingdom':'Europe',France:'Europe',Germany:'Europe',Italy:'Europe',Spain:'Europe',Portugal:'Europe',Netherlands:'Europe',Belgium:'Europe',Sweden:'Europe',Norway:'Europe',Switzerland:'Europe',Russia:'Europe',Poland:'Europe',China:'Asia',Japan:'Asia','South Korea':'Asia',India:'Asia',Indonesia:'Asia',Philippines:'Asia',Vietnam:'Asia',Thailand:'Asia',Pakistan:'Asia',Bangladesh:'Asia','Saudi Arabia':'Asia',UAE:'Asia',Qatar:'Asia',Turkey:'Asia',Iran:'Asia',Australia:'Oceania','New Zealand':'Oceania'};
   let total=0;
@@ -2905,11 +2961,11 @@ window.redeemPoints=async function(item,cost,balance){
 async function lPollsBoard(){
  try{
   // Most active voters
-  const q=await getDocs(collection(db,'polls'));
+  const q=await safeGet(collection(db,'polls'));
   const voterCount={};
   q.forEach(d=>{const votes=d.data().votes||{};Object.keys(votes).forEach(uid=>{voterCount[uid]=(voterCount[uid]||0)+1;});});
   const topVoters=Object.entries(voterCount).sort((a,b)=>b[1]-a[1]).slice(0,10);
-  const usersSnap=await getDocs(collection(db,'users'));
+  const usersSnap=await safeGet(collection(db,'users'));
   const userMap={};usersSnap.forEach(d=>userMap[d.id]={name:d.data().name||'Member',tier:d.data().tier||'Fan'});
   const medals=['🥇','🥈','🥉'];
   document.getElementById('pollVotersBoard').innerHTML=topVoters.length?topVoters.map(([uid,cnt],i)=>`
@@ -2920,7 +2976,7 @@ async function lPollsBoard(){
     <div style="text-align:right;"><div class="rank-score">${cnt}</div><div class="rank-score-lbl">votes</div></div>
    </div>`).join(''):`<div style="text-align:center;padding:16px;color:var(--cd);">No votes recorded yet 🗳️</div>`;
   // Poll results summary
-  const pollsSnap=await getDocs(query(collection(db,'polls'),limit(10)));
+  const pollsSnap=await safeGet(query(collection(db,'polls'),limit(10)));
   let pollsHtml='';
   if(!pollsSnap.empty){
    pollsSnap.forEach(d=>{
@@ -2968,7 +3024,7 @@ window.createGroup=async function(){
 async function lGroups(){
  try{
   // Simple query without compound index
-  const s=await getDocs(query(collection(db,'fanGroups'),limit(30)));
+  const s=await safeGet(query(collection(db,'fanGroups'),limit(30)));
   let groups=[];
   if(!s.empty){
    s.forEach(d=>groups.push({id:d.id,...d.data()}));
@@ -3032,7 +3088,7 @@ async function lGroupMessages(groupId){
  const el=document.getElementById('groupMessages');
  try{
   const q=query(collection(db,'fanGroups',groupId,'messages'),limit(60));
-  const s=await getDocs(q);
+  const s=await safeGet(q);
   const wasBottom=el.scrollHeight-el.scrollTop<=el.clientHeight+50;
   el.innerHTML='';
   if(s.empty){el.innerHTML=`<div style="text-align:center;padding:16px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.72rem;">No messages yet. Start the conversation! 👥</div>`;return;}
@@ -3060,7 +3116,7 @@ window.sendGroupMsg=async function(){
 let allStoreItems=[];
 async function lStore(){
  try{
-  const s=await getDocs(collection(db,'marketplace'));
+  const s=await safeGet(collection(db,'marketplace'));
   if(!s.empty){allStoreItems=[];s.forEach(d=>allStoreItems.push({id:d.id,...d.data()}));rStore(allStoreItems);return;}
  }catch{}
  allStoreItems=[
@@ -3103,7 +3159,7 @@ async function lTickets(){
  // Bookable events
  const bEl=document.getElementById('bookableEvents');
  try{
-  const s=await getDocs(query(collection(db,'events'),limit(15)));
+  const s=await safeGet(query(collection(db,'events'),limit(15)));
   let events=[];
   if(!s.empty)s.forEach(d=>events.push({id:d.id,...d.data()}));
   else events=[
@@ -3151,7 +3207,7 @@ async function lMyBookings(){
  const el=document.getElementById('myBookings');
  try{
   const q=query(collection(db,'bookings'),limit(50));// filter client-side
-  const s=await getDocs(q);
+  const s=await safeGet(q);
   if(s.empty){el.innerHTML=`<div style="text-align:center;padding:14px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.72rem;">No bookings yet. Book your first event above! 🎫</div>`;return;}
   el.innerHTML='';
   s.forEach(d=>{const b=d.data(),t=b.bookedAt?.toDate?b.bookedAt.toDate().toLocaleDateString():'—';el.innerHTML+=`<div class="booking-card"><div class="booking-ref">Ref: ${b.bookingRef||'—'}</div><div class="booking-event">${b.eventName}</div><div class="booking-detail">${b.qty||1} ticket(s) · ${b.totalPrice||b.price||'—'} · Booked ${t}</div></div>`;});
@@ -3236,9 +3292,9 @@ window.openMemberProfile=async function(id){
   const fDoc=await getDoc(doc(db,'follows',`${cU.uid}_${id}`));
   isFollowing=fDoc.exists();
   // Get real counts
-  const fSnap=await getDocs(query(collection(db,'follows'),where('followingId','==',id)));
+  const fSnap=await safeGet(query(collection(db,'follows'),where('followingId','==',id)));
   followersCount=fSnap.size;
-  const fgSnap=await getDocs(query(collection(db,'follows'),where('followerId','==',id)));
+  const fgSnap=await safeGet(query(collection(db,'follows'),where('followerId','==',id)));
   followingCount=fgSnap.size;
  }catch{}
  el.innerHTML=`
@@ -3296,14 +3352,14 @@ window.toggleFollow=async function(targetId,targetName){
 
 window.showMemberFollowers=async function(id){
  try{
-  const s=await getDocs(query(collection(db,'follows'),where('followingId','==',id)));
+  const s=await safeGet(query(collection(db,'follows'),where('followingId','==',id)));
   let names=[];s.forEach(d=>names.push(d.data().followerName||'Member'));
   toastF(names.length?`Followers: ${names.slice(0,5).join(', ')}${names.length>5?` +${names.length-5} more`:''}`:' No followers yet','success');
  }catch{toastF('Could not load followers','error');}
 };
 window.showMemberFollowing=async function(id){
  try{
-  const s=await getDocs(query(collection(db,'follows'),where('followerId','==',id)));
+  const s=await safeGet(query(collection(db,'follows'),where('followerId','==',id)));
   let names=[];s.forEach(d=>names.push(d.data().followingName||'Member'));
   toastF(names.length?`Following: ${names.slice(0,5).join(', ')}${names.length>5?` +${names.length-5} more`:''}`:' Not following anyone yet','success');
  }catch{toastF('Could not load following','error');}
@@ -3311,14 +3367,14 @@ window.showMemberFollowing=async function(id){
 
 window.showFollowers=async function(){
  try{
-  const s=await getDocs(query(collection(db,'follows'),where('followingId','==',cU.uid)));
+  const s=await safeGet(query(collection(db,'follows'),where('followingId','==',cU.uid)));
   let names=[];s.forEach(d=>names.push(d.data().followerName||'Member'));
   toastF(names.length?`Your followers: ${names.slice(0,5).join(', ')}${names.length>5?` +${names.length-5} more`:''}`:' No followers yet. Share your profile!','success');
  }catch{}
 };
 window.showFollowing=async function(){
  try{
-  const s=await getDocs(query(collection(db,'follows'),where('followerId','==',cU.uid)));
+  const s=await safeGet(query(collection(db,'follows'),where('followerId','==',cU.uid)));
   let names=[];s.forEach(d=>names.push(d.data().followingName||'Member'));
   toastF(names.length?`You follow: ${names.slice(0,5).join(', ')}${names.length>5?` +${names.length-5} more`:''}`:' You are not following anyone yet','success');
  }catch{}
@@ -3355,7 +3411,7 @@ window.startDMWithUser=function(email,name){
 // ── LIVE STREAMS ──
 async function lStreams(){
  try{
-  const s=await getDocs(collection(db,'livestreams'));
+  const s=await safeGet(collection(db,'livestreams'));
   let live=[],upcoming=[],past=[];
   s.forEach(d=>{const x={id:d.id,...d.data()};if(x.status==='live')live.push(x);else if(x.status==='upcoming')upcoming.push(x);else past.push(x);});
   // Static fallback
@@ -3391,7 +3447,7 @@ window.remindStream=async function(title){
 // ── FAN CHALLENGES ──
 async function lChallenges(){
  try{
-  const s=await getDocs(query(collection(db,'fanChallenges'),limit(15)));
+  const s=await safeGet(query(collection(db,'fanChallenges'),limit(15)));
   let challenges=[];
   if(!s.empty)s.forEach(d=>challenges.push({id:d.id,...d.data()}));
   else challenges=[
@@ -3433,7 +3489,7 @@ async function lChallengeBoard(){
  const el=document.getElementById('challengeBoard');
  try{
   const q=query(collection(db,'challengeEntries'),limit(15));
-  const s=await getDocs(q);
+  const s=await safeGet(q);
   if(s.empty){el.innerHTML=`<div style="text-align:center;padding:16px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.72rem;">No entries yet — be the first! ⚡</div>`;return;}
   el.innerHTML='';const medals=['🥇','🥈','🥉'];
   s.docs.forEach((d,i)=>{const e=d.data();el.innerHTML+=`<div class="rank-card ${i<3?['top1','top2','top3'][i]:''}"><div class="rank-num">${i<3?medals[i]:`#${i+1}`}</div><div class="rank-info"><div class="rank-name">${e.userName||'Member'}</div><div class="rank-meta">${(e.entry||'').substring(0,50)}...</div></div><div style="text-align:right;"><div class="rank-score">${e.votes||0}</div><div class="rank-score-lbl">votes</div></div></div>`;});
@@ -3484,7 +3540,7 @@ window.prevTrack=function(){playStation((currentStation-1+STATIONS.length)%STATI
 async function lPodcasts(){
  const el=document.getElementById('podcastList');
  try{
-  const s=await getDocs(query(collection(db,'podcasts'),limit(10)));
+  const s=await safeGet(query(collection(db,'podcasts'),limit(10)));
   if(!s.empty){el.innerHTML='';s.forEach(d=>{const p=d.data();el.innerHTML+=`<div class="pcard" style="cursor:pointer;" onclick="toastF('Playing: ${p.title||'Podcast'} 🎙️','success')"><div class="ph"><div class="pav">🎙️</div><div><div class="pau">${p.title||'ICONIK Podcast'}</div><div class="pt">${p.duration||'30 min'} · ${p.host||'ICONIK'}</div></div></div></div>`;});return;}
  }catch{}
  el.innerHTML=['🎙️ ICONIK Weekly — Fan Culture Roundup · 45 min','🎤 Music Icons Deep Dive — Bad Bunny Special · 60 min','⚽ Sports Legends — Greatest Fan Moments · 38 min','🌍 Global Fans — Community Stories Worldwide · 42 min'].map(p=>`<div class="pcard" style="cursor:pointer;" onclick="toastF('Playing podcast 🎙️','success')"><div class="ph"><div class="pav">🎙️</div><div><div class="pau">${p.split('·')[0]}</div><div class="pt">${p.split('·')[1]?.trim()||''}</div></div></div></div>`).join('');
@@ -3494,7 +3550,7 @@ async function lPodcasts(){
 async function lQASessions(){
  const el=document.getElementById('qaSessionsList');
  try{
-  const s=await getDocs(query(collection(db,'qaSessions'),limit(10)));
+  const s=await safeGet(query(collection(db,'qaSessions'),limit(10)));
   let sessions=[];
   if(!s.empty)s.forEach(d=>sessions.push({id:d.id,...d.data()}));
   else sessions=[
@@ -3531,7 +3587,7 @@ async function lTopQuestions(){
  const el=document.getElementById('topQuestions');
  try{
   const q=query(collection(db,'qaQuestions'),limit(15));
-  const s=await getDocs(q);
+  const s=await safeGet(q);
   if(s.empty){el.innerHTML=`<div style="text-align:center;padding:16px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.72rem;">No questions yet. Be the first to ask! 🎙️</div>`;return;}
   el.innerHTML='';
   s.forEach(d=>{const q=d.data();el.innerHTML+=`<div class="pcard"><div class="qa-q">❓ ${q.question}<br/><span style="font-family:'Inter',sans-serif;font-size:0.58rem;color:rgba(189,181,166,0.4);">Asked by ${q.askerName||'Member'}</span></div>${q.answer?`<div class="qa-a">💬 ${q.answer}</div>`:''}<button class="qa-vote" onclick="voteQuestion('${d.id}')">👍 ${q.votes||0} votes · Upvote</button></div>`;});
@@ -3676,7 +3732,7 @@ async function lDMThreads(){
  const el=document.getElementById('dmList');
  try{
   // Simple query without compound index requirement
-  const s=await getDocs(query(collection(db,'dms'),limit(50)));
+  const s=await safeGet(query(collection(db,'dms'),limit(50)));
   // Filter client-side for threads involving this user
   const myThreads=[];
   s.forEach(d=>{const t=d.data();if((t.participants||[]).includes(cU.uid))myThreads.push({id:d.id,...t});});
@@ -3712,7 +3768,7 @@ window.startDM=async function(){
  if(!to||!msg){toastF('Recipient and message required','error');return;}
  try{
   // Find recipient
-  const usersSnap=await getDocs(query(collection(db,'users'),where('email','==',to)));
+  const usersSnap=await safeGet(query(collection(db,'users'),where('email','==',to)));
   let recipientId=null,recipientName=to;
   if(!usersSnap.empty){const r=usersSnap.docs[0];recipientId=r.id;recipientName=r.data().name||to;}
   else{toastF('Member not found. Try their exact email address.','error');return;}
@@ -3760,7 +3816,7 @@ async function lDMMessages(threadId){
  const el=document.getElementById('dmMessages');
  try{
   const q=query(collection(db,'dms',threadId,'messages'),limit(60));
-  const s=await getDocs(q);
+  const s=await safeGet(q);
   if(s.empty){el.innerHTML=`<div style="text-align:center;padding:16px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.72rem;">Send your first message! 💬</div>`;return;}
   const wasAtBottom=el.scrollHeight-el.scrollTop<=el.clientHeight+50;
   el.innerHTML='';
@@ -3792,7 +3848,7 @@ window.sendDM=async function(){
 let allMagArticles=[];
 async function lMagazine(){
  try{
-  const s=await getDocs(query(collection(db,'magazine'),limit(20)));
+  const s=await safeGet(query(collection(db,'magazine'),limit(20)));
   if(!s.empty){allMagArticles=[];s.forEach(d=>allMagArticles.push({id:d.id,...d.data()}));rMagazine(allMagArticles);return;}
  }catch{}
  // Static magazine content
@@ -3865,17 +3921,20 @@ window.runAdvSearch=async function(){
   let html='';
   // Search members
   if(searchFilter==='all'||searchFilter==='members'){
-   const ms=await getDocs(collection(db,'users'));
+   const ms=await safeGet(collection(db,'users'));
    const found=[];ms.forEach(d=>{const m=d.data();if(m.name?.toLowerCase().includes(q)||m.country?.toLowerCase().includes(q))found.push({id:d.id,...m});});
    if(found.length){
     html+=`<div class="search-result-section"><div class="search-result-title">👥 MEMBERS (${found.length})</div>`;
-    found.slice(0,5).forEach(m=>{html+=`<div class="member-card"><div class="member-av">${m.profilePic?`<img src="${m.profilePic}"/>`:(m.name||'M').charAt(0)}</div><div class="member-info"><div class="member-name">${m.name||'—'}</div><div class="member-meta">${m.country||'—'} · ${m.tier||'Fan'}</div></div></div>`;});
+    found.slice(0,5).forEach(m=>{
+     if(!allProfileMembers.find(x=>x.id===m.id))allProfileMembers.push(m);
+     html+=`<div class="member-card" onclick="openMemberProfile('${m.id}')" style="cursor:pointer;"><div class="member-av">${m.profilePic?`<img src="${m.profilePic}"/>`:(m.name||'M').charAt(0)}</div><div class="member-info"><div class="member-name">${m.name||'—'} ${m.verificationStatus==='verified'?'✅':''}</div><div class="member-meta">${m.country||'—'} · <span style="color:var(--gold);">${m.tier||'Fan'}</span></div></div><div style="margin-left:auto;color:var(--cd);">›</div></div>`;
+    });
     html+=`</div>`;
    }
   }
   // Search celebrities
   if(searchFilter==='all'||searchFilter==='celebrities'){
-   const cs=await getDocs(collection(db,'celebrities'));
+   const cs=await safeGet(collection(db,'celebrities'));
    const found=[];cs.forEach(d=>{const c=d.data();if(c.name?.toLowerCase().includes(q)||c.category?.toLowerCase().includes(q))found.push({id:d.id,...c});});
    if(found.length){
     html+=`<div class="search-result-section"><div class="search-result-title">⭐ CELEBRITIES (${found.length})</div>`;
@@ -3885,7 +3944,7 @@ window.runAdvSearch=async function(){
   }
   // Search posts
   if(searchFilter==='all'||searchFilter==='posts'){
-   const ps=await getDocs(query(collection(db,'posts'),limit(50)));
+   const ps=await safeGet(query(collection(db,'posts'),limit(50)));
    const found=[];ps.forEach(d=>{const p=d.data();if(p.content?.toLowerCase().includes(q)||p.title?.toLowerCase().includes(q))found.push({id:d.id,...p});});
    if(found.length){
     html+=`<div class="search-result-section"><div class="search-result-title">📝 POSTS (${found.length})</div>`;
@@ -3923,7 +3982,7 @@ function loadSettings(){
 async function lPolls(){
  document.getElementById('activePolls').innerHTML=`<div class="ldr"><div class="lring"></div></div>`;
  try{
-  const s=await getDocs(query(collection(db,'polls'),limit(20)));
+  const s=await safeGet(query(collection(db,'polls'),limit(20)));
   let active=[],completed=[];
   const now=new Date();
   s.forEach(d=>{const p={id:d.id,...d.data()};const end=p.endsAt?.toDate?p.endsAt.toDate():new Date(p.endsAt||0);if(end>now)active.push(p);else completed.push(p);});
@@ -3992,7 +4051,7 @@ window.castVote=async function(pollId,option){
 async function lVerifiedCelebs(){
  const el=document.getElementById('verifiedCelebs');
  try{
-  const s=await getDocs(collection(db,'celebrities'));
+  const s=await safeGet(collection(db,'celebrities'));
   const celebs=[];s.forEach(d=>celebs.push({id:d.id,...d.data()}));
   if(!celebs.length){el.innerHTML=`<div style="text-align:center;padding:18px;color:var(--cd);">No verified celebrities yet. Admin adds from Admin Panel. ⭐</div>`;return;}
   el.innerHTML=celebs.map(c=>`
@@ -4023,7 +4082,7 @@ let allMarketItems=[];
 async function lMarketplace(){
  const el=document.getElementById('marketplaceGrid');
  try{
-  const s=await getDocs(collection(db,'marketplace'));
+  const s=await safeGet(collection(db,'marketplace'));
   if(!s.empty){allMarketItems=[];s.forEach(d=>allMarketItems.push({id:d.id,...d.data()}));rMarket(allMarketItems);return;}
  }catch{}
  // Static items
@@ -4070,7 +4129,7 @@ async function lRankings(cat){
  const el=document.getElementById('leaderboard');
  el.innerHTML=`<div class="ldr"><div class="lring"></div></div>`;
  try{
-  const s=await getDocs(collection(db,'users'));
+  const s=await safeGet(collection(db,'users'));
   let members=[];
   s.forEach(d=>{
    const m=d.data();
@@ -4135,7 +4194,7 @@ async function lMonetize(){
 async function lCompetitions(){
  const el=document.getElementById('competitionsList');
  try{
-  const s=await getDocs(query(collection(db,'competitions'),limit(10)));
+  const s=await safeGet(query(collection(db,'competitions'),limit(10)));
   if(!s.empty){el.innerHTML='';s.forEach(d=>{const c=d.data();el.innerHTML+=`<div class="comp-card"><div class="comp-prize">${c.prize||'Prize TBA'}</div><div class="comp-title">${c.title}</div><div class="comp-desc">${c.description}</div><div class="comp-deadline">Deadline: ${c.deadline||'TBA'}</div><button class="comp-btn" onclick="enterComp('${c.title}')">Enter Competition →</button></div>`;});return;}
  }catch{}
  // Static competitions
