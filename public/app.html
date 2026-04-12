@@ -1618,7 +1618,7 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
 
   <!-- SINGLE MEMBER PROFILE -->
   <div class="view" id="memberProfileV">
-   <button onclick="sV('profiles')" style="font-family:'Montserrat',sans-serif;font-size:0.6rem;font-weight:700;padding:7px 12px;background:transparent;border:1px solid var(--gbr);color:var(--cd);cursor:pointer;margin-bottom:12px;">← Back to Profiles</button>
+   <button onclick="history.back?window.history.go(-0)||sV('search'):sV('search')" style="font-family:'Montserrat',sans-serif;font-size:0.6rem;font-weight:700;padding:7px 12px;background:transparent;border:1px solid var(--gbr);color:var(--cd);cursor:pointer;margin-bottom:12px;" id="profileBackBtn">← Back</button>
    <div id="memberProfileContent"><div class="ldr"><div class="lring"></div></div></div>
   </div>
 
@@ -2379,13 +2379,16 @@ window.searchMembers=async function(){
  el.innerHTML=results.map(m=>{
   const av=m.profilePic?`<img src="${m.profilePic}" alt="${m.name}"/>`:(m.name||'M').charAt(0);
   const cats=(m.categories||[]).slice(0,3).map(c=>`<span class="member-cat-tag">${c}</span>`).join('');
-  return`<div class="member-card">
+  // Add to allProfileMembers cache so openMemberProfile can find them
+  if(!allProfileMembers.find(x=>x.id===m.id))allProfileMembers.push(m);
+  return`<div class="member-card" onclick="openMemberProfile('${m.id}')" style="cursor:pointer;">
    <div class="member-av">${av}</div>
    <div class="member-info">
     <div class="member-name">${m.name||'Member'}${m.verificationStatus==='verified'?' <span style="color:var(--ok);font-size:0.7rem;">✅</span>':''}</div>
     <div class="member-meta">${m.city?m.city+', ':''}${m.country||'—'} · <span style="color:var(--gold);">${m.tier||'Fan'}</span></div>
     <div class="member-cats">${cats}</div>
    </div>
+   <div style="margin-left:auto;font-size:0.8rem;color:var(--cd);">›</div>
   </div>`;
  }).join('');
 };
@@ -3209,8 +3212,19 @@ window.filterProfileSearch=function(){
 };
 
 window.openMemberProfile=async function(id){
- const m=allProfileMembers.find(x=>x.id===id);if(!m)return;
+ // Search both caches first
+ let m=allProfileMembers.find(x=>x.id===id)||allMembersCache.find(x=>x.id===id);
+ if(!m){
+  try{const d=await getDoc(doc(db,'users',id));if(d.exists())m={id:d.id,...d.data()};}catch{}
+ }
+ if(!m){toastF('Could not load profile','error');return;}
+ if(!allProfileMembers.find(x=>x.id===id))allProfileMembers.push(m);
+ // Track where we came from for back button
+ const activeViews=[...document.querySelectorAll('.view.on')].map(v=>v.id.replace('V',''));
+ const prevView=activeViews[0]||'search';
  sV('memberProfile');
+ const backBtn=document.getElementById('profileBackBtn');
+ if(backBtn)backBtn.onclick=()=>sV(prevView);
  const el=document.getElementById('memberProfileContent');
  el.innerHTML=`<div class="ldr"><div class="lring"></div></div>`;
  const catIcons={'Music':'🎵','Film':'🎬','Sports':'⚽','Literature':'📚','Wellness':'💪','Nature':'🌿','Fashion':'👗','Food':'🍽️','Automotive':'🚗','Tech':'💻','Beauty':'💄','Leadership':'🎓','Entertainment':'🎭'};
