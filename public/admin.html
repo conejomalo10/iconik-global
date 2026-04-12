@@ -961,8 +961,12 @@ async function uploadAdminMedia(file){
  const fd=new FormData();
  fd.append('file',file);
  fd.append('upload_preset','iconik_uploads');
- const res=await fetch('https://api.cloudinary.com/v1_1/iconik-global/upload',{method:'POST',body:fd});
- if(!res.ok)throw new Error('Upload failed');
+ // dhazrf2xr is the correct Cloudinary cloud name
+ const res=await fetch('https://api.cloudinary.com/v1_1/dhazrf2xr/upload',{method:'POST',body:fd});
+ if(!res.ok){
+  const err=await res.json().catch(()=>({}));
+  throw new Error(err.error?.message||'Upload failed — set iconik_uploads preset to Unsigned in Cloudinary');
+ }
  const data=await res.json();
  return{url:data.secure_url,type:file.type.startsWith('video')?'video':'image'};
 }
