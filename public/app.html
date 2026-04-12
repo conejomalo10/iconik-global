@@ -823,7 +823,9 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
   <!-- COMMUNITIES -->
   <div class="view" id="comsV">
    <div class="sh">My Communities</div>
-   <div class="cgrid" id="myComG"></div>
+   <div class="cgrid" id="myComG">
+    <!-- Rendered immediately by JS on load -->
+   </div>
   </div>
 
   <!-- CELEBRITY NEWS -->
@@ -1814,7 +1816,7 @@ function showDash(){
  const vsc={pending:'twarn',verified:'tok',rejected:'terr'};
  const vsl={pending:'⏳ Pending — Admin will review your details shortly.',verified:'✅ Verified — Your identity has been confirmed.',rejected:'❌ Rejected — Contact Admin for assistance.'};
  document.getElementById('vStatusBlock').innerHTML=`<span class="tag ${vsc[vs]||'twarn'}" style="font-size:0.7rem;padding:7px 12px;display:inline-block;">${vsl[vs]||'Pending'}</span>`;
- lFeed();lCelebs();lNewsFromFirestore();lMsgsCheck();checkNotifs();initTheme();
+ lFeed();lCelebs();lNewsFromFirestore();lMsgsCheck();checkNotifs();initTheme();lMyComs();
 }
 
 // ── LOGIN ──
@@ -2075,7 +2077,21 @@ async function lCelebs(){
   rAll();
  }catch{}
 }
-const mCC=c=>`<div class="ccard"><div class="cimg">${c.photo?`<img src="${c.photo}" alt="${c.name}" onerror="this.parentElement.innerHTML='⭐'"/>`:'⭐'}</div><div class="ci"><div class="cn">${c.name}</div><div class="ccat">${c.category||''}</div><div class="cmeta">${c.country||''} ${c.followers?'· '+c.followers:''}</div></div></div>`;
+const mCC=c=>{
+ const colors=['#7C3AED','#DC2626','#059669','#D97706','#EC4899','#2563EB','#F43F5E','#0891B2'];
+ const clr=colors[Math.abs((c.name||'').charCodeAt(0))%colors.length];
+ return`<div class="ccard" onclick="openCelebPage('${c.id}')" style="cursor:pointer;overflow:hidden;padding:0;">
+  <div class="cimg" style="position:relative;overflow:hidden;background:${clr}22;">
+   ${c.photo?`<img src="${c.photo}" alt="${c.name}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" onerror="this.style.display='none'"/>`:``}
+   <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.8rem;z-index:0;">${c.name?.charAt(0)||'⭐'}</div>
+  </div>
+  <div class="ci">
+   <div class="cn">${c.name}</div>
+   <div class="ccat">${c.category||''}</div>
+   <div class="cmeta">${c.country||''} ${c.followers?'· '+c.followers:''}</div>
+  </div>
+ </div>`;
+};
 function rAll(){document.getElementById('allC').innerHTML=allC.length?allC.map(mCC).join(''):`<div style="grid-column:span 2;text-align:center;padding:22px;color:var(--cd);">Icons coming soon! ⭐</div>`;}
 window.fCl=function(){const q=document.getElementById('cSrch').value.toLowerCase();document.getElementById('allC').innerHTML=allC.filter(c=>c.name?.toLowerCase().includes(q)||c.category?.toLowerCase().includes(q)).map(mCC).join('')||`<div style="grid-column:span 2;text-align:center;padding:16px;color:var(--cd);">No results</div>`;};
 
@@ -2295,8 +2311,8 @@ async function lNotifs(){
   const notifs=[];
   // Load follow notifications + messages without orderBy
   try{
-   const nSnap=await getDocs(query(collection(db,'notifications'),where('userId','==',cU.uid),limit(20)));
-   nSnap.forEach(d=>{const n=d.data();notifs.push({icon:'🔔',title:n.message||'New notification',body:n.fromName?`From ${n.fromName}`:'',time:n.createdAt?.toDate?n.createdAt.toDate().toLocaleDateString():'Recently',type:n.type||'notif'});});
+   const nSnap=await getDocs(query(collection(db,'notifications'),limit(50)));// filter client-side
+   nSnap.forEach(d=>{const n=d.data();if(n.userId&&n.userId!==cU.uid)return;notifs.push({icon:'🔔',title:n.message||'New notification',body:n.fromName?`From ${n.fromName}`:'',time:n.createdAt?.toDate?n.createdAt.toDate().toLocaleDateString():'Recently',type:n.type||'notif'});});
   }catch{}
   try{
    const msgSnap=await getDocs(query(collection(db,'messages'),limit(5)));
@@ -2657,7 +2673,7 @@ window.shareReferral=function(){
 async function lReferralData(){
  try{
   buildReferralLink();
-  const q=query(collection(db,'referrals'),where('referrerId','==',cU?.uid));
+  const q=query(collection(db,'referrals'),limit(100));
   const s=await getDocs(q);
   document.getElementById('refTotal').textContent=s.size;
   let joined=0;s.forEach(d=>{if(d.data().status==='joined')joined++;});
@@ -3131,7 +3147,7 @@ window.bookTicket=async function(eventId,eventName,price){
 async function lMyBookings(){
  const el=document.getElementById('myBookings');
  try{
-  const q=query(collection(db,'bookings'),where('userId','==',cU?.uid),limit(15));
+  const q=query(collection(db,'bookings'),limit(50));// filter client-side
   const s=await getDocs(q);
   if(s.empty){el.innerHTML=`<div style="text-align:center;padding:14px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.72rem;">No bookings yet. Book your first event above! 🎫</div>`;return;}
   el.innerHTML='';
