@@ -2485,34 +2485,52 @@ window.filterCelebPages=function(){
  rCelebPages(allCelebsCache.filter(c=>c.name?.toLowerCase().includes(q)||c.category?.toLowerCase().includes(q)||c.country?.toLowerCase().includes(q)));
 };
 
-window.openCelebPage=async function(celebId){
+window.openCelebPage=function(celebId){
  sV('celebSingle');
  const el=document.getElementById('celebSingleContent');
- el.innerHTML=`<div class="ldr"><div class="lring"></div></div>`;
- try{
-  const c=allCelebsCache.find(x=>x.id===celebId)||{};
-  // Get posts without orderBy
-  const postsSnap=await safeGet(query(collection(db,'posts'),limit(20)));
+ const c=allCelebsCache.find(x=>x.id===celebId)||{};
+ if(!c.name){el.innerHTML=`<div style="text-align:center;padding:22px;color:var(--cd);">Celebrity not found. Go back and try again.</div>`;return;}
+ const colors=['#7C3AED','#DC2626','#059669','#D97706','#EC4899','#2563EB'];
+ const clr=colors[Math.abs((c.name||'').charCodeAt(0))%colors.length];
+ // Render instantly from cache — no Firestore needed
+ el.innerHTML=`
+  <div style="width:100%;height:200px;background:linear-gradient(135deg,${clr}44,${clr}22);position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:14px;overflow:hidden;">
+   ${c.photo?`<img src="${c.photo}" alt="${c.name}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" onerror="this.style.display='none'"/>`:``}
+   <div style="position:relative;z-index:1;text-align:center;">
+    <div style="font-size:4rem;font-family:'Bebas Neue',sans-serif;font-weight:900;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,0.8);">${c.photo?'':c.name?.charAt(0)||'⭐'}</div>
+   </div>
+   <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,13,0.9),transparent 50%);"></div>
+   <div style="position:absolute;bottom:14px;left:14px;right:14px;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.14em;color:var(--gold);">${c.category||''}</div>
+    <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.2rem;color:#fff;">${c.name}</div>
+   </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px;">
+   <div class="sbox"><div class="snum" style="font-size:0.8rem;">${c.followers||'—'}</div><div class="slbl">Followers</div></div>
+   <div class="sbox"><div class="snum" style="font-size:0.8rem;">${c.country||'—'}</div><div class="slbl">Origin</div></div>
+   <div class="sbox"><div class="snum" style="font-size:0.8rem;">${c.status||'Active'}</div><div class="slbl">Status</div></div>
+  </div>
+  ${c.bio?`<div class="pcard" style="margin-bottom:12px;"><div class="pbody">${c.bio}</div></div>`:''}
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+   <button onclick="followCeleb('${celebId}','${c.name}')" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.1em;padding:11px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);">⭐ Follow</button>
+   <button onclick="sharePost('celeb-${celebId}','${c.name}')" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.1em;padding:11px;background:transparent;border:1px solid var(--gbri);color:var(--gold);cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);">🔗 Share</button>
+  </div>
+  <div class="sh">Latest Posts</div>
+  <div id="celebPostsFeed"><div class="ldr"><div class="lring"></div></div></div>`;
+ // Load posts async AFTER rendering — so profile shows immediately
+ safeGet(query(collection(db,'posts'),limit(30))).then(postsSnap=>{
   const catPosts=[];
-  postsSnap.forEach(d=>{const p=d.data();if(p.category===c.category||p.title?.toLowerCase().includes((c.name||'').toLowerCase()))catPosts.push({id:d.id,...p});});
+  postsSnap.forEach(d=>{const p=d.data();if(p.category===c.category)catPosts.push({id:d.id,...p});});
   catPosts.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-  el.innerHTML=`
-   <div class="celeb-hero">
-    ${c.photo?`<img src="${c.photo}" alt="${c.name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.style.background='linear-gradient(135deg,var(--obs2),var(--obs3))';this.style.display='none'"/>`:'<span style="font-size:3rem;">⭐</span>'}
-    <div class="celeb-hero-overlay"></div>
-    <div class="celeb-hero-cat">${c.category||''}</div>
-    <div class="celeb-hero-name">${c.name||''}</div>
-   </div>
-   <div class="celeb-stats-row">
-    <div class="sbox"><div class="snum">${c.followers||'—'}</div><div class="slbl">Followers</div></div>
-    <div class="sbox"><div class="snum">${c.country||'—'}</div><div class="slbl">Origin</div></div>
-    <div class="sbox"><div class="snum" style="font-size:0.9rem;">${c.status||'Active'}</div><div class="slbl">Status</div></div>
-   </div>
-   ${c.bio?`<div class="pcard" style="margin-bottom:12px;"><div class="pbody">${c.bio}</div></div>`:''}
-   <button class="celeb-page-follow" style="width:100%;margin-bottom:14px;padding:11px;" onclick="followCeleb('${celebId}','${c.name}')">⭐ Follow ${c.name}</button>
-   <div class="sh">Latest from ${c.category||'Community'}</div>
-   ${catPosts.length?catPosts.map(p=>`<div class="pcard"><div class="ph"><div class="pav">★</div><div><div class="pau">ICONIK</div><div class="pt">${p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString():''}</div></div></div>${p.title?`<div class="ptitle">${p.title}</div>`:''}<div class="pbody">${p.content||''}</div>${p.imageUrl?`<img src="${p.imageUrl}" style="width:100%;margin-top:8px;border-radius:4px;" onerror="this.style.display='none'"/>`:''}</div>`).join(''):`<div class="pcard"><p style="text-align:center;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.74rem;padding:12px;">No posts yet in ${c.category||'this community'}. Admin adds content from Admin Panel.</p></div>`}`;
- }catch(e){el.innerHTML=`<div style="text-align:center;padding:22px;color:var(--cd);">Error loading celebrity page. Try again.</div>`;console.error(e);}
+  const pEl=document.getElementById('celebPostsFeed');
+  if(!pEl)return;
+  pEl.innerHTML=catPosts.length?catPosts.slice(0,5).map(p=>`
+   <div class="pcard">
+    <div class="ph"><div class="pav" style="background:var(--gold);color:var(--obs);">★</div><div><div class="pau">ICONIK</div><div class="pt">${p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString():''}</div></div></div>
+    ${p.title?`<div class="ptitle">${p.title}</div>`:''}
+    <div class="pbody">${p.content||''}</div>
+    ${p.imageUrl?`<img src="${p.imageUrl}" style="width:100%;margin-top:8px;border-radius:4px;" onerror="this.style.display='none'"/>`:''}</div>`).join(''):`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:12px;">No posts yet for ${c.category||'this category'}.</p></div>`;
+ });
 };
 
 window.followCeleb=async function(celebId,name){
@@ -3268,59 +3286,54 @@ window.filterProfileSearch=function(){
 };
 
 window.openMemberProfile=async function(id){
- // Search both caches first
+ // Get member from cache first
  let m=allProfileMembers.find(x=>x.id===id)||allMembersCache.find(x=>x.id===id);
  if(!m){
-  try{const d=await getDoc(doc(db,'users',id));if(d.exists())m={id:d.id,...d.data()};}catch{}
+  // Try Firestore with timeout
+  const d=await Promise.race([
+   getDoc(doc(db,'users',id)),
+   new Promise((_,r)=>setTimeout(()=>r(null),4000))
+  ]).catch(()=>null);
+  if(d?.exists())m={id:d.id,...d.data()};
  }
- if(!m){toastF('Could not load profile','error');return;}
+ if(!m){toastF('Profile not found','error');return;}
  if(!allProfileMembers.find(x=>x.id===id))allProfileMembers.push(m);
- // Track where we came from for back button
- const activeViews=[...document.querySelectorAll('.view.on')].map(v=>v.id.replace('V',''));
- const prevView=activeViews[0]||'search';
+ // Track previous view
+ const prev=document.querySelector('.view.on')?.id?.replace('V','')||'search';
  sV('memberProfile');
  const backBtn=document.getElementById('profileBackBtn');
- if(backBtn)backBtn.onclick=()=>sV(prevView);
+ if(backBtn)backBtn.onclick=()=>sV(prev);
  const el=document.getElementById('memberProfileContent');
- el.innerHTML=`<div class="ldr"><div class="lring"></div></div>`;
  const catIcons={'Music':'🎵','Film':'🎬','Sports':'⚽','Literature':'📚','Wellness':'💪','Nature':'🌿','Fashion':'👗','Food':'🍽️','Automotive':'🚗','Tech':'💻','Beauty':'💄','Leadership':'🎓','Entertainment':'🎭'};
- // Check if current user follows this member
- let isFollowing=false;
- let followersCount=m.followersCount||0;
- let followingCount=m.followingCount||0;
- try{
-  const fDoc=await getDoc(doc(db,'follows',`${cU.uid}_${id}`));
-  isFollowing=fDoc.exists();
-  // Get real counts
-  const fSnap=await safeGet(query(collection(db,'follows'),where('followingId','==',id)));
-  followersCount=fSnap.size;
-  const fgSnap=await safeGet(query(collection(db,'follows'),where('followerId','==',id)));
-  followingCount=fgSnap.size;
- }catch{}
+ // RENDER IMMEDIATELY — no waiting
  el.innerHTML=`
   <div style="background:linear-gradient(135deg,var(--obs2),var(--obs3));padding:24px;text-align:center;margin-bottom:14px;border:1px solid var(--gbr);">
-   <div style="width:74px;height:74px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.9rem;font-weight:900;color:var(--obs);margin:0 auto 10px;overflow:hidden;border:3px solid ${m.verificationStatus==='verified'?'var(--ok)':'var(--gbr)'};">${m.profilePic?`<img src="${m.profilePic}" style="width:100%;height:100%;object-fit:cover;"/>`:(m.name||'M').charAt(0)}</div>
-   <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--ch);">${m.name||'Member'} ${m.verificationStatus==='verified'?'<span style="color:var(--ok);font-size:0.9rem;">✅</span>':''}</div>
+   <div style="width:74px;height:74px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.9rem;font-weight:900;color:var(--obs);margin:0 auto 10px;overflow:hidden;border:3px solid ${m.verificationStatus==='verified'?'var(--ok)':'var(--gbr)'};">
+    ${m.profilePic?`<img src="${m.profilePic}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"/>`:''}
+    ${m.name?.charAt(0)||'M'}
+   </div>
+   <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--ch);">${m.name||'Member'} ${m.verificationStatus==='verified'?'<span style="color:var(--ok);">✅</span>':''}</div>
    <div style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);margin-top:4px;">📍 ${m.city?m.city+', ':''}${m.country||'—'}</div>
    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--obs);background:var(--gold);padding:3px 10px;display:inline-block;margin-top:8px;">VIP ${m.tier||'Fan'}</div>
    ${m.bio?`<div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:var(--cd);margin-top:10px;line-height:1.6;">${m.bio}</div>`:''}
   </div>
-  <!-- FOLLOW STATS -->
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:12px;">
-   <div class="sbox" style="cursor:pointer;" onclick="showMemberFollowers('${id}')"><div class="snum">${followersCount}</div><div class="slbl">Followers</div></div>
-   <div class="sbox" style="cursor:pointer;" onclick="showMemberFollowing('${id}')"><div class="snum">${followingCount}</div><div class="slbl">Following</div></div>
+   <div class="sbox"><div class="snum" id="fc-${id}">${m.followersCount||0}</div><div class="slbl">Followers</div></div>
+   <div class="sbox"><div class="snum" id="fg-${id}">${m.followingCount||0}</div><div class="slbl">Following</div></div>
    <div class="sbox"><div class="snum">${m.postCount||0}</div><div class="slbl">Posts</div></div>
    <div class="sbox"><div class="snum">${m.likeCount||0}</div><div class="slbl">Likes</div></div>
   </div>
-  <!-- FOLLOW + DM BUTTONS -->
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
-   <button id="followBtn-${id}" onclick="toggleFollow('${id}','${m.name||'Member'}')" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.1em;padding:11px;border:none;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);${isFollowing?'background:var(--obs3);color:var(--gold);border:1px solid var(--gbri);':'background:var(--gold);color:var(--obs);'}">
-    ${isFollowing?'✓ Following':'+ Follow'}
-   </button>
-   <button onclick="startDMWithUser('${m.email||''}','${m.name||'Member'}')" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.1em;padding:11px;background:transparent;border:1px solid var(--gbri);color:var(--gold);cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);">✉️ Message</button>
+   <button id="followBtn-${id}" onclick="toggleFollow('${id}','${(m.name||'Member').replace(/'/g,'')}')" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.1em;padding:11px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);">+ Follow</button>
+   <button onclick="startDMWithUser('${m.email||''}','${(m.name||'Member').replace(/'/g,'')}')" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.1em;padding:11px;background:transparent;border:1px solid var(--gbri);color:var(--gold);cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);">✉️ Message</button>
   </div>
   <div class="sh">Communities</div>
   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">${(m.categories||[]).map(c=>`<div style="background:var(--gb);border:1px solid var(--gbr);padding:8px 12px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.66rem;color:var(--ch);">${catIcons[c]||'🌟'} ${c}</div>`).join('')||`<span style="color:var(--cd);font-family:'Inter',sans-serif;font-size:0.72rem;">No communities listed</span>`}</div>`;
+ // Load follow status async AFTER render
+ Promise.race([getDoc(doc(db,'follows',`${cU.uid}_${id}`)),new Promise((_,r)=>setTimeout(r,3000))]).then(fDoc=>{
+  const btn=document.getElementById(`followBtn-${id}`);
+  if(btn&&fDoc?.exists()){btn.textContent='✓ Following';btn.style.background='var(--obs3)';btn.style.color='var(--gold)';}
+ }).catch(()=>{});
 };
 
 // ── FOLLOW / UNFOLLOW ──
