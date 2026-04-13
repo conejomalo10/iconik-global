@@ -1060,7 +1060,7 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
   <!-- CELEBRITY SINGLE PAGE (modal-style view) -->
   <div class="view" id="celebSingleV">
    <button onclick="sV('celebpages')" style="font-family:'Montserrat',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;padding:7px 12px;background:transparent;border:1px solid var(--gbr);color:var(--cd);cursor:pointer;margin-bottom:12px;">← Back to Celebrity Pages</button>
-   <div id="celebSingleContent"><div class="ldr"><div class="lring"></div></div></div>
+   <div id="celebSingleContent"></div>
   </div>
 
   <!-- LIVE COMMUNITY CHAT -->
@@ -1619,7 +1619,7 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;overfl
   <!-- SINGLE MEMBER PROFILE -->
   <div class="view" id="memberProfileV">
    <button onclick="history.back?window.history.go(-0)||sV('search'):sV('search')" style="font-family:'Montserrat',sans-serif;font-size:0.6rem;font-weight:700;padding:7px 12px;background:transparent;border:1px solid var(--gbr);color:var(--cd);cursor:pointer;margin-bottom:12px;" id="profileBackBtn">← Back</button>
-   <div id="memberProfileContent"><div class="ldr"><div class="lring"></div></div></div>
+   <div id="memberProfileContent"></div>
   </div>
 
   <!-- ICONIK TV -->
@@ -2086,6 +2086,8 @@ async function lCelebs(){
  try{
   const s=await safeGet(collection(db,'celebrities'));
   allC=[];s.forEach(d=>allC.push({id:d.id,...d.data()}));
+  // Keep allCelebsCache in sync
+  allCelebsCache=[...allC];
   document.getElementById('sIco').textContent=allC.length;
   rAll();
  }catch{}
@@ -2488,8 +2490,18 @@ window.filterCelebPages=function(){
 window.openCelebPage=function(celebId){
  sV('celebSingle');
  const el=document.getElementById('celebSingleContent');
- const c=allCelebsCache.find(x=>x.id===celebId)||{};
- if(!c.name){el.innerHTML=`<div style="text-align:center;padding:22px;color:var(--cd);">Celebrity not found. Go back and try again.</div>`;return;}
+ // Search BOTH caches — allC is from Explore Icons, allCelebsCache from Celebrity Pages
+ const c=allCelebsCache.find(x=>x.id===celebId)||allC.find(x=>x.id===celebId)||{};
+ if(!c.name){
+  el.innerHTML=`<div style="text-align:center;padding:28px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.76rem;">⭐ Tap Back and tap the celebrity again.</div>`;
+  // Reload celebrity data and retry
+  safeGet(collection(db,'celebrities')).then(s=>{
+   s.forEach(d=>{const data={id:d.id,...d.data()};if(!allC.find(x=>x.id===d.id))allC.push(data);if(!allCelebsCache.find(x=>x.id===d.id))allCelebsCache.push(data);});
+   const found=allC.find(x=>x.id===celebId)||allCelebsCache.find(x=>x.id===celebId);
+   if(found)openCelebPage(celebId);
+  });
+  return;
+ }
  const colors=['#7C3AED','#DC2626','#059669','#D97706','#EC4899','#2563EB'];
  const clr=colors[Math.abs((c.name||'').charCodeAt(0))%colors.length];
  // Render instantly from cache — no Firestore needed
