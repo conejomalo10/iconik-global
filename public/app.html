@@ -2490,60 +2490,68 @@ window.filterCelebPages=function(){
 window.openCelebPage=function(celebId){
  sV('celebSingle');
  const el=document.getElementById('celebSingleContent');
- // Search BOTH caches — allC is from Explore Icons, allCelebsCache from Celebrity Pages
- const c=allCelebsCache.find(x=>x.id===celebId)||allC.find(x=>x.id===celebId)||{};
- if(!c.name){
-  el.innerHTML=`<div style="text-align:center;padding:28px;color:var(--cd);font-family:'Inter',sans-serif;font-size:0.76rem;">⭐ Tap Back and tap the celebrity again.</div>`;
-  // Reload celebrity data and retry
+ // Search BOTH caches
+ let c=allCelebsCache.find(x=>x.id===celebId)||allC.find(x=>x.id===celebId);
+ if(!c){
+  el.innerHTML=`<div style="padding:20px;text-align:center;color:var(--cd);">Loading...</div>`;
   safeGet(collection(db,'celebrities')).then(s=>{
    s.forEach(d=>{const data={id:d.id,...d.data()};if(!allC.find(x=>x.id===d.id))allC.push(data);if(!allCelebsCache.find(x=>x.id===d.id))allCelebsCache.push(data);});
-   const found=allC.find(x=>x.id===celebId)||allCelebsCache.find(x=>x.id===celebId);
-   if(found)openCelebPage(celebId);
+   c=allC.find(x=>x.id===celebId)||allCelebsCache.find(x=>x.id===celebId);
+   if(c)_renderCeleb(celebId,c,el);
+   else el.innerHTML=`<div style="padding:20px;text-align:center;color:var(--cd);">Celebrity not found. Go back and try again.</div>`;
   });
   return;
  }
- const colors=['#7C3AED','#DC2626','#059669','#D97706','#EC4899','#2563EB'];
- const clr=colors[Math.abs((c.name||'').charCodeAt(0))%colors.length];
- // Render instantly from cache — no Firestore needed
- el.innerHTML=`
-  <div style="width:100%;height:200px;background:linear-gradient(135deg,${clr}44,${clr}22);position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:14px;overflow:hidden;">
-   ${c.photo?`<img src="${c.photo}" alt="${c.name}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" onerror="this.style.display='none'"/>`:``}
-   <div style="position:relative;z-index:1;text-align:center;">
-    <div style="font-size:4rem;font-family:'Bebas Neue',sans-serif;font-weight:900;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,0.8);">${c.photo?'':c.name?.charAt(0)||'⭐'}</div>
-   </div>
-   <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,13,0.9),transparent 50%);"></div>
-   <div style="position:absolute;bottom:14px;left:14px;right:14px;">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.14em;color:var(--gold);">${c.category||''}</div>
-    <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.2rem;color:#fff;">${c.name}</div>
-   </div>
-  </div>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px;">
-   <div class="sbox"><div class="snum" style="font-size:0.8rem;">${c.followers||'—'}</div><div class="slbl">Followers</div></div>
-   <div class="sbox"><div class="snum" style="font-size:0.8rem;">${c.country||'—'}</div><div class="slbl">Origin</div></div>
-   <div class="sbox"><div class="snum" style="font-size:0.8rem;">${c.status||'Active'}</div><div class="slbl">Status</div></div>
-  </div>
-  ${c.bio?`<div class="pcard" style="margin-bottom:12px;"><div class="pbody">${c.bio}</div></div>`:''}
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
-   <button onclick="followCeleb('${celebId}','${c.name}')" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.1em;padding:11px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);">⭐ Follow</button>
-   <button onclick="sharePost('celeb-${celebId}','${c.name}')" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.1em;padding:11px;background:transparent;border:1px solid var(--gbri);color:var(--gold);cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);">🔗 Share</button>
-  </div>
-  <div class="sh">Latest Posts</div>
-  <div id="celebPostsFeed"><div class="ldr"><div class="lring"></div></div></div>`;
- // Load posts async AFTER rendering — so profile shows immediately
- safeGet(query(collection(db,'posts'),limit(30))).then(postsSnap=>{
-  const catPosts=[];
-  postsSnap.forEach(d=>{const p=d.data();if(p.category===c.category)catPosts.push({id:d.id,...p});});
-  catPosts.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-  const pEl=document.getElementById('celebPostsFeed');
-  if(!pEl)return;
-  pEl.innerHTML=catPosts.length?catPosts.slice(0,5).map(p=>`
-   <div class="pcard">
-    <div class="ph"><div class="pav" style="background:var(--gold);color:var(--obs);">★</div><div><div class="pau">ICONIK</div><div class="pt">${p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString():''}</div></div></div>
-    ${p.title?`<div class="ptitle">${p.title}</div>`:''}
-    <div class="pbody">${p.content||''}</div>
-    ${p.imageUrl?`<img src="${p.imageUrl}" style="width:100%;margin-top:8px;border-radius:4px;" onerror="this.style.display='none'"/>`:''}</div>`).join(''):`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:12px;">No posts yet for ${c.category||'this category'}.</p></div>`;
- });
+ _renderCeleb(celebId,c,el);
 };
+function _renderCeleb(celebId,c,el){
+ try{
+  const nm=(c.name||'Celebrity').replace(/'/g,'&#39;').replace(/"/g,'&quot;');
+  const colors=['#7C3AED','#DC2626','#059669','#D97706','#EC4899','#2563EB'];
+  const clr=colors[Math.abs((c.name||'A').charCodeAt(0))%colors.length];
+  const initial=c.name?.charAt(0)||'⭐';
+  el.innerHTML=`
+   <div style="width:100%;height:200px;background:linear-gradient(135deg,${clr}66,${clr}33);position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:14px;overflow:hidden;border-radius:8px;">
+    ${c.photo?`<img src="${c.photo}" alt="${nm}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:1;" onerror="this.remove()"/>`:``}
+    <div style="position:relative;z-index:2;font-size:5rem;font-family:'Bebas Neue',sans-serif;color:rgba(255,255,255,0.9);">${initial}</div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,13,0.92) 0%,rgba(7,7,13,0.3) 50%,transparent 100%);z-index:3;"></div>
+    <div style="position:absolute;bottom:14px;left:14px;right:14px;z-index:4;">
+     <div style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.14em;color:var(--gold);margin-bottom:3px;">${c.category||''}</div>
+     <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:#fff;line-height:1.2;">${nm}</div>
+    </div>
+   </div>
+   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px;">
+    <div class="sbox"><div class="snum" style="font-size:0.75rem;">${c.followers||'—'}</div><div class="slbl">Followers</div></div>
+    <div class="sbox"><div class="snum" style="font-size:0.75rem;">${c.country||'—'}</div><div class="slbl">Origin</div></div>
+    <div class="sbox"><div class="snum" style="font-size:0.75rem;">${c.status||'Active'}</div><div class="slbl">Status</div></div>
+   </div>
+   ${c.bio?`<div class="pcard" style="margin-bottom:12px;"><div class="pbody">${c.bio}</div></div>`:''}
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+    <button onclick="followCeleb('${celebId}','${nm}')" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.1em;padding:11px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;">⭐ Follow</button>
+    <button onclick="if(navigator.share)navigator.share({title:'${nm} on ICONIK',url:'https://iconik-global.web.app'});else toastF('Link copied!','success')" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.1em;padding:11px;background:transparent;border:1px solid var(--gbri);color:var(--gold);cursor:pointer;">🔗 Share</button>
+   </div>
+   <div class="sh">Latest Posts from ${c.category||'Community'}</div>
+   <div id="celebPostsFeed"><div style="text-align:center;padding:14px;color:var(--cd);font-size:0.72rem;">Loading posts...</div></div>`;
+  // Load posts async after render
+  safeGet(query(collection(db,'posts'),limit(40))).then(snap=>{
+   const posts=[];
+   snap.forEach(d=>{const p=d.data();if(p.category===c.category)posts.push({id:d.id,...p});});
+   posts.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+   const pEl=document.getElementById('celebPostsFeed');
+   if(!pEl)return;
+   if(!posts.length){pEl.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:12px;">No posts yet for ${c.category||'this category'}. Admin adds content from Admin Panel.</p></div>`;return;}
+   pEl.innerHTML=posts.slice(0,6).map(p=>`
+    <div class="pcard">
+     <div class="ph"><div class="pav" style="background:var(--gold);color:var(--obs);font-size:0.65rem;font-family:'Bebas Neue',sans-serif;">IC</div><div><div class="pau">ICONIK</div><div class="pt">${p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString():''}</div></div></div>
+     ${p.title?`<div class="ptitle">${p.title}</div>`:''}
+     <div class="pbody">${p.content||''}</div>
+     ${p.imageUrl?`<img src="${p.imageUrl}" style="width:100%;margin-top:8px;border-radius:4px;max-height:200px;object-fit:cover;" onerror="this.style.display='none'"/>`:''}</div>`).join('');
+  });
+ }catch(err){
+  console.error('renderCeleb error:',err);
+  el.innerHTML=`<div style="padding:20px;text-align:center;"><div style="font-size:3rem;margin-bottom:10px;">⭐</div><div style="font-family:'Montserrat',sans-serif;font-weight:700;color:var(--ch);margin-bottom:6px;">${c.name||'Celebrity'}</div><div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:var(--cd);">${c.category||''} · ${c.country||''}</div>${c.bio?`<div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:var(--cd);margin-top:10px;line-height:1.6;">${c.bio}</div>`:''}<br/><button onclick="followCeleb('${celebId}','${c.name||''}')" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;padding:10px 20px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;margin-top:10px;">⭐ Follow</button></div>`;
+ }
+}
 
 window.followCeleb=async function(celebId,name){
  try{
@@ -3317,7 +3325,8 @@ window.openMemberProfile=async function(id){
  if(backBtn)backBtn.onclick=()=>sV(prev);
  const el=document.getElementById('memberProfileContent');
  const catIcons={'Music':'🎵','Film':'🎬','Sports':'⚽','Literature':'📚','Wellness':'💪','Nature':'🌿','Fashion':'👗','Food':'🍽️','Automotive':'🚗','Tech':'💻','Beauty':'💄','Leadership':'🎓','Entertainment':'🎭'};
- // RENDER IMMEDIATELY — no waiting
+ // RENDER IMMEDIATELY — wrapped in try/catch for safety
+ try{
  el.innerHTML=`
   <div style="background:linear-gradient(135deg,var(--obs2),var(--obs3));padding:24px;text-align:center;margin-bottom:14px;border:1px solid var(--gbr);">
    <div style="width:74px;height:74px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.9rem;font-weight:900;color:var(--obs);margin:0 auto 10px;overflow:hidden;border:3px solid ${m.verificationStatus==='verified'?'var(--ok)':'var(--gbr)'};">
@@ -3346,6 +3355,10 @@ window.openMemberProfile=async function(id){
   const btn=document.getElementById(`followBtn-${id}`);
   if(btn&&fDoc?.exists()){btn.textContent='✓ Following';btn.style.background='var(--obs3)';btn.style.color='var(--gold)';}
  }).catch(()=>{});
+ }catch(err){
+  console.error('memberProfile render error:',err);
+  el.innerHTML=`<div style="padding:20px;text-align:center;"><div style="font-size:2.5rem;margin-bottom:8px;">${m.name?.charAt(0)||'M'}</div><div style="font-family:'Montserrat',sans-serif;font-weight:700;color:var(--ch);">${m.name||'Member'}</div><div style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);margin-top:4px;">${m.country||''} · VIP ${m.tier||'Fan'}</div></div>`;
+ }
 };
 
 // ── FOLLOW / UNFOLLOW ──
