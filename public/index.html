@@ -1,63 +1,111 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://cdn.tailwindcss.com"></script>
-<title>ICONIK Clone</title>
-<style>
-body {
-    background: radial-gradient(circle at top, #0f172a, #000000);
-    color: white;
-    font-family: 'Segoe UI', sans-serif;
-}
-.glow {
-    text-shadow: 0 0 15px rgba(255, 100, 255, 0.8);
-}
-.btn-gradient {
-    background: linear-gradient(90deg, #00c6ff, #ff00cc);
-}
-.card {
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(10px);
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ICONIK - Fan Ecosystem</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0a0020 0%, #2a0040 50%, #000000 100%);
+      overflow-x: hidden;
+    }
+    .neon-text {
+      text-shadow: 0 0 20px #67e8f9, 0 0 40px #c026d3, 0 0 60px #f472b6;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .energy-wave {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, 
+        transparent 20%, 
+        rgba(103, 232, 249, 0.15) 40%, 
+        rgba(192, 38, 211, 0.25) 60%, 
+        rgba(244, 114, 182, 0.15) 80%, 
+        transparent 100%);
+      animation: wave 25s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes wave {
+      0% { transform: translateX(-30%); }
+      100% { transform: translateX(30%); }
+    }
+  </style>
 </head>
-
-<body class="min-h-screen flex flex-col items-center">
-
-<div class="w-full flex justify-between items-center p-4">
-    <h1 class="text-2xl font-bold glow">ICONIK</h1>
-    <button class="px-6 py-2 rounded-lg btn-gradient font-semibold">JOIN FREE</button>
-</div>
-
-<div class="text-center mt-10 max-w-3xl">
-    <p class="text-gray-400 italic mb-4">Welcome to the World's Fan Ecosystem</p>
-    <h1 class="text-6xl font-bold glow mb-4">ICONIK</h1>
-    <p class="text-xl mb-6">Your Favorite Celebrity's Platform</p>
-    <p class="tracking-widest text-sm text-gray-300 mb-8">FIND YOUR CIRCLE | FOLLOW YOUR ICON</p>
-</div>
-
-<div class="flex gap-6 mt-6">
-    <div class="card p-6 rounded-xl text-center w-40">
-        <h2 class="text-3xl font-bold">13+</h2>
-        <p class="text-sm">ICON CATEGORIES</p>
+<body class="min-h-screen text-white font-sans">
+  <!-- Top Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-6">
+    <div class="text-3xl font-bold tracking-tighter neon-text">ICONIK</div>
+    <div class="flex items-center gap-6">
+      <button class="glass px-8 py-3 rounded-2xl font-semibold text-sm tracking-widest hover:bg-white/10 transition-all">
+        JOIN FREE
+      </button>
+      <button class="w-10 h-10 flex items-center justify-center glass rounded-2xl">
+        <span class="text-2xl">☰</span>
+      </button>
     </div>
-    <div class="card p-6 rounded-xl text-center w-40">
-        <h2 class="text-3xl font-bold">7</h2>
-        <p class="text-sm">CONTINENTS</p>
-    </div>
-    <div class="card p-6 rounded-xl text-center w-40">
-        <h2 class="text-3xl font-bold">∞</h2>
-        <p class="text-sm">ICONS & STARS</p>
-    </div>
-</div>
+  </nav>
 
-<div class="mt-10">
-    <button class="px-10 py-4 rounded-xl btn-gradient text-lg font-semibold shadow-lg">
+  <div class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+    <!-- Energy Waves -->
+    <div class="energy-wave"></div>
+    <div class="energy-wave" style="animation-delay: -12s; opacity: 0.7;"></div>
+
+    <div class="relative z-10 max-w-5xl mx-auto text-center px-6">
+      <!-- Welcome -->
+      <p class="text-lg tracking-[4px] text-cyan-300 mb-6 font-light">
+        Welcome to the World's Fan Ecosystem
+      </p>
+
+      <!-- Main Logo -->
+      <h1 class="text-[120px] md:text-[160px] font-black tracking-tighter leading-none mb-8 neon-text bg-gradient-to-r from-cyan-300 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+        ICONIK
+      </h1>
+
+      <!-- Tagline -->
+      <p class="text-3xl md:text-4xl font-light mb-12 text-white/90">
+        Your Favorite Celebrity's Platform
+      </p>
+
+      <!-- Call to Action -->
+      <div class="text-2xl md:text-3xl font-medium tracking-widest mb-16 text-white">
+        FIND YOUR TRIBE | FOLLOW YOUR ICON
+      </div>
+
+      <!-- Stats -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto mb-20">
+        <div class="glass rounded-3xl p-8 text-left">
+          <div class="text-6xl font-bold text-cyan-300">13+</div>
+          <div class="text-sm uppercase tracking-widest mt-2">ICON CATEGORIES</div>
+        </div>
+        <div class="glass rounded-3xl p-8 text-left">
+          <div class="text-6xl font-bold text-purple-300">7</div>
+          <div class="text-sm uppercase tracking-widest mt-2">CONTINENTS</div>
+        </div>
+        <div class="glass rounded-3xl p-8 text-left">
+          <div class="text-6xl font-bold text-pink-300">∞</div>
+          <div class="text-sm uppercase tracking-widest mt-2">ICONS & RISING STARS</div>
+        </div>
+      </div>
+
+      <!-- Join Button -->
+      <button class="glass text-xl font-semibold tracking-widest px-16 py-7 rounded-3xl hover:scale-105 transition-all duration-300 border border-cyan-400/30">
         JOIN THE COMMUNITY
-    </button>
-</div>
+      </button>
+    </div>
 
+    <!-- Floating Category Icons (decorative) -->
+    <div class="absolute inset-0 pointer-events-none opacity-70">
+      <!-- You can add more decorative floating icons here if needed -->
+    </div>
+  </div>
 </body>
 </html>
