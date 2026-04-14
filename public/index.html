@@ -1,97 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ICONIK • Fan Ecosystem</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ICONIK - Your Favorite Celebrity's Platform</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     body {
-      background: #0a0a0a;
-      font-family: 'Inter', system_ui, sans-serif;
+      background: linear-gradient(180deg, #0a0a2e 0%, #0f1b3a 100%);
+      font-family: 'Inter', system-ui, sans-serif;
     }
-    .neon-glow {
-      text-shadow: 0 0 25px rgba(249, 168, 212, 0.6),
-                   0 0 50px rgba(192, 38, 211, 0.4);
+    .hero-bg {
+      background-image: 
+        radial-gradient(circle at 30% 20%, rgba(255, 215, 0, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 70% 80%, rgba(0, 255, 200, 0.1) 0%, transparent 50%);
     }
-    .glass {
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+    .glow-text {
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.6),
+                   0 0 40px rgba(255, 215, 0, 0.4);
     }
-    .smoke-bg {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 50% 30%, rgba(103, 232, 249, 0.08) 0%, transparent 50%),
-                  radial-gradient(circle at 70% 70%, rgba(168, 85, 247, 0.08) 0%, transparent 60%);
-      opacity: 0.75;
-      pointer-events: none;
-    }
-    .sharp-text {
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-      -webkit-text-stroke: 0.5px rgba(255,255,255,0.15);
+    .iconik-logo {
+      font-family: 'Playfair Display', serif;
+      letter-spacing: 4px;
     }
   </style>
 </head>
-<body class="min-h-screen text-white relative overflow-hidden">
-  <!-- Background Smoke -->
-  <div class="smoke-bg"></div>
+<body class="text-white overflow-x-hidden">
 
-  <!-- Navigation -->
-  <nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-6">
-    <div class="text-4xl font-black tracking-tighter neon-glow">ICONIK</div>
-    <div class="flex items-center gap-6">
-      <button class="glass px-10 py-4 rounded-3xl font-semibold tracking-widest text-sm hover:bg-white/10 transition-all">
+  <!-- Navbar -->
+  <nav class="fixed top-0 w-full z-50 bg-black/70 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+      <div class="text-3xl font-bold tracking-widest text-amber-300 iconik-logo">ICONIK</div>
+      
+      <button onclick="alert('Join Free clicked!')" 
+              class="px-8 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 rounded-xl text-sm font-medium transition-all">
         JOIN FREE
       </button>
-      <button class="w-12 h-12 glass rounded-3xl flex items-center justify-center text-2xl">☰</button>
+
+      <button class="w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-xl transition-all">
+        <i class="fa-solid fa-bars text-cyan-400 text-xl"></i>
+      </button>
     </div>
   </nav>
 
-  <div class="relative min-h-screen flex items-center justify-center pt-20">
-    <div class="text-center max-w-5xl mx-auto px-6">
-      <!-- Welcome -->
-      <p class="text-lg tracking-[4px] text-zinc-400 mb-8 font-light">
+  <!-- Hero Section -->
+  <section class="min-h-screen hero-bg flex items-center pt-20 relative">
+    <div class="max-w-7xl mx-auto px-6 text-center relative z-10">
+      
+      <!-- Welcome Text -->
+      <p class="text-lg md:text-xl text-cyan-200 mb-6 tracking-widest">
         Welcome to the World's Fan Ecosystem
       </p>
 
       <!-- Main Logo -->
-      <h1 class="text-[110px] md:text-[140px] font-black tracking-[-4px] leading-none mb-8 neon-glow">
-        ICONIK
-      </h1>
+      <div class="mb-8">
+        <h1 class="text-7xl md:text-8xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-cyan-300 iconik-logo glow-text">
+          ICONIK
+        </h1>
+      </div>
 
       <!-- Tagline -->
-      <p class="text-4xl md:text-5xl font-light mb-10 sharp-text text-white">
+      <p class="text-xl md:text-2xl text-white/90 italic mb-12 max-w-2xl mx-auto">
         Your Favorite Celebrity's Platform
       </p>
 
-      <!-- Main CTA -->
-      <div class="text-3xl md:text-4xl font-medium tracking-widest mb-16 sharp-text text-white">
-        FIND YOUR TRIBE | FOLLOW YOUR ICON
+      <!-- Main Call to Action -->
+      <div class="mb-16">
+        <p class="text-3xl md:text-4xl font-medium tracking-wider text-white mb-3">
+          FIND YOUR TRIBE FOLLOW YOUR ICON
+        </p>
+        <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent mx-auto"></div>
       </div>
 
       <!-- Stats -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-20">
-        <div class="glass rounded-3xl p-10">
-          <div class="text-7xl font-bold text-pink-300">13+</div>
-          <div class="text-sm uppercase tracking-widest mt-4">ICON CATEGORIES</div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-20">
+        <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-8 hover:border-amber-300/50 transition-all group">
+          <div class="text-5xl font-bold text-amber-300 mb-2">13+</div>
+          <div class="text-sm tracking-widest text-white/70">ICON CATEGORIES</div>
         </div>
-        <div class="glass rounded-3xl p-10">
-          <div class="text-7xl font-bold text-purple-300">7</div>
-          <div class="text-sm uppercase tracking-widest mt-4">CONTINENTS</div>
+        <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-8 hover:border-amber-300/50 transition-all group">
+          <div class="text-5xl font-bold text-amber-300 mb-2">7</div>
+          <div class="text-sm tracking-widest text-white/70">CONTINENTS</div>
         </div>
-        <div class="glass rounded-3xl p-10">
-          <div class="text-7xl font-bold text-cyan-300">∞</div>
-          <div class="text-sm uppercase tracking-widest mt-4">ICONS & RISING STARS</div>
+        <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-8 hover:border-amber-300/50 transition-all group">
+          <div class="text-5xl font-bold text-amber-300 mb-3">∞</div>
+          <div class="text-sm tracking-widest text-white/70">ICONS & RISING STARS</div>
         </div>
       </div>
 
-      <!-- Join Button -->
-      <button class="glass text-2xl font-semibold tracking-widest px-20 py-8 rounded-3xl border border-white/10 hover:border-white/30 transition-all hover:scale-105">
+      <!-- Bottom CTA -->
+      <button onclick="alert('Join the community clicked!')"
+              class="px-16 py-6 bg-gradient-to-r from-cyan-400 to-emerald-400 hover:from-cyan-500 hover:to-emerald-500 text-black font-semibold text-xl rounded-2xl transition-all transform hover:scale-105 shadow-2xl shadow-cyan-500/30">
         JOIN THE COMMUNITY
       </button>
     </div>
-  </div>
+
+    <!-- Floating Decorative Icons -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+      <!-- You can add more decorative floating icons here with absolute positioning and animation if needed -->
+    </div>
+  </section>
+
+  <script>
+    // Simple tailwind script already included via CDN
+  </script>
 </body>
 </html>
