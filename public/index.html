@@ -1,109 +1,1261 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ICONIK - Your Favorite Celebrity's Platform</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <style>
-    body {
-      background: linear-gradient(180deg, #0a0a2e 0%, #0f1b3a 100%);
-      font-family: 'Inter', system-ui, sans-serif;
-    }
-    .hero-bg {
-      background-image: 
-        radial-gradient(circle at 30% 20%, rgba(255, 215, 0, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 70% 80%, rgba(0, 255, 200, 0.1) 0%, transparent 50%);
-    }
-    .glow-text {
-      text-shadow: 0 0 20px rgba(255, 215, 0, 0.6),
-                   0 0 40px rgba(255, 215, 0, 0.4);
-    }
-    .iconik-logo {
-      font-family: 'Playfair Display', serif;
-      letter-spacing: 4px;
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ICONIK — Find Your Tribe. Follow Your Icon.</title>
+<link rel="manifest" href="/manifest.json"/>
+<meta name="theme-color" content="#07070D"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Bebas+Neue&family=Montserrat:wght@400;600;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet"/>
+
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:#0a0a0a;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden;}
+
+/* NOISE */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.5;}
+
+/* SMOKE BG */
+.smoke-bg{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(103,232,249,0.07) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(168,85,247,0.08) 0%, transparent 55%),
+    radial-gradient(circle at 20% 65%, rgba(249,168,212,0.06) 0%, transparent 50%),
+    radial-gradient(circle at 60% 90%, rgba(139,92,246,0.05) 0%, transparent 45%);}
+
+/* NAV */
+nav.topnav{position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 24px;
+  background:rgba(10,10,10,0.55);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(255,255,255,0.07);}
+.nav-logo-tw{
+  font-family:'Inter',sans-serif;font-weight:900;font-size:1.6rem;
+  letter-spacing:-0.05em;text-decoration:none;
+  background:linear-gradient(130deg,#f9a8d4 0%,#e879f9 40%,#a78bfa 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 18px rgba(249,168,212,0.45));}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-join-tw{
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:999px;
+  font-family:'Inter',sans-serif;font-weight:700;font-size:0.68rem;
+  letter-spacing:0.22em;text-transform:uppercase;
+  color:#fff;padding:10px 22px;cursor:pointer;
+  transition:all 0.25s;
+  /* Cyan-purple clip shape like screenshot */
+  clip-path:polygon(14px 0%,100% 0%,calc(100% - 14px) 100%,0% 100%);
+  border-radius:0;
+  background:linear-gradient(135deg,rgba(103,232,249,0.15),rgba(168,85,247,0.15));
+  border:1px solid rgba(103,232,249,0.35);}
+.nav-join-tw:hover{background:linear-gradient(135deg,rgba(103,232,249,0.25),rgba(168,85,247,0.25));border-color:rgba(103,232,249,0.6);}
+.nav-menu-tw{
+  width:44px;height:44px;
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:10px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  cursor:pointer;transition:all 0.25s;}
+.nav-menu-tw:hover{background:rgba(255,255,255,0.13);}
+.nav-menu-tw span{display:block;width:18px;height:2px;background:#fff;border-radius:2px;}
+
+/* HERO */
+.hero-tw{
+  position:relative;z-index:1;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:130px 20px 60px;}
+
+@keyframes fadeUpTw{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+.hero-eyebrow-tw{
+  font-family:'Inter',sans-serif;font-weight:300;
+  font-style:italic;
+  font-size:clamp(0.85rem,2.5vw,1.05rem);
+  letter-spacing:0.15em;
+  color:rgba(200,200,210,0.75);
+  margin-bottom:28px;
+  /* Italic serif look like screenshot */
+  font-family:'Playfair Display',serif;font-style:italic;
+  opacity:0;animation:fadeUpTw 0.8s ease 0.2s forwards;}
+
+.hero-logo-tw{
+  font-family:'Inter',sans-serif;font-weight:900;
+  font-size:clamp(5.5rem,24vw,12rem);
+  line-height:0.88;letter-spacing:-0.04em;
+  margin-bottom:24px;
+  /* Rose-gold metallic gradient matching screenshot */
+  background:linear-gradient(145deg,#d4956a 0%,#e8b090 20%,#f5c9a8 40%,#e8a07a 60%,#c97850 80%,#b86840 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 35px rgba(212,149,106,0.45)) drop-shadow(0 0 70px rgba(212,149,106,0.2));
+  opacity:0;animation:fadeUpTw 0.8s ease 0.35s forwards;}
+
+.hero-subtitle-tw{
+  font-family:'Playfair Display',serif;
+  font-weight:400;font-style:normal;
+  font-size:clamp(1.3rem,4.5vw,2.2rem);
+  color:rgba(255,255,255,0.92);
+  letter-spacing:0.01em;
+  line-height:1.25;
+  margin-bottom:18px;
+  text-shadow:0 2px 20px rgba(0,0,0,0.7);
+  opacity:0;animation:fadeUpTw 0.8s ease 0.5s forwards;}
+
+.hero-tagline-tw{
+  font-family:'Inter',sans-serif;font-weight:800;
+  font-size:clamp(0.6rem,1.8vw,0.82rem);
+  letter-spacing:0.3em;text-transform:uppercase;
+  color:rgba(255,255,255,0.9);
+  margin-bottom:48px;
+  text-shadow:0 1px 8px rgba(0,0,0,0.6);
+  opacity:0;animation:fadeUpTw 0.8s ease 0.65s forwards;}
+
+/* STATS - matching screenshot exactly: 3 square glass cards */
+.hero-stats-tw{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:12px;width:100%;max-width:480px;
+  margin:0 auto 44px;
+  opacity:0;animation:fadeUpTw 0.8s ease 0.8s forwards;}
+
+.stat-card-tw{
+  background:rgba(20,20,30,0.7);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:14px;
+  padding:24px 10px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:all 0.3s;}
+.stat-card-tw:hover{background:rgba(30,30,45,0.8);border-color:rgba(255,255,255,0.18);transform:translateY(-3px);}
+
+.stat-num-tw{
+  font-family:'Inter',sans-serif;font-weight:900;
+  font-size:clamp(2.4rem,7vw,3.2rem);
+  line-height:1;margin-bottom:10px;color:#fff;}
+
+.stat-lbl-tw{
+  font-family:'Inter',sans-serif;font-weight:600;
+  font-size:clamp(0.5rem,1.2vw,0.6rem);
+  letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(255,255,255,0.45);line-height:1.4;text-align:center;}
+
+/* CTA - matching screenshot: wide gradient pill/parallelogram button */
+.hero-cta-tw{
+  font-family:'Inter',sans-serif;font-weight:700;
+  font-size:clamp(0.7rem,2vw,0.85rem);
+  letter-spacing:0.25em;text-transform:uppercase;
+  color:#fff;
+  padding:18px 52px;
+  background:linear-gradient(135deg,#06b6d4 0%,#8b5cf6 50%,#ec4899 100%);
+  border:none;cursor:pointer;
+  clip-path:polygon(16px 0%,100% 0%,calc(100% - 16px) 100%,0% 100%);
+  transition:all 0.3s;
+  box-shadow:0 0 40px rgba(139,92,246,0.35),0 0 80px rgba(6,182,212,0.15);
+  opacity:0;animation:fadeUpTw 0.8s ease 1s forwards;}
+.hero-cta-tw:hover{
+  box-shadow:0 0 60px rgba(139,92,246,0.55),0 0 100px rgba(6,182,212,0.25);
+  transform:scale(1.03);}
+
+/* ─── KEEP ALL EXISTING SECTION STYLES BELOW ─── */
+:root{
+  --obsidian:#07070D;--obsidian-2:#0F0F1A;--obsidian-3:#141420;
+  --gold:#FFB800;--gold-dim:#CC9400;--gold-glow:#FF9500;--gold-light:#FFD060;
+  --champagne:#F5F0E8;--champagne-dim:#BDB5A6;
+  --glass:rgba(255,184,0,0.04);--glass-border:rgba(255,184,0,0.15);
+  --glass-border-bright:rgba(255,184,0,0.4);--white-glass:rgba(255,255,255,0.03);}
+
+/* ─── MARQUEE STRIP ─── */
+.marquee-section {
+  padding:20px 0;
+  background:linear-gradient(90deg, var(--obsidian), rgba(255,184,0,0.05), var(--obsidian));
+  border-top:1px solid var(--glass-border);
+  border-bottom:1px solid var(--glass-border);
+  overflow:hidden;
+}
+.marquee-track {
+  display:flex; gap:0;
+  animation:marquee 30s linear infinite;
+  width:max-content;
+}
+.marquee-item {
+  font-family:'Bebas Neue', sans-serif;
+  font-size:0.85rem; letter-spacing:0.3em;
+  color:var(--champagne-dim);
+  padding:0 40px;
+  display:flex; align-items:center; gap:40px;
+  white-space:nowrap;
+}
+.marquee-item::after {
+  content:'✦';
+  color:var(--gold);
+  font-size:0.6rem;
+}
+@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ─── CATEGORIES GRID ─── */
+.categories-section { padding:100px 40px; }
+.categories-header { text-align:center; margin-bottom:72px; }
+
+.categories-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+  gap:20px;
+  max-width:1400px; margin:0 auto;
+}
+
+.category-card {
+  position:relative;
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  padding:36px 32px;
+  cursor:pointer;
+  overflow:hidden;
+  transition:all 0.4s ease;
+  group:true;
+}
+.category-card::before {
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(135deg, rgba(255,184,0,0.06), transparent);
+  opacity:0; transition:opacity 0.4s;
+}
+.category-card::after {
+  content:'';
+  position:absolute; bottom:0; left:0; right:0;
+  height:2px;
+  background:linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform:scaleX(0); transition:transform 0.4s;
+}
+.category-card:hover { border-color:var(--glass-border-bright); transform:translateY(-4px); box-shadow:0 20px 60px rgba(0,0,0,0.4), 0 0 30px rgba(255,184,0,0.08); }
+.category-card:hover::before { opacity:1; }
+.category-card:hover::after { transform:scaleX(1); }
+
+.card-icon {
+  font-size:2.4rem; margin-bottom:20px;
+  display:block;
+  filter:drop-shadow(0 0 10px rgba(255,184,0,0.3));
+  transition:transform 0.4s;
+}
+.category-card:hover .card-icon { transform:scale(1.1); }
+
+.card-number {
+  position:absolute; top:20px; right:24px;
+  font-family:'Bebas Neue', sans-serif;
+  font-size:0.7rem; letter-spacing:0.2em;
+  color:rgba(255,184,0,0.2);
+}
+
+.card-title {
+  font-family:'Montserrat', sans-serif;
+  font-weight:800; font-size:1rem;
+  letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--champagne);
+  margin-bottom:10px;
+}
+.card-desc {
+  font-family:'Inter', sans-serif;
+  font-size:0.8rem; color:var(--champagne-dim);
+  line-height:1.6;
+}
+.card-count {
+  margin-top:20px;
+  font-family:'Bebas Neue', sans-serif;
+  font-size:0.7rem; letter-spacing:0.2em;
+  color:var(--gold); opacity:0.7;
+}
+.card-arrow {
+  position:absolute; bottom:24px; right:24px;
+  color:var(--gold); font-size:1rem;
+  opacity:0; transform:translateX(-8px);
+  transition:all 0.3s;
+}
+.category-card:hover .card-arrow { opacity:1; transform:translateX(0); }
+
+/* ─── HOW IT WORKS ─── */
+.how-section {
+  padding:100px 40px;
+  background:linear-gradient(180deg, var(--obsidian) 0%, var(--obsidian-2) 50%, var(--obsidian) 100%);
+}
+.how-inner { max-width:1100px; margin:0 auto; }
+.how-header { margin-bottom:72px; }
+.how-steps { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:2px; }
+
+.how-step {
+  position:relative; padding:48px 36px;
+  background:var(--white-glass);
+  border:1px solid var(--glass-border);
+  transition:all 0.3s;
+}
+.how-step:hover { border-color:var(--glass-border-bright); background:var(--glass); }
+
+.step-number {
+  font-family:'Playfair Display', serif;
+  font-style:italic; font-weight:700;
+  font-size:4rem; line-height:1;
+  color:rgba(255,184,0,0.12);
+  margin-bottom:24px;
+  display:block;
+}
+.step-icon { font-size:1.8rem; margin-bottom:16px; display:block; }
+.step-title {
+  font-family:'Montserrat', sans-serif;
+  font-weight:700; font-size:0.9rem;
+  letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--champagne); margin-bottom:12px;
+}
+.step-desc {
+  font-family:'Inter', sans-serif;
+  font-size:0.82rem; color:var(--champagne-dim);
+  line-height:1.65;
+}
+
+/* ─── MEMBERSHIP TIERS ─── */
+.tiers-section { padding:100px 40px; }
+.tiers-inner { max-width:1200px; margin:0 auto; }
+.tiers-header { text-align:center; margin-bottom:72px; }
+.tiers-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:20px; }
+
+.tier-card {
+  position:relative; padding:48px 36px;
+  border:1px solid var(--glass-border);
+  background:var(--white-glass);
+  transition:all 0.4s; overflow:hidden;
+}
+.tier-card.featured {
+  border-color:var(--gold);
+  background:linear-gradient(135deg, rgba(255,184,0,0.08), rgba(255,149,0,0.04));
+  box-shadow:0 0 60px rgba(255,184,0,0.1);
+}
+.tier-badge {
+  position:absolute; top:0; right:32px;
+  font-family:'Bebas Neue', sans-serif;
+  font-size:0.65rem; letter-spacing:0.2em;
+  color:var(--obsidian);
+  background:var(--gold);
+  padding:4px 16px;
+  clip-path:polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%);
+}
+.tier-name {
+  font-family:'Bebas Neue', sans-serif;
+  font-size:0.75rem; letter-spacing:0.3em;
+  color:var(--gold); margin-bottom:16px;
+}
+.tier-price {
+  font-family:'Playfair Display', serif;
+  font-weight:900; font-size:3rem;
+  color:var(--champagne); line-height:1;
+  margin-bottom:4px;
+}
+.tier-price sup {
+  font-size:1.2rem; vertical-align:top;
+  margin-top:8px; display:inline-block;
+  color:var(--champagne-dim);
+}
+.tier-period {
+  font-family:'Inter', sans-serif;
+  font-size:0.75rem; color:var(--champagne-dim);
+  letter-spacing:0.1em; margin-bottom:32px;
+}
+.tier-features { list-style:none; margin-bottom:36px; }
+.tier-features li {
+  font-family:'Inter', sans-serif;
+  font-size:0.8rem; color:var(--champagne-dim);
+  padding:8px 0;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  display:flex; align-items:center; gap:10px;
+}
+.tier-features li::before { content:'✦'; color:var(--gold); font-size:0.5rem; flex-shrink:0; }
+.tier-btn {
+  width:100%;
+  font-family:'Montserrat', sans-serif;
+  font-weight:700; font-size:0.72rem;
+  letter-spacing:0.2em; text-transform:uppercase;
+  padding:14px;
+  cursor:pointer; border:none;
+  transition:all 0.3s;
+}
+.tier-btn-outline {
+  background:transparent;
+  border:1px solid var(--glass-border-bright) !important;
+  color:var(--champagne);
+}
+.tier-btn-outline:hover { border-color:var(--gold) !important; color:var(--gold); }
+.tier-btn-gold {
+  background:linear-gradient(135deg, var(--gold), var(--gold-glow));
+  color:var(--obsidian);
+  box-shadow:0 0 30px rgba(255,184,0,0.3);
+}
+.tier-btn-gold:hover { box-shadow:0 0 50px rgba(255,184,0,0.5); transform:translateY(-2px); }
+
+/* ─── GLOBAL REACH ─── */
+.global-section {
+  padding:100px 40px;
+  background:var(--obsidian-2);
+  border-top:1px solid var(--glass-border);
+  border-bottom:1px solid var(--glass-border);
+  text-align:center;
+}
+.globe-visual {
+  width:300px; height:300px; margin:60px auto;
+  position:relative;
+  border:1px solid var(--glass-border);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  animation:globeSpin 20s linear infinite;
+}
+.globe-visual::before {
+  content:'';
+  position:absolute; inset:-1px;
+  border-radius:50%;
+  border:1px solid transparent;
+  background:linear-gradient(135deg, var(--gold), transparent, var(--gold-glow), transparent) border-box;
+  -webkit-mask:linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite:destination-out;
+  mask-composite:exclude;
+}
+.globe-inner {
+  font-size:5rem;
+  filter:drop-shadow(0 0 20px rgba(255,184,0,0.4));
+}
+@keyframes globeSpin { from{border-color:rgba(255,184,0,0.1)} to{border-color:rgba(255,184,0,0.5)} }
+
+.continents-strip {
+  display:flex; flex-wrap:wrap; gap:12px;
+  justify-content:center; margin-top:48px;
+}
+.continent-tag {
+  font-family:'Montserrat', sans-serif;
+  font-size:0.7rem; font-weight:600;
+  letter-spacing:0.15em; text-transform:uppercase;
+  color:var(--champagne-dim);
+  border:1px solid var(--glass-border);
+  padding:8px 20px;
+  transition:all 0.3s;
+}
+.continent-tag:hover { border-color:var(--gold); color:var(--gold); }
+
+/* ─── FOOTER ─── */
+footer {
+  position:relative; z-index:1;
+  padding:80px 40px 40px;
+  border-top:1px solid var(--glass-border);
+  background:linear-gradient(180deg, var(--obsidian) 0%, #030308 100%);
+}
+.footer-inner { max-width:1200px; margin:0 auto; }
+.footer-top {
+  display:grid; grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:60px; margin-bottom:60px;
+}
+.footer-brand .logo {
+  font-family:'Bebas Neue', sans-serif;
+  font-size:2.5rem; letter-spacing:0.15em;
+  color:var(--gold);
+  text-shadow:0 0 30px rgba(255,184,0,0.3);
+  display:block; margin-bottom:16px;
+}
+.footer-brand p {
+  font-family:'Inter', sans-serif;
+  font-size:0.82rem; color:var(--champagne-dim);
+  line-height:1.7; max-width:280px;
+}
+.footer-col h4 {
+  font-family:'Montserrat', sans-serif;
+  font-weight:700; font-size:0.7rem;
+  letter-spacing:0.25em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:20px;
+}
+.footer-col ul { list-style:none; }
+.footer-col ul li { margin-bottom:10px; }
+.footer-col ul li a {
+  font-family:'Inter', sans-serif;
+  font-size:0.82rem; color:var(--champagne-dim);
+  text-decoration:none; transition:color 0.3s;
+}
+.footer-col ul li a:hover { color:var(--gold); }
+.footer-bottom {
+  display:flex; align-items:center; justify-content:space-between;
+  padding-top:32px;
+  border-top:1px solid var(--glass-border);
+}
+.footer-copy {
+  font-family:'Inter', sans-serif;
+  font-size:0.75rem; color:rgba(189,181,166,0.4);
+  letter-spacing:0.05em;
+}
+.footer-socials { display:flex; gap:16px; }
+.footer-social {
+  width:36px; height:36px;
+  border:1px solid var(--glass-border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.9rem; color:var(--champagne-dim);
+  text-decoration:none; transition:all 0.3s;
+}
+.footer-social:hover { border-color:var(--gold); color:var(--gold); }
+
+/* ─── MODAL ─── */
+.modal-overlay {
+  display:none; position:fixed; inset:0; z-index:2000;
+  background:rgba(7,7,13,0.9);
+  backdrop-filter:blur(12px);
+  align-items:center; justify-content:center; padding:20px;
+}
+.modal-overlay.open { display:flex; }
+.modal {
+  background:var(--obsidian-3);
+  border:1px solid var(--glass-border-bright);
+  max-width:480px; width:100%;
+  padding:48px 40px;
+  position:relative;
+  box-shadow:0 40px 120px rgba(0,0,0,0.6), 0 0 60px rgba(255,184,0,0.08);
+  animation:modalIn 0.4s ease;
+}
+@keyframes modalIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.modal-close {
+  position:absolute; top:20px; right:20px;
+  background:none; border:none;
+  color:var(--champagne-dim); font-size:1.2rem;
+  cursor:pointer; transition:color 0.3s;
+}
+.modal-close:hover { color:var(--gold); }
+.modal-eyebrow {
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic; font-size:0.95rem;
+  color:var(--gold); margin-bottom:12px;
+}
+.modal-title {
+  font-family:'Playfair Display', serif;
+  font-weight:700; font-size:1.8rem;
+  color:var(--champagne); margin-bottom:32px;
+  line-height:1.2;
+}
+.modal-steps {
+  display:flex; gap:8px; margin-bottom:32px;
+}
+.modal-step-dot {
+  height:3px; flex:1;
+  background:var(--glass-border);
+  transition:background 0.3s;
+}
+.modal-step-dot.active { background:var(--gold); }
+
+.form-group { margin-bottom:20px; }
+.form-label {
+  font-family:'Montserrat', sans-serif;
+  font-size:0.65rem; font-weight:700;
+  letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--champagne-dim); margin-bottom:8px;
+  display:block;
+}
+.form-input {
+  width:100%; padding:14px 16px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--glass-border);
+  color:var(--champagne);
+  font-family:'Inter', sans-serif; font-size:0.9rem;
+  outline:none; transition:all 0.3s;
+}
+.form-input:focus { border-color:var(--gold); box-shadow:0 0 20px rgba(255,184,0,0.08); }
+.form-input::placeholder { color:rgba(189,181,166,0.3); }
+
+.category-pick-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:8px;
+  margin-bottom:24px;
+}
+.cat-pick {
+  padding:12px 8px; text-align:center;
+  border:1px solid var(--glass-border);
+  cursor:pointer; transition:all 0.3s;
+  background:transparent;
+}
+.cat-pick:hover, .cat-pick.selected {
+  border-color:var(--gold);
+  background:rgba(255,184,0,0.08);
+}
+.cat-pick-icon { font-size:1.4rem; display:block; margin-bottom:4px; }
+.cat-pick-name {
+  font-family:'Inter', sans-serif;
+  font-size:0.6rem; color:var(--champagne-dim);
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(24px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity:0; } to { opacity:1; }
+}
+
+.reveal {
+  opacity:0; transform:translateY(32px);
+  transition:all 0.7s ease;
+}
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* ─── MOBILE ─── */
+@media (max-width:768px) {
+  nav { padding:16px 20px; }
+  .nav-links { display:none; }
+  .nav-mobile-btn { display:block; }
+  .hero { padding:100px 20px 120px; }
+  .hero-stats { gap:24px; bottom:20px; }
+  .stat-number { font-size:1.4rem; }
+  .categories-section, .how-section, .tiers-section, .global-section { padding:70px 20px; }
+  .footer-top { grid-template-columns:1fr 1fr; gap:40px; }
+  .footer-bottom { flex-direction:column; gap:20px; text-align:center; }
+  .modal { padding:32px 24px; }
+  .category-pick-grid { grid-template-columns:repeat(4,1fr); }
+}
+@media (max-width:480px) {
+  .hero-stats { flex-direction:column; gap:16px; }
+  .stat-divider { display:none; }
+  .tiers-grid { grid-template-columns:1fr; }
+  .footer-top { grid-template-columns:1fr; }
+  .category-pick-grid { grid-template-columns:repeat(3,1fr); }
+}
+</style>
 </head>
-<body class="text-white overflow-x-hidden">
+<body>
+<div class="smoke-bg"></div>
 
-  <!-- Navbar -->
-  <nav class="fixed top-0 w-full z-50 bg-black/70 backdrop-blur-md border-b border-white/10">
-    <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-      <div class="text-3xl font-bold tracking-widest text-amber-300 iconik-logo">ICONIK</div>
-      
-      <button onclick="alert('Join Free clicked!')" 
-              class="px-8 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 rounded-xl text-sm font-medium transition-all">
-        JOIN FREE
-      </button>
+<!-- NAV -->
+<nav class="topnav">
+  <a class="nav-logo-tw" href="#">ICONIK</a>
+  <div class="nav-right">
+    <button class="nav-join-tw" onclick="goToApp()">JOIN FREE</button>
+    <button class="nav-menu-tw" onclick="goToApp()"><span></span><span></span><span></span></button>
+  </div>
+</nav>
 
-      <button class="w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-xl transition-all">
-        <i class="fa-solid fa-bars text-cyan-400 text-xl"></i>
-      </button>
+<!-- HERO -->
+<section class="hero-tw">
+
+  <p class="hero-eyebrow-tw">Welcome to the World's Fan Ecosystem</p>
+
+  <h1 class="hero-logo-tw">ICONIK</h1>
+
+  <p class="hero-subtitle-tw">Your<br/>Favorite Celebrity's Platform</p>
+
+  <p class="hero-tagline-tw">FIND YOUR TRIBE &nbsp;|&nbsp; FOLLOW YOUR ICON</p>
+
+  <div class="hero-stats-tw">
+    <div class="stat-card-tw">
+      <div class="stat-num-tw">13+</div>
+      <div class="stat-lbl-tw">ICON CATEGORIES</div>
     </div>
-  </nav>
+    <div class="stat-card-tw">
+      <div class="stat-num-tw">7</div>
+      <div class="stat-lbl-tw">CONTINENTS</div>
+    </div>
+    <div class="stat-card-tw">
+      <div class="stat-num-tw">∞</div>
+      <div class="stat-lbl-tw">ICONS & RISING STARS</div>
+    </div>
+  </div>
 
-  <!-- Hero Section -->
-  <section class="min-h-screen hero-bg flex items-center pt-20 relative">
-    <div class="max-w-7xl mx-auto px-6 text-center relative z-10">
-      
-      <!-- Welcome Text -->
-      <p class="text-lg md:text-xl text-cyan-200 mb-6 tracking-widest">
-        Welcome to the World's Fan Ecosystem
-      </p>
+  <button class="hero-cta-tw" onclick="goToApp()">JOIN THE COMMUNITY</button>
 
-      <!-- Main Logo -->
-      <div class="mb-8">
-        <h1 class="text-7xl md:text-8xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-cyan-300 iconik-logo glow-text">
-          ICONIK
-        </h1>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <span class="marquee-item">Music</span>
+    <span class="marquee-item">Film & TV</span>
+    <span class="marquee-item">Sports</span>
+    <span class="marquee-item">Literature</span>
+    <span class="marquee-item">Fashion</span>
+    <span class="marquee-item">Fitness & Wellness</span>
+    <span class="marquee-item">Food & Culinary</span>
+    <span class="marquee-item">Nature & Exploration</span>
+    <span class="marquee-item">Automotive</span>
+    <span class="marquee-item">Tech & Innovation</span>
+    <span class="marquee-item">Beauty</span>
+    <span class="marquee-item">Entertainment</span>
+    <span class="marquee-item">Thought Leadership</span>
+    <!-- duplicate for seamless loop -->
+    <span class="marquee-item">Music</span>
+    <span class="marquee-item">Film & TV</span>
+    <span class="marquee-item">Sports</span>
+    <span class="marquee-item">Literature</span>
+    <span class="marquee-item">Fashion</span>
+    <span class="marquee-item">Fitness & Wellness</span>
+    <span class="marquee-item">Food & Culinary</span>
+    <span class="marquee-item">Nature & Exploration</span>
+    <span class="marquee-item">Automotive</span>
+    <span class="marquee-item">Tech & Innovation</span>
+    <span class="marquee-item">Beauty</span>
+    <span class="marquee-item">Entertainment</span>
+    <span class="marquee-item">Thought Leadership</span>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="categories-section" id="categories">
+  <div class="categories-header reveal">
+    <p class="section-label">All Communities</p>
+    <h2 class="section-title">Every Icon Has a<br/><em>Community Here</em></h2>
+    <p class="section-sub">From chart-topping musicians to world champions, wildlife pioneers to culinary legends — your icon's community is waiting.</p>
+  </div>
+
+  <div class="categories-grid">
+    <!-- 1 -->
+    <div class="category-card reveal" onclick="goToApp()" style="padding:0;overflow:hidden;">
+      <span class="card-number" style="position:absolute;top:12px;right:16px;z-index:2;">01</span>
+      <div style="width:100%;height:160px;overflow:hidden;position:relative;">
+        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=80" alt="Music" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75);"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(7,7,13,0.95));"></div>
+      </div>
+      <div style="padding:20px 28px 28px;">
+        <div class="card-title">Music</div>
+        <div class="card-desc">Pop, Hip-Hop, Reggaeton, Afrobeats, K-Pop, Rock, R&B, Latin, EDM, Classical, Gospel & every genre worldwide.</div>
+        <div class="card-count">All Genres · All Continents</div>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+    <!-- 2 -->
+    <div class="category-card reveal" onclick="goToApp()" style="padding:0;overflow:hidden;">
+      <span class="card-number" style="position:absolute;top:12px;right:16px;z-index:2;">02</span>
+      <div style="width:100%;height:160px;overflow:hidden;position:relative;">
+        <img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=600&q=80" alt="Film" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75);"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(7,7,13,0.95));"></div>
+      </div>
+      <div style="padding:20px 28px 28px;">
+        <div class="card-title">Film & TV</div>
+        <div class="card-desc">Hollywood, Bollywood, Nollywood, K-Drama, Latino Cinema, Streaming Stars — all screens, all stories.</div>
+        <div class="card-count">Actors · Directors · Streaming Icons</div>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+    <!-- 3 -->
+    <div class="category-card reveal" onclick="goToApp()" style="padding:0;overflow:hidden;">
+      <span class="card-number" style="position:absolute;top:12px;right:16px;z-index:2;">03</span>
+      <div style="width:100%;height:160px;overflow:hidden;position:relative;">
+        <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=600&q=80" alt="Sports" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75);"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(7,7,13,0.95));"></div>
+      </div>
+      <div style="padding:20px 28px 28px;">
+        <div class="card-title">Sports</div>
+        <div class="card-desc">Football, Basketball, Tennis, Boxing, Cricket, F1, Athletics, Swimming, Golf, Rugby, WWE & all disciplines.</div>
+        <div class="card-count">All Sports · Male & Female Champions</div>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+    <!-- 4 -->
+    <div class="category-card reveal" onclick="goToApp()" style="padding:0;overflow:hidden;">
+      <span class="card-number" style="position:absolute;top:12px;right:16px;z-index:2;">04</span>
+      <div style="width:100%;height:160px;overflow:hidden;position:relative;">
+        <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600&q=80" alt="Literature" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75);"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(7,7,13,0.95));"></div>
+      </div>
+      <div style="padding:20px 28px 28px;">
+        <div class="card-title">Literature & Knowledge</div>
+        <div class="card-desc">Authors, books, eBook alerts, reading circles, software & tech reads. For the world's book lovers and knowledge seekers.</div>
+        <div class="card-count">Books · Authors · Reading Circles</div>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+    <!-- 5 -->
+    <div class="category-card reveal" onclick="goToApp()" style="padding:0;overflow:hidden;">
+      <span class="card-number" style="position:absolute;top:12px;right:16px;z-index:2;">05</span>
+      <div style="width:100%;height:160px;overflow:hidden;position:relative;">
+        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80" alt="Fitness" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75);"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(7,7,13,0.95));"></div>
+      </div>
+      <div style="padding:20px 28px 28px;">
+        <div class="card-title">Fitness, Health & Wellness</div>
+        <div class="card-desc">Verified coaches, fitness equipment, scientific & herbal wellness products, anti-aging, nutrition, and mental health.</div>
+        <div class="card-count">Coaches · Products · Affiliate Marketplace</div>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+    <!-- 6 -->
+    <div class="category-card reveal" onclick="goToApp()" style="padding:0;overflow:hidden;">
+      <span class="card-number" style="position:absolute;top:12px;right:16px;z-index:2;">06</span>
+      <div style="width:100%;height:160px;overflow:hidden;position:relative;">
+        <img src="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=600&q=80" alt="Nature" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75);"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(7,7,13,0.95));"></div>
+      </div>
+      <div style="padding:20px 28px 28px;">
+        <div class="card-title">Nature & Exploration</div>
+        <div class="card-desc">Wildlife biologists, marine explorers, astronauts, oceanographers, environmental scientists & adventure pioneers.</div>
+        <div class="card-count">Wildlife · Space · Ocean · Adventure</div>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+    <!-- 7 -->
+    <div class="category-card reveal" onclick="goToApp()" style="padding:0;overflow:hidden;">
+      <span class="card-number" style="position:absolute;top:12px;right:16px;z-index:2;">07</span>
+      <div style="width:100%;height:160px;overflow:hidden;position:relative;">
+        <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80" alt="Luxury Fashion" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.8);"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(7,7,13,0.95));"></div>
+      </div>
+      <div style="padding:20px 28px 28px;">
+        <div class="card-title">Fashion</div>
+        <div class="card-desc">Supermodels, designers, streetwear icons, sneaker culture, runway stars — male & female — from every fashion capital.</div>
+        <div class="card-count">Designers · Models · Streetwear</div>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+    <!-- 8 -->
+    <div class="category-card reveal" onclick="goToApp()" style="padding:0;overflow:hidden;">
+      <span class="card-number" style="position:absolute;top:12px;right:16px;z-index:2;">08</span>
+      <div style="width:100%;height:160px;overflow:hidden;position:relative;">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Food" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75);"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(7,7,13,0.95));"></div>
+      </div>
+      <div style="padding:20px 28px 28px;">
+        <div class="card-title">Food & Culinary</div>
+        <div class="card-desc">Celebrity chefs, food content creators, restaurant moguls, street food stars & pastry artists from every cuisine.</div>
+        <div class="card-count">Chefs · Creators · Restaurant Stars</div>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+    <!-- 9 -->
+    <div class="category-card reveal" onclick="goToApp()" style="padding:0;overflow:hidden;">
+      <span class="card-number" style="position:absolute;top:12px;right:16px;z-index:2;">09</span>
+      <div style="width:100%;height:160px;overflow:hidden;position:relative;">
+        <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80" alt="Luxury Supercar" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.85);"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(7,7,13,0.95));"></div>
+      </div>
+      <div style="padding:20px 28px 28px;">
+        <div class="card-title">Automotive & Lifestyle</div>
+        <div class="card-desc">Car culture icons, F1 legends, motorcycle stars, luxury brand ambassadors & custom car builders worldwide.</div>
+        <div class="card-count">Cars · Bikes · Luxury · Speed</div>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+    <!-- 10 -->
+    <div class="category-card reveal" onclick="goToApp()" style="padding:0;overflow:hidden;">
+      <span class="card-number" style="position:absolute;top:12px;right:16px;z-index:2;">10</span>
+      <div style="width:100%;height:160px;overflow:hidden;position:relative;">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80" alt="Tech" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75);"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(7,7,13,0.95));"></div>
+      </div>
+      <div style="padding:20px 28px 28px;">
+        <div class="card-title">Tech & Innovation</div>
+        <div class="card-desc">Tech entrepreneurs, AI innovators, gaming icons, app founders & the minds reshaping the digital world.</div>
+        <div class="card-count">Entrepreneurs · AI · Gaming · Founders</div>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+    <!-- 11 -->
+    <div class="category-card reveal" onclick="goToApp()" style="padding:0;overflow:hidden;">
+      <span class="card-number" style="position:absolute;top:12px;right:16px;z-index:2;">11</span>
+      <div style="width:100%;height:160px;overflow:hidden;position:relative;">
+        <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&q=80" alt="Beauty" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75);"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(7,7,13,0.95));"></div>
+      </div>
+      <div style="padding:20px 28px 28px;">
+        <div class="card-title">Beauty & Aesthetics</div>
+        <div class="card-desc">Makeup artists, skincare scientists, beauty influencers and the icons defining global beauty standards.</div>
+        <div class="card-count">Makeup · Skincare · Beauty Icons</div>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+    <!-- 12 -->
+    <div class="category-card reveal" onclick="goToApp()" style="padding:0;overflow:hidden;">
+      <span class="card-number" style="position:absolute;top:12px;right:16px;z-index:2;">12</span>
+      <div style="width:100%;height:160px;overflow:hidden;position:relative;">
+        <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&q=80" alt="Entertainment" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75);"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(7,7,13,0.95));"></div>
+      </div>
+      <div style="padding:20px 28px 28px;">
+        <div class="card-title">Entertainment & Talent</div>
+        <div class="card-desc">Comedians, reality TV stars, social media creators, podcasters, magicians & live performance legends.</div>
+        <div class="card-count">Comedy · Reality · Influencers · Podcasts</div>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+    <!-- 13 -->
+    <div class="category-card reveal" onclick="goToApp()" style="padding:0;overflow:hidden;">
+      <span class="card-number" style="position:absolute;top:12px;right:16px;z-index:2;">13</span>
+      <div style="width:100%;height:160px;overflow:hidden;position:relative;">
+        <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600&q=80" alt="Leadership" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75);"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(7,7,13,0.95));"></div>
+      </div>
+      <div style="padding:20px 28px 28px;">
+        <div class="card-title">Thought Leadership</div>
+        <div class="card-desc">Motivational speakers, authors, academics, activists & spiritual icons whose ideas move the world forward.</div>
+        <div class="card-count">Speakers · Activists · Academics</div>
+      </div>
+      <span class="card-arrow">→</span>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="how-inner">
+    <div class="how-header reveal">
+      <p class="section-label">The ICONIK Experience</p>
+      <h2 class="section-title">How It <em>Works</em></h2>
+      <p class="section-sub">Three steps from stranger to founding member of your icon's global community.</p>
+    </div>
+    <div class="how-steps">
+      <div class="how-step reveal">
+        <span class="step-number">01</span>
+        <span class="step-icon">🎯</span>
+        <div class="step-title">Choose Your Categories</div>
+        <div class="step-desc">Select from 13 global icon categories. Music, Sports, Film, Wellness, Literature — pick every world that matters to you.</div>
+      </div>
+      <div class="how-step reveal">
+        <span class="step-number">02</span>
+        <span class="step-icon">⭐</span>
+        <div class="step-title">Follow Your Icons</div>
+        <div class="step-desc">Discover and follow your icons — current champions, rising stars, and every icon added by our global Admin network. Always live, never outdated.</div>
+      </div>
+      <div class="how-step reveal">
+        <span class="step-number">03</span>
+        <span class="step-icon">🌍</span>
+        <div class="step-title">Find Your Tribe</div>
+        <div class="step-desc">Connect with like minds worldwide. Discuss, debate, share updates, find concert buddies and tour partners across continents.</div>
+      </div>
+      <div class="how-step reveal">
+        <span class="step-number">04</span>
+        <span class="step-icon">👑</span>
+        <div class="step-title">Upgrade & Unlock</div>
+        <div class="step-desc">Go VIP. Unlock exclusive content, priority community access, direct engagement with verified icons and premium member privileges.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERSHIP TIERS -->
+<section class="tiers-section" id="membership">
+  <div class="tiers-inner">
+    <div class="tiers-header reveal">
+      <p class="section-label">Membership</p>
+      <h2 class="section-title">Choose Your <em>Level</em></h2>
+      <p class="section-sub" style="margin:16px auto 0;">Every icon deserves a community. Every fan deserves a stage.</p>
+    </div>
+    <div class="tiers-grid">
+      <!-- Fan -->
+      <div class="tier-card reveal">
+        <div class="tier-name">Fan Member</div>
+        <div class="tier-price"><sup>$</sup>0</div>
+        <div class="tier-period">Forever Free</div>
+        <ul class="tier-features">
+          <li>Join up to 3 communities</li>
+          <li>Follow unlimited icons</li>
+          <li>Community feed access</li>
+          <li>Concert Buddy Finder</li>
+          <li>Basic profile</li>
+        </ul>
+        <button class="tier-btn tier-btn-outline" onclick="goToApp()">Join Free</button>
+      </div>
+      <!-- VIP Bronze -->
+      <div class="tier-card reveal">
+        <div class="tier-name">VIP Bronze</div>
+        <div class="tier-price"><sup>$</sup>5</div>
+        <div class="tier-period">Per Month</div>
+        <ul class="tier-features">
+          <li>Join up to 7 communities</li>
+          <li>Priority feed placement</li>
+          <li>Exclusive VIP discussions</li>
+          <li>Early event announcements</li>
+          <li>Bronze member badge</li>
+          <li>PayPal & Crypto accepted</li>
+        </ul>
+        <button class="tier-btn tier-btn-outline" onclick="goToApp()">Go Bronze</button>
+      </div>
+      <!-- VIP Silver — FEATURED -->
+      <div class="tier-card featured reveal">
+        <div class="tier-badge">Most Popular</div>
+        <div class="tier-name">VIP Silver</div>
+        <div class="tier-price"><sup>$</sup>12</div>
+        <div class="tier-period">Per Month</div>
+        <ul class="tier-features">
+          <li>Unlimited communities</li>
+          <li>Direct icon update alerts</li>
+          <li>Exclusive VIP Silver lounge</li>
+          <li>Tour Buddy matchmaking</li>
+          <li>Wellness affiliate discounts</li>
+          <li>Silver verified badge</li>
+          <li>PayPal & Crypto accepted</li>
+        </ul>
+        <button class="tier-btn tier-btn-gold" onclick="goToApp()">Go Silver</button>
+      </div>
+      <!-- VIP Gold -->
+      <div class="tier-card reveal">
+        <div class="tier-name">VIP Gold</div>
+        <div class="tier-price"><sup>$</sup>25</div>
+        <div class="tier-period">Per Month</div>
+        <ul class="tier-features">
+          <li>All Silver privileges</li>
+          <li>Gold founding member status</li>
+          <li>Sub Admin eligibility</li>
+          <li>Priority icon content posts</li>
+          <li>Exclusive Gold inner circle</li>
+          <li>Affiliate revenue sharing</li>
+          <li>PayPal & Crypto accepted</li>
+        </ul>
+        <button class="tier-btn tier-btn-outline" onclick="goToApp()">Go Gold</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GLOBAL REACH -->
+<section class="global-section" id="global">
+  <div class="reveal">
+    <p class="section-label">Global Ecosystem</p>
+    <h2 class="section-title">Icons on Every <em>Continent</em></h2>
+    <p class="section-sub" style="margin:16px auto 0; max-width:600px;">From the stadiums of <em style="color:var(--gold);font-style:normal;">North America</em> to the stages of <em style="color:var(--gold);font-style:normal;">Europe</em>. The arenas of <em style="color:var(--gold);font-style:normal;">Asia</em> to the fields of <em style="color:var(--gold);font-style:normal;">South America</em>. The rising talents of <em style="color:var(--gold);font-style:normal;">Africa & the Middle East</em> to the icons of <em style="color:var(--gold);font-style:normal;">Oceania</em>. Every champion, every star, every icon — represented.</p>
+  </div>
+  <div class="globe-visual reveal">
+    <div class="globe-inner">🌍</div>
+  </div>
+  <div class="continents-strip reveal">
+    <span class="continent-tag">🌎 North America<br/><small style="font-size:0.55rem;opacity:0.6;letter-spacing:0.05em;">New York · LA · Toronto · Mexico City</small></span>
+    <span class="continent-tag">🌎 South America<br/><small style="font-size:0.55rem;opacity:0.6;letter-spacing:0.05em;">São Paulo · Buenos Aires · Bogotá · Lima</small></span>
+    <span class="continent-tag">🌍 Africa<br/><small style="font-size:0.55rem;opacity:0.6;letter-spacing:0.05em;">Johannesburg · Nairobi · Accra · Abidjan · Lagos</small></span>
+    <span class="continent-tag">🌍 Middle East<br/><small style="font-size:0.55rem;opacity:0.6;letter-spacing:0.05em;">Dubai · Riyadh · Doha · Muscat</small></span>
+    <span class="continent-tag">🌍 Europe<br/><small style="font-size:0.55rem;opacity:0.6;letter-spacing:0.05em;">London · Paris · Madrid · Berlin</small></span>
+    <span class="continent-tag">🌏 Asia<br/><small style="font-size:0.55rem;opacity:0.6;letter-spacing:0.05em;">Tokyo · Seoul · Beijing · Mumbai</small></span>
+    <span class="continent-tag">🌏 Oceania<br/><small style="font-size:0.55rem;opacity:0.6;letter-spacing:0.05em;">Sydney · Melbourne · Auckland</small></span>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="logo">ICONIK</span>
+        <p>The world's global fan ecosystem. Where icons are celebrated, fans connect, and every rising star finds their community. Find Your Tribe. Follow Your Icon.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="#">How It Works</a></li>
+          <li><a href="#">Membership</a></li>
+          <li><a href="#">Sub Admins</a></li>
+          <li><a href="#">Tour Buddy</a></li>
+          <li><a href="#">Wellness Hub</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">WhatsApp Community</a></li>
+          <li><a href="#">Contact Admin</a></li>
+          <li><a href="#">Become Sub Admin</a></li>
+          <li><a href="#">Partner With Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ALL 13 COMMUNITIES HORIZONTAL -->
+    <div style="margin-bottom:48px;">
+      <h4 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;">All Communities</h4>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;">
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🎵 Music</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🎬 Film & TV</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">⚽ Sports</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">📚 Literature</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">💪 Fitness & Wellness</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🌿 Nature & Exploration</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">👗 Fashion</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🍽️ Food & Culinary</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🚗 Automotive</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">💻 Tech & Innovation</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">💄 Beauty & Aesthetics</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🎭 Entertainment & Talent</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🎓 Thought Leadership</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom" style="flex-direction:column;gap:24px;align-items:center;">
+      <!-- SOCIAL PLATFORMS WITH BRAND COLORS -->
+      <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+        <!-- TikTok -->
+        <a class="footer-social" href="#" title="TikTok" style="background:#000;border-color:#000;width:40px;height:40px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z" fill="#fff"/><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z" fill="#69C9D0" opacity="0.6"/></svg>
+        </a>
+        <!-- X / Twitter -->
+        <a class="footer-social" href="#" title="X" style="background:#000;border-color:#333;width:40px;height:40px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.259 5.631 5.905-5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <!-- Facebook -->
+        <a class="footer-social" href="#" title="Facebook" style="background:#1877F2;border-color:#1877F2;width:40px;height:40px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <!-- Instagram -->
+        <a class="footer-social" href="#" title="Instagram" style="background:radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);border-color:transparent;width:40px;height:40px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <!-- YouTube -->
+        <a class="footer-social" href="#" title="YouTube" style="background:#FF0000;border-color:#FF0000;width:40px;height:40px;">
+          <svg width="20" height="14" viewBox="0 0 24 17" fill="white"><path d="M23.495 2.205a3.02 3.02 0 00-2.122-2.122C19.505 0 12 0 12 0S4.495 0 2.627.083A3.02 3.02 0 00.505 2.205C0 4.073 0 8 0 8s0 3.927.505 5.795a3.02 3.02 0 002.122 2.122C4.495 16 12 16 12 16s7.505 0 9.373-.083a3.02 3.02 0 002.122-2.122C24 11.927 24 8 24 8s0-3.927-.505-5.795zM9.545 11.568V4.432L15.818 8l-6.273 3.568z"/></svg>
+        </a>
+        <!-- Telegram -->
+        <a class="footer-social" href="#" title="Telegram" style="background:#26A5E4;border-color:#26A5E4;width:40px;height:40px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        </a>
+        <!-- Reddit -->
+        <a class="footer-social" href="#" title="Reddit" style="background:#FF4500;border-color:#FF4500;width:40px;height:40px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+        </a>
+        <!-- WeChat -->
+        <a class="footer-social" href="#" title="WeChat" style="background:#07C160;border-color:#07C160;width:40px;height:40px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.328.328 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-3.89-6.348-7.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-7.062-6.122zm-3.318 2.554c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm6.306 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/></svg>
+        </a>
+        <!-- RuTube -->
+        <a class="footer-social" href="#" title="RuTube" style="background:#00ACED;border-color:#00ACED;width:40px;height:40px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="10" fill="none" stroke="white" stroke-width="1.5"/><polygon points="10,8 16,12 10,16" fill="white"/></svg>
+        </a>
+        <!-- LeekeLeeke -->
+        <a class="footer-social" href="#" title="LeekeLeeke" style="background:#E53935;border-color:#E53935;width:40px;height:40px;font-family:'Bebas Neue',sans-serif;font-size:0.65rem;font-weight:900;color:white;letter-spacing:0.05em;display:flex;align-items:center;justify-content:center;">LL</a>
+      </div>
+      <div style="display:flex;justify-content:space-between;width:100%;align-items:center;flex-wrap:wrap;gap:12px;">
+        <span class="footer-copy">© 2026 ICONIK Global Fans Community · iconik-global.web.app · All rights reserved.</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- JOIN MODAL -->
+<div class="modal-overlay" id="joinModal" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <p class="modal-eyebrow">Welcome to ICONIK</p>
+    <h2 class="modal-title" id="modalTitle">Create Your Account</h2>
+    <div class="modal-steps">
+      <div class="modal-step-dot active" id="dot1"></div>
+      <div class="modal-step-dot" id="dot2"></div>
+      <div class="modal-step-dot" id="dot3"></div>
+    </div>
+    <div id="modalContent">
+      <!-- Step 1: Register -->
+      <div id="step1">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input class="form-input" type="text" placeholder="Your full name"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input class="form-input" type="email" placeholder="your@email.com"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" type="password" placeholder="Create a password"/>
+        </div>
+        <button class="btn-primary" style="width:100%;justify-content:center;display:block;text-align:center;" onclick="goStep(2)">Continue →</button>
       </div>
 
-      <!-- Tagline -->
-      <p class="text-xl md:text-2xl text-white/90 italic mb-12 max-w-2xl mx-auto">
-        Your Favorite Celebrity's Platform
-      </p>
-
-      <!-- Main Call to Action -->
-      <div class="mb-16">
-        <p class="text-3xl md:text-4xl font-medium tracking-wider text-white mb-3">
-          FIND YOUR TRIBE FOLLOW YOUR ICON
-        </p>
-        <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent mx-auto"></div>
+      <!-- Step 2: Categories -->
+      <div id="step2" style="display:none;">
+        <p style="font-family:'Inter',sans-serif;font-size:0.82rem;color:var(--champagne-dim);margin-bottom:20px;">Choose your icon communities (select all that apply):</p>
+        <div class="category-pick-grid">
+          <div class="cat-pick" onclick="toggleCat(this)"><span class="cat-pick-icon">🎵</span><span class="cat-pick-name">Music</span></div>
+          <div class="cat-pick" onclick="toggleCat(this)"><span class="cat-pick-icon">🎬</span><span class="cat-pick-name">Film</span></div>
+          <div class="cat-pick" onclick="toggleCat(this)"><span class="cat-pick-icon">⚽</span><span class="cat-pick-name">Sports</span></div>
+          <div class="cat-pick" onclick="toggleCat(this)"><span class="cat-pick-icon">📚</span><span class="cat-pick-name">Books</span></div>
+          <div class="cat-pick" onclick="toggleCat(this)"><span class="cat-pick-icon">💪</span><span class="cat-pick-name">Wellness</span></div>
+          <div class="cat-pick" onclick="toggleCat(this)"><span class="cat-pick-icon">🌿</span><span class="cat-pick-name">Nature</span></div>
+          <div class="cat-pick" onclick="toggleCat(this)"><span class="cat-pick-icon">👗</span><span class="cat-pick-name">Fashion</span></div>
+          <div class="cat-pick" onclick="toggleCat(this)"><span class="cat-pick-icon">🍽️</span><span class="cat-pick-name">Food</span></div>
+          <div class="cat-pick" onclick="toggleCat(this)"><span class="cat-pick-icon">🚗</span><span class="cat-pick-name">Auto</span></div>
+          <div class="cat-pick" onclick="toggleCat(this)"><span class="cat-pick-icon">💻</span><span class="cat-pick-name">Tech</span></div>
+          <div class="cat-pick" onclick="toggleCat(this)"><span class="cat-pick-icon">💄</span><span class="cat-pick-name">Beauty</span></div>
+          <div class="cat-pick" onclick="toggleCat(this)"><span class="cat-pick-icon">🎓</span><span class="cat-pick-name">Leaders</span></div>
+        </div>
+        <button class="btn-primary" style="width:100%;display:block;text-align:center;" onclick="goStep(3)">Continue →</button>
       </div>
 
-      <!-- Stats -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-20">
-        <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-8 hover:border-amber-300/50 transition-all group">
-          <div class="text-5xl font-bold text-amber-300 mb-2">13+</div>
-          <div class="text-sm tracking-widest text-white/70">ICON CATEGORIES</div>
+      <!-- Step 3: Membership -->
+      <div id="step3" style="display:none;">
+        <p style="font-family:'Inter',sans-serif;font-size:0.82rem;color:var(--champagne-dim);margin-bottom:24px;">You're almost in! Choose your membership to unlock your communities:</p>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
+          <div style="padding:14px 16px;border:1px solid var(--glass-border);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all 0.3s;" onmouseenter="this.style.borderColor='var(--gold)'" onmouseleave="this.style.borderColor='var(--glass-border)'">
+            <span style="font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:600;color:var(--champagne);">Fan Member — Free</span>
+            <span style="color:var(--gold);font-size:0.8rem;">$0</span>
+          </div>
+          <div style="padding:14px 16px;border:1px solid var(--glass-border);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all 0.3s;" onmouseenter="this.style.borderColor='var(--gold)'" onmouseleave="this.style.borderColor='var(--glass-border)'">
+            <span style="font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:600;color:var(--champagne);">VIP Bronze</span>
+            <span style="color:var(--gold);font-size:0.8rem;">$5/mo</span>
+          </div>
+          <div style="padding:14px 16px;border:1px solid var(--gold);cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:rgba(255,184,0,0.06);">
+            <span style="font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:700;color:var(--gold);">VIP Silver ⭐ Most Popular</span>
+            <span style="color:var(--gold);font-size:0.8rem;">$12/mo</span>
+          </div>
+          <div style="padding:14px 16px;border:1px solid var(--glass-border);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all 0.3s;" onmouseenter="this.style.borderColor='var(--gold)'" onmouseleave="this.style.borderColor='var(--glass-border)'">
+            <span style="font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:600;color:var(--champagne);">VIP Gold 👑</span>
+            <span style="color:var(--gold);font-size:0.8rem;">$25/mo</span>
+          </div>
         </div>
-        <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-8 hover:border-amber-300/50 transition-all group">
-          <div class="text-5xl font-bold text-amber-300 mb-2">7</div>
-          <div class="text-sm tracking-widest text-white/70">CONTINENTS</div>
-        </div>
-        <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-8 hover:border-amber-300/50 transition-all group">
-          <div class="text-5xl font-bold text-amber-300 mb-3">∞</div>
-          <div class="text-sm tracking-widest text-white/70">ICONS & RISING STARS</div>
-        </div>
+        <button class="btn-primary" style="width:100%;display:block;text-align:center;" onclick="completeJoin()">Enter ICONIK 🚀</button>
       </div>
-
-      <!-- Bottom CTA -->
-      <button onclick="alert('Join the community clicked!')"
-              class="px-16 py-6 bg-gradient-to-r from-cyan-400 to-emerald-400 hover:from-cyan-500 hover:to-emerald-500 text-black font-semibold text-xl rounded-2xl transition-all transform hover:scale-105 shadow-2xl shadow-cyan-500/30">
-        JOIN THE COMMUNITY
-      </button>
     </div>
+  </div>
+</div>
 
-    <!-- Floating Decorative Icons -->
-    <div class="absolute inset-0 pointer-events-none overflow-hidden">
-      <!-- You can add more decorative floating icons here with absolute positioning and animation if needed -->
-    </div>
-  </section>
+<script>
+// ── MODAL ──
+function goToApp() { window.location.href='/app.html'; }
+function openModal() { window.location.href='/app.html'; }
+function closeModal() {
+  document.getElementById('joinModal').classList.remove('open');
+  document.body.style.overflow='';
+  setTimeout(()=>goStep(1),400);
+}
+function handleOverlayClick(e) {
+  if(e.target === document.getElementById('joinModal')) closeModal();
+}
+function goStep(n) {
+  [1,2,3].forEach(i => {
+    document.getElementById('step'+i).style.display = i===n ? 'block' : 'none';
+    document.getElementById('dot'+i).classList.toggle('active', i<=n);
+  });
+  const titles = ['','Create Your Account','Pick Your Communities','Choose Membership'];
+  document.getElementById('modalTitle').textContent = titles[n];
+}
+function toggleCat(el) { el.classList.toggle('selected'); }
+function completeJoin() {
+  document.getElementById('joinModal').innerHTML = `
+    <div style="text-align:center;padding:20px 0;">
+      <div style="font-size:3rem;margin-bottom:20px;">🌟</div>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold);font-size:1.1rem;margin-bottom:12px;">Welcome to ICONIK</p>
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--champagne);margin-bottom:16px;">You're In!</h2>
+      <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:var(--champagne-dim);line-height:1.6;">Your communities are being set up. The world's icons are waiting for you.</p>
+      <button class="btn-primary" style="margin-top:32px;" onclick="closeModal()">Enter My Dashboard →</button>
+    </div>`;
+}
 
-  <script>
-    // Simple tailwind script already included via CDN
-  </script>
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting) { e.target.classList.add('visible'); }
+  });
+}, { threshold:0.1, rootMargin:'0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── NAV SCROLL EFFECT ──
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if(window.scrollY > 60) {
+    nav.style.background = 'rgba(7,7,13,0.95)';
+    nav.style.borderBottomColor = 'rgba(255,184,0,0.2)';
+  } else {
+    nav.style.background = 'rgba(7,7,13,0.7)';
+    nav.style.borderBottomColor = 'rgba(255,184,0,0.15)';
+  }
+});
+
+// ── STAGGER CATEGORY CARDS ──
+document.querySelectorAll('.category-card').forEach((card, i) => {
+  card.style.transitionDelay = (i * 0.06) + 's';
+});
+</script>
 </body>
 </html>
