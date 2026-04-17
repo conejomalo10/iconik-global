@@ -1748,6 +1748,14 @@ import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,updateDoc,delete
 const cfg={apiKey:"AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",authDomain:"iconik-global.firebaseapp.com",projectId:"iconik-global",storageBucket:"iconik-global.firebasestorage.app",messagingSenderId:"1040054516979",appId:"1:1040054516979:web:33cd5f07ae8fc146a30b86"};
 const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app);
 
+// ── GLOBAL EVENT DELEGATION — handles all member + celeb taps safely ──
+document.addEventListener('click',function(e){
+ const memberCard=e.target.closest('.member-tap');
+ if(memberCard){const mid=memberCard.dataset.mid;if(mid)openMemberProfile(mid);return;}
+ const celebCard=e.target.closest('.celeb-tap');
+ if(celebCard){const cid=celebCard.dataset.cid;if(cid)openCelebPage(cid);return;}
+});
+
 // ── SAFE FIRESTORE FETCH — 5 second timeout, NEVER hangs ──
 async function safeGet(qRef){
  try{
@@ -2095,20 +2103,36 @@ async function lCelebs(){
 const mCC=c=>{
  const colors=['#7C3AED','#DC2626','#059669','#D97706','#EC4899','#2563EB','#F43F5E','#0891B2'];
  const clr=colors[Math.abs((c.name||'').charCodeAt(0))%colors.length];
- return`<div class="ccard" onclick="openCelebPage('${c.id}')" style="cursor:pointer;overflow:hidden;padding:0;">
+ const nm=(c.name||'').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+ const ph=c.photo&&c.photo.startsWith('http')?`<img src="${c.photo}" alt="" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" onerror="this.style.display='none'"/>`:'';
+ return`<div class="ccard celeb-tap" data-cid="${c.id||''}" style="cursor:pointer;overflow:hidden;padding:0;">
   <div class="cimg" style="position:relative;overflow:hidden;background:${clr}22;">
-   ${c.photo?`<img src="${c.photo}" alt="${c.name}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" onerror="this.style.display='none'"/>`:``}
+   ${ph}
    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.8rem;z-index:0;">${c.name?.charAt(0)||'⭐'}</div>
   </div>
   <div class="ci">
-   <div class="cn">${c.name}</div>
+   <div class="cn">${nm}</div>
    <div class="ccat">${c.category||''}</div>
    <div class="cmeta">${c.country||''} ${c.followers?'· '+c.followers:''}</div>
   </div>
  </div>`;
 };
-function rAll(){document.getElementById('allC').innerHTML=allC.length?allC.map(mCC).join(''):`<div style="grid-column:span 2;text-align:center;padding:22px;color:var(--cd);">Icons coming soon! ⭐</div>`;}
-window.fCl=function(){const q=document.getElementById('cSrch').value.toLowerCase();document.getElementById('allC').innerHTML=allC.filter(c=>c.name?.toLowerCase().includes(q)||c.category?.toLowerCase().includes(q)).map(mCC).join('')||`<div style="grid-column:span 2;text-align:center;padding:16px;color:var(--cd);">No results</div>`;};
+function rAll(){
+ const el=document.getElementById('allC');
+ el.innerHTML=allC.length?allC.map(mCC).join(''):`<div style="grid-column:span 2;text-align:center;padding:22px;color:var(--cd);">Icons coming soon! ⭐</div>`;
+ el.querySelectorAll('.celeb-tap').forEach(card=>{
+  card.addEventListener('click',function(){const cid=this.dataset.cid;if(cid)openCelebPage(cid);});
+ });
+}
+window.fCl=function(){
+ const q=document.getElementById('cSrch').value.toLowerCase();
+ const el=document.getElementById('allC');
+ const filtered=allC.filter(c=>c.name?.toLowerCase().includes(q)||c.category?.toLowerCase().includes(q));
+ el.innerHTML=filtered.length?filtered.map(mCC).join(''):`<div style="grid-column:span 2;text-align:center;padding:16px;color:var(--cd);">No results for "${q}"</div>`;
+ el.querySelectorAll('.celeb-tap').forEach(card=>{
+  card.addEventListener('click',function(){const cid=this.dataset.cid;if(cid)openCelebPage(cid);});
+ });
+};
 
 // ── CELEBRITY NEWS (from Firestore + static fallback) ──
 async function lNewsFromFirestore(){
@@ -2441,7 +2465,7 @@ window.searchMembers=async function(){
   const cats=(m.categories||[]).slice(0,3).map(c=>`<span class="member-cat-tag">${c}</span>`).join('');
   // Add to allProfileMembers cache so openMemberProfile can find them
   if(!allProfileMembers.find(x=>x.id===m.id))allProfileMembers.push(m);
-  return`<div class="member-card" onclick="openMemberProfile('${m.id}')" style="cursor:pointer;">
+  return`<div class="member-card member-tap" data-mid="${m.id||''}" style="cursor:pointer;">
    <div class="member-av">${av}</div>
    <div class="member-info">
     <div class="member-name">${m.name||'Member'}${m.verificationStatus==='verified'?' <span style="color:var(--ok);font-size:0.7rem;">✅</span>':''}</div>
@@ -3297,7 +3321,7 @@ function rProfiles(members){
  const el=document.getElementById('profileGrid');
  if(!members.length){el.innerHTML=`<div style="text-align:center;padding:22px;color:var(--cd);">No members found 🌍</div>`;return;}
  el.innerHTML=members.slice(0,20).map(m=>`
-  <div class="profile-card" onclick="openMemberProfile('${m.id}')">
+  <div class="profile-card" class="member-tap" data-mid="${m.id||''}">
    <div class="profile-header">
     <div class="profile-pic">${m.profilePic?`<img src="${m.profilePic}"/>`:(m.name||'M').charAt(0)}</div>
     <div style="flex:1;">
@@ -3994,7 +4018,7 @@ window.runAdvSearch=async function(){
     html+=`<div class="search-result-section"><div class="search-result-title">👥 MEMBERS (${found.length})</div>`;
     found.slice(0,5).forEach(m=>{
      if(!allProfileMembers.find(x=>x.id===m.id))allProfileMembers.push(m);
-     html+=`<div class="member-card" onclick="openMemberProfile('${m.id}')" style="cursor:pointer;"><div class="member-av">${m.profilePic?`<img src="${m.profilePic}"/>`:(m.name||'M').charAt(0)}</div><div class="member-info"><div class="member-name">${m.name||'—'} ${m.verificationStatus==='verified'?'✅':''}</div><div class="member-meta">${m.country||'—'} · <span style="color:var(--gold);">${m.tier||'Fan'}</span></div></div><div style="margin-left:auto;color:var(--cd);">›</div></div>`;
+     html+=`<div class="member-card member-tap" data-mid="${m.id||''}" style="cursor:pointer;"><div class="member-av">${m.profilePic?`<img src="${m.profilePic}"/>`:(m.name||'M').charAt(0)}</div><div class="member-info"><div class="member-name">${m.name||'—'} ${m.verificationStatus==='verified'?'✅':''}</div><div class="member-meta">${m.country||'—'} · <span style="color:var(--gold);">${m.tier||'Fan'}</span></div></div><div style="margin-left:auto;color:var(--cd);">›</div></div>`;
     });
     html+=`</div>`;
    }
