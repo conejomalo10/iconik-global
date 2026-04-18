@@ -2529,19 +2529,61 @@ window.openCelebPage=function(celebId){
  _renderCeleb(celebId,c,el);
 };
 function _renderCeleb(celebId,c,el){
+ // Safety check
+ if(!el){console.error('_renderCeleb: el is null');return;}
+ if(!c){el.innerHTML='<div style="padding:20px;text-align:center;color:#fff;">No celebrity data. Go back and try again.</div>';return;}
  try{
-  // Sanitize ALL values before ANY HTML injection
   const nm=String(c.name||'Celebrity').replace(/['"<>&]/g,ch=>({'\'':'&#39;','"':'&quot;','<':'&lt;','>':'&gt;','&':'&amp;'}[ch]));
   const cat=String(c.category||'').replace(/['"<>&]/g,ch=>({'\'':'&#39;','"':'&quot;','<':'&lt;','>':'&gt;','&':'&amp;'}[ch]));
   const bio=String(c.bio||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  const country=String(c.country||'—').replace(/['"<>&]/g,ch=>({'\'':'&#39;','"':'&quot;','<':'&lt;','>':'&gt;','&':'&amp;'}[ch]));
+  const country=String(c.country||'—');
   const followers=String(c.followers||'—');
   const status=String(c.status||'Active');
-  const initial=c.name?.charAt(0)||'⭐';
+  const initial=(c.name||'?').charAt(0).toUpperCase();
   const colors=['#7C3AED','#DC2626','#059669','#D97706','#EC4899','#2563EB'];
   const clr=colors[Math.abs((c.name||'A').charCodeAt(0))%colors.length];
-  // Safe photo — only use if valid URL
-  const photoHtml=c.photo&&c.photo.startsWith('http')?`<img src="${c.photo}" alt="" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:1;" onerror="this.remove()"/>`:'' ;
+  const photoHtml=(c.photo&&typeof c.photo==='string'&&c.photo.startsWith('http'))?`<img src="${c.photo}" alt="" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:1;" onerror="this.remove()"/>`:'' ;
+  // Build HTML in parts to isolate any error
+  const heroHTML=`<div style="width:100%;height:200px;background:linear-gradient(135deg,${clr}88,${clr}44);position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:14px;overflow:hidden;border-radius:8px;">${photoHtml}<div style="position:relative;z-index:2;font-size:5rem;font-family:sans-serif;color:rgba(255,255,255,0.9);">${initial}</div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,13,0.92) 0%,transparent 55%);z-index:3;"></div><div style="position:absolute;bottom:14px;left:14px;right:14px;z-index:4;"><div style="font-size:0.6rem;letter-spacing:0.14em;color:#FFB800;margin-bottom:3px;">${cat}</div><div style="font-weight:700;font-size:1.1rem;color:#fff;">${nm}</div></div></div>`;
+  const statsHTML=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px;"><div class="sbox"><div class="snum" style="font-size:0.75rem;">${followers}</div><div class="slbl">Followers</div></div><div class="sbox"><div class="snum" style="font-size:0.75rem;">${country}</div><div class="slbl">Origin</div></div><div class="sbox"><div class="snum" style="font-size:0.75rem;">${status}</div><div class="slbl">Status</div></div></div>`;
+  const bioHTML=bio?`<div class="pcard" style="margin-bottom:12px;"><div class="pbody">${bio}</div></div>`:'';
+  const btnsHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;"><button id="fcBtn-${celebId}" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;padding:11px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;">⭐ Follow</button><button id="shBtn-${celebId}" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;padding:11px;background:transparent;border:1px solid var(--gbri);color:var(--gold);cursor:pointer;">🔗 Share</button></div>`;
+  const postsHTML=`<div class="sh">Latest Posts</div><div id="celebPostsFeed"><div style="text-align:center;padding:14px;color:var(--cd);font-size:0.72rem;">Loading posts...</div></div>`;
+  el.innerHTML=heroHTML+statsHTML+bioHTML+btnsHTML+postsHTML;
+  // Safe event listeners
+  const fcBtn=document.getElementById('fcBtn-'+celebId);
+  if(fcBtn)fcBtn.onclick=()=>{try{followCeleb(celebId,c.name||'');}catch(e){toastF('Follow error','error');}};
+  const shBtn=document.getElementById('shBtn-'+celebId);
+  if(shBtn)shBtn.onclick=()=>{try{if(navigator.share)navigator.share({title:(c.name||'')+ ' on ICONIK',url:'https://iconik-global.web.app'});else toastF('iconik-global.web.app','success');}catch(e){}};
+  // Load posts async
+  safeGet(query(collection(db,'posts'),limit(40))).then(snap=>{
+   const posts=[];
+   snap.forEach(d=>{const p=d.data();if(p.category===c.category)posts.push({id:d.id,...p});});
+   posts.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+   const pEl=document.getElementById('celebPostsFeed');
+   if(!pEl)return;
+   if(!posts.length){pEl.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:12px;">No posts yet for ${cat||'this category'}.</p></div>`;return;}
+   pEl.innerHTML=posts.slice(0,6).map(p=>{
+    const pt=String(p.title||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const pc=String(p.content||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return`<div class="pcard"><div class="ph"><div class="pav" style="background:var(--gold);color:var(--obs);font-size:0.65rem;">IC</div><div><div class="pau">ICONIK</div><div class="pt">${p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString():''}</div></div></div>${pt?`<div class="ptitle">${pt}</div>`:''}<div class="pbody">${pc}</div>${(p.imageUrl&&p.imageUrl.startsWith('http'))?`<img src="${p.imageUrl}" style="width:100%;margin-top:8px;border-radius:4px;" onerror="this.style.display='none'"/>`:''}</div>`;
+   }).join('');
+  }).catch(()=>{});
+ }catch(err){
+  console.error('_renderCeleb error:',err);
+  // Show visible error on screen so General can see what failed
+  el.innerHTML=`<div style="padding:20px;">
+   <div style="background:#1a0000;border:1px solid #ff4444;border-radius:8px;padding:14px;margin-bottom:14px;font-family:monospace;font-size:0.65rem;color:#ff8888;word-break:break-all;">
+    ERROR: ${err.message||String(err)}
+   </div>
+   <div style="text-align:center;padding:16px;">
+    <div style="font-size:3rem;margin-bottom:8px;">${(c.name||'?').charAt(0)}</div>
+    <div style="font-weight:700;color:#fff;font-size:1rem;">${String(c.name||'Celebrity').replace(/</g,'&lt;')}</div>
+    <div style="color:var(--cd);font-size:0.7rem;margin-top:4px;">${String(c.category||'')} · ${String(c.country||'')}</div>
+   </div>
+  </div>`;
+ }
+}
   el.innerHTML=`
    <div style="width:100%;height:200px;background:linear-gradient(135deg,${clr}66,${clr}33);position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:14px;overflow:hidden;border-radius:8px;">
     ${photoHtml}
@@ -2587,19 +2629,7 @@ function _renderCeleb(celebId,c,el){
      ${p.imageUrl&&p.imageUrl.startsWith('http')?`<img src="${p.imageUrl}" style="width:100%;margin-top:8px;border-radius:4px;max-height:200px;object-fit:cover;" onerror="this.style.display='none'"/>`:''}</div>`;
    }).join('');
   });
- }catch(err){
-  console.error('renderCeleb:',err);
-  try{
-   el.innerHTML=`<div style="padding:24px;text-align:center;">
-    <div style="font-size:3.5rem;margin-bottom:12px;">⭐</div>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--ch);margin-bottom:6px;">${String(c.name||'Celebrity').replace(/</g,'&lt;')}</div>
-    <div style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);">${String(c.category||'').replace(/</g,'&lt;')} · ${String(c.country||'').replace(/</g,'&lt;')}</div>
-    <button id="fcFallback" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;padding:10px 20px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;margin-top:14px;">⭐ Follow</button>
-   </div>`;
-   document.getElementById('fcFallback').onclick=()=>followCeleb(celebId,c.name||'');
-  }catch(e2){el.innerHTML='<div style="padding:20px;text-align:center;color:var(--cd);">Tap Back and try again.</div>';}
- }
-}
+
 
 window.followCeleb=async function(celebId,name){
  try{
@@ -3410,7 +3440,16 @@ window.openMemberProfile=async function(id){
  }).catch(()=>{});
  }catch(err){
   console.error('memberProfile render error:',err);
-  el.innerHTML=`<div style="padding:20px;text-align:center;"><div style="font-size:2.5rem;margin-bottom:8px;">${m.name?.charAt(0)||'M'}</div><div style="font-family:'Montserrat',sans-serif;font-weight:700;color:var(--ch);">${m.name||'Member'}</div><div style="font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);margin-top:4px;">${m.country||''} · VIP ${m.tier||'Fan'}</div></div>`;
+  el.innerHTML=`<div style="padding:20px;">
+   <div style="background:#1a0000;border:1px solid #ff4444;border-radius:8px;padding:14px;margin-bottom:14px;font-family:monospace;font-size:0.65rem;color:#ff8888;word-break:break-all;">
+    ERROR: ${err.message||String(err)}
+   </div>
+   <div style="text-align:center;">
+    <div style="font-size:2.5rem;margin-bottom:8px;">${(m.name||'M').charAt(0)}</div>
+    <div style="font-weight:700;color:#fff;">${String(m.name||'Member').replace(/</g,'&lt;')}</div>
+    <div style="color:var(--cd);font-size:0.7rem;margin-top:4px;">${String(m.country||'')} · ${String(m.tier||'Fan')}</div>
+   </div>
+  </div>`;
  }
 };
 
