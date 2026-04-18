@@ -2512,21 +2512,44 @@ window.filterCelebPages=function(){
 };
 
 window.openCelebPage=function(celebId){
+ // Show the view first
  sV('celebSingle');
- const el=document.getElementById('celebSingleContent');
- // Search BOTH caches
- let c=allCelebsCache.find(x=>x.id===celebId)||allC.find(x=>x.id===celebId);
- if(!c){
-  el.innerHTML=`<div style="padding:20px;text-align:center;color:var(--cd);">Loading...</div>`;
-  safeGet(collection(db,'celebrities')).then(s=>{
-   s.forEach(d=>{const data={id:d.id,...d.data()};if(!allC.find(x=>x.id===d.id))allC.push(data);if(!allCelebsCache.find(x=>x.id===d.id))allCelebsCache.push(data);});
-   c=allC.find(x=>x.id===celebId)||allCelebsCache.find(x=>x.id===celebId);
-   if(c)_renderCeleb(celebId,c,el);
-   else el.innerHTML=`<div style="padding:20px;text-align:center;color:var(--cd);">Celebrity not found. Go back and try again.</div>`;
-  });
-  return;
- }
- _renderCeleb(celebId,c,el);
+ // Use setTimeout to ensure DOM is updated before we write to it
+ setTimeout(function(){
+  const el=document.getElementById('celebSingleContent');
+  if(!el){
+   console.error('celebSingleContent not found in DOM');
+   return;
+  }
+  // Show immediate feedback
+  el.innerHTML=`<div style="padding:30px;text-align:center;color:var(--cd);">
+   <div style="font-size:2rem;margin-bottom:8px;">⭐</div>
+   <div style="font-family:'Montserrat',sans-serif;font-size:0.8rem;">Loading profile...</div>
+  </div>`;
+  // Search both caches
+  let c=allCelebsCache.find(x=>x.id===celebId)||allC.find(x=>x.id===celebId);
+  if(!c){
+   // Load from Firestore
+   safeGet(collection(db,'celebrities')).then(function(s){
+    s.forEach(function(d){
+     const data={id:d.id,...d.data()};
+     if(!allC.find(x=>x.id===d.id))allC.push(data);
+     if(!allCelebsCache.find(x=>x.id===d.id))allCelebsCache.push(data);
+    });
+    c=allC.find(x=>x.id===celebId)||allCelebsCache.find(x=>x.id===celebId);
+    if(c){
+     _renderCeleb(celebId,c,el);
+    } else {
+     el.innerHTML=`<div style="padding:20px;text-align:center;color:var(--cd);">
+      Celebrity not found.<br/>
+      <button onclick="sV('celebpages')" style="margin-top:14px;padding:8px 16px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;font-weight:700;">Go Back</button>
+     </div>`;
+    }
+   });
+   return;
+  }
+  _renderCeleb(celebId,c,el);
+ },50);
 };
 function _renderCeleb(celebId,c,el){
  // Safety check
@@ -3387,7 +3410,6 @@ window.openMemberProfile=async function(id){
  // Get member from cache first
  let m=allProfileMembers.find(x=>x.id===id)||allMembersCache.find(x=>x.id===id);
  if(!m){
-  // Try Firestore with timeout
   const d=await Promise.race([
    getDoc(doc(db,'users',id)),
    new Promise((_,r)=>setTimeout(()=>r(null),4000))
@@ -3396,15 +3418,16 @@ window.openMemberProfile=async function(id){
  }
  if(!m){toastF('Profile not found','error');return;}
  if(!allProfileMembers.find(x=>x.id===id))allProfileMembers.push(m);
- // Track previous view
  const prev=document.querySelector('.view.on')?.id?.replace('V','')||'search';
  sV('memberProfile');
  const backBtn=document.getElementById('profileBackBtn');
  if(backBtn)backBtn.onclick=()=>sV(prev);
- const el=document.getElementById('memberProfileContent');
- const catIcons={'Music':'🎵','Film':'🎬','Sports':'⚽','Literature':'📚','Wellness':'💪','Nature':'🌿','Fashion':'👗','Food':'🍽️','Automotive':'🚗','Tech':'💻','Beauty':'💄','Leadership':'🎓','Entertainment':'🎭'};
- // RENDER IMMEDIATELY — wrapped in try/catch for safety
- try{
+ // Wait for DOM update before writing content
+ setTimeout(function(){
+  const el=document.getElementById('memberProfileContent');
+  if(!el){console.error('memberProfileContent not found');return;}
+  const catIcons={'Music':'🎵','Film':'🎬','Sports':'⚽','Literature':'📚','Wellness':'💪','Nature':'🌿','Fashion':'👗','Food':'🍽️','Automotive':'🚗','Tech':'💻','Beauty':'💄','Leadership':'🎓','Entertainment':'🎭'};
+  try{
  el.innerHTML=`
   <div style="background:linear-gradient(135deg,var(--obs2),var(--obs3));padding:24px;text-align:center;margin-bottom:14px;border:1px solid var(--gbr);">
    <div style="width:74px;height:74px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.9rem;font-weight:900;color:var(--obs);margin:0 auto 10px;overflow:hidden;border:3px solid ${m.verificationStatus==='verified'?'var(--ok)':'var(--gbr)'};">
@@ -3450,7 +3473,8 @@ window.openMemberProfile=async function(id){
     <div style="color:var(--cd);font-size:0.7rem;margin-top:4px;">${String(m.country||'')} · ${String(m.tier||'Fan')}</div>
    </div>
   </div>`;
- }
+  }
+ },50);
 };
 
 // ── FOLLOW / UNFOLLOW ──
