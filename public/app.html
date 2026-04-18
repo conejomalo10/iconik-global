@@ -1748,12 +1748,25 @@ import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,updateDoc,delete
 const cfg={apiKey:"AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",authDomain:"iconik-global.firebaseapp.com",projectId:"iconik-global",storageBucket:"iconik-global.firebasestorage.app",messagingSenderId:"1040054516979",appId:"1:1040054516979:web:33cd5f07ae8fc146a30b86"};
 const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app);
 
-// ── GLOBAL EVENT DELEGATION — handles all member + celeb taps safely ──
+// ── GLOBAL EVENT DELEGATION — handles member + celeb taps only ──
 document.addEventListener('click',function(e){
- const memberCard=e.target.closest('.member-tap');
- if(memberCard){const mid=memberCard.dataset.mid;if(mid)openMemberProfile(mid);return;}
- const celebCard=e.target.closest('.celeb-tap');
- if(celebCard){const cid=celebCard.dataset.cid;if(cid)openCelebPage(cid);return;}
+ // Only intercept if target or its parent has our specific data attributes
+ // Do NOT intercept if target has onclick or is inside sidebar/nav
+ const t=e.target;
+ if(t.closest('.sb')||t.closest('nav')||t.closest('.bnav'))return;
+ if(t.closest('[onclick]')&&!t.closest('.member-tap')&&!t.closest('.celeb-tap'))return;
+ const memberCard=t.closest('.member-tap');
+ if(memberCard&&memberCard.dataset.mid){
+  e.stopPropagation();
+  openMemberProfile(memberCard.dataset.mid);
+  return;
+ }
+ const celebCard=t.closest('.celeb-tap');
+ if(celebCard&&celebCard.dataset.cid){
+  e.stopPropagation();
+  openCelebPage(celebCard.dataset.cid);
+  return;
+ }
 });
 
 // ── SAFE FIRESTORE FETCH — 5 second timeout, NEVER hangs ──
