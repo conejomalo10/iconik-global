@@ -123,14 +123,18 @@ select.fi option{background:var(--obs2);}
   </div>
 </div>
 
-<nav>
+<nav style="position:fixed;top:0;left:0;right:0;z-index:500;height:58px;background:#0E0E1A;border-bottom:1px solid rgba(255,255,255,0.09);display:flex;align-items:center;justify-content:space-between;padding:0 16px;">
   <div style="display:flex;align-items:center;gap:10px;">
-    <span class="nav-logo">ICONIK</span>
-    <span class="nav-badge">CHIEF ADMIN</span>
+    <span style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.08em;background:linear-gradient(135deg,#FFB800,#CC9400);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">ICONIK</span>
+    <span style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.12em;color:#07070D;background:#FFB800;padding:3px 10px;">CHIEF ADMIN</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px;">
-    <span id="adminName" style="font-family:'Montserrat',sans-serif;font-size:0.68rem;color:var(--cd);"></span>
-    <button class="hbg" id="menuBtn"><span></span><span></span><span></span></button>
+    <span id="adminName" style="font-family:'Montserrat',sans-serif;font-size:0.68rem;color:#BDB5A6;"></span>
+    <button id="menuBtn" style="background:none;border:1px solid rgba(255,255,255,0.18);border-radius:8px;width:38px;height:38px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:0;">
+      <span style="display:block;width:16px;height:2px;background:#F5F0E8;border-radius:2px;"></span>
+      <span style="display:block;width:16px;height:2px;background:#F5F0E8;border-radius:2px;"></span>
+      <span style="display:block;width:16px;height:2px;background:#F5F0E8;border-radius:2px;"></span>
+    </button>
   </div>
 </nav>
 
@@ -400,12 +404,22 @@ select.fi option{background:var(--obs2);}
 
 </div><!-- end main -->
 
-<nav class="bnav">
-  <div class="bn active" data-view="overview"><span class="bn-ic">📊</span><span class="bn-lb">Overview</span></div>
-  <div class="bn" data-view="members"><span class="bn-ic">👥</span><span class="bn-lb">Members</span></div>
-  <div class="bn" data-view="celebrities"><span class="bn-ic">⭐</span><span class="bn-lb">Celebs</span></div>
-  <div class="bn" data-view="posts"><span class="bn-ic">📝</span><span class="bn-lb">Post</span></div>
-  <div class="bn" data-view="events"><span class="bn-ic">🎫</span><span class="bn-lb">Events</span></div>
+<nav style="position:fixed;bottom:0;left:0;right:0;z-index:500;height:62px;background:rgba(7,7,13,0.97);border-top:1px solid rgba(255,255,255,0.09);display:flex;align-items:center;justify-content:space-around;padding:0 8px;">
+  <div data-view="overview" style="display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 10px;border-radius:8px;background:rgba(255,184,0,0.08);">
+    <span style="font-size:1rem;">📊</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.48rem;letter-spacing:0.1em;color:#FFB800;">Overview</span>
+  </div>
+  <div data-view="members" style="display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 10px;border-radius:8px;">
+    <span style="font-size:1rem;">👥</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.48rem;letter-spacing:0.1em;color:#BDB5A6;">Members</span>
+  </div>
+  <div data-view="celebrities" style="display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 10px;border-radius:8px;">
+    <span style="font-size:1rem;">⭐</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.48rem;letter-spacing:0.1em;color:#BDB5A6;">Celebs</span>
+  </div>
+  <div data-view="posts" style="display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 10px;border-radius:8px;">
+    <span style="font-size:1rem;">📝</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.48rem;letter-spacing:0.1em;color:#BDB5A6;">Post</span>
+  </div>
+  <div data-view="events" style="display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 10px;border-radius:8px;">
+    <span style="font-size:1rem;">🎫</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.48rem;letter-spacing:0.1em;color:#BDB5A6;">Events</span>
+  </div>
 </nav>
 
 <div id="toast"></div>
@@ -465,8 +479,11 @@ function initSidebar(){
 function closeSB(){document.getElementById('sb').classList.remove('on');document.getElementById('sbOv').classList.remove('on');}
 
 function initBottomNav(){
-  document.querySelectorAll('.bnav .bn[data-view]').forEach(b=>{
-    b.onclick=function(){showView(this.dataset.view);};
+  document.querySelectorAll('nav [data-view]').forEach(b=>{
+    if(!b.closest('.sb')){
+      b.style.cursor='pointer';
+      b.onclick=function(){showView(this.dataset.view);};
+    }
   });
 }
 
