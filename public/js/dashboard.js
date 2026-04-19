@@ -123,26 +123,31 @@ function closeSidebar(){
 
 // ── BOTTOM NAV ──
 function initBottomNav(){
-  document.querySelectorAll('.bnav .bn').forEach(btn=>{
-    btn.onclick=function(){showView(this.dataset.view);};
+  // Select all nav items in bottom navs (not sidebar)
+  document.querySelectorAll('nav [data-view]').forEach(btn=>{
+    if(!btn.closest('.sb')){
+      btn.style.cursor='pointer';
+      btn.onclick=function(){showView(this.dataset.view);};
+    }
   });
 }
 
 // ── SHOW VIEW ──
 function showView(nm){
-  // Hide all views
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
-  // Show target
   const target=document.getElementById(nm+'V');
   if(target)target.classList.add('on');
   currentView=nm;
-  // Update bottom nav active state
-  document.querySelectorAll('.bnav .bn').forEach(b=>{
-    b.classList[b.dataset.view===nm?'add':'remove']('active');
+  // Update bottom nav highlight
+  document.querySelectorAll('nav [data-view]').forEach(b=>{
+    if(!b.closest('.sb')){
+      const active=b.dataset.view===nm;
+      b.style.background=active?'rgba(255,184,0,0.08)':'transparent';
+      const lbl=b.querySelector('span:last-child');
+      if(lbl)lbl.style.color=active?'#FFB800':'#BDB5A6';
+    }
   });
-  // Stop chat polling when leaving chat
   if(nm!=='chat'&&chatInterval){clearInterval(chatInterval);chatInterval=null;}
-  // Start chat polling when entering chat
   if(nm==='chat'){loadChat();chatInterval=setInterval(loadChat,8000);}
 }
 window.showView=showView;
