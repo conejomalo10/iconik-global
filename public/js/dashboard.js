@@ -221,7 +221,7 @@ async function createPost(content,type){
 async function loadCelebs(){
   const el=document.getElementById('celebGrid');
   try{
-    const snap=await safeGet(collection(db,'celebrities'));
+    const snap=await safeGet(query(collection(db,'celebrities'),limit(100)));
     allCelebs=[];
     if(!snap.empty)snap.forEach(d=>allCelebs.push({id:d.id,...d.data()}));
     renderCelebs(allCelebs);
@@ -531,7 +531,7 @@ async function loadRadio(){
     {name:'Sports Anthems',genre:'Motivational · Rock · EDM',icon:'⚽',url:''},
   ];
   try{
-    const snap=await safeGet(collection(db,'radioStations'));
+    const snap=await safeGet(query(collection(db,'radioStations'),limit(20)));
     if(!snap.empty){const db_stations=[];snap.forEach(d=>db_stations.push({id:d.id,...d.data()}));if(db_stations.length){el.innerHTML=db_stations.map(s=>radioCard(s)).join('');attachRadioClicks();return;}}
   }catch{}
   el.innerHTML=stations.map(s=>radioCard(s)).join('');
