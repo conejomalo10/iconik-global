@@ -635,6 +635,86 @@ nav.topnav{position:fixed;top:0;left:0;right:0;z-index:500;height:62px;backgroun
 
 <div id="toast"></div>
 
+<!-- ── INSTANT UI — fires immediately, no Firebase wait ── -->
+<script>
+// Wire hamburger and sidebar RIGHT NOW — no waiting for Firebase
+(function(){
+  function ready(fn){ if(document.readyState!=='loading'){fn();}else{document.addEventListener('DOMContentLoaded',fn);} }
+  ready(function(){
+    var sb  = document.getElementById('sb');
+    var ov  = document.getElementById('sbOv');
+    var btn = document.getElementById('menuBtn');
+    if(!sb||!ov||!btn){ console.error('Sidebar elements not found'); return; }
+
+    // Open sidebar
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      sb.classList.add('on');
+      ov.classList.add('on');
+    });
+
+    // Close via overlay
+    ov.addEventListener('click',function(){
+      sb.classList.remove('on');
+      ov.classList.remove('on');
+    });
+
+    // Close via X button
+    var sbx = document.getElementById('sbClose');
+    if(sbx) sbx.addEventListener('click',function(){
+      sb.classList.remove('on');
+      ov.classList.remove('on');
+    });
+
+    // Bottom nav clicks — show/hide views
+    function showView(name){
+      document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on');});
+      var t = document.getElementById(name+'V');
+      if(t) t.classList.add('on');
+      // Update bottom nav highlight
+      document.querySelectorAll('[data-view]').forEach(function(b){
+        if(b.closest('nav') && !b.closest('.sb')){
+          var active = b.dataset.view===name;
+          b.style.background = active ? 'rgba(255,184,0,0.10)' : 'transparent';
+          var lbl = b.querySelector('span:last-child');
+          if(lbl) lbl.style.color = active ? '#FFB800' : '#BDB5A6';
+        }
+      });
+      // Close sidebar
+      sb.classList.remove('on');
+      ov.classList.remove('on');
+    }
+    window.showView = showView;
+
+    // Attach bottom nav
+    document.querySelectorAll('[data-view]').forEach(function(b){
+      if(b.closest('nav') && !b.closest('.sb')){
+        b.style.cursor='pointer';
+        b.addEventListener('click',function(){showView(this.dataset.view);});
+      }
+    });
+
+    // Sidebar nav links
+    document.querySelectorAll('.sb-lnk[data-view]').forEach(function(lnk){
+      lnk.addEventListener('click',function(){
+        showView(this.dataset.view);
+      });
+    });
+
+    // Logout
+    var logoutBtn = document.getElementById('logoutBtn');
+    if(logoutBtn){
+      logoutBtn.addEventListener('click',function(){
+        // Actual signOut called by dashboard.js, but also redirect
+        window.location.href = '/app.html?signout=1';
+      });
+    }
+
+    console.log('✅ ICONIK UI ready — hamburger wired');
+  });
+})();
+</script>
+
 <script type="module" src="/js/dashboard.js"></script>
 </body>
 </html>
