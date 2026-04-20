@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,715 +7,1045 @@
 <title>ICONIK — My Dashboard</title>
 <link rel="manifest" href="/manifest.json"/>
 <meta name="theme-color" content="#07070D"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/css/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet"/>
 <style>
-/* ── GLOBAL CSS FALLBACK — works even if /css/style.css fails to load ── */
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-:root{--obs:#07070D;--obs2:#0E0E1A;--obs3:#141420;--gold:#FFB800;--gg:#CC9400;--rose:#c9956a;--rose-light:#e8b490;--ch:#F5F0E8;--cd:#BDB5A6;--cd2:rgba(189,181,166,0.45);--gb:rgba(255,255,255,0.045);--gbr:rgba(255,255,255,0.09);--gbri:rgba(255,255,255,0.18);--ok:#22C55E;--err:#EF4444;--info:#3B82F6;--rad:8px;}
-html{scroll-behavior:smooth;}
-body{background:var(--obs);color:var(--ch);font-family:'Montserrat',sans-serif;min-height:100vh;overflow-x:hidden;}
-img{max-width:100%;display:block;}
-button,input,textarea,select{font-family:inherit;}
-a{text-decoration:none;color:inherit;}
-/* NAV */
-nav.topnav{position:fixed;top:0;left:0;right:0;z-index:500;height:62px;background:rgba(7,7,13,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--gbr);display:flex;align-items:center;justify-content:space-between;padding:0 16px;}
-.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.08em;background:linear-gradient(135deg,var(--gold),var(--gg));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.nav-mid{display:flex;align-items:center;gap:12px;}
-.nav-user{font-family:'Montserrat',sans-serif;font-size:0.7rem;font-weight:600;color:var(--cd);}
-.nav-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--obs);cursor:pointer;overflow:hidden;border:2px solid var(--gbr);position:relative;}
-.nav-av img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border-radius:50%;}
-/* HAMBURGER */
-.hbg{background:none;border:1px solid var(--gbr);border-radius:8px;width:38px;height:38px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;transition:all 0.2s;padding:0;}
-.hbg:hover{border-color:var(--gbri);}
-.hbg span{display:block;width:16px;height:2px;background:var(--ch);border-radius:2px;}
-/* SIDEBAR */
-.sb{position:fixed;top:0;left:-290px;width:290px;height:100vh;background:var(--obs3);border-right:1px solid var(--gbr);z-index:9000;transition:left 0.28s ease;overflow-y:auto;}
-.sb.on{left:0;}
-.sb-ov{position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:8999;display:none;}
-.sb-ov.on{display:block;}
-.sb-h{display:flex;align-items:center;justify-content:space-between;padding:20px 18px 16px;border-bottom:1px solid var(--gbr);}
-.sb-logo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.08em;background:linear-gradient(135deg,var(--gold),var(--gg));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.sb-x{background:none;border:1px solid var(--gbr);border-radius:6px;width:30px;height:30px;cursor:pointer;color:var(--cd);font-size:1rem;display:flex;align-items:center;justify-content:center;}
-.sb-u{padding:16px 18px;border-bottom:1px solid var(--gbr);}
-.sb-uname{font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:var(--ch);margin-bottom:2px;}
-.sb-utier{font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.12em;color:var(--obs);background:var(--gold);padding:2px 8px;display:inline-block;}
-.sb-sec{padding:12px 0;}
-.sb-lbl{font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.2em;color:var(--cd2);padding:6px 18px 4px;}
-.sb-lnk{display:flex;align-items:center;gap:10px;padding:10px 18px;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:0.76rem;font-weight:600;color:var(--cd);transition:all 0.18s;border-left:3px solid transparent;}
-.sb-lnk:hover,.sb-lnk.active{color:var(--gold);border-left-color:var(--gold);background:rgba(255,184,0,0.06);}
-.sb-lnk-ic{font-size:1rem;width:20px;text-align:center;}
-/* MAIN */
-.main{padding:70px 14px 85px;min-height:100vh;}
-/* VIEWS */
-.view{display:none;}.view.on{display:block;}
-/* BOTTOM NAV */
-.bnav{position:fixed;bottom:0;left:0;right:0;z-index:500;height:64px;background:rgba(7,7,13,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--gbr);display:flex;align-items:center;justify-content:space-around;padding:0 8px;}
-.bn{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 14px;border-radius:10px;transition:all 0.2s;min-width:52px;}
-.bn:hover{background:var(--gb);}
-.bn.active{background:rgba(255,184,0,0.08);}
-.bn-ic{font-size:1.1rem;}
-.bn-lb{font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.12em;color:var(--cd);}
-.bn.active .bn-lb{color:var(--gold);}
-.bn.active .bn-ic{filter:drop-shadow(0 0 6px rgba(255,184,0,0.6));}
-/* SECTION HEADERS */
-.sh{font-family:'Bebas Neue',sans-serif;font-size:0.68rem;letter-spacing:0.2em;color:var(--gold);margin-bottom:12px;margin-top:6px;}
-.wbar{background:linear-gradient(135deg,var(--obs2),var(--obs3));border:1px solid var(--gbr);border-radius:var(--rad);padding:14px;display:flex;gap:12px;align-items:center;margin-bottom:16px;}
-.wi{font-size:1.4rem;}.wh{font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--ch);}.ws{font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--cd);}
-/* CARDS */
-.pcard{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);padding:13px;margin-bottom:10px;transition:border-color 0.2s;}
-.pcard:hover{border-color:var(--gbri);}
-.ph{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
-.pav{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.85rem;color:var(--obs);overflow:hidden;flex-shrink:0;}
-.pav img{width:100%;height:100%;object-fit:cover;}
-.pau{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);}
-.pt{font-family:'Montserrat',sans-serif;font-size:0.58rem;color:var(--cd2);}
-.ptitle{font-family:'Playfair Display',serif;font-weight:700;font-size:0.9rem;color:var(--ch);margin-bottom:6px;line-height:1.3;}
-.pbody{font-family:'Montserrat',sans-serif;font-size:0.72rem;color:var(--cd);line-height:1.6;}
-/* STAT BOXES */
-.sbox{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);padding:10px;text-align:center;}
-.snum{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.04em;color:var(--ch);}
-.slbl{font-family:'Montserrat',sans-serif;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--cd2);}
-/* BUTTONS */
-.btn-gold{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;padding:11px 18px;background:var(--gold);color:var(--obs);border:none;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:all 0.25s;display:inline-block;}
-.btn-gold:hover{background:var(--rose-light);}
-.btn-ghost{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.66rem;letter-spacing:0.12em;text-transform:uppercase;padding:11px 18px;background:transparent;color:var(--ch);border:1px solid var(--gbri);cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:all 0.25s;}
-.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
-/* FORMS */
-.fi{width:100%;padding:11px 13px;background:var(--obs2);border:1px solid var(--gbr);border-radius:var(--rad);color:var(--ch);font-family:'Montserrat',sans-serif;font-size:0.76rem;transition:border-color 0.2s;outline:none;}
-.fi:focus{border-color:var(--gold);}
-.fi::placeholder{color:var(--cd2);}
-.fl{font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:var(--cd);margin-bottom:5px;display:block;}
-.fg{margin-bottom:12px;}
-/* TOAST */
-#toast{position:fixed;bottom:76px;right:12px;background:var(--obs3);border:1px solid var(--gbr);padding:10px 14px;border-radius:20px;font-family:'Montserrat',sans-serif;font-size:0.7rem;color:var(--ch);opacity:0;transform:translateY(16px);transition:all 0.28s;pointer-events:none;max-width:260px;z-index:99999;}
-#toast.show{opacity:1;transform:translateY(0);}
-/* LOADER */
-.ldr{display:flex;align-items:center;justify-content:center;padding:32px;}
-.lring{width:30px;height:30px;border:3px solid var(--gbr);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;}
+/* ── RESET & BASE ── */
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#07070D; --bg2:#0E0E1A; --bg3:#141420;
+  --gold:#FFB800; --gold2:#CC9400;
+  --text:#F5F0E8; --muted:#BDB5A6; --dim:rgba(189,181,166,0.4);
+  --border:rgba(255,255,255,0.09); --border2:rgba(255,255,255,0.16);
+  --card:rgba(255,255,255,0.045);
+  --ok:#22C55E; --err:#EF4444;
+}
+body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* ── TOP NAV ── */
+#topnav{
+  position:fixed;top:0;left:0;right:0;height:60px;z-index:600;
+  background:rgba(7,7,13,0.96);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+.nav-logo{
+  font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:0.08em;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-bell{font-size:1.1rem;cursor:pointer;position:relative;}
+.nav-av{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:0.95rem;color:var(--bg);
+  cursor:pointer;overflow:hidden;border:2px solid var(--border2);
+  position:relative;flex-shrink:0;
+}
+.nav-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;}
+
+/* ── HAMBURGER ── */
+#hamburger{
+  width:40px;height:40px;
+  background:none;
+  border:1px solid var(--border2);
+  border-radius:8px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:5px;cursor:pointer;padding:0;
+  flex-shrink:0;
+}
+#hamburger span{display:block;width:18px;height:2px;background:var(--text);border-radius:2px;}
+
+/* ── SIDEBAR OVERLAY ── */
+#sbOverlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.7);
+  z-index:800;display:none;
+}
+#sbOverlay.open{display:block;}
+
+/* ── SIDEBAR ── */
+#sidebar{
+  position:fixed;top:0;left:-300px;width:290px;height:100vh;
+  background:var(--bg3);border-right:1px solid var(--border);
+  z-index:900;transition:left 0.28s ease;overflow-y:auto;
+}
+#sidebar.open{left:0;}
+.sb-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 16px;border-bottom:1px solid var(--border);
+}
+.sb-brand{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.08em;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+#sbClose{background:none;border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--muted);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;}
+.sb-user{padding:14px 16px;border-bottom:1px solid var(--border);}
+.sb-username{font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:var(--text);margin-bottom:3px;}
+.sb-tier{font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--bg);background:var(--gold);padding:2px 8px;display:inline-block;}
+.sb-section{padding:10px 0;}
+.sb-label{font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.22em;color:var(--dim);padding:6px 16px 3px;}
+.sb-link{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 16px;cursor:pointer;
+  font-family:'Montserrat',sans-serif;font-size:0.76rem;font-weight:600;
+  color:var(--muted);transition:all 0.18s;
+  border-left:3px solid transparent;
+}
+.sb-link:hover,.sb-link.active{color:var(--gold);border-left-color:var(--gold);background:rgba(255,184,0,0.06);}
+.sb-link-icon{width:20px;text-align:center;font-size:1rem;}
+.sb-logout{color:var(--err)!important;}
+.sb-logout:hover{background:rgba(239,68,68,0.08)!important;border-left-color:var(--err)!important;}
+
+/* ── MAIN CONTENT ── */
+#main{padding:70px 14px 76px;min-height:100vh;}
+
+/* ── VIEWS ── */
+.view{display:none;}
+.view.active{display:block;}
+
+/* ── BOTTOM NAV ── */
+#bottomnav{
+  position:fixed;bottom:0;left:0;right:0;height:64px;z-index:600;
+  background:rgba(7,7,13,0.97);
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-around;
+}
+.bn-item{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;padding:6px 12px;border-radius:10px;
+  transition:background 0.2s;min-width:50px;
+}
+.bn-item:hover{background:var(--card);}
+.bn-item.active{background:rgba(255,184,0,0.09);}
+.bn-icon{font-size:1.15rem;line-height:1;}
+.bn-label{font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.12em;color:var(--muted);}
+.bn-item.active .bn-label{color:var(--gold);}
+
+/* ── SECTION HEADER ── */
+.sec-head{
+  font-family:'Bebas Neue',sans-serif;font-size:0.68rem;
+  letter-spacing:0.2em;color:var(--gold);
+  margin-bottom:12px;margin-top:4px;
+}
+.wbar{
+  background:linear-gradient(135deg,var(--bg2),var(--bg3));
+  border:1px solid var(--border);border-radius:8px;
+  padding:14px;display:flex;gap:12px;align-items:center;
+  margin-bottom:14px;
+}
+.wbar-icon{font-size:1.4rem;}
+.wbar-title{font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);}
+.wbar-sub{font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);}
+
+/* ── CARDS ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:13px;margin-bottom:10px;transition:border-color 0.2s;}
+.card:hover{border-color:var(--border2);}
+.card-head{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
+.card-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.85rem;color:var(--bg);flex-shrink:0;overflow:hidden;}
+.card-av img{width:100%;height:100%;object-fit:cover;}
+.card-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.74rem;color:var(--text);}
+.card-meta{font-family:'Montserrat',sans-serif;font-size:0.58rem;color:var(--dim);}
+.card-title{font-family:'Playfair Display',serif;font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;line-height:1.3;}
+.card-body{font-family:'Montserrat',sans-serif;font-size:0.72rem;color:var(--muted);line-height:1.6;}
+.card-actions{display:flex;gap:14px;margin-top:10px;}
+.card-action{font-size:0.66rem;color:var(--muted);cursor:pointer;transition:color 0.2s;}
+.card-action:hover{color:var(--gold);}
+
+/* ── LOADER ── */
+.loader{display:flex;align-items:center;justify-content:center;padding:32px;}
+.loader-ring{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
-/* CELEBRITY GRID */
-.cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
-.ccard{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);overflow:hidden;transition:all 0.25s;cursor:pointer;}
-.ccard:hover{border-color:var(--gbri);transform:translateY(-2px);}
-.cimg{height:88px;background:var(--obs2);display:flex;align-items:center;justify-content:center;font-size:1.8rem;position:relative;overflow:hidden;}
-.cimg img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
-.ci{padding:9px;}.cn{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);margin-bottom:2px;}
-.ccat{font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.14em;color:var(--gold);}
-.cmeta{font-family:'Montserrat',sans-serif;font-size:0.58rem;color:var(--cd2);}
-/* MEMBER CARDS */
-.member-card{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);padding:12px;display:flex;align-items:center;gap:10px;margin-bottom:8px;cursor:pointer;transition:all 0.2s;}
-.member-card:hover{border-color:var(--gbri);}
-.member-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--obs);overflow:hidden;flex-shrink:0;}
+
+/* ── CELEBRITY GRID ── */
+.celeb-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
+.celeb-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:all 0.25s;}
+.celeb-card:hover{border-color:var(--border2);transform:translateY(-2px);}
+.celeb-thumb{height:90px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative;overflow:hidden;}
+.celeb-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.celeb-info{padding:9px;}
+.celeb-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.7rem;color:var(--text);margin-bottom:2px;}
+.celeb-cat{font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.12em;color:var(--gold);}
+.celeb-meta{font-family:'Montserrat',sans-serif;font-size:0.56rem;color:var(--dim);margin-top:1px;}
+
+/* ── NEWS CARD ── */
+.news-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;display:flex;gap:11px;margin-bottom:8px;cursor:pointer;transition:border-color 0.2s;}
+.news-card:hover{border-color:var(--border2);}
+.news-icon{width:40px;height:40px;border-radius:6px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.news-cat{font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.14em;color:var(--gold);margin-bottom:3px;}
+.news-title{font-family:'Playfair Display',serif;font-weight:700;font-size:0.82rem;color:var(--text);line-height:1.3;}
+.news-time{font-family:'Montserrat',sans-serif;font-size:0.58rem;color:var(--dim);margin-top:3px;}
+
+/* ── MEMBER CARD ── */
+.member-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:11px;display:flex;align-items:center;gap:10px;margin-bottom:8px;cursor:pointer;transition:border-color 0.2s;}
+.member-card:hover{border-color:var(--border2);}
+.member-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--bg);flex-shrink:0;overflow:hidden;}
 .member-av img{width:100%;height:100%;object-fit:cover;}
-.member-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);}
-.member-meta{font-family:'Montserrat',sans-serif;font-size:0.6rem;color:var(--cd2);}
-.member-cats{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;}
-.member-cat-tag{font-family:'Bebas Neue',sans-serif;font-size:0.48rem;letter-spacing:0.1em;color:var(--obs);background:var(--gold);padding:1px 5px;}
-/* CHAT */
-.chat-room{height:calc(100vh - 220px);overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;}
-.chat-msg{display:flex;gap:8px;align-items:flex-start;}
-.chat-msg.mine{flex-direction:row-reverse;}
-.chat-av{width:28px;height:28px;border-radius:50%;background:var(--gb);border:1px solid var(--gbr);display:flex;align-items:center;justify-content:center;font-size:0.7rem;flex-shrink:0;overflow:hidden;}
-.chat-bubble{background:var(--gb);border:1px solid var(--gbr);border-radius:12px;padding:8px 11px;font-family:'Montserrat',sans-serif;font-size:0.72rem;color:var(--ch);max-width:240px;word-break:break-word;line-height:1.5;}
-.chat-msg.mine .chat-bubble{background:rgba(255,184,0,0.12);border-color:rgba(255,184,0,0.25);}
-.chat-name{font-family:'Montserrat',sans-serif;font-size:0.58rem;font-weight:700;color:var(--cd);margin-bottom:3px;}
-.chat-time{font-family:'Montserrat',sans-serif;font-size:0.52rem;color:var(--cd2);margin-top:3px;}
-.chat-input-row{display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--gbr);background:var(--obs);}
-.chat-input{flex:1;padding:10px 13px;background:var(--obs2);border:1px solid var(--gbr);border-radius:20px;color:var(--ch);font-family:'Montserrat',sans-serif;font-size:0.74rem;outline:none;}
-.chat-input:focus{border-color:var(--gold);}
-.chat-send{width:38px;height:38px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;color:var(--obs);font-size:1rem;flex-shrink:0;}
-/* NEWS */
-.news-card{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);padding:13px;display:flex;gap:11px;transition:all 0.2s;cursor:pointer;margin-bottom:8px;}
-.news-card:hover{border-color:var(--gbri);}
-.news-thumb{width:40px;height:40px;border-radius:6px;background:var(--obs2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
-.news-cat{font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.16em;color:var(--gold);margin-bottom:3px;}
-.news-title{font-family:'Playfair Display',serif;font-weight:700;font-size:0.82rem;color:var(--ch);line-height:1.3;}
-.news-meta{font-family:'Montserrat',sans-serif;font-size:0.58rem;color:var(--cd2);margin-top:3px;}
-/* WELLNESS TABS */
-.wellness-tab{display:inline-block;padding:7px 13px;font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.12em;color:var(--cd);border:1px solid var(--gbr);border-radius:20px;cursor:pointer;margin:0 4px 6px 0;transition:all 0.2s;}
-.wellness-tab.active{color:var(--obs);background:var(--gold);border-color:var(--gold);}
-/* COMMUNITIES */
-.com-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
-.com-card{border-radius:var(--rad);overflow:hidden;cursor:pointer;border:1px solid var(--gbr);transition:all 0.3s;aspect-ratio:1.1;}
-.com-card:hover{border-color:rgba(201,149,106,0.4);transform:translateY(-3px);}
-.com-card-img{width:100%;height:75%;background-size:cover;background-position:center;filter:brightness(0.65);transition:filter 0.3s;}
-.com-card:hover .com-card-img{filter:brightness(0.8);}
-.com-card-body{padding:7px 9px;background:var(--obs2);}
-.com-card-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.65rem;color:var(--ch);}
-.com-card-desc{font-family:'Montserrat',sans-serif;font-size:0.52rem;color:var(--cd2);}
-/* PROFILE */
-.profile-hero{background:linear-gradient(135deg,var(--obs2),var(--obs3));border:1px solid var(--gbr);border-radius:var(--rad);padding:22px;text-align:center;margin-bottom:14px;}
-.profile-av-lg{width:74px;height:74px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--obs);margin:0 auto 12px;overflow:hidden;border:3px solid var(--gbr);}
+.member-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.74rem;color:var(--text);}
+.member-meta{font-family:'Montserrat',sans-serif;font-size:0.6rem;color:var(--dim);}
+
+/* ── PROFILE ── */
+.profile-cover{height:140px;background:linear-gradient(135deg,#1a0e00,#2d1a08,#0a0a18);position:relative;border-radius:8px;overflow:hidden;margin-bottom:-40px;}
+.profile-cover img{width:100%;height:100%;object-fit:cover;}
+.profile-av-wrap{padding:0 16px;position:relative;z-index:1;}
+.profile-av-lg{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--bg);border:3px solid var(--bg);overflow:hidden;}
 .profile-av-lg img{width:100%;height:100%;object-fit:cover;}
-.profile-nm{font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--ch);margin-bottom:4px;}
-.profile-tier{font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.14em;color:var(--obs);background:var(--gold);padding:3px 10px;display:inline-block;margin-bottom:10px;}
-.profile-bio-text{font-family:'Montserrat',sans-serif;font-size:0.72rem;color:var(--cd);line-height:1.6;}
-/* NOTIF */
-.notif-card{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);padding:12px;display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;}
-.notif-card.unread{border-left:3px solid var(--gold);}
-.notif-ic{font-size:1.1rem;flex-shrink:0;}
-.notif-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);margin-bottom:2px;}
-.notif-body{font-family:'Montserrat',sans-serif;font-size:0.64rem;color:var(--cd);line-height:1.5;}
-.notif-time{font-family:'Montserrat',sans-serif;font-size:0.56rem;color:var(--cd2);margin-top:3px;}
-/* MSG */
-.msg-card{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);padding:13px;margin-bottom:8px;}
-.msg-from{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-.msg-badge{font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.1em;color:var(--obs);background:var(--gold);padding:2px 6px;}
-.msg-time{font-family:'Montserrat',sans-serif;font-size:0.58rem;color:var(--cd2);margin-left:auto;}
-.msg-subj{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.74rem;color:var(--ch);margin-bottom:5px;}
-.msg-body{font-family:'Montserrat',sans-serif;font-size:0.7rem;color:var(--cd);line-height:1.6;}
-/* SEARCH */
-.search-bar{display:flex;gap:8px;margin-bottom:14px;}
-.search-inp{flex:1;padding:10px 13px;background:var(--obs2);border:1px solid var(--gbr);border-radius:var(--rad);color:var(--ch);font-family:'Montserrat',sans-serif;font-size:0.74rem;outline:none;}
-.search-inp:focus{border-color:var(--gold);}
-.search-inp::placeholder{color:var(--cd2);}
-.search-sel{padding:10px 8px;background:var(--obs2);border:1px solid var(--gbr);border-radius:var(--rad);color:var(--cd);font-family:'Montserrat',sans-serif;font-size:0.7rem;outline:none;min-width:80px;}
-/* RANK */
-.rank-card{display:flex;align-items:center;gap:10px;padding:10px;background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);margin-bottom:7px;}
-.rank-pos{font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--cd2);width:24px;text-align:center;}
-.rank-pos.top{color:var(--gold);}
-.rank-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--obs);overflow:hidden;flex-shrink:0;}
-.rank-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);flex:1;}
-.rank-pts{font-family:'Bebas Neue',sans-serif;font-size:0.8rem;letter-spacing:0.06em;color:var(--gold);}
-/* VIP */
-.vip-banner{background:linear-gradient(135deg,#3a2800,#8B5E00,#FFB800,#8B5E00,#3a2800);border-radius:var(--rad);padding:20px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden;}
-.vip-title{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.12em;color:#fff;position:relative;}
-.vip-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:0.8rem;color:rgba(255,255,255,0.75);position:relative;margin-top:4px;}
-/* POLL */
-.poll-card{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);padding:14px;margin-bottom:10px;}
-.poll-q{font-family:'Playfair Display',serif;font-weight:700;font-size:0.88rem;color:var(--ch);margin-bottom:12px;line-height:1.35;}
-.poll-opt-btn{width:100%;padding:9px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--gbr);border-radius:6px;color:var(--ch);font-family:'Montserrat',sans-serif;font-size:0.7rem;font-weight:600;text-align:left;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;margin-bottom:7px;}
-.poll-opt-btn:hover{border-color:var(--gold);background:rgba(255,184,0,0.06);}
-/* RADIO */
-.radio-card{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);padding:13px;display:flex;align-items:center;gap:12px;margin-bottom:8px;cursor:pointer;transition:all 0.2s;}
-.radio-card:hover{border-color:var(--gold);}
-.radio-card.playing{border-color:var(--gold);background:rgba(255,184,0,0.06);}
-.radio-ic{width:42px;height:42px;border-radius:8px;background:var(--obs2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
-.radio-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.74rem;color:var(--ch);}
-.radio-genre{font-family:'Montserrat',sans-serif;font-size:0.6rem;color:var(--cd2);}
-.radio-play{margin-left:auto;width:32px;height:32px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.8rem;flex-shrink:0;}
-/* TV */
-.tv-card{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);overflow:hidden;margin-bottom:10px;cursor:pointer;transition:all 0.2s;}
-.tv-card:hover{border-color:var(--gbri);}
-.tv-thumb{height:130px;background:linear-gradient(135deg,var(--obs2),var(--obs3));display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative;overflow:hidden;}
-.tv-play{position:absolute;width:44px;height:44px;border-radius:50%;background:rgba(255,184,0,0.9);display:flex;align-items:center;justify-content:center;font-size:1rem;z-index:1;}
-.tv-body{padding:10px 12px;}
-.tv-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.74rem;color:var(--ch);margin-bottom:3px;}
-.tv-meta{font-family:'Montserrat',sans-serif;font-size:0.6rem;color:var(--cd2);}
-/* EVENT */
-.event-card{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);padding:13px;margin-bottom:9px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;transition:all 0.2s;}
-.event-card:hover{border-color:var(--gbri);}
-.event-date{text-align:center;min-width:40px;}
-.event-month{font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--gold);}
-.event-day{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--ch);line-height:1;}
-.event-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);margin-bottom:3px;}
-.event-venue{font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--cd);}
-.event-price{font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.1em;color:var(--gold);margin-top:4px;}
-/* MAGAZINE */
-.mag-featured{background:var(--obs2);border:1px solid var(--gbr);border-radius:10px;overflow:hidden;margin-bottom:12px;cursor:pointer;}
-.mag-featured-img{height:160px;background:linear-gradient(135deg,var(--obs2),var(--obs3));display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;}
-.mag-featured-body{padding:13px;}
-.mag-featured-cat{font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.16em;color:var(--gold);margin-bottom:5px;}
-.mag-featured-title{font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:var(--ch);line-height:1.3;}
-.mag-card{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);padding:12px;display:flex;gap:10px;margin-bottom:8px;cursor:pointer;transition:all 0.2s;}
-.mag-card:hover{border-color:var(--gbri);}
-.mag-thumb{width:60px;height:60px;border-radius:6px;background:var(--obs2);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
-.mag-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);line-height:1.3;margin-bottom:4px;}
-.mag-cat{font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.12em;color:var(--gold);}
-/* LOCKED */
-.locked-overlay{background:rgba(7,7,13,0.8);border:1px solid rgba(255,184,0,0.3);border-radius:var(--rad);padding:24px;text-align:center;}
-.locked-icon{font-size:2rem;margin-bottom:10px;}
-.locked-title{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;color:var(--gold);margin-bottom:6px;}
-.locked-body{font-family:'Montserrat',sans-serif;font-size:0.7rem;color:var(--cd);line-height:1.6;margin-bottom:14px;}
-@media(max-width:380px){.main{padding:62px 10px 80px;}.cgrid{grid-template-columns:1fr;}}
+.profile-body{padding:10px 0 0;}
+.profile-name{font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--text);margin-bottom:3px;}
+.profile-tier{font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--bg);background:var(--gold);padding:2px 8px;display:inline-block;margin-bottom:8px;}
+.profile-bio{font-family:'Montserrat',sans-serif;font-size:0.72rem;color:var(--muted);line-height:1.6;}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px 0;}
+.stat-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center;}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--text);}
+.stat-lbl{font-family:'Montserrat',sans-serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);}
 
-/* Dashboard-specific styles */
-.celeb-page-card{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);padding:0;overflow:hidden;cursor:pointer;transition:all 0.25s;}
-.celeb-page-card:hover{border-color:var(--gbri);transform:translateY(-2px);}
-.celeb-page-banner{height:70px;background:linear-gradient(135deg,var(--obs2),var(--obs3));position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2rem;}
-.celeb-page-banner img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
-.celeb-page-info{padding:9px;}
-.celeb-page-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.7rem;color:var(--ch);margin-bottom:2px;}
-.celeb-page-cat{font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.14em;color:var(--gold);}
+/* ── FORMS ── */
+.fi{width:100%;padding:11px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Montserrat',sans-serif;font-size:0.76rem;outline:none;transition:border-color 0.2s;}
+.fi:focus{border-color:var(--gold);}
+.fi::placeholder{color:var(--dim);}
+.fl{font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:var(--muted);margin-bottom:5px;display:block;}
+.fg{margin-bottom:12px;}
+.btn-gold{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;padding:11px 18px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--bg);border:none;border-radius:6px;cursor:pointer;transition:opacity 0.2s;}
+.btn-gold:hover{opacity:0.88;}
+.btn-ghost{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.66rem;letter-spacing:0.12em;text-transform:uppercase;padding:11px 18px;background:transparent;color:var(--text);border:1px solid var(--border2);border-radius:6px;cursor:pointer;transition:all 0.2s;}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+.btn-full{width:100%;}
 
-/* Profile view */
-.profile-hero{background:linear-gradient(135deg,var(--obs2),var(--obs3));border:1px solid var(--gbr);border-radius:var(--rad);padding:22px;text-align:center;margin-bottom:14px;}
-.profile-av-lg{width:74px;height:74px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--obs);margin:0 auto 12px;overflow:hidden;border:3px solid var(--gbr);}
-.profile-av-lg img{width:100%;height:100%;object-fit:cover;}
-.profile-nm{font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--ch);margin-bottom:4px;}
-.profile-tier{font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.14em;color:var(--obs);background:var(--gold);padding:3px 10px;display:inline-block;margin-bottom:10px;}
-.profile-bio-text{font-family:'Montserrat',sans-serif;font-size:0.72rem;color:var(--cd);line-height:1.6;}
+/* ── FILTER TABS ── */
+.filter-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;scrollbar-width:none;}
+.filter-row::-webkit-scrollbar{display:none;}
+.ftab{font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.12em;padding:6px 13px;border:1px solid var(--border);border-radius:20px;cursor:pointer;color:var(--muted);white-space:nowrap;transition:all 0.2s;}
+.ftab.active{background:var(--gold);color:var(--bg);border-color:var(--gold);}
 
-/* Events */
-.event-card{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);padding:13px;margin-bottom:9px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;transition:all 0.2s;}
-.event-card:hover{border-color:var(--gbri);}
-.event-date{text-align:center;min-width:40px;}
-.event-month{font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--gold);}
-.event-day{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--ch);line-height:1;}
-.event-info{flex:1;}
-.event-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);margin-bottom:3px;}
-.event-venue{font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--cd);}
-.event-price{font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.1em;color:var(--gold);margin-top:4px;}
+/* ── CHAT ── */
+.chat-area{height:calc(100vh - 280px);overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:10px;}
+.msg-row{display:flex;gap:8px;align-items:flex-start;}
+.msg-row.me{flex-direction:row-reverse;}
+.msg-bub{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:8px 11px;font-family:'Montserrat',sans-serif;font-size:0.72rem;color:var(--text);max-width:75%;line-height:1.5;}
+.msg-row.me .msg-bub{background:rgba(255,184,0,0.12);border-color:rgba(255,184,0,0.25);}
+.msg-who{font-family:'Montserrat',sans-serif;font-size:0.56rem;font-weight:700;color:var(--dim);margin-bottom:3px;}
+.chat-foot{display:flex;gap:8px;padding:10px 0;border-top:1px solid var(--border);}
+.chat-inp{flex:1;padding:10px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;color:var(--text);font-family:'Montserrat',sans-serif;font-size:0.74rem;outline:none;}
+.chat-inp:focus{border-color:var(--gold);}
+.chat-send{width:38px;height:38px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;font-size:1rem;flex-shrink:0;}
 
-/* Poll */
-.poll-card{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);padding:14px;margin-bottom:10px;}
-.poll-q{font-family:'Playfair Display',serif;font-weight:700;font-size:0.88rem;color:var(--ch);margin-bottom:12px;line-height:1.35;}
-.poll-opt{margin-bottom:7px;}
-.poll-opt-btn{width:100%;padding:9px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--gbr);border-radius:6px;color:var(--ch);font-family:'Montserrat',sans-serif;font-size:0.7rem;font-weight:600;text-align:left;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
-.poll-opt-btn:hover{border-color:var(--gold);background:rgba(255,184,0,0.06);}
-.poll-bar{position:absolute;left:0;top:0;bottom:0;background:rgba(255,184,0,0.1);transition:width 0.5s;}
-.poll-pct{float:right;font-size:0.62rem;color:var(--cd2);}
+/* ── TOAST ── */
+#toast{position:fixed;bottom:78px;right:12px;background:var(--bg3);border:1px solid var(--border);padding:10px 14px;border-radius:20px;font-family:'Montserrat',sans-serif;font-size:0.7rem;color:var(--text);opacity:0;transform:translateY(14px);transition:all 0.28s;pointer-events:none;max-width:260px;z-index:9999;}
+#toast.show{opacity:1;transform:translateY(0);}
 
-/* Radio */
-.radio-card{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);padding:13px;display:flex;align-items:center;gap:12px;margin-bottom:8px;cursor:pointer;transition:all 0.2s;}
-.radio-card:hover{border-color:var(--gold);}
-.radio-card.playing{border-color:var(--gold);background:rgba(255,184,0,0.06);}
-.radio-ic{width:42px;height:42px;border-radius:8px;background:var(--obs2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
-.radio-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.74rem;color:var(--ch);}
-.radio-genre{font-family:'Montserrat',sans-serif;font-size:0.6rem;color:var(--cd2);}
-.radio-play{margin-left:auto;width:32px;height:32px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.8rem;flex-shrink:0;}
-
-/* Fan ranking */
-.rank-card{display:flex;align-items:center;gap:10px;padding:10px;background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);margin-bottom:7px;}
-.rank-pos{font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--cd2);width:24px;text-align:center;}
-.rank-pos.top{color:var(--gold);}
-.rank-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--obs);overflow:hidden;flex-shrink:0;}
-.rank-av img{width:100%;height:100%;object-fit:cover;}
-.rank-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);flex:1;}
-.rank-pts{font-family:'Bebas Neue',sans-serif;font-size:0.8rem;letter-spacing:0.06em;color:var(--gold);}
-
-/* Search */
-.search-bar{display:flex;gap:8px;margin-bottom:14px;}
-.search-inp{flex:1;padding:10px 13px;background:var(--obs2);border:1px solid var(--gbr);border-radius:var(--rad);color:var(--ch);font-family:'Montserrat',sans-serif;font-size:0.74rem;outline:none;}
-.search-inp:focus{border-color:var(--gold);}
-.search-inp::placeholder{color:var(--cd2);}
-.search-sel{padding:10px 8px;background:var(--obs2);border:1px solid var(--gbr);border-radius:var(--rad);color:var(--cd);font-family:'Montserrat',sans-serif;font-size:0.7rem;outline:none;min-width:80px;}
-
-/* Notif */
-.notif-card{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);padding:12px;display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;}
-.notif-card.unread{border-left:3px solid var(--gold);}
-.notif-ic{font-size:1.1rem;flex-shrink:0;}
-.notif-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);margin-bottom:2px;}
-.notif-body{font-family:'Montserrat',sans-serif;font-size:0.64rem;color:var(--cd);line-height:1.5;}
-.notif-time{font-family:'Montserrat',sans-serif;font-size:0.56rem;color:var(--cd2);margin-top:3px;}
-
-/* VIP */
-.vip-banner{background:linear-gradient(135deg,#3a2800,#8B5E00,#FFB800,#8B5E00,#3a2800);border-radius:var(--rad);padding:20px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden;}
-.vip-banner::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,0.3),transparent);pointer-events:none;}
-.vip-title{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.12em;color:#fff;position:relative;}
-.vip-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:0.8rem;color:rgba(255,255,255,0.75);position:relative;margin-top:4px;}
-
-/* Msg */
-.msg-card{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);padding:13px;margin-bottom:8px;}
-.msg-from{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-.msg-badge{font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.1em;color:var(--obs);background:var(--gold);padding:2px 6px;}
-.msg-time{font-family:'Montserrat',sans-serif;font-size:0.58rem;color:var(--cd2);margin-left:auto;}
-.msg-subj{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.74rem;color:var(--ch);margin-bottom:5px;}
-.msg-body{font-family:'Montserrat',sans-serif;font-size:0.7rem;color:var(--cd);line-height:1.6;}
-
-/* Wellness */
-.wellness-tab{display:inline-block;padding:7px 13px;font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.12em;color:var(--cd);border:1px solid var(--gbr);border-radius:20px;cursor:pointer;margin:0 4px 6px 0;transition:all 0.2s;}
-.wellness-tab.active{color:var(--obs);background:var(--gold);border-color:var(--gold);}
-
-/* Magazine */
-.mag-featured{background:var(--obs2);border:1px solid var(--gbr);border-radius:10px;overflow:hidden;margin-bottom:12px;cursor:pointer;}
-.mag-featured-img{height:160px;background:linear-gradient(135deg,var(--obs2),var(--obs3));display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden;}
-.mag-featured-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
-.mag-featured-body{padding:13px;}
-.mag-featured-cat{font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.16em;color:var(--gold);margin-bottom:5px;}
-.mag-featured-title{font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:var(--ch);line-height:1.3;}
-.mag-card{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);padding:12px;display:flex;gap:10px;margin-bottom:8px;cursor:pointer;transition:all 0.2s;}
-.mag-card:hover{border-color:var(--gbri);}
-.mag-thumb{width:60px;height:60px;border-radius:6px;background:var(--obs2);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
-.mag-thumb img{width:100%;height:100%;object-fit:cover;}
-.mag-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);line-height:1.3;margin-bottom:4px;}
-.mag-cat{font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.12em;color:var(--gold);}
-
-/* Communities grid */
+/* ── COMMUNITIES ── */
 .com-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
-.com-card{border-radius:var(--rad);overflow:hidden;cursor:pointer;border:1px solid var(--gbr);transition:all 0.3s;aspect-ratio:1.1;}
-.com-card:hover{border-color:rgba(201,149,106,0.4);transform:translateY(-3px);}
-.com-card-img{width:100%;height:75%;background-size:cover;background-position:center;filter:brightness(0.65);transition:filter 0.3s;position:relative;}
-.com-card:hover .com-card-img{filter:brightness(0.8);}
-.com-card-body{padding:7px 9px;background:var(--obs2);}
-.com-card-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.65rem;color:var(--ch);}
-.com-card-desc{font-family:'Montserrat',sans-serif;font-size:0.52rem;color:var(--cd2);}
-
-/* TV */
-.tv-card{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);overflow:hidden;margin-bottom:10px;cursor:pointer;transition:all 0.2s;}
-.tv-card:hover{border-color:var(--gbri);}
-.tv-thumb{height:130px;background:linear-gradient(135deg,var(--obs2),var(--obs3));display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative;overflow:hidden;}
-.tv-thumb img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
-.tv-play{position:absolute;width:44px;height:44px;border-radius:50%;background:rgba(255,184,0,0.9);display:flex;align-items:center;justify-content:center;font-size:1rem;z-index:1;}
-.tv-body{padding:10px 12px;}
-.tv-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.74rem;color:var(--ch);margin-bottom:3px;}
-.tv-meta{font-family:'Montserrat',sans-serif;font-size:0.6rem;color:var(--cd2);}
-
-/* VIP lounge access */
-.locked-overlay{background:rgba(7,7,13,0.8);border:1px solid rgba(255,184,0,0.3);border-radius:var(--rad);padding:24px;text-align:center;}
-.locked-icon{font-size:2rem;margin-bottom:10px;}
-.locked-title{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;color:var(--gold);margin-bottom:6px;}
-.locked-body{font-family:'Montserrat',sans-serif;font-size:0.7rem;color:var(--cd);line-height:1.6;margin-bottom:14px;}
-
-/* Notification badge */
-.nb{position:absolute;top:-3px;right:-3px;width:8px;height:8px;background:var(--err);border-radius:50%);}
+.com-card{border-radius:8px;overflow:hidden;cursor:pointer;border:1px solid var(--border);transition:all 0.3s;position:relative;}
+.com-card:hover{border-color:rgba(255,184,0,0.35);transform:translateY(-2px);}
+.com-bg{height:80px;background-size:cover;background-position:center;filter:brightness(0.6);}
+.com-body{padding:8px 10px;background:var(--bg2);}
+.com-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.66rem;color:var(--text);}
+.com-desc{font-family:'Montserrat',sans-serif;font-size:0.52rem;color:var(--dim);}
 </style>
 </head>
 <body>
 
-<!-- ── SIDEBAR OVERLAY ── -->
-<div class="sb-ov" id="sbOv"></div>
+<!-- ══ SIDEBAR OVERLAY ══ -->
+<div id="sbOverlay"></div>
 
-<!-- ── SIDEBAR ── -->
-<div class="sb" id="sb">
-  <div class="sb-h">
-    <span class="sb-logo">ICONIK</span>
-    <button class="sb-x" id="sbClose">✕</button>
+<!-- ══ SIDEBAR ══ -->
+<div id="sidebar">
+  <div class="sb-head">
+    <span class="sb-brand">ICONIK</span>
+    <button id="sbClose">✕</button>
   </div>
-  <div class="sb-u">
-    <div class="sb-uname" id="sbName">Member</div>
-    <div class="sb-utier" id="sbTier">Fan</div>
+  <div class="sb-user">
+    <div class="sb-username" id="sbName">Member</div>
+    <div class="sb-tier" id="sbTier">Fan</div>
   </div>
-  <div class="sb-sec">
-    <div class="sb-lbl">Main</div>
-    <div class="sb-lnk" data-view="feed"><span class="sb-lnk-ic">🏠</span> Feed</div>
-    <div class="sb-lnk" data-view="celebpages"><span class="sb-lnk-ic">⭐</span> Icons & Celebrities</div>
-    <div class="sb-lnk" data-view="news"><span class="sb-lnk-ic">📰</span> Celebrity News</div>
-    <div class="sb-lnk" data-view="coms"><span class="sb-lnk-ic">🌍</span> Communities</div>
-    <div class="sb-lnk" data-view="chat"><span class="sb-lnk-ic">💬</span> Live Chat</div>
-    <div class="sb-lbl">Discover</div>
-    <div class="sb-lnk" data-view="events"><span class="sb-lnk-ic">🎫</span> Events & Tickets</div>
-    <div class="sb-lnk" data-view="radio"><span class="sb-lnk-ic">🎵</span> ICONIK Radio</div>
-    <div class="sb-lnk" data-view="tv"><span class="sb-lnk-ic">📺</span> ICONIK TV</div>
-    <div class="sb-lnk" data-view="magazine"><span class="sb-lnk-ic">📖</span> Magazine</div>
-    <div class="sb-lnk" data-view="wellness"><span class="sb-lnk-ic">💪</span> Wellness Hub</div>
-    <div class="sb-lbl">Community</div>
-    <div class="sb-lnk" data-view="search"><span class="sb-lnk-ic">🔍</span> Find Members</div>
-    <div class="sb-lnk" data-view="rankings"><span class="sb-lnk-ic">🏆</span> Fan Rankings</div>
-    <div class="sb-lnk" data-view="polls"><span class="sb-lnk-ic">🗳️</span> Fan Voting</div>
-    <div class="sb-lbl">My ICONIK</div>
-    <div class="sb-lnk" data-view="myprofile"><span class="sb-lnk-ic">👤</span> My Profile</div>
-    <div class="sb-lnk" data-view="msgs"><span class="sb-lnk-ic">📩</span> Messages</div>
-    <div class="sb-lnk" data-view="notifs"><span class="sb-lnk-ic">🔔</span> Notifications</div>
-    <div class="sb-lnk" data-view="vip"><span class="sb-lnk-ic">👑</span> VIP Lounge</div>
-    <div class="sb-lnk" id="logoutBtn"><span class="sb-lnk-ic">🚪</span> Sign Out</div>
+  <div class="sb-section">
+    <div class="sb-label">Main</div>
+    <div class="sb-link" data-view="feed"><span class="sb-link-icon">🏠</span>Feed</div>
+    <div class="sb-link" data-view="icons"><span class="sb-link-icon">⭐</span>Icons & Celebrities</div>
+    <div class="sb-link" data-view="news"><span class="sb-link-icon">📰</span>Celebrity News</div>
+    <div class="sb-link" data-view="communities"><span class="sb-link-icon">🌍</span>Communities</div>
+    <div class="sb-link" data-view="chat"><span class="sb-link-icon">💬</span>Live Chat</div>
+    <div class="sb-label">Discover</div>
+    <div class="sb-link" data-view="events"><span class="sb-link-icon">🎫</span>Events & Tickets</div>
+    <div class="sb-link" data-view="radio"><span class="sb-link-icon">🎵</span>ICONIK Radio</div>
+    <div class="sb-link" data-view="tv"><span class="sb-link-icon">📺</span>ICONIK TV</div>
+    <div class="sb-link" data-view="magazine"><span class="sb-link-icon">📖</span>Magazine</div>
+    <div class="sb-link" data-view="wellness"><span class="sb-link-icon">💪</span>Wellness Hub</div>
+    <div class="sb-label">Community</div>
+    <div class="sb-link" data-view="members"><span class="sb-link-icon">🔍</span>Find Members</div>
+    <div class="sb-link" data-view="rankings"><span class="sb-link-icon">🏆</span>Fan Rankings</div>
+    <div class="sb-link" data-view="polls"><span class="sb-link-icon">🗳️</span>Fan Voting</div>
+    <div class="sb-label">My ICONIK</div>
+    <div class="sb-link" data-view="profile"><span class="sb-link-icon">👤</span>My Profile</div>
+    <div class="sb-link" data-view="messages"><span class="sb-link-icon">📩</span>Messages</div>
+    <div class="sb-link" data-view="notifications"><span class="sb-link-icon">🔔</span>Notifications</div>
+    <div class="sb-link" data-view="vip"><span class="sb-link-icon">👑</span>VIP Lounge</div>
+    <div class="sb-link sb-logout" id="logoutLink"><span class="sb-link-icon">🚪</span>Sign Out</div>
   </div>
 </div>
 
-<!-- ── TOP NAV ── -->
-<nav style="position:fixed;top:0;left:0;right:0;z-index:500;height:62px;background:rgba(7,7,13,0.95);border-bottom:1px solid rgba(255,255,255,0.09);display:flex;align-items:center;justify-content:space-between;padding:0 16px;">
-  <span style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.08em;background:linear-gradient(135deg,#FFB800,#CC9400);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">ICONIK</span>
-  <div style="display:flex;align-items:center;gap:12px;">
-    <span id="navName" style="font-family:'Montserrat',sans-serif;font-size:0.7rem;font-weight:600;color:#BDB5A6;"></span>
-    <div style="position:relative;">
-      <span style="font-size:1.1rem;cursor:pointer;" id="notifBell">🔔</span>
-      <span id="notifDot" style="position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:#EF4444;border-radius:50%;display:none;"></span>
-    </div>
-    <div id="navAv" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#FFB800,#CC9400);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:#07070D;cursor:pointer;overflow:hidden;border:2px solid rgba(255,255,255,0.09);position:relative;">M
-      <img id="navAvImg" src="" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.style.display='none'"/>
-    </div>
-    <button id="menuBtn" style="background:none;border:1px solid rgba(255,255,255,0.18);border-radius:8px;width:38px;height:38px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:0;">
-      <span style="display:block;width:16px;height:2px;background:#F5F0E8;border-radius:2px;"></span>
-      <span style="display:block;width:16px;height:2px;background:#F5F0E8;border-radius:2px;"></span>
-      <span style="display:block;width:16px;height:2px;background:#F5F0E8;border-radius:2px;"></span>
+<!-- ══ TOP NAV ══ -->
+<div id="topnav">
+  <span class="nav-logo">ICONIK</span>
+  <div class="nav-right">
+    <span class="nav-bell" id="bellBtn">🔔</span>
+    <div class="nav-av" id="navAvatar">M</div>
+    <button id="hamburger">
+      <span></span><span></span><span></span>
     </button>
   </div>
-</nav>
+</div>
 
-<!-- ── MAIN ── -->
-<div class="main" style="padding:70px 14px 85px;min-height:100vh;">
+<!-- ══ MAIN ══ -->
+<div id="main">
 
-<!-- FEED -->
-<div class="view on" id="feedV">
-  <div class="wbar"><span class="wi">🏠</span><div><div class="wh">Fan Feed</div><div class="ws">Latest from your communities</div></div></div>
-  <!-- Post composer -->
-  <div class="pcard" style="margin-bottom:14px;">
-    <div class="ph">
-      <div class="pav" id="feedAv">M</div>
-      <input style="flex:1;background:transparent;border:none;outline:none;color:var(--cd);font-family:'Montserrat',sans-serif;font-size:0.76rem;cursor:pointer;" placeholder="Share with your community..." id="postInput" readonly onclick="openComposer()"/>
+  <!-- FEED -->
+  <div class="view active" id="feedV">
+    <div class="wbar"><span class="wbar-icon">🏠</span><div><div class="wbar-title">Fan Feed</div><div class="wbar-sub">Latest from your communities</div></div></div>
+    <div class="card" style="margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div class="card-av" id="postAv">M</div>
+        <input class="fi" style="flex:1;" placeholder="Share with your community..." readonly onclick="openPostComposer()"/>
+      </div>
+      <div style="display:flex;gap:7px;">
+        <button class="btn-ghost" style="font-size:0.58rem;padding:7px 11px;" onclick="openPostComposer()">📝 Post</button>
+        <button class="btn-ghost" style="font-size:0.58rem;padding:7px 11px;" onclick="openPostComposer()">📸 Photo</button>
+      </div>
     </div>
-    <div style="display:flex;gap:8px;margin-top:8px;">
-      <button class="btn-ghost" style="font-size:0.56rem;padding:7px 10px;" onclick="openComposer()">📝 Post</button>
-      <button class="btn-ghost" style="font-size:0.56rem;padding:7px 10px;" onclick="openComposer('photo')">📸 Photo</button>
-      <button class="btn-ghost" style="font-size:0.56rem;padding:7px 10px;" onclick="openComposer('video')">🎬 Video</button>
+    <div id="feedList"><div class="loader"><div class="loader-ring"></div></div></div>
+  </div>
+
+  <!-- ICONS -->
+  <div class="view" id="iconsV">
+    <div class="wbar"><span class="wbar-icon">⭐</span><div><div class="wbar-title">All Icons & Celebrities</div><div class="wbar-sub">Dedicated fan hubs for every icon</div></div></div>
+    <input class="fi" style="margin-bottom:12px;" id="celebSearch" placeholder="Search by name or category..." oninput="filterCelebs()"/>
+    <div class="celeb-grid" id="celebGrid"><div class="loader" style="grid-column:span 2;"><div class="loader-ring"></div></div></div>
+  </div>
+
+  <!-- NEWS -->
+  <div class="view" id="newsV">
+    <div class="wbar"><span class="wbar-icon">📰</span><div><div class="wbar-title">Celebrity News</div><div class="wbar-sub">Latest from the world of icons</div></div></div>
+    <div class="filter-row" id="newsFilter">
+      <div class="ftab active" onclick="filterNews(this,'All')">All</div>
+      <div class="ftab" onclick="filterNews(this,'Music')">🎵 Music</div>
+      <div class="ftab" onclick="filterNews(this,'Sports')">⚽ Sports</div>
+      <div class="ftab" onclick="filterNews(this,'Film & TV')">🎬 Film</div>
+      <div class="ftab" onclick="filterNews(this,'Fashion')">👗 Fashion</div>
+      <div class="ftab" onclick="filterNews(this,'Tech & Innovation')">💻 Tech</div>
     </div>
+    <div id="newsList"><div class="loader"><div class="loader-ring"></div></div></div>
   </div>
-  <div id="feedList"><div class="ldr"><div class="lring"></div></div></div>
-</div>
 
-<!-- ICONS / CELEBRITIES -->
-<div class="view" id="celebpagesV">
-  <div class="wbar"><span class="wi">⭐</span><div><div class="wh">All Icons & Celebrities</div><div class="ws">Dedicated fan hubs for every icon</div></div></div>
-  <input class="search-inp" style="width:100%;margin-bottom:12px;" id="celebSearch" placeholder="Search by name or category..." oninput="filterCelebs()"/>
-  <div class="cgrid" id="celebGrid"><div class="ldr" style="grid-column:span 2;"><div class="lring"></div></div></div>
-</div>
-
-<!-- CELEBRITY SINGLE PAGE -->
-<div class="view" id="celebSingleV">
-  <button class="btn-ghost" style="font-size:0.58rem;padding:7px 12px;margin-bottom:14px;" onclick="goBack('celebpages')">← Back</button>
-  <div id="celebSingleContent"></div>
-</div>
-
-<!-- NEWS -->
-<div class="view" id="newsV">
-  <div class="wbar"><span class="wi">📰</span><div><div class="wh">Celebrity News</div><div class="ws">Latest from the world of icons</div></div></div>
-  <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;" id="newsCatFilter">
-    <button class="wellness-tab active" data-cat="All" onclick="filterNews(this)">All</button>
-    <button class="wellness-tab" data-cat="Music" onclick="filterNews(this)">🎵 Music</button>
-    <button class="wellness-tab" data-cat="Sports" onclick="filterNews(this)">⚽ Sports</button>
-    <button class="wellness-tab" data-cat="Film" onclick="filterNews(this)">🎬 Film</button>
-    <button class="wellness-tab" data-cat="Fashion" onclick="filterNews(this)">👗 Fashion</button>
+  <!-- COMMUNITIES -->
+  <div class="view" id="communitiesV">
+    <div class="wbar"><span class="wbar-icon">🌍</span><div><div class="wbar-title">13 Communities</div><div class="wbar-sub">Find your circle</div></div></div>
+    <div class="com-grid" id="comGrid"></div>
   </div>
-  <div id="newsFeed"><div class="ldr"><div class="lring"></div></div></div>
-</div>
 
-<!-- COMMUNITIES -->
-<div class="view" id="comsV">
-  <div class="wbar"><span class="wi">🌍</span><div><div class="wh">13 Communities</div><div class="ws">Every icon has a world. Find yours.</div></div></div>
-  <div class="com-grid" id="comsGrid"></div>
-</div>
-
-<!-- LIVE CHAT -->
-<div class="view" id="chatV">
-  <div class="wbar"><span class="wi">💬</span><div><div class="wh">Live Community Chat</div><div class="ws">Real-time fan conversations</div></div></div>
-  <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;" id="chatRooms">
-    <button class="wellness-tab active" data-room="general" onclick="switchRoom(this)">🌍 Global</button>
-    <button class="wellness-tab" data-room="music" onclick="switchRoom(this)">🎵 Music</button>
-    <button class="wellness-tab" data-room="sports" onclick="switchRoom(this)">⚽ Sports</button>
-    <button class="wellness-tab" data-room="film" onclick="switchRoom(this)">🎬 Film</button>
-    <button class="wellness-tab" data-room="fashion" onclick="switchRoom(this)">👗 Fashion</button>
-    <button class="wellness-tab" data-room="wellness" onclick="switchRoom(this)">💪 Wellness</button>
-    <button class="wellness-tab" data-room="tech" onclick="switchRoom(this)">💻 Tech</button>
-  </div>
-  <div class="chat-room" id="chatRoom"></div>
-  <div class="chat-input-row">
-    <input class="chat-input" id="chatInput" placeholder="Say something..." onkeydown="if(event.key==='Enter')sendMsg()"/>
-    <button class="chat-send" onclick="sendMsg()">➤</button>
-  </div>
-</div>
-
-<!-- EVENTS -->
-<div class="view" id="eventsV">
-  <div class="wbar"><span class="wi">🎫</span><div><div class="wh">Events & Tickets</div><div class="ws">Concerts · Tours · Fan Meets · Experiences</div></div></div>
-  <div id="eventsList"><div class="ldr"><div class="lring"></div></div></div>
-</div>
-
-<!-- RADIO -->
-<div class="view" id="radioV">
-  <div class="wbar"><span class="wi">🎵</span><div><div class="wh">ICONIK Radio</div><div class="ws">Music · Podcasts · Fan Mixes</div></div></div>
-  <div id="radioList"></div>
-  <div id="radioPlayer" style="display:none;position:fixed;bottom:72px;left:0;right:0;background:var(--obs3);border-top:1px solid var(--gbr);padding:12px 16px;z-index:400;">
-    <div style="display:flex;align-items:center;gap:10px;">
-      <span id="playerIcon" style="font-size:1.3rem;">🎵</span>
-      <div style="flex:1;"><div id="playerName" style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);"></div><div id="playerGenre" style="font-family:'Montserrat',sans-serif;font-size:0.58rem;color:var(--cd2);"></div></div>
-      <button onclick="stopRadio()" style="background:none;border:1px solid var(--gbr);border-radius:50%;width:28px;height:28px;color:var(--cd);cursor:pointer;">✕</button>
+  <!-- CHAT -->
+  <div class="view" id="chatV">
+    <div class="wbar"><span class="wbar-icon">💬</span><div><div class="wbar-title">Live Community Chat</div><div class="wbar-sub">Real-time fan conversations</div></div></div>
+    <div class="filter-row" id="chatRooms">
+      <div class="ftab active" data-room="general" onclick="switchRoom(this)">🌍 Global</div>
+      <div class="ftab" data-room="music" onclick="switchRoom(this)">🎵 Music</div>
+      <div class="ftab" data-room="sports" onclick="switchRoom(this)">⚽ Sports</div>
+      <div class="ftab" data-room="film" onclick="switchRoom(this)">🎬 Film</div>
+      <div class="ftab" data-room="fashion" onclick="switchRoom(this)">👗 Fashion</div>
+    </div>
+    <div class="chat-area" id="chatArea"><div class="loader"><div class="loader-ring"></div></div></div>
+    <div class="chat-foot">
+      <input class="chat-inp" id="chatInp" placeholder="Say something..."/>
+      <button class="chat-send" onclick="sendChat()">➤</button>
     </div>
   </div>
-</div>
 
-<!-- ICONIK TV -->
-<div class="view" id="tvV">
-  <div class="wbar"><span class="wi">📺</span><div><div class="wh">ICONIK TV</div><div class="ws">Watch · Discover · React</div></div></div>
-  <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;">
-    <button class="wellness-tab active">All</button>
-    <button class="wellness-tab">🎵 Music</button>
-    <button class="wellness-tab">⚽ Sports</button>
-    <button class="wellness-tab">🎤 Interviews</button>
-    <button class="wellness-tab">🎨 Fan Made</button>
+  <!-- EVENTS -->
+  <div class="view" id="eventsV">
+    <div class="wbar"><span class="wbar-icon">🎫</span><div><div class="wbar-title">Events & Tickets</div><div class="wbar-sub">Concerts · Tours · Fan Meets</div></div></div>
+    <div id="eventsList"><div class="loader"><div class="loader-ring"></div></div></div>
   </div>
-  <div id="tvList"><div class="ldr"><div class="lring"></div></div></div>
-</div>
 
-<!-- MAGAZINE -->
-<div class="view" id="magazineV">
-  <div class="wbar"><span class="wi">📖</span><div><div class="wh">ICONIK Magazine</div><div class="ws">Stories · Interviews · Exclusives · Culture</div></div></div>
-  <div id="magazineList"><div class="ldr"><div class="lring"></div></div></div>
-</div>
-
-<!-- WELLNESS -->
-<div class="view" id="wellnessV">
-  <div class="wbar"><span class="wi">💪</span><div><div class="wh">ICONIK Wellness Hub</div><div class="ws">Health · Fitness · Nutrition · Beauty</div></div></div>
-  <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;">
-    <button class="wellness-tab active" onclick="showWellness('fitness',this)">💪 Fitness</button>
-    <button class="wellness-tab" onclick="showWellness('nutrition',this)">🥗 Nutrition</button>
-    <button class="wellness-tab" onclick="showWellness('mental',this)">🧘 Mental</button>
-    <button class="wellness-tab" onclick="showWellness('beauty',this)">💄 Beauty</button>
-    <button class="wellness-tab" onclick="showWellness('recovery',this)">💆 Recovery</button>
+  <!-- RADIO -->
+  <div class="view" id="radioV">
+    <div class="wbar"><span class="wbar-icon">🎵</span><div><div class="wbar-title">ICONIK Radio</div><div class="wbar-sub">Music · Podcasts · Fan Mixes</div></div></div>
+    <div id="radioList"></div>
   </div>
-  <div id="wellnessContent"></div>
-</div>
 
-<!-- FIND MEMBERS -->
-<div class="view" id="searchV">
-  <div class="wbar"><span class="wi">👥</span><div><div class="wh">Find Members</div><div class="ws">Discover fans from around the world</div></div></div>
-  <div class="search-bar">
-    <input class="search-inp" id="memberSearch" placeholder="Search by name..." oninput="searchMembers()"/>
-    <select class="search-sel" id="memberFilter" onchange="searchMembers()">
-      <option value="">All</option>
-      <option>Music</option><option>Sports</option><option>Film & TV</option>
-      <option>Fashion</option><option>Wellness</option><option>Tech & Innovation</option>
-    </select>
+  <!-- TV -->
+  <div class="view" id="tvV">
+    <div class="wbar"><span class="wbar-icon">📺</span><div><div class="wbar-title">ICONIK TV</div><div class="wbar-sub">Watch · Discover · React</div></div></div>
+    <div id="tvList"><div class="loader"><div class="loader-ring"></div></div></div>
   </div>
-  <div class="sh">Members Worldwide</div>
-  <div id="membersList"><div class="ldr"><div class="lring"></div></div></div>
-</div>
 
-<!-- MEMBER PROFILE VIEW -->
-<div class="view" id="memberProfileV">
-  <button class="btn-ghost" style="font-size:0.58rem;padding:7px 12px;margin-bottom:14px;" id="profileBackBtn" onclick="goBack('search')">← Back</button>
-  <div id="memberProfileContent"></div>
-</div>
-
-<!-- FAN RANKINGS -->
-<div class="view" id="rankingsV">
-  <div class="wbar"><span class="wi">🏆</span><div><div class="wh">Fan Rankings</div><div class="ws">Top fans across all ICONIK communities</div></div></div>
-  <div id="rankingsList"><div class="ldr"><div class="lring"></div></div></div>
-</div>
-
-<!-- FAN VOTING -->
-<div class="view" id="pollsV">
-  <div class="wbar"><span class="wi">🗳️</span><div><div class="wh">Fan Voting</div><div class="ws">Your vote shapes the community</div></div></div>
-  <div class="sh">Active Polls</div>
-  <div id="activePolls"></div>
-  <div class="sh" style="margin-top:8px;">Completed</div>
-  <div id="completedPolls"></div>
-</div>
-
-<!-- MY PROFILE -->
-<div class="view" id="myprofileV">
-  <div class="wbar"><span class="wi">👤</span><div><div class="wh">My Profile</div><div class="ws">Your ICONIK identity</div></div></div>
-  <div id="myProfileContent"><div class="ldr"><div class="lring"></div></div></div>
-</div>
-
-<!-- MESSAGES -->
-<div class="view" id="msgsV">
-  <div class="wbar"><span class="wi">📩</span><div><div class="wh">Messages</div><div class="ws">From Admin & Sub Admins</div></div></div>
-  <div class="sh">Inbox</div>
-  <div id="msgsList"><div class="ldr"><div class="lring"></div></div></div>
-</div>
-
-<!-- NOTIFICATIONS -->
-<div class="view" id="notifsV">
-  <div class="wbar"><span class="wi">🔔</span><div><div class="wh">Notifications</div><div class="ws">Your latest activity & alerts</div></div></div>
-  <div class="sh">Recent</div>
-  <div id="notifsList"><div class="ldr"><div class="lring"></div></div></div>
-</div>
-
-<!-- VIP -->
-<div class="view" id="vipV">
-  <div class="vip-banner">
-    <div class="vip-title">👑 VIP Inner Circle</div>
-    <div class="vip-sub">Unlock the Inner Circle</div>
+  <!-- MAGAZINE -->
+  <div class="view" id="magazineV">
+    <div class="wbar"><span class="wbar-icon">📖</span><div><div class="wbar-title">ICONIK Magazine</div><div class="wbar-sub">Stories · Interviews · Exclusives</div></div></div>
+    <div id="magList"><div class="loader"><div class="loader-ring"></div></div></div>
   </div>
-  <div id="vipContent"><div class="ldr"><div class="lring"></div></div></div>
+
+  <!-- WELLNESS -->
+  <div class="view" id="wellnessV">
+    <div class="wbar"><span class="wbar-icon">💪</span><div><div class="wbar-title">Wellness Hub</div><div class="wbar-sub">Health · Fitness · Nutrition · Beauty</div></div></div>
+    <div class="filter-row">
+      <div class="ftab active" onclick="showWellness('fitness',this)">💪 Fitness</div>
+      <div class="ftab" onclick="showWellness('nutrition',this)">🥗 Nutrition</div>
+      <div class="ftab" onclick="showWellness('mental',this)">🧘 Mental</div>
+      <div class="ftab" onclick="showWellness('beauty',this)">💄 Beauty</div>
+      <div class="ftab" onclick="showWellness('recovery',this)">💆 Recovery</div>
+    </div>
+    <div id="wellnessContent"></div>
+  </div>
+
+  <!-- FIND MEMBERS -->
+  <div class="view" id="membersV">
+    <div class="wbar"><span class="wbar-icon">🔍</span><div><div class="wbar-title">Find Members</div><div class="wbar-sub">Discover fans worldwide</div></div></div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;">
+      <input class="fi" style="flex:1;" id="memberSearch" placeholder="Search by name..." oninput="searchMembers()"/>
+      <select class="fi" style="width:100px;" id="memberFilter" onchange="searchMembers()">
+        <option value="">All</option>
+        <option>Music</option><option>Sports</option><option>Fashion</option><option>Tech & Innovation</option>
+      </select>
+    </div>
+    <div id="memberList"><div class="loader"><div class="loader-ring"></div></div></div>
+  </div>
+
+  <!-- RANKINGS -->
+  <div class="view" id="rankingsV">
+    <div class="wbar"><span class="wbar-icon">🏆</span><div><div class="wbar-title">Fan Rankings</div><div class="wbar-sub">Top fans across ICONIK</div></div></div>
+    <div id="rankList"><div class="loader"><div class="loader-ring"></div></div></div>
+  </div>
+
+  <!-- POLLS -->
+  <div class="view" id="pollsV">
+    <div class="wbar"><span class="wbar-icon">🗳️</span><div><div class="wbar-title">Fan Voting</div><div class="wbar-sub">Your vote shapes the community</div></div></div>
+    <div id="pollList"><div class="loader"><div class="loader-ring"></div></div></div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="view" id="profileV">
+    <div class="profile-cover" id="profileCover"></div>
+    <div class="profile-av-wrap"><div class="profile-av-lg" id="profileAvLg">M</div></div>
+    <div class="profile-body">
+      <div class="profile-name" id="profileName">Member</div>
+      <div class="profile-tier" id="profileTierBadge">Fan</div>
+      <div class="profile-bio" id="profileBioText"></div>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-num" id="pFollowers">0</div><div class="stat-lbl">Followers</div></div>
+        <div class="stat-box"><div class="stat-num" id="pFollowing">0</div><div class="stat-lbl">Following</div></div>
+        <div class="stat-box"><div class="stat-num" id="pPosts">0</div><div class="stat-lbl">Posts</div></div>
+        <div class="stat-box"><div class="stat-num" id="pPoints">0</div><div class="stat-lbl">Points</div></div>
+      </div>
+      <div class="sec-head">Edit Profile</div>
+      <div class="card">
+        <div class="fg"><label class="fl">Bio</label><textarea class="fi" id="editBio" rows="3" placeholder="Tell the community about yourself..."></textarea></div>
+        <div class="fg"><label class="fl">Profile Picture URL</label><input class="fi" id="editPic" placeholder="https://... (paste image URL)"/></div>
+        <button class="btn-gold btn-full" onclick="saveProfile()">Save Profile →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MESSAGES -->
+  <div class="view" id="messagesV">
+    <div class="wbar"><span class="wbar-icon">📩</span><div><div class="wbar-title">Messages</div><div class="wbar-sub">From Admin & Sub Admins</div></div></div>
+    <div id="msgList"><div class="loader"><div class="loader-ring"></div></div></div>
+  </div>
+
+  <!-- NOTIFICATIONS -->
+  <div class="view" id="notificationsV">
+    <div class="wbar"><span class="wbar-icon">🔔</span><div><div class="wbar-title">Notifications</div><div class="wbar-sub">Your latest activity & alerts</div></div></div>
+    <div id="notifList"><div class="loader"><div class="loader-ring"></div></div></div>
+  </div>
+
+  <!-- VIP -->
+  <div class="view" id="vipV">
+    <div style="background:linear-gradient(135deg,#3a2800,#8B5E00,#FFB800,#8B5E00,#3a2800);border-radius:8px;padding:22px;text-align:center;margin-bottom:14px;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.12em;color:#fff;">👑 VIP Inner Circle</div>
+      <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:0.82rem;color:rgba(255,255,255,0.75);margin-top:4px;">Unlock the Inner Circle</div>
+    </div>
+    <div id="vipContent"><div class="loader"><div class="loader-ring"></div></div></div>
+  </div>
+
+</div><!-- end #main -->
+
+<!-- ══ BOTTOM NAV ══ -->
+<div id="bottomnav">
+  <div class="bn-item active" data-view="feed">
+    <div class="bn-icon">🏠</div><div class="bn-label">Feed</div>
+  </div>
+  <div class="bn-item" data-view="icons">
+    <div class="bn-icon">⭐</div><div class="bn-label">Icons</div>
+  </div>
+  <div class="bn-item" data-view="news">
+    <div class="bn-icon">📰</div><div class="bn-label">News</div>
+  </div>
+  <div class="bn-item" data-view="wellness">
+    <div class="bn-icon">💪</div><div class="bn-label">Wellness</div>
+  </div>
+  <div class="bn-item" data-view="vip">
+    <div class="bn-icon">👑</div><div class="bn-label">VIP</div>
+  </div>
 </div>
-
-</div><!-- end .main -->
-
-<!-- BOTTOM NAV -->
-<nav style="position:fixed;bottom:0;left:0;right:0;z-index:500;height:64px;background:rgba(7,7,13,0.97);border-top:1px solid rgba(255,255,255,0.09);display:flex;align-items:center;justify-content:space-around;padding:0 8px;">
-  <div data-view="feed" id="bn-feed" style="display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 14px;border-radius:10px;min-width:52px;background:rgba(255,184,0,0.08);">
-    <span style="font-size:1.1rem;">🏠</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.12em;color:#FFB800;">Feed</span>
-  </div>
-  <div data-view="celebpages" id="bn-celebpages" style="display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 14px;border-radius:10px;min-width:52px;">
-    <span style="font-size:1.1rem;">⭐</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.12em;color:#BDB5A6;">Icons</span>
-  </div>
-  <div data-view="news" id="bn-news" style="display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 14px;border-radius:10px;min-width:52px;">
-    <span style="font-size:1.1rem;">📰</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.12em;color:#BDB5A6;">News</span>
-  </div>
-  <div data-view="wellness" id="bn-wellness" style="display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 14px;border-radius:10px;min-width:52px;">
-    <span style="font-size:1.1rem;">💪</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.12em;color:#BDB5A6;">Wellness</span>
-  </div>
-  <div data-view="vip" id="bn-vip" style="display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 14px;border-radius:10px;min-width:52px;">
-    <span style="font-size:1.1rem;">👑</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.12em;color:#BDB5A6;">VIP</span>
-  </div>
-</nav>
 
 <div id="toast"></div>
 
-<!-- ── INSTANT UI — fires immediately, no Firebase wait ── -->
+<!-- ══ INSTANT UI — fires before Firebase ══ -->
 <script>
-// Wire hamburger and sidebar RIGHT NOW — no waiting for Firebase
 (function(){
-  function ready(fn){ if(document.readyState!=='loading'){fn();}else{document.addEventListener('DOMContentLoaded',fn);} }
-  ready(function(){
-    var sb  = document.getElementById('sb');
-    var ov  = document.getElementById('sbOv');
-    var btn = document.getElementById('menuBtn');
-    if(!sb||!ov||!btn){ console.error('Sidebar elements not found'); return; }
+  var sb  = document.getElementById('sidebar');
+  var ov  = document.getElementById('sbOverlay');
+  var hbg = document.getElementById('hamburger');
+  var xbtn= document.getElementById('sbClose');
 
-    // Open sidebar
-    btn.addEventListener('click',function(e){
-      e.stopPropagation();
-      sb.classList.add('on');
-      ov.classList.add('on');
+  function openSB(){ sb.classList.add('open'); ov.classList.add('open'); }
+  function closeSB(){ sb.classList.remove('open'); ov.classList.remove('open'); }
+
+  hbg.addEventListener('click', openSB);
+  xbtn.addEventListener('click', closeSB);
+  ov.addEventListener('click', closeSB);
+
+  // Show/hide views
+  function showView(name){
+    document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+    var el = document.getElementById(name+'V');
+    if(el){ el.classList.add('active'); }
+    // Update bottom nav
+    document.querySelectorAll('.bn-item').forEach(function(b){
+      b.classList[b.dataset.view===name?'add':'remove']('active');
     });
+    closeSB();
+    // Fire load function if exists
+    var fn = window['load_'+name];
+    if(typeof fn === 'function') fn();
+  }
+  window.goView = showView;
 
-    // Close via overlay
-    ov.addEventListener('click',function(){
-      sb.classList.remove('on');
-      ov.classList.remove('on');
-    });
-
-    // Close via X button
-    var sbx = document.getElementById('sbClose');
-    if(sbx) sbx.addEventListener('click',function(){
-      sb.classList.remove('on');
-      ov.classList.remove('on');
-    });
-
-    // Bottom nav clicks — show/hide views
-    function showView(name){
-      document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on');});
-      var t = document.getElementById(name+'V');
-      if(t) t.classList.add('on');
-      // Update bottom nav highlight
-      document.querySelectorAll('[data-view]').forEach(function(b){
-        if(b.closest('nav') && !b.closest('.sb')){
-          var active = b.dataset.view===name;
-          b.style.background = active ? 'rgba(255,184,0,0.10)' : 'transparent';
-          var lbl = b.querySelector('span:last-child');
-          if(lbl) lbl.style.color = active ? '#FFB800' : '#BDB5A6';
-        }
-      });
-      // Close sidebar
-      sb.classList.remove('on');
-      ov.classList.remove('on');
-    }
-    window.showView = showView;
-
-    // Attach bottom nav
-    document.querySelectorAll('[data-view]').forEach(function(b){
-      if(b.closest('nav') && !b.closest('.sb')){
-        b.style.cursor='pointer';
-        b.addEventListener('click',function(){showView(this.dataset.view);});
-      }
-    });
-
-    // Sidebar nav links
-    document.querySelectorAll('.sb-lnk[data-view]').forEach(function(lnk){
-      lnk.addEventListener('click',function(){
-        showView(this.dataset.view);
-      });
-    });
-
-    // Logout
-    var logoutBtn = document.getElementById('logoutBtn');
-    if(logoutBtn){
-      logoutBtn.addEventListener('click',function(){
-        // Actual signOut called by dashboard.js, but also redirect
-        window.location.href = '/app.html?signout=1';
-      });
-    }
-
-    console.log('✅ ICONIK UI ready — hamburger wired');
+  // Bottom nav
+  document.querySelectorAll('.bn-item').forEach(function(b){
+    b.addEventListener('click', function(){ showView(this.dataset.view); });
   });
+
+  // Sidebar links
+  document.querySelectorAll('.sb-link[data-view]').forEach(function(lnk){
+    lnk.addEventListener('click', function(){ showView(this.dataset.view); });
+  });
+
+  // Logout
+  document.getElementById('logoutLink').addEventListener('click', function(){
+    if(window._firebaseSignOut){ window._firebaseSignOut(); }
+    else{ window.location.href='/app.html?signout=1'; }
+  });
+
+  // Bell
+  document.getElementById('bellBtn').addEventListener('click', function(){ showView('notifications'); });
+  // Avatar
+  document.getElementById('navAvatar').addEventListener('click', function(){ showView('profile'); });
+
+  console.log('✅ ICONIK dashboard UI ready');
 })();
 </script>
 
-<script type="module" src="/js/dashboard.js"></script>
+<!-- ══ FIREBASE + DATA ══ -->
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,query,limit,where,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const cfg={apiKey:"AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",authDomain:"iconik-global.firebaseapp.com",projectId:"iconik-global",storageBucket:"iconik-global.firebasestorage.app",messagingSenderId:"1040054516979",appId:"1:1040054516979:web:33cd5f07ae8fc146a30b86"};
+const fb=initializeApp(cfg),auth=getAuth(fb),db=getFirestore(fb);
+
+// Safe fetch with 5s timeout
+async function sg(ref){
+  try{return await Promise.race([getDocs(ref),new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),5000))]);}
+  catch(e){console.warn('Firestore:',e.message);return{empty:true,forEach:()=>{},docs:[]};}
+}
+function esc(s){return String(s||'').replace(/&/g,'&lt;').replace(/>/g,'&gt;');}
+function toast(msg,type){
+  var t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.background=type==='error'?'#7f1d1d':type==='info'?'#1e3a5f':'#14532d';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+let cU=null,cD=null,allCelebs=[],allMembers=[],allNews=[],chatRoom='general',chatTimer=null;
+
+// ── SIGN OUT ──
+window._firebaseSignOut=async function(){
+  await signOut(auth);
+  location.replace('/app.html?signout=1');
+};
+
+// ── AUTH ──
+onAuthStateChanged(auth,async u=>{
+  if(!u){location.replace('/app.html');return;}
+  cU=u;
+  try{const d=await getDoc(doc(db,'users',u.uid));if(d.exists())cD={id:d.id,...d.data()};}catch{}
+  initDash();
+});
+
+function initDash(){
+  const nm=cD?.name||'Member';
+  // Nav avatar
+  const av=document.getElementById('navAvatar');
+  av.textContent=nm.charAt(0).toUpperCase();
+  if(cD?.profilePic&&cD.profilePic.startsWith('http')){
+    const img=document.createElement('img');img.src=cD.profilePic;img.onerror=()=>img.remove();av.appendChild(img);
+  }
+  // Sidebar
+  document.getElementById('sbName').textContent=nm;
+  document.getElementById('sbTier').textContent=cD?.tier||'Fan';
+  // Post composer avatar
+  const pa=document.getElementById('postAv');if(pa)pa.textContent=nm.charAt(0).toUpperCase();
+  // Load initial views
+  load_feed();
+  load_icons();
+  load_news();
+  load_communities();
+  load_events();
+  load_radio();
+  load_tv();
+  load_magazine();
+  load_wellness_content('fitness');
+  load_members();
+  load_rankings();
+  load_polls();
+  load_profile();
+  load_messages();
+  load_notifications();
+  load_vip();
+}
+
+// ── FEED ──
+window.load_feed=async function(){
+  const el=document.getElementById('feedList');
+  const snap=await sg(query(collection(db,'posts'),limit(30)));
+  const posts=[];snap.forEach(d=>posts.push({id:d.id,...d.data()}));
+  posts.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+  if(!posts.length){el.innerHTML='<div class="card"><div class="card-body" style="text-align:center;padding:10px;">No posts yet. Be the first to share! 🌟</div></div>';return;}
+  el.innerHTML=posts.map(p=>{
+    const nm=esc(p.userName||'ICONIK');
+    const av=nm.charAt(0);
+    const dt=p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString('en',{month:'short',day:'numeric'}):'';
+    return`<div class="card">
+      <div class="card-head">
+        <div class="card-av">${av}</div>
+        <div><div class="card-name">${nm}${p.isAdmin?' <span style="font-family:\'Bebas Neue\',sans-serif;font-size:0.48rem;background:var(--gold);color:var(--bg);padding:1px 5px;">ICONIK</span>':''}</div><div class="card-meta">${esc(p.category||'')}${dt?' · '+dt:''}</div></div>
+      </div>
+      ${p.title?`<div class="card-title">${esc(p.title)}</div>`:''}
+      <div class="card-body">${esc(p.content||'')}</div>
+      ${p.imageUrl&&p.imageUrl.startsWith('http')?`<img src="${esc(p.imageUrl)}" style="width:100%;border-radius:6px;margin-top:9px;max-height:240px;object-fit:cover;" loading="lazy" onerror="this.remove()"/>`:''}
+      <div class="card-actions">
+        <span class="card-action" onclick="likePost('${p.id}',this)">♡ ${p.likeCount||0}</span>
+        <span class="card-action">💬 ${p.commentCount||0}</span>
+        <span class="card-action" onclick="shareUrl()">🔗 Share</span>
+      </div>
+    </div>`;
+  }).join('');
+};
+
+window.openPostComposer=function(){
+  const txt=prompt('Share with your community:');
+  if(!txt||!cU)return;
+  addDoc(collection(db,'posts'),{content:txt,title:'',category:cD?.categories?.[0]||'',userId:cU.uid,userName:cD?.name||'Member',userPhoto:cD?.profilePic||'',imageUrl:'',isAdmin:false,likeCount:0,commentCount:0,createdAt:serverTimestamp()})
+  .then(()=>{toast('Posted! 🌟');load_feed();}).catch(()=>toast('Error posting','error'));
+};
+
+window.likePost=function(id,el){
+  if(el){const n=parseInt(el.textContent.replace(/[^\d]/g,''))||0;el.textContent='♥ '+(n+1);el.style.color='var(--err)';}
+  if(cU)setDoc(doc(db,'likes',cU.uid+'_'+id),{userId:cU.uid,postId:id,createdAt:serverTimestamp()}).catch(()=>{});
+};
+window.shareUrl=function(){if(navigator.share)navigator.share({title:'ICONIK',url:location.href});else{navigator.clipboard?.writeText(location.href);toast('Link copied!');}};
+
+// ── CELEBRITIES ──
+window.load_icons=async function(){
+  const el=document.getElementById('celebGrid');
+  const snap=await sg(query(collection(db,'celebrities'),limit(50)));
+  allCelebs=[];snap.forEach(d=>allCelebs.push({id:d.id,...d.data()}));
+  renderCelebs(allCelebs);
+};
+function renderCelebs(list){
+  const el=document.getElementById('celebGrid');
+  if(!list.length){el.innerHTML='<div style="grid-column:span 2;text-align:center;padding:24px;color:var(--muted);">No celebrities added yet. Admin adds them from the Admin Panel. ⭐</div>';return;}
+  el.innerHTML=list.map(c=>{
+    const colors=['#7C3AED','#DC2626','#059669','#D97706','#EC4899','#2563EB'];
+    const clr=colors[Math.abs((c.name||'A').charCodeAt(0))%colors.length];
+    return`<div class="celeb-card" data-id="${c.id}">
+      <div class="celeb-thumb" style="background:${clr}22;">
+        ${c.photo&&c.photo.startsWith('http')?`<img src="${esc(c.photo)}" onerror="this.remove()"/>`:''}
+        <span style="position:relative;z-index:1;">${esc((c.name||'?').charAt(0))}</span>
+      </div>
+      <div class="celeb-info">
+        <div class="celeb-name">${esc(c.name||'')}</div>
+        <div class="celeb-cat">${esc(c.category||'')}</div>
+        <div class="celeb-meta">${esc(c.country||'')}${c.followers?' · '+esc(c.followers):''}</div>
+      </div>
+    </div>`;
+  }).join('');
+  document.querySelectorAll('.celeb-card').forEach(card=>{
+    card.addEventListener('click',function(){openCeleb(this.dataset.id);});
+  });
+}
+window.filterCelebs=function(){
+  const q=document.getElementById('celebSearch').value.toLowerCase();
+  renderCelebs(q?allCelebs.filter(c=>c.name?.toLowerCase().includes(q)||c.category?.toLowerCase().includes(q)):allCelebs);
+};
+function openCeleb(id){
+  const c=allCelebs.find(x=>x.id===id);if(!c)return;
+  toast(`${c.name} — ${c.category||'Icon'} ⭐`,'info');
+}
+
+// ── NEWS ──
+const STATIC_NEWS=[
+  {title:'Bad Bunny Announces 2026 World Tour',category:'Music',summary:'The Latin superstar announces a massive new world tour spanning 5 continents.',icon:'🎵',time:'Today'},
+  {title:'Champions League — Shock Quarter Final Results',category:'Sports',summary:'Unexpected upsets shake the Champions League bracket.',icon:'⚽',time:'Yesterday'},
+  {title:'New Blockbuster Shatters Opening Weekend Records',category:'Film & TV',summary:'A record-breaking opening weekend sets the stage for one of the biggest films of 2026.',icon:'🎬',time:'2 days ago'},
+  {title:'Paris Fashion Week — Top 10 Looks of the Season',category:'Fashion',summary:'Designers unveil their most stunning collections yet.',icon:'👗',time:'3 days ago'},
+  {title:'Grammy Nominations Announced — Big Surprises',category:'Music',summary:'This year nominations include several unexpected global artists.',icon:'🎤',time:'5 days ago'},
+  {title:'Sports Star Signs Historic $500M Contract',category:'Sports',summary:'A landmark deal reshapes professional sports economics globally.',icon:'🏆',time:'6 days ago'},
+  {title:'Tech Giant Launches Revolutionary Fan Platform',category:'Tech & Innovation',summary:'New AI-powered fan experience promises to transform celebrity-fan relationships.',icon:'💻',time:'1 week ago'},
+  {title:'Wellness Icon Goes Viral With New Training Method',category:'Fitness & Wellness',summary:'Millions of followers adopt the revolutionary approach to fitness.',icon:'💪',time:'1 week ago'},
+];
+window.load_news=async function(){
+  const el=document.getElementById('newsList');
+  try{
+    const snap=await sg(query(collection(db,'celebrityNews'),limit(20)));
+    if(!snap.empty){allNews=[];snap.forEach(d=>allNews.push({id:d.id,...d.data()}));allNews.sort((a,b)=>(b.publishedAt?.seconds||0)-(a.publishedAt?.seconds||0));renderNews(allNews);return;}
+  }catch{}
+  allNews=STATIC_NEWS;renderNews(allNews);
+};
+function renderNews(list){
+  const el=document.getElementById('newsList');
+  el.innerHTML=list.map((n,i)=>`<div class="news-card" onclick="openNewsItem(${i})">
+    <div class="news-icon">${n.icon||'📰'}</div>
+    <div style="flex:1;">
+      <div class="news-cat">${esc(n.category||'NEWS')}</div>
+      <div class="news-title">${esc(n.title)}</div>
+      <div class="news-time">${esc(n.time||'')}${n.source?' · '+esc(n.source):''}</div>
+    </div>
+    <div style="color:var(--dim);font-size:0.9rem;flex-shrink:0;">›</div>
+  </div>`).join('');
+}
+window.filterNews=function(btn,cat){
+  document.querySelectorAll('#newsFilter .ftab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderNews(cat==='All'?allNews:allNews.filter(n=>n.category===cat));
+};
+window.openNewsItem=function(i){
+  const n=allNews[i];if(!n)return;
+  const ov=document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;background:rgba(7,7,13,0.97);z-index:9999;overflow-y:auto;padding:20px;';
+  ov.innerHTML=`<button onclick="this.closest('[style]').remove()" style="font-family:Montserrat,sans-serif;font-weight:700;font-size:0.62rem;padding:8px 14px;background:transparent;border:1px solid rgba(255,255,255,0.12);color:#BDB5A6;cursor:pointer;margin-bottom:16px;border-radius:4px;">← Back</button>
+  <div style="text-align:center;font-size:2.5rem;margin-bottom:12px;">${n.icon||'📰'}</div>
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:#FFB800;margin-bottom:8px;">${esc(n.category||'')} · ${esc(n.time||'')}</div>
+  <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:#F5F0E8;line-height:1.3;margin-bottom:14px;">${esc(n.title)}</div>
+  <div style="font-family:Montserrat,sans-serif;font-size:0.76rem;color:#BDB5A6;line-height:1.8;">${esc(n.summary||n.content||'Full article content coming soon.')}</div>`;
+  document.body.appendChild(ov);
+};
+
+// ── COMMUNITIES ──
+const COMS=[
+  {name:'Music',icon:'🎵',desc:'Artists · Albums · Concerts',img:'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&q=75'},
+  {name:'Film & TV',icon:'🎬',desc:'Movies · Series · Directors',img:'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&q=75'},
+  {name:'Sports',icon:'⚽',desc:'Football · Basketball · Athletics',img:'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=300&q=75'},
+  {name:'Literature',icon:'📚',desc:'Authors · Books · Knowledge',img:'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&q=75'},
+  {name:'Fashion',icon:'👗',desc:'Style · Designers · Trends',img:'https://images.unsplash.com/photo-1445205170230-053b83016050?w=300&q=75'},
+  {name:'Fitness & Wellness',icon:'💪',desc:'Health · Fitness · Mind',img:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&q=75'},
+  {name:'Food & Culinary',icon:'🍽️',desc:'Chefs · Recipes · Culture',img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=75'},
+  {name:'Nature',icon:'🌿',desc:'Adventure · Wildlife · Earth',img:'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=300&q=75'},
+  {name:'Automotive',icon:'🚗',desc:'Cars · Bikes · Lifestyle',img:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=300&q=75'},
+  {name:'Tech & Innovation',icon:'💻',desc:'AI · Gadgets · Future',img:'https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&q=75'},
+  {name:'Beauty',icon:'💄',desc:'Makeup · Skincare · Art',img:'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=300&q=75'},
+  {name:'Entertainment',icon:'🎭',desc:'Comedy · Talent · Shows',img:'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=300&q=75'},
+  {name:'Leadership',icon:'🎓',desc:'Vision · Motivation · Growth',img:'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=300&q=75'},
+];
+window.load_communities=function(){
+  const joined=cD?.categories||[];
+  document.getElementById('comGrid').innerHTML=COMS.map(c=>`
+    <div class="com-card" onclick="toast('${esc(c.name)} community','info')">
+      <div class="com-bg" style="background-image:url('${c.img}');"></div>
+      <div class="com-body">
+        <div class="com-name">${c.icon} ${esc(c.name)}${joined.includes(c.name)?' ✓':''}</div>
+        <div class="com-desc">${esc(c.desc)}</div>
+      </div>
+    </div>`).join('');
+};
+
+// ── CHAT ──
+window.load_chat=window.load_chat||function(){};
+window.switchRoom=function(btn){
+  document.querySelectorAll('#chatRooms .ftab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');chatRoom=btn.dataset.room;loadChat();
+};
+async function loadChat(){
+  const el=document.getElementById('chatArea');
+  const snap=await sg(query(collection(db,'chat_'+chatRoom),limit(40)));
+  const msgs=[];snap.forEach(d=>msgs.push({id:d.id,...d.data()}));
+  msgs.sort((a,b)=>(a.createdAt?.seconds||0)-(b.createdAt?.seconds||0));
+  if(!msgs.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--dim);">No messages yet. Say hello! 👋</div>';return;}
+  el.innerHTML=msgs.map(m=>{
+    const mine=m.userId===cU?.uid;
+    const t=m.createdAt?.toDate?m.createdAt.toDate().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'';
+    return`<div class="msg-row${mine?' me':''}">
+      <div style="width:26px;height:26px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.7rem;flex-shrink:0;">${esc((m.name||'?').charAt(0))}</div>
+      <div><div class="msg-who">${mine?'You':esc(m.name||'Fan')}</div><div class="msg-bub">${esc(m.text||'')}</div><div style="font-size:0.5rem;color:var(--dim);margin-top:2px;">${t}</div></div>
+    </div>`;
+  }).join('');
+  el.scrollTop=el.scrollHeight;
+}
+window.sendChat=async function(){
+  const inp=document.getElementById('chatInp');
+  const txt=inp.value.trim();if(!txt||!cU)return;
+  try{
+    await addDoc(collection(db,'chat_'+chatRoom),{text:txt,name:cD?.name||'Fan',userId:cU.uid,createdAt:serverTimestamp()});
+    inp.value='';loadChat();
+  }catch{toast('Error sending','error');}
+};
+document.getElementById('chatInp').addEventListener('keydown',e=>{if(e.key==='Enter')sendChat();});
+// Override goView to start chat polling
+const _origGoView=window.goView;
+window.goView=function(name){
+  if(chatTimer){clearInterval(chatTimer);chatTimer=null;}
+  if(name==='chat'){loadChat();chatTimer=setInterval(loadChat,8000);}
+  _origGoView(name);
+};
+
+// ── EVENTS ──
+window.load_events=async function(){
+  const el=document.getElementById('eventsList');
+  try{const snap=await sg(query(collection(db,'events'),limit(20)));if(!snap.empty){const evs=[];snap.forEach(d=>evs.push({id:d.id,...d.data()}));evs.sort((a,b)=>(a.eventDate||'').localeCompare(b.eventDate||''));el.innerHTML=evs.map(e=>evCard(e)).join('');return;}}catch{}
+  el.innerHTML=[
+    {name:'Bad Bunny — World Tour',venue:'Madison Square Garden, NY',eventDate:'2026-05-15',price:'$85',icon:'🎵'},
+    {name:'Champions League Final 2026',venue:'Wembley Stadium, London',eventDate:'2026-06-01',price:'$120',icon:'⚽'},
+    {name:'ICONIK Fan Meet & Greet',venue:'Virtual + Global Chapters',eventDate:'2026-08-10',price:'Free',icon:'🌍'},
+    {name:'Met Gala Fan Experience',venue:'Metropolitan Museum, NY',eventDate:'2026-05-05',price:'$45',icon:'👗'},
+  ].map(e=>evCard(e)).join('');
+};
+function evCard(e){
+  const d=new Date(e.eventDate||'');
+  const mo=isNaN(d)?'TBD':d.toLocaleString('en',{month:'short'}).toUpperCase();
+  const dy=isNaN(d)?'':d.getDate();
+  return`<div class="card" style="display:flex;gap:12px;align-items:flex-start;cursor:pointer;" onclick="toast('Booking for ${esc(e.name)}! 🎫')">
+    <div style="text-align:center;min-width:38px;"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.1em;color:var(--gold);">${mo}</div><div style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--text);line-height:1;">${dy}</div></div>
+    <div style="flex:1;"><div style="font-family:Montserrat,sans-serif;font-weight:700;font-size:0.76rem;color:var(--text);margin-bottom:3px;">${esc(e.name||'')}</div><div style="font-family:Montserrat,sans-serif;font-size:0.62rem;color:var(--muted);">📍 ${esc(e.venue||'')}</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;color:var(--gold);margin-top:3px;">${esc(e.price||'')}</div></div>
+    <span style="font-size:1.3rem;">${e.icon||'🎫'}</span>
+  </div>`;
+}
+
+// ── RADIO ──
+window.load_radio=function(){
+  const stations=[
+    {name:'ICONIK Gold',genre:'Top Hits · Global',icon:'🏆'},
+    {name:'Latin Vibes',genre:'Latin · Reggaeton · Urban',icon:'🎸'},
+    {name:'Afro Beats FM',genre:'Afrobeats · Dancehall',icon:'🥁'},
+    {name:'Hip-Hop Central',genre:'Hip-Hop · R&B · Trap',icon:'🎤'},
+    {name:'ICONIK Chill',genre:'Lo-fi · Ambient · Relax',icon:'🌙'},
+    {name:'Sports Anthems',genre:'Rock · EDM · Motivation',icon:'⚽'},
+  ];
+  document.getElementById('radioList').innerHTML=stations.map(s=>`
+    <div class="card" style="display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="toast('▶ Now playing: ${esc(s.name)}')">
+      <div style="width:42px;height:42px;border-radius:8px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">${s.icon}</div>
+      <div style="flex:1;"><div style="font-family:Montserrat,sans-serif;font-weight:700;font-size:0.74rem;color:var(--text);">${esc(s.name)}</div><div style="font-family:Montserrat,sans-serif;font-size:0.6rem;color:var(--dim);">${esc(s.genre)}</div></div>
+      <button style="width:32px;height:32px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;font-size:0.8rem;">▶</button>
+    </div>`).join('');
+};
+
+// ── TV ──
+window.load_tv=async function(){
+  const el=document.getElementById('tvList');
+  try{const snap=await sg(query(collection(db,'iconikTV'),limit(10)));if(!snap.empty){const vids=[];snap.forEach(d=>vids.push({id:d.id,...d.data()}));el.innerHTML=vids.map(v=>tvCard(v)).join('');return;}}catch{}
+  el.innerHTML=[
+    {title:'Bad Bunny — Live at MSG',category:'Music',duration:'45 min',icon:'🎵'},
+    {title:'Messi: The GOAT Documentary',category:'Sports',duration:'1h 20min',icon:'⚽'},
+    {title:'ICONIK Fan Spotlight — Ep.12',category:'Fan Made',duration:'22 min',icon:'🎬'},
+    {title:'Fashion Week — Behind the Scenes',category:'Fashion',duration:'35 min',icon:'👗'},
+  ].map(v=>tvCard(v)).join('');
+};
+function tvCard(v){
+  return`<div class="card" style="padding:0;overflow:hidden;cursor:pointer;margin-bottom:10px;" onclick="toast('${esc(v.title)} coming soon 📺','info')">
+    <div style="height:120px;background:linear-gradient(135deg,var(--bg2),var(--bg3));display:flex;align-items:center;justify-content:center;position:relative;">
+      ${v.thumbUrl?`<img src="${esc(v.thumbUrl)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.remove()"/>`:'' }
+      <span style="font-size:2.5rem;position:relative;z-index:1;">${v.icon||'🎬'}</span>
+      <div style="position:absolute;width:42px;height:42px;border-radius:50%;background:rgba(255,184,0,0.9);display:flex;align-items:center;justify-content:center;z-index:2;">▶</div>
+    </div>
+    <div style="padding:10px 12px;"><div style="font-family:Montserrat,sans-serif;font-weight:700;font-size:0.74rem;color:var(--text);margin-bottom:3px;">${esc(v.title)}</div><div style="font-family:Montserrat,sans-serif;font-size:0.6rem;color:var(--dim);">${esc(v.category||'')}${v.duration?' · '+esc(v.duration):''}</div></div>
+  </div>`;
+}
+
+// ── MAGAZINE ──
+window.load_magazine=async function(){
+  const el=document.getElementById('magList');
+  try{const snap=await sg(query(collection(db,'magazine'),limit(10)));if(!snap.empty){const arts=[];snap.forEach(d=>arts.push({id:d.id,...d.data()}));arts.sort((a,b)=>(b.publishedAt?.seconds||0)-(a.publishedAt?.seconds||0));el.innerHTML=arts.map(a=>magCard(a)).join('');return;}}catch{}
+  el.innerHTML=[
+    {title:'The Rise of Global Fan Culture',category:'Culture',summary:'How ICONIK is redefining the relationship between icons and fans.',icon:'🌍'},
+    {title:'Inside Bad Bunny\'s Creative Process',category:'Music',summary:'An exclusive look at how the global superstar crafts his sound.',icon:'🎵'},
+    {title:'Fashion Forward: Icons Shaping Tomorrow\'s Style',category:'Fashion',summary:'The designers and celebrities setting trends for the next decade.',icon:'👗'},
+  ].map(a=>magCard(a)).join('');
+};
+function magCard(a){
+  return`<div class="card" style="display:flex;gap:10px;cursor:pointer;" onclick="toast('${esc(a.title)}','info')">
+    <div style="width:60px;height:60px;border-radius:6px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">${a.icon||'📖'}</div>
+    <div><div style="font-family:Montserrat,sans-serif;font-weight:700;font-size:0.72rem;color:var(--text);line-height:1.3;margin-bottom:4px;">${esc(a.title)}</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.1em;color:var(--gold);">${esc(a.category||'')}</div></div>
+  </div>`;
+}
+
+// ── WELLNESS ──
+const WELL={fitness:{t:'Fitness & Training 💪',b:'Build strength and peak performance. Follow certified coaches and elite athletes shaping the fitness world.'},nutrition:{t:'Nutrition & Diet 🥗',b:'Science-backed nutrition advice and meal plans from certified nutritionists worldwide.'},mental:{t:'Mental Wellness 🧘',b:'Mindfulness, meditation and mental health. Reduce stress and build resilience with top coaches.'},beauty:{t:'Beauty & Skincare 💄',b:'Skincare science, anti-aging and beauty wellness from dermatologists and beauty icons.'},recovery:{t:'Sports Recovery 💆',b:'Recovery science for athletes — physiotherapy, sleep optimization and injury prevention.'}};
+function load_wellness_content(tab){const w=WELL[tab]||WELL.fitness;document.getElementById('wellnessContent').innerHTML=`<div class="card"><div style="font-family:'Playfair Display',serif;font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:8px;">${w.t}</div><div class="card-body">${w.b}</div></div><div class="card"><div class="card-body" style="text-align:center;padding:10px;">Admin adds coaches and partners from the Admin Panel. 💪</div></div>`;}
+window.load_wellness=function(){load_wellness_content('fitness');};
+window.showWellness=function(tab,btn){document.querySelectorAll('#wellnessV .ftab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');load_wellness_content(tab);};
+
+// ── FIND MEMBERS ──
+window.load_members=async function(){
+  const el=document.getElementById('memberList');
+  const snap=await sg(query(collection(db,'users'),limit(50)));
+  allMembers=[];snap.forEach(d=>{if(d.id!==cU?.uid)allMembers.push({id:d.id,...d.data()});});
+  renderMembers(allMembers);
+};
+function renderMembers(list){
+  const el=document.getElementById('memberList');
+  if(!list.length){el.innerHTML='<div class="card"><div class="card-body" style="text-align:center;padding:10px;">No members found.</div></div>';return;}
+  el.innerHTML=list.slice(0,30).map(m=>`
+    <div class="member-card" onclick="toast('${esc(m.name||'Member')} — ${esc(m.country||'')}','info')">
+      <div class="member-av">${esc((m.name||'?').charAt(0))}</div>
+      <div style="flex:1;min-width:0;">
+        <div class="member-name">${esc(m.name||'Member')} ${m.verificationStatus==='verified'?'✅':''}</div>
+        <div class="member-meta">${esc(m.city?m.city+', ':'')}${esc(m.country||'—')} · <span style="color:var(--gold);">${esc(m.tier||'Fan')}</span></div>
+      </div>
+      <div style="color:var(--dim);font-size:0.9rem;">›</div>
+    </div>`).join('');
+}
+window.searchMembers=function(){
+  const q=document.getElementById('memberSearch').value.toLowerCase();
+  const cat=document.getElementById('memberFilter').value;
+  let r=allMembers;
+  if(q)r=r.filter(m=>m.name?.toLowerCase().includes(q)||m.country?.toLowerCase().includes(q));
+  if(cat)r=r.filter(m=>(m.categories||[]).some(c=>c.toLowerCase().includes(cat.toLowerCase())));
+  renderMembers(r);
+};
+
+// ── RANKINGS ──
+window.load_rankings=async function(){
+  const el=document.getElementById('rankList');
+  const snap=await sg(query(collection(db,'users'),limit(20)));
+  const users=[];snap.forEach(d=>users.push({id:d.id,...d.data()}));
+  users.sort((a,b)=>(b.points||0)-(a.points||0));
+  const medals=['🥇','🥈','🥉'];
+  el.innerHTML=users.length?users.map((u,i)=>`
+    <div class="card" style="display:flex;align-items:center;gap:10px;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--dim);width:22px;text-align:center;">${i<3?medals[i]:i+1}</div>
+      <div class="member-av">${esc((u.name||'?').charAt(0))}</div>
+      <div style="flex:1;"><div class="member-name">${esc(u.name||'Member')}</div><div class="member-meta">${esc(u.country||'—')}</div></div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:0.8rem;color:var(--gold);">${u.points||0} pts</div>
+    </div>`).join(''):'<div class="card"><div class="card-body" style="text-align:center;padding:10px;">Earn points by posting and engaging! 🏆</div></div>';
+};
+
+// ── POLLS ──
+window.load_polls=async function(){
+  const el=document.getElementById('pollList');
+  try{const snap=await sg(query(collection(db,'polls'),limit(10)));if(!snap.empty){const polls=[];snap.forEach(d=>polls.push({id:d.id,...d.data()}));el.innerHTML=polls.map(p=>pollCard(p)).join('');return;}}catch{}
+  el.innerHTML=[
+    {id:'p1',question:'Who should ICONIK partner with next?',options:['Bad Bunny','Beyoncé','Cristiano Ronaldo','BTS'],totalVotes:247},
+    {id:'p2',question:'Which community should ICONIK add?',options:['Gaming 🎮','K-Drama 🎭','Comedy 😂','Anime 🎌'],totalVotes:183},
+  ].map(p=>pollCard(p)).join('');
+};
+function pollCard(p){
+  return`<div class="card" style="margin-bottom:12px;">
+    <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:0.88rem;color:var(--text);margin-bottom:12px;line-height:1.35;">${esc(p.question||'')}</div>
+    ${(p.options||[]).map(opt=>`<div style="margin-bottom:7px;"><button onclick="castVote('${esc(p.id)}','${esc(opt)}',this)" style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:Montserrat,sans-serif;font-size:0.7rem;font-weight:600;text-align:left;cursor:pointer;transition:all 0.2s;">${esc(opt)}</button></div>`).join('')}
+    <div style="font-family:Montserrat,sans-serif;font-size:0.6rem;color:var(--dim);margin-top:6px;">${p.totalVotes||0} votes</div>
+  </div>`;
+}
+window.castVote=function(pollId,option,btn){btn.style.borderColor='var(--gold)';btn.style.color='var(--gold)';toast('Voted for '+option+'! 🗳️');if(cU)setDoc(doc(db,'votes',cU.uid+'_'+pollId),{userId:cU.uid,pollId,option,createdAt:serverTimestamp()}).catch(()=>{});};
+
+// ── PROFILE ──
+window.load_profile=function(){
+  if(!cD)return;
+  const nm=esc(cD.name||'Member');
+  document.getElementById('profileName').innerHTML=nm+(cD.verificationStatus==='verified'?' <span style="color:var(--ok);">✅</span>':'');
+  document.getElementById('profileTierBadge').textContent=cD.tier||'Fan';
+  if(cD.bio)document.getElementById('profileBioText').textContent=cD.bio;
+  document.getElementById('pFollowers').textContent=cD.followersCount||0;
+  document.getElementById('pFollowing').textContent=cD.followingCount||0;
+  document.getElementById('pPosts').textContent=cD.postCount||0;
+  document.getElementById('pPoints').textContent=cD.points||0;
+  const av=document.getElementById('profileAvLg');
+  av.textContent=cD.name?.charAt(0).toUpperCase()||'M';
+  if(cD.profilePic&&cD.profilePic.startsWith('http')){const img=document.createElement('img');img.src=cD.profilePic;img.onerror=()=>img.remove();av.innerHTML='';av.appendChild(img);}
+  if(cD.bio)document.getElementById('editBio').value=cD.bio;
+  if(cD.profilePic)document.getElementById('editPic').value=cD.profilePic;
+};
+window.saveProfile=async function(){
+  if(!cU)return;
+  const bio=document.getElementById('editBio').value.trim();
+  const pic=document.getElementById('editPic').value.trim();
+  try{
+    await setDoc(doc(db,'users',cU.uid),{bio,profilePic:pic},{merge:true});
+    if(cD){cD.bio=bio;cD.profilePic=pic;}
+    load_profile();toast('Profile saved! ✅');
+  }catch{toast('Error saving','error');}
+};
+
+// ── MESSAGES ──
+window.load_messages=async function(){
+  const el=document.getElementById('msgList');
+  const snap=await sg(query(collection(db,'messages'),limit(20)));
+  const msgs=[];snap.forEach(d=>msgs.push({id:d.id,...d.data()}));
+  msgs.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+  if(!msgs.length){el.innerHTML='<div class="card"><div class="card-body" style="text-align:center;padding:10px;">No messages yet. Admin will reach out when needed. 📩</div></div>';return;}
+  el.innerHTML=msgs.map(m=>`
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:0.74rem;color:var(--text);">${esc(m.fromName||'ICONIK Admin')}</span>
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:0.5rem;color:var(--bg);background:var(--gold);padding:1px 6px;">${esc(m.fromRole||'ADMIN')}</span>
+        <span style="font-family:Montserrat,sans-serif;font-size:0.56rem;color:var(--dim);margin-left:auto;">${m.createdAt?.toDate?m.createdAt.toDate().toLocaleDateString():''}</span>
+      </div>
+      ${m.subject?`<div style="font-family:Montserrat,sans-serif;font-weight:700;font-size:0.74rem;color:var(--text);margin-bottom:5px;">${esc(m.subject)}</div>`:''}
+      <div class="card-body">${esc(m.content||'')}</div>
+    </div>`).join('');
+};
+
+// ── NOTIFICATIONS ──
+window.load_notifications=async function(){
+  const el=document.getElementById('notifList');
+  const items=[
+    {icon:cD?.verificationStatus==='verified'?'✅':'⏳',title:cD?.verificationStatus==='verified'?'Account Verified!':'Verification Pending',body:cD?.verificationStatus==='verified'?'Identity confirmed.':'Admin reviewing your account.',unread:cD?.verificationStatus!=='verified'},
+    {icon:'🌟',title:'Welcome to ICONIK!',body:`You are part of ${(cD?.categories||[]).length} fan communities.`,unread:false},
+  ];
+  try{const snap=await sg(query(collection(db,'notifications'),limit(10)));snap.forEach(d=>{const n=d.data();items.unshift({icon:'🔔',title:n.message||'New notification',body:n.fromName?'From '+n.fromName:'',unread:true});});}catch{}
+  el.innerHTML=items.map(n=>`
+    <div class="card" style="${n.unread?'border-left:3px solid var(--gold);':''} display:flex;gap:10px;">
+      <span style="font-size:1.1rem;flex-shrink:0;">${n.icon}</span>
+      <div>
+        <div style="font-family:Montserrat,sans-serif;font-weight:700;font-size:0.72rem;color:var(--text);margin-bottom:2px;">${esc(n.title)}</div>
+        <div class="card-body" style="font-size:0.64rem;">${esc(n.body)}</div>
+      </div>
+    </div>`).join('');
+};
+
+// ── VIP ──
+window.load_vip=async function(){
+  const el=document.getElementById('vipContent');
+  const isVIP=cD?.tier?.includes('VIP');
+  if(!isVIP){
+    el.innerHTML=`<div style="background:rgba(7,7,13,0.8);border:1px solid rgba(255,184,0,0.3);border-radius:8px;padding:24px;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:10px;">🔒</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;color:var(--gold);margin-bottom:8px;">Upgrade to VIP</div>
+      <div class="card-body" style="margin-bottom:16px;">VIP Silver $9.99/month or VIP Gold $19.99/month unlocks exclusive content, VIP chat, creator fund and more.</div>
+      <button class="btn-gold" onclick="toast('Upgrade coming soon! 👑','info')">Upgrade to VIP →</button>
+    </div>`;
+    return;
+  }
+  try{const snap=await sg(query(collection(db,'vipContent'),limit(10)));const items=[];snap.forEach(d=>items.push({id:d.id,...d.data()}));el.innerHTML=items.length?items.map(c=>`<div class="card"><div class="card-title">${esc(c.title||'')}</div><div class="card-body">${esc(c.content||'')}</div></div>`).join(''):'<div class="card"><div class="card-body" style="text-align:center;padding:10px;">VIP content coming soon! 👑</div></div>';}catch{el.innerHTML='<div class="card"><div class="card-body" style="text-align:center;padding:10px;">VIP content loading... 👑</div></div>';}
+};
+
+// ── TOAST ──
+window.toast=function(msg,type){
+  var t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.background=type==='error'?'rgba(127,29,29,0.95)':type==='info'?'rgba(30,58,95,0.95)':'rgba(20,83,45,0.95)';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+};
+</script>
 </body>
 </html>
