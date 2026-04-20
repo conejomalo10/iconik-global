@@ -196,6 +196,9 @@ select option{background:#0E0E1A;}
 <div id="loading">
   <div class="ring"></div>
   <p>Loading ICONIK...</p>
+  <button onclick="forceSignOut()" style="margin-top:16px;background:none;border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:8px 18px;color:#BDB5A6;font-family:'Montserrat',sans-serif;font-size:0.68rem;cursor:pointer;letter-spacing:0.06em;">
+    Sign Out / Switch Account
+  </button>
 </div>
 
 <!-- Main content — hidden until auth resolves -->
@@ -335,7 +338,8 @@ import{
   getAuth,onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  signOut
 } from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import{
   getFirestore,doc,setDoc,getDoc,serverTimestamp
@@ -356,42 +360,52 @@ const auth = getAuth(fb);
 const db   = getFirestore(fb);
 
 // ── AUTH CHECK ──
-// Show loading, resolve within 6s max
+// If user arrives at login page intentionally, sign them out first
+// This prevents auto-redirect when user wants to switch accounts
 const loadEl = document.getElementById('loading');
 const mainEl = document.getElementById('main');
-let done = false;
 
-const timer = setTimeout(()=>{
-  if(!done){ done=true; loadEl.style.display='none'; mainEl.style.display='block'; }
-}, 6000);
+// Check URL param: if ?signout=1 — force sign out
+const params = new URLSearchParams(location.search);
+if(params.get('signout')==='1'){
+  signOut(auth).finally(()=>{
+    history.replaceState(null,'','/app.html');
+    loadEl.style.display='none';
+    mainEl.style.display='block';
+  });
+} else {
+  // Normal load — check if already signed in
+  let resolved = false;
+  const timer = setTimeout(()=>{
+    if(!resolved){ resolved=true; loadEl.style.display='none'; mainEl.style.display='block'; }
+  }, 5000);
 
-onAuthStateChanged(auth, async user => {
-  clearTimeout(timer);
-  if(done) return;
-  done = true;
+  onAuthStateChanged(auth, async user => {
+    clearTimeout(timer);
+    if(resolved) return;
+    resolved = true;
 
-  if(user){
-    // Already logged in — redirect
-    if(user.email === ADMIN_EMAIL){
-      location.replace('admin.html'); return;
+    if(user){
+      if(user.email === ADMIN_EMAIL){
+        location.replace('admin.html'); return;
+      }
+      try{
+        const snap = await getDoc(doc(db,'users',user.uid));
+        const role = snap.exists() ? (snap.data().role||'member') : 'member';
+        location.replace(
+          (role==='admin'||role==='Sub Admin'||role==='Moderator')
+            ? 'admin.html' : 'dashboard.html'
+        );
+      }catch{
+        location.replace('dashboard.html');
+      }
+      return;
     }
-    try{
-      const snap = await getDoc(doc(db,'users',user.uid));
-      const role = snap.exists() ? (snap.data().role||'member') : 'member';
-      location.replace(
-        (role==='admin'||role==='Sub Admin'||role==='Moderator')
-          ? 'admin.html' : 'dashboard.html'
-      );
-    }catch{
-      location.replace('dashboard.html');
-    }
-    return;
-  }
-
-  // Not logged in — show the form
-  loadEl.style.display = 'none';
-  mainEl.style.display = 'block';
-});
+    // Not signed in — show form
+    loadEl.style.display='none';
+    mainEl.style.display='block';
+  });
+}
 
 // ── UI HELPERS ──
 window.showPanel = function(name){
@@ -528,6 +542,15 @@ window.doReset = async function(){
   } catch(e){
     showErr('e-reset', friendlyErr(e.code));
   }
+};
+
+// ── FORCE SIGN OUT ──
+window.forceSignOut = function(){
+  signOut(auth).then(()=>{
+    location.replace('/app.html?signout=1');
+  }).catch(()=>{
+    location.replace('/app.html?signout=1');
+  });
 };
 
 // Enter key on login
