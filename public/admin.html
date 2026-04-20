@@ -968,5 +968,69 @@ window.clearCollection=async function(col){
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 window.toast=toast;
 </script>
+
+<!-- ── INSTANT UI ── -->
+<script>
+(function(){
+  function ready(fn){if(document.readyState!=='loading'){fn();}else{document.addEventListener('DOMContentLoaded',fn);}}
+  ready(function(){
+    var sb=document.getElementById('sb');
+    var ov=document.getElementById('sbOv');
+    var btn=document.getElementById('menuBtn');
+    if(!sb||!ov||!btn){console.error('Admin sidebar elements not found');return;}
+
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      sb.classList.add('on');
+      ov.classList.add('on');
+    });
+    ov.addEventListener('click',function(){
+      sb.classList.remove('on');
+      ov.classList.remove('on');
+    });
+    var sbx=document.getElementById('sbClose');
+    if(sbx)sbx.addEventListener('click',function(){
+      sb.classList.remove('on');
+      ov.classList.remove('on');
+    });
+
+    // Bottom nav
+    document.querySelectorAll('[data-view]').forEach(function(b){
+      if(b.closest('nav')&&!b.closest('.sb')){
+        b.style.cursor='pointer';
+        b.addEventListener('click',function(){
+          var nm=this.dataset.view;
+          document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on');});
+          var t=document.getElementById(nm+'V');
+          if(t)t.classList.add('on');
+          sb.classList.remove('on');
+          ov.classList.remove('on');
+          document.querySelectorAll('[data-view]').forEach(function(x){
+            if(x.closest('nav')&&!x.closest('.sb')){
+              x.style.background=x.dataset.view===nm?'rgba(255,184,0,0.10)':'transparent';
+              var lbl=x.querySelector('span:last-child');
+              if(lbl)lbl.style.color=x.dataset.view===nm?'#FFB800':'#BDB5A6';
+            }
+          });
+        });
+      }
+    });
+
+    // Sidebar links
+    document.querySelectorAll('.sb-lnk[data-view]').forEach(function(lnk){
+      lnk.addEventListener('click',function(){
+        var nm=this.dataset.view;
+        document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on');});
+        var t=document.getElementById(nm+'V');
+        if(t)t.classList.add('on');
+        sb.classList.remove('on');
+        ov.classList.remove('on');
+      });
+    });
+
+    console.log('✅ Admin UI ready');
+  });
+})();
+</script>
 </body>
 </html>
