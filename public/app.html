@@ -4,559 +4,269 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>ICONIK — Sign In</title>
-<link rel="manifest" href="/manifest.json"/>
-<meta name="theme-color" content="#07070D"/>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Bebas+Neue&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{
-  background:#07070D;
-  color:#F5F0E8;
-  font-family:'Montserrat',sans-serif;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  padding:20px 16px;
-}
-/* Loading screen */
-#loading{
-  position:fixed;inset:0;
-  background:#07070D;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  gap:16px;z-index:9999;
-}
-#loading .ring{
-  width:36px;height:36px;
-  border:3px solid rgba(255,184,0,0.2);
-  border-top-color:#FFB800;
-  border-radius:50%;
-  animation:spin 0.9s linear infinite;
-}
-#loading p{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:0.72rem;letter-spacing:0.2em;
-  color:#BDB5A6;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-/* Main content */
-#main{display:none;}
-.logo{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:3.2rem;letter-spacing:0.1em;
-  background:linear-gradient(145deg,#b87050,#d4956a,#e8b090,#f5c9a8,#e8b090,#c97850);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-  filter:drop-shadow(0 0 28px rgba(212,149,106,0.45));
-  text-align:center;margin-bottom:6px;
-}
-.tagline{
-  font-family:'Playfair Display',serif;
-  font-style:italic;font-size:0.86rem;
-  color:#BDB5A6;text-align:center;
-  margin-bottom:28px;
-}
-.box{
-  width:100%;max-width:400px;
-  background:#0E0E1A;
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:14px;
-  padding:26px 22px;
-}
-/* Tabs */
-.tabs{
-  display:flex;
-  border-bottom:1px solid rgba(255,255,255,0.08);
-  margin-bottom:22px;
-}
-.tab{
-  flex:1;padding:10px;text-align:center;
-  font-family:'Bebas Neue',sans-serif;
-  font-size:0.72rem;letter-spacing:0.14em;
-  color:#BDB5A6;cursor:pointer;
-  border-bottom:2px solid transparent;
-  transition:all 0.2s;
-}
+body{background:#07070D;color:#F5F0E8;font-family:'Montserrat',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 16px;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:0.1em;background:linear-gradient(145deg,#b87050,#d4956a,#f5c9a8,#d4956a,#b87050);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin-bottom:6px;}
+.tag{font-family:'Playfair Display',serif;font-style:italic;font-size:0.86rem;color:#BDB5A6;text-align:center;margin-bottom:28px;}
+.box{width:100%;max-width:400px;background:#0E0E1A;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:26px 22px;}
+.tabs{display:flex;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:22px;}
+.tab{flex:1;padding:10px;text-align:center;font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.14em;color:#BDB5A6;cursor:pointer;border-bottom:2px solid transparent;}
 .tab.on{color:#FFB800;border-bottom-color:#FFB800;}
-/* Panels */
 .panel{display:none;}.panel.on{display:block;}
-/* Form */
 .fg{margin-bottom:13px;}
-label{
-  display:block;
-  font-family:'Bebas Neue',sans-serif;
-  font-size:0.6rem;letter-spacing:0.16em;
-  color:#BDB5A6;margin-bottom:5px;
-}
-input,select{
-  width:100%;padding:11px 13px;
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:8px;
-  color:#F5F0E8;
-  font-family:'Montserrat',sans-serif;
-  font-size:0.76rem;outline:none;
-  transition:border-color 0.2s;
-}
+label{display:block;font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:#BDB5A6;margin-bottom:5px;}
+input,select{width:100%;padding:11px 13px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#F5F0E8;font-family:'Montserrat',sans-serif;font-size:0.76rem;outline:none;transition:border-color 0.2s;}
 input:focus,select:focus{border-color:#FFB800;}
 input::placeholder{color:rgba(189,181,166,0.35);}
 select option{background:#0E0E1A;}
-/* Chips */
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
-.chip{
-  padding:5px 10px;
-  font-family:'Bebas Neue',sans-serif;
-  font-size:0.58rem;letter-spacing:0.08em;
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:4px;
-  color:#BDB5A6;cursor:pointer;
-  transition:all 0.18s;
-}
-.chip.on{
-  background:rgba(255,184,0,0.14);
-  border-color:#FFB800;color:#FFB800;
-}
-/* Steps */
+.chip{padding:5px 10px;font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.08em;border:1px solid rgba(255,255,255,0.08);border-radius:4px;color:#BDB5A6;cursor:pointer;transition:all 0.18s;}
+.chip.on{background:rgba(255,184,0,0.14);border-color:#FFB800;color:#FFB800;}
 .step{display:none;}.step.on{display:block;}
-.dots{
-  display:flex;gap:7px;
-  justify-content:center;
-  margin-bottom:18px;
-}
-.dot{
-  width:7px;height:7px;
-  border-radius:50%;
-  background:rgba(255,255,255,0.09);
-  transition:all 0.2s;
-}
+.dots{display:flex;gap:7px;justify-content:center;margin-bottom:18px;}
+.dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.09);transition:all 0.2s;}
 .dot.on{background:#FFB800;}
-/* Buttons */
-.btn{
-  width:100%;padding:12px;
-  font-family:'Montserrat',sans-serif;
-  font-weight:800;font-size:0.74rem;
-  letter-spacing:0.14em;text-transform:uppercase;
-  border:none;border-radius:8px;
-  cursor:pointer;margin-top:8px;
-  transition:all 0.2s;
-}
-.btn-gold{background:linear-gradient(135deg,#FFB800,#CC9400);color:#07070D;}
-.btn-gold:hover{opacity:0.9;}
-.btn-gold:disabled{opacity:0.5;cursor:not-allowed;}
-.btn-grey{
-  background:rgba(255,255,255,0.06);
-  color:#F5F0E8;
-  border:1px solid rgba(255,255,255,0.1);
-}
-.btn-link{
-  background:none;border:none;
-  color:#FFB800;
-  font-family:'Montserrat',sans-serif;
-  font-size:0.68rem;cursor:pointer;
-  display:block;text-align:center;
-  margin-top:12px;
-}
-.btn-link .dim{color:#BDB5A6;}
-/* Error / success */
-.err-box,.ok-box{
-  font-family:'Montserrat',sans-serif;
-  font-size:0.7rem;
-  padding:10px 12px;border-radius:6px;
-  margin-bottom:12px;display:none;
-}
-.err-box{
-  background:rgba(239,68,68,0.1);
-  border:1px solid rgba(239,68,68,0.3);
-  color:#FCA5A5;
-}
-.ok-box{
-  background:rgba(34,197,94,0.1);
-  border:1px solid rgba(34,197,94,0.3);
-  color:#86EFAC;
-}
-.err-box.show,.ok-box.show{display:block;}
-/* Spinner inside button */
-.bspin{
-  display:inline-block;
-  width:13px;height:13px;
-  border:2px solid rgba(7,7,13,0.3);
-  border-top-color:#07070D;
-  border-radius:50%;
-  animation:spin 0.7s linear infinite;
-  vertical-align:middle;
-  margin-right:5px;
-}
+.btn{width:100%;padding:12px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.74rem;letter-spacing:0.14em;text-transform:uppercase;border:none;border-radius:8px;cursor:pointer;margin-top:8px;transition:all 0.2s;}
+.btn-g{background:linear-gradient(135deg,#FFB800,#CC9400);color:#07070D;}
+.btn-g:disabled{opacity:0.5;cursor:not-allowed;}
+.btn-gr{background:rgba(255,255,255,0.06);color:#F5F0E8;border:1px solid rgba(255,255,255,0.1);}
+.lnk{background:none;border:none;color:#FFB800;font-family:'Montserrat',sans-serif;font-size:0.68rem;cursor:pointer;display:block;text-align:center;margin-top:12px;}
+.err{font-family:'Montserrat',sans-serif;font-size:0.7rem;padding:10px 12px;border-radius:6px;margin-bottom:12px;display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#FCA5A5;}
+.err.show{display:block;}
+.ok{font-family:'Montserrat',sans-serif;font-size:0.7rem;padding:10px 12px;border-radius:6px;margin-bottom:12px;display:none;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:#86EFAC;}
+.ok.show{display:block;}
+.sp{display:inline-block;width:13px;height:13px;border:2px solid rgba(7,7,13,0.3);border-top-color:#07070D;border-radius:50%;animation:sp 0.7s linear infinite;vertical-align:middle;margin-right:5px;}
+@keyframes sp{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
 
-<!-- Loading -->
-<div id="loading">
-  <div class="ring"></div>
-  <p>Loading ICONIK...</p>
-  <button onclick="forceSignOut()" style="margin-top:16px;background:none;border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:8px 18px;color:#BDB5A6;font-family:'Montserrat',sans-serif;font-size:0.68rem;cursor:pointer;letter-spacing:0.06em;">
-    Sign Out / Switch Account
-  </button>
-</div>
+<div class="logo">ICONIK</div>
+<div class="tag">The Global Fan Authority</div>
 
-<!-- Main content — hidden until auth resolves -->
-<div id="main">
-  <div class="logo">ICONIK</div>
-  <div class="tagline">The Global Fan Authority</div>
+<div class="box">
+  <div class="tabs">
+    <div class="tab on" onclick="showP('login')">Sign In</div>
+    <div class="tab" onclick="showP('reg')">Join Free</div>
+  </div>
 
-  <div class="box">
-    <div class="tabs">
-      <div class="tab on" onclick="showPanel('login')">Sign In</div>
-      <div class="tab" onclick="showPanel('register')">Join Free</div>
+  <!-- LOGIN -->
+  <div class="panel on" id="p-login">
+    <div class="err" id="e-login"></div>
+    <div class="fg"><label>Email</label><input type="email" id="l-em" placeholder="your@email.com" autocomplete="email"/></div>
+    <div class="fg"><label>Password</label><input type="password" id="l-pw" placeholder="••••••••" autocomplete="current-password"/></div>
+    <button class="btn btn-g" id="l-btn" onclick="doLogin()">Sign In</button>
+    <button class="lnk" onclick="showP('reset')">Forgot password?</button>
+    <button class="lnk" onclick="showP('reg')" style="color:#BDB5A6;">New? <span style="color:#FFB800;">Join free →</span></button>
+  </div>
+
+  <!-- REGISTER -->
+  <div class="panel" id="p-reg">
+    <div class="err" id="e-reg"></div>
+    <div class="dots"><div class="dot on" id="d1"></div><div class="dot" id="d2"></div><div class="dot" id="d3"></div></div>
+    <div class="step on" id="s1">
+      <div class="fg"><label>Full Name *</label><input type="text" id="r-nm" placeholder="Your full name"/></div>
+      <div class="fg"><label>Email *</label><input type="email" id="r-em" placeholder="your@email.com"/></div>
+      <div class="fg"><label>Password * (min 6 chars)</label><input type="password" id="r-pw" placeholder="••••••••"/></div>
+      <button class="btn btn-g" onclick="nStep(2)">Continue →</button>
     </div>
-
-    <!-- LOGIN -->
-    <div class="panel on" id="p-login">
-      <div class="err-box" id="e-login"></div>
-      <div class="fg">
-        <label>Email</label>
-        <input type="email" id="l-email" placeholder="your@email.com" autocomplete="email"/>
+    <div class="step" id="s2">
+      <div class="fg"><label>Country *</label>
+        <select id="r-co">
+          <option value="">Select country...</option>
+          <option>Nigeria</option><option>Ghana</option><option>Kenya</option><option>South Africa</option>
+          <option>United States</option><option>United Kingdom</option><option>Canada</option><option>Australia</option>
+          <option>Brazil</option><option>India</option><option>Jamaica</option><option>Trinidad and Tobago</option>
+          <option>Puerto Rico</option><option>France</option><option>Germany</option><option>Spain</option>
+          <option>Mexico</option><option>Argentina</option><option>Colombia</option><option>Egypt</option>
+          <option>Ethiopia</option><option>Morocco</option><option>Other</option>
+        </select>
       </div>
-      <div class="fg">
-        <label>Password</label>
-        <input type="password" id="l-pass" placeholder="••••••••" autocomplete="current-password"/>
+      <div class="fg"><label>City</label><input type="text" id="r-ci" placeholder="Your city"/></div>
+      <div class="fg"><label>Membership</label>
+        <select id="r-ti">
+          <option value="Fan">Fan Member — Free Forever</option>
+          <option value="VIP Silver">VIP Silver — $9.99/month</option>
+          <option value="VIP Gold">VIP Gold — $19.99/month</option>
+        </select>
       </div>
-      <button class="btn btn-gold" id="l-btn" onclick="doLogin()">Sign In</button>
-      <button class="btn-link" onclick="showPanel('reset')">Forgot password?</button>
-      <button class="btn-link" onclick="showPanel('register')">
-        <span class="dim">New to ICONIK? </span>Join free →
-      </button>
+      <button class="btn btn-g" onclick="nStep(3)">Continue →</button>
+      <button class="btn btn-gr" onclick="nStep(1)">← Back</button>
     </div>
-
-    <!-- REGISTER — 3 steps -->
-    <div class="panel" id="p-register">
-      <div class="err-box" id="e-reg"></div>
-      <div class="dots">
-        <div class="dot on" id="dot1"></div>
-        <div class="dot" id="dot2"></div>
-        <div class="dot" id="dot3"></div>
+    <div class="step" id="s3">
+      <div class="fg"><label>Your Communities (1–5) *</label>
+        <div class="chips">
+          <div class="chip" data-v="Music" onclick="tChip(this)">🎵 Music</div>
+          <div class="chip" data-v="Film &amp; TV" onclick="tChip(this)">🎬 Film &amp; TV</div>
+          <div class="chip" data-v="Sports" onclick="tChip(this)">⚽ Sports</div>
+          <div class="chip" data-v="Fashion" onclick="tChip(this)">👗 Fashion</div>
+          <div class="chip" data-v="Fitness &amp; Wellness" onclick="tChip(this)">💪 Wellness</div>
+          <div class="chip" data-v="Literature" onclick="tChip(this)">📚 Literature</div>
+          <div class="chip" data-v="Food &amp; Culinary" onclick="tChip(this)">🍽 Food</div>
+          <div class="chip" data-v="Nature" onclick="tChip(this)">🌿 Nature</div>
+          <div class="chip" data-v="Automotive" onclick="tChip(this)">🚗 Auto</div>
+          <div class="chip" data-v="Tech &amp; Innovation" onclick="tChip(this)">💻 Tech</div>
+          <div class="chip" data-v="Beauty" onclick="tChip(this)">💄 Beauty</div>
+          <div class="chip" data-v="Entertainment" onclick="tChip(this)">🎭 Entertainment</div>
+          <div class="chip" data-v="Leadership" onclick="tChip(this)">🎓 Leadership</div>
+        </div>
       </div>
-
-      <!-- Step 1: Account -->
-      <div class="step on" id="step1">
-        <div class="fg">
-          <label>Full Name *</label>
-          <input type="text" id="r-name" placeholder="Your full name" autocomplete="name"/>
-        </div>
-        <div class="fg">
-          <label>Email *</label>
-          <input type="email" id="r-email" placeholder="your@email.com" autocomplete="email"/>
-        </div>
-        <div class="fg">
-          <label>Password * (min 6 characters)</label>
-          <input type="password" id="r-pass" placeholder="••••••••" autocomplete="new-password"/>
-        </div>
-        <button class="btn btn-gold" onclick="nextStep(2)">Continue →</button>
-        <button class="btn-link" onclick="showPanel('login')">
-          <span class="dim">Already have account? </span>Sign in →
-        </button>
-      </div>
-
-      <!-- Step 2: Location -->
-      <div class="step" id="step2">
-        <div class="fg">
-          <label>Country *</label>
-          <select id="r-country">
-            <option value="">Select your country...</option>
-            <option>Nigeria</option><option>Ghana</option><option>Kenya</option>
-            <option>South Africa</option><option>United States</option>
-            <option>United Kingdom</option><option>Canada</option><option>Australia</option>
-            <option>Brazil</option><option>India</option><option>Jamaica</option>
-            <option>Trinidad and Tobago</option><option>Puerto Rico</option>
-            <option>France</option><option>Germany</option><option>Spain</option>
-            <option>Mexico</option><option>Argentina</option><option>Colombia</option>
-            <option>Egypt</option><option>Ethiopia</option><option>Morocco</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div class="fg">
-          <label>City</label>
-          <input type="text" id="r-city" placeholder="Your city"/>
-        </div>
-        <div class="fg">
-          <label>Membership Tier</label>
-          <select id="r-tier">
-            <option value="Fan">Fan Member — Free Forever</option>
-            <option value="VIP Silver">VIP Silver — $9.99/month</option>
-            <option value="VIP Gold">VIP Gold — $19.99/month</option>
-          </select>
-        </div>
-        <button class="btn btn-gold" onclick="nextStep(3)">Continue →</button>
-        <button class="btn btn-grey" onclick="nextStep(1)">← Back</button>
-      </div>
-
-      <!-- Step 3: Communities -->
-      <div class="step" id="step3">
-        <div class="fg">
-          <label>Your Communities (choose 1–5) *</label>
-          <div class="chips" id="chip-wrap">
-            <div class="chip" onclick="toggleChip(this)" data-val="Music">🎵 Music</div>
-            <div class="chip" onclick="toggleChip(this)" data-val="Film &amp; TV">🎬 Film &amp; TV</div>
-            <div class="chip" onclick="toggleChip(this)" data-val="Sports">⚽ Sports</div>
-            <div class="chip" onclick="toggleChip(this)" data-val="Fashion">👗 Fashion</div>
-            <div class="chip" onclick="toggleChip(this)" data-val="Fitness &amp; Wellness">💪 Wellness</div>
-            <div class="chip" onclick="toggleChip(this)" data-val="Literature">📚 Literature</div>
-            <div class="chip" onclick="toggleChip(this)" data-val="Food &amp; Culinary">🍽 Food</div>
-            <div class="chip" onclick="toggleChip(this)" data-val="Nature">🌿 Nature</div>
-            <div class="chip" onclick="toggleChip(this)" data-val="Automotive">🚗 Auto</div>
-            <div class="chip" onclick="toggleChip(this)" data-val="Tech &amp; Innovation">💻 Tech</div>
-            <div class="chip" onclick="toggleChip(this)" data-val="Beauty">💄 Beauty</div>
-            <div class="chip" onclick="toggleChip(this)" data-val="Entertainment">🎭 Entertainment</div>
-            <div class="chip" onclick="toggleChip(this)" data-val="Leadership">🎓 Leadership</div>
-          </div>
-        </div>
-        <button class="btn btn-gold" id="r-btn" onclick="doRegister()">Join ICONIK →</button>
-        <button class="btn btn-grey" onclick="nextStep(2)">← Back</button>
-      </div>
-    </div>
-
-    <!-- RESET PASSWORD -->
-    <div class="panel" id="p-reset">
-      <div class="err-box" id="e-reset"></div>
-      <div class="ok-box" id="ok-reset"></div>
-      <div class="fg">
-        <label>Email Address</label>
-        <input type="email" id="reset-email" placeholder="your@email.com"/>
-      </div>
-      <button class="btn btn-gold" onclick="doReset()">Send Reset Link</button>
-      <button class="btn-link" onclick="showPanel('login')">← Back to Sign In</button>
+      <button class="btn btn-g" id="r-btn" onclick="doReg()">Join ICONIK →</button>
+      <button class="btn btn-gr" onclick="nStep(2)">← Back</button>
     </div>
   </div>
-</div><!-- end #main -->
+
+  <!-- RESET -->
+  <div class="panel" id="p-reset">
+    <div class="err" id="e-reset"></div>
+    <div class="ok" id="ok-reset"></div>
+    <div class="fg"><label>Email Address</label><input type="email" id="rs-em" placeholder="your@email.com"/></div>
+    <button class="btn btn-g" onclick="doReset()">Send Reset Link</button>
+    <button class="lnk" onclick="showP('login')">← Back to Sign In</button>
+  </div>
+</div>
 
 <script type="module">
-import{initializeApp}
-  from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import{
-  getAuth,onAuthStateChanged,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
-  signOut
-} from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import{
-  getFirestore,doc,setDoc,getDoc,serverTimestamp
-} from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import{getAuth,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,sendPasswordResetEmail,signOut,setPersistence,browserSessionPersistence}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import{getFirestore,doc,setDoc,getDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// ── CONFIG ──
-const cfg={
-  apiKey:"AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",
-  authDomain:"iconik-global.firebaseapp.com",
-  projectId:"iconik-global",
-  storageBucket:"iconik-global.firebasestorage.app",
-  messagingSenderId:"1040054516979",
-  appId:"1:1040054516979:web:33cd5f07ae8fc146a30b86"
-};
-const ADMIN_EMAIL = "iconikglobal01@gmail.com";
-const fb  = initializeApp(cfg);
-const auth = getAuth(fb);
-const db   = getFirestore(fb);
+const cfg={apiKey:"AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",authDomain:"iconik-global.firebaseapp.com",projectId:"iconik-global",storageBucket:"iconik-global.firebasestorage.app",messagingSenderId:"1040054516979",appId:"1:1040054516979:web:33cd5f07ae8fc146a30b86"};
+const ADMIN="iconikglobal01@gmail.com";
+const fb=initializeApp(cfg);
+const auth=getAuth(fb);
+const db=getFirestore(fb);
 
-// ── AUTH CHECK ──
-// If user arrives at login page intentionally, sign them out first
-// This prevents auto-redirect when user wants to switch accounts
-const loadEl = document.getElementById('loading');
-const mainEl = document.getElementById('main');
+// ── STEP 1: Always sign out first when landing on login page ──
+// This prevents auto-redirect and infinite loading
+signOut(auth).then(()=>{
+  console.log('✅ Signed out — login form ready');
+}).catch(()=>{
+  console.log('No session to clear');
+});
 
-// Check URL param: if ?signout=1 — force sign out
-const params = new URLSearchParams(location.search);
-if(params.get('signout')==='1'){
-  signOut(auth).finally(()=>{
-    history.replaceState(null,'','/app.html');
-    loadEl.style.display='none';
-    mainEl.style.display='block';
-  });
-} else {
-  // Normal load — check if already signed in
-  let resolved = false;
-  const timer = setTimeout(()=>{
-    if(!resolved){ resolved=true; loadEl.style.display='none'; mainEl.style.display='block'; }
-  }, 5000);
-
-  onAuthStateChanged(auth, async user => {
-    clearTimeout(timer);
-    if(resolved) return;
-    resolved = true;
-
-    if(user){
-      if(user.email === ADMIN_EMAIL){
-        location.replace('admin.html'); return;
-      }
-      try{
-        const snap = await getDoc(doc(db,'users',user.uid));
-        const role = snap.exists() ? (snap.data().role||'member') : 'member';
-        location.replace(
-          (role==='admin'||role==='Sub Admin'||role==='Moderator')
-            ? 'admin.html' : 'dashboard.html'
-        );
-      }catch{
-        location.replace('dashboard.html');
-      }
-      return;
-    }
-    // Not signed in — show form
-    loadEl.style.display='none';
-    mainEl.style.display='block';
-  });
-}
-
-// ── UI HELPERS ──
-window.showPanel = function(name){
+// ── UI ──
+window.showP=function(name){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   document.getElementById('p-'+name).classList.add('on');
-  // highlight tab if it exists
-  const tabs = document.querySelectorAll('.tab');
-  if(name==='login')  tabs[0].classList.add('on');
-  if(name==='register') tabs[1].classList.add('on');
-  clearErrors();
+  const tabs=document.querySelectorAll('.tab');
+  if(name==='login')tabs[0].classList.add('on');
+  if(name==='reg')tabs[1].classList.add('on');
+  clearE();
 };
 
-function clearErrors(){
-  document.querySelectorAll('.err-box,.ok-box').forEach(e=>{
-    e.classList.remove('show'); e.textContent='';
-  });
+function clearE(){document.querySelectorAll('.err,.ok').forEach(e=>{e.className=e.className.replace(' show','');e.textContent='';});}
+function showE(id,msg){const e=document.getElementById(id);if(e){e.textContent=msg;if(!e.classList.contains('show'))e.classList.add('show');}}
+function showOK(id,msg){const e=document.getElementById(id);if(e){e.textContent=msg;e.className=(e.className.replace(' show',''))+' show';}}
+
+function ferr(code){
+  const m={
+    'auth/user-not-found':'No account found with this email.',
+    'auth/wrong-password':'Incorrect password.',
+    'auth/invalid-credential':'Incorrect email or password.',
+    'auth/email-already-in-use':'Email already registered. Sign in instead.',
+    'auth/weak-password':'Password must be at least 6 characters.',
+    'auth/invalid-email':'Please enter a valid email.',
+    'auth/too-many-requests':'Too many attempts. Try again in a few minutes.',
+    'auth/network-request-failed':'Network error. Check your connection.'
+  };
+  return m[code]||'Something went wrong. Please try again.';
 }
 
-function showErr(id, msg){ const e=document.getElementById(id); if(e){e.textContent=msg;e.classList.add('show');} }
-function showOk(id, msg){  const e=document.getElementById(id); if(e){e.textContent=msg;e.classList.add('show');} }
-
-function friendlyErr(code){
-  return {
-    'auth/user-not-found'       : 'No account found with this email.',
-    'auth/wrong-password'       : 'Incorrect password. Please try again.',
-    'auth/invalid-credential'   : 'Incorrect email or password.',
-    'auth/email-already-in-use' : 'This email is already registered. Sign in instead.',
-    'auth/weak-password'        : 'Password must be at least 6 characters.',
-    'auth/invalid-email'        : 'Please enter a valid email address.',
-    'auth/too-many-requests'    : 'Too many attempts. Please try again in a few minutes.',
-    'auth/network-request-failed':'Network error. Check your connection.',
-  }[code] || 'Something went wrong. Please try again.';
-}
-
-// ── STEPS ──
-window.nextStep = function(n){
-  // Validate before advancing
+window.nStep=function(n){
   if(n===2){
-    const name = document.getElementById('r-name').value.trim();
-    const email= document.getElementById('r-email').value.trim();
-    const pass = document.getElementById('r-pass').value;
-    if(!name)            { showErr('e-reg','Please enter your full name.'); return; }
-    if(!email.includes('@')){ showErr('e-reg','Please enter a valid email.'); return; }
-    if(pass.length < 6)  { showErr('e-reg','Password must be at least 6 characters.'); return; }
+    if(!document.getElementById('r-nm').value.trim()){showE('e-reg','Enter your full name.');return;}
+    if(!document.getElementById('r-em').value.includes('@')){showE('e-reg','Enter a valid email.');return;}
+    if(document.getElementById('r-pw').value.length<6){showE('e-reg','Password must be 6+ characters.');return;}
   }
-  if(n===3){
-    if(!document.getElementById('r-country').value){ showErr('e-reg','Please select your country.'); return; }
-  }
-  clearErrors();
+  if(n===3&&!document.getElementById('r-co').value){showE('e-reg','Select your country.');return;}
+  clearE();
   document.querySelectorAll('.step').forEach(s=>s.classList.remove('on'));
-  document.getElementById('step'+n).classList.add('on');
-  for(let i=1;i<=3;i++){
-    document.getElementById('dot'+i).className = 'dot' + (i<=n?' on':'');
-  }
+  document.getElementById('s'+n).classList.add('on');
+  for(let i=1;i<=3;i++)document.getElementById('d'+i).className='dot'+(i<=n?' on':'');
 };
 
-// ── CHIPS ──
-window.toggleChip = function(el){
-  const total = document.querySelectorAll('.chip.on').length;
-  if(el.classList.contains('on')){ el.classList.remove('on'); }
-  else if(total >= 5){ showErr('e-reg','Maximum 5 communities.'); }
-  else{ el.classList.add('on'); }
+window.tChip=function(el){
+  const sel=document.querySelectorAll('.chip.on');
+  if(el.classList.contains('on')){el.classList.remove('on');}
+  else if(sel.length>=5){showE('e-reg','Maximum 5 communities.');}
+  else{el.classList.add('on');}
 };
 
 // ── REGISTER ──
-window.doRegister = async function(){
-  const cats = [...document.querySelectorAll('.chip.on')].map(c=>c.dataset.val);
-  if(!cats.length){ showErr('e-reg','Please select at least 1 community.'); return; }
-
-  const btn = document.getElementById('r-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="bspin"></span>Creating account...';
-
+window.doReg=async function(){
+  const cats=[...document.querySelectorAll('.chip.on')].map(c=>c.dataset.v);
+  if(!cats.length){showE('e-reg','Select at least 1 community.');return;}
+  const btn=document.getElementById('r-btn');
+  btn.disabled=true;btn.innerHTML='<span class="sp"></span>Creating...';
   try{
-    const name    = document.getElementById('r-name').value.trim();
-    const email   = document.getElementById('r-email').value.trim();
-    const pass    = document.getElementById('r-pass').value;
-    const country = document.getElementById('r-country').value;
-    const city    = document.getElementById('r-city').value.trim();
-    const tier    = document.getElementById('r-tier').value;
-
-    const { user } = await createUserWithEmailAndPassword(auth, email, pass);
-
-    await setDoc(doc(db,'users',user.uid), {
-      name, email, country, city, tier,
-      categories: cats,
-      profilePic:'', coverPhoto:'', bio:'',
-      verificationStatus: 'pending',
-      followersCount:0, followingCount:0,
-      postCount:0, likeCount:0, points:0,
-      role: 'member',
-      joinedAt: serverTimestamp()
+    const name=document.getElementById('r-nm').value.trim();
+    const email=document.getElementById('r-em').value.trim();
+    const pass=document.getElementById('r-pw').value;
+    const{user}=await createUserWithEmailAndPassword(auth,email,pass);
+    await setDoc(doc(db,'users',user.uid),{
+      name,email,
+      country:document.getElementById('r-co').value,
+      city:document.getElementById('r-ci').value.trim(),
+      tier:document.getElementById('r-ti').value,
+      categories:cats,
+      profilePic:'',coverPhoto:'',bio:'',
+      verificationStatus:'pending',
+      followersCount:0,followingCount:0,postCount:0,likeCount:0,points:0,
+      role:'member',joinedAt:serverTimestamp()
     });
-
-    location.replace('dashboard.html');
-  } catch(e){
-    showErr('e-reg', friendlyErr(e.code));
-    btn.disabled = false;
-    btn.textContent = 'Join ICONIK →';
+    window.location.href='/dashboard.html';
+  }catch(e){
+    showE('e-reg',ferr(e.code));
+    btn.disabled=false;btn.textContent='Join ICONIK →';
   }
 };
 
 // ── LOGIN ──
-window.doLogin = async function(){
-  const email = document.getElementById('l-email').value.trim();
-  const pass  = document.getElementById('l-pass').value;
-
-  if(!email){ showErr('e-login','Please enter your email.'); return; }
-  if(!email.includes('@')){ showErr('e-login','Please enter a valid email address.'); return; }
-  if(!pass) { showErr('e-login','Please enter your password.'); return; }
-
-  const btn = document.getElementById('l-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="bspin"></span>Signing in...';
-
+window.doLogin=async function(){
+  const email=document.getElementById('l-em').value.trim();
+  const pass=document.getElementById('l-pw').value;
+  if(!email||!email.includes('@')){showE('e-login','Enter a valid email.');return;}
+  if(!pass){showE('e-login','Enter your password.');return;}
+  const btn=document.getElementById('l-btn');
+  btn.disabled=true;btn.innerHTML='<span class="sp"></span>Signing in...';
   try{
-    await signInWithEmailAndPassword(auth, email, pass);
-    // onAuthStateChanged handles redirect
-  } catch(e){
-    showErr('e-login', friendlyErr(e.code));
-    btn.disabled = false;
-    btn.textContent = 'Sign In';
+    const{user}=await signInWithEmailAndPassword(auth,email,pass);
+    // Direct redirect based on email — no Firestore lookup delay
+    if(user.email===ADMIN){
+      window.location.href='/admin.html';
+    } else {
+      // Quick Firestore check for sub-admin role
+      try{
+        const d=await getDoc(doc(db,'users',user.uid));
+        const role=d.exists()?(d.data().role||'member'):'member';
+        window.location.href=(role==='Sub Admin'||role==='Moderator'||role==='admin')?'/admin.html':'/dashboard.html';
+      }catch{
+        window.location.href='/dashboard.html';
+      }
+    }
+  }catch(e){
+    showE('e-login',ferr(e.code));
+    btn.disabled=false;btn.textContent='Sign In';
   }
 };
 
 // ── RESET ──
-window.doReset = async function(){
-  const email = document.getElementById('reset-email').value.trim();
-  if(!email){ showErr('e-reset','Please enter your email.'); return; }
+window.doReset=async function(){
+  const email=document.getElementById('rs-em').value.trim();
+  if(!email){showE('e-reset','Enter your email.');return;}
   try{
-    await sendPasswordResetEmail(auth, email);
-    showOk('ok-reset','Reset link sent! Check your inbox. ✉️');
-  } catch(e){
-    showErr('e-reset', friendlyErr(e.code));
-  }
+    await sendPasswordResetEmail(auth,email);
+    showOK('ok-reset','Reset link sent! Check your inbox. ✉️');
+  }catch(e){showE('e-reset',ferr(e.code));}
 };
 
-// ── FORCE SIGN OUT ──
-window.forceSignOut = function(){
-  signOut(auth).then(()=>{
-    location.replace('/app.html?signout=1');
-  }).catch(()=>{
-    location.replace('/app.html?signout=1');
-  });
-};
-
-// Enter key on login
-['l-email','l-pass'].forEach(id=>{
-  document.getElementById(id).addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
-});
+// Enter key support
+document.getElementById('l-pw').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+document.getElementById('l-em').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 </script>
 </body>
 </html>
