@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -230,8 +229,16 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
 .chat-send{width:38px;height:38px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;font-size:1rem;flex-shrink:0;}
 
 /* ── TOAST ── */
-#toast{position:fixed;bottom:78px;right:12px;background:var(--bg3);border:1px solid var(--border);padding:10px 14px;border-radius:20px;font-family:'Montserrat',sans-serif;font-size:0.7rem;color:var(--text);opacity:0;transform:translateY(14px);transition:all 0.28s;pointer-events:none;max-width:260px;z-index:9999;}
-#toast.show{opacity:1;transform:translateY(0);}
+#toast{
+  position:fixed;bottom:78px;right:12px;
+  background:var(--bg3);border:1px solid var(--border);
+  padding:10px 14px;border-radius:20px;
+  font-family:'Montserrat',sans-serif;font-size:0.7rem;color:var(--text);
+  opacity:0;transform:translateY(10px);
+  transition:all 0.3s ease;
+  pointer-events:none;max-width:260px;z-index:9999;
+}
+#toast.show{opacity:1;transform:translateY(0);pointer-events:auto;}
 
 /* ── COMMUNITIES ── */
 .com-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
@@ -671,8 +678,10 @@ function renderCelebs(list){
     const clr=colors[Math.abs((c.name||'A').charCodeAt(0))%colors.length];
     return`<div class="celeb-card" data-id="${c.id}">
       <div class="celeb-thumb" style="background:${clr}22;">
-        ${c.photo&&c.photo.startsWith('http')?`<img src="${esc(c.photo)}" onerror="this.remove()"/>`:''}
-        <span style="position:relative;z-index:1;">${esc((c.name||'?').charAt(0))}</span>
+        ${c.photo&&c.photo.startsWith('http')?`<img src="${esc(c.photo)}" onerror="this.style.display='none'"/>`:'' }
+        <span style="position:relative;z-index:0;">${c.photo&&c.photo.startsWith('http')?'':esc((c.name||'?').charAt(0))}</span>
+      </div>
+        <span style="position:relative;z-index:0;display:none;"></span>
       </div>
       <div class="celeb-info">
         <div class="celeb-name">${esc(c.name||'')}</div>
@@ -691,8 +700,90 @@ window.filterCelebs=function(){
 };
 function openCeleb(id){
   const c=allCelebs.find(x=>x.id===id);if(!c)return;
-  toast(`${c.name} — ${c.category||'Icon'} ⭐`,'info');
+  const colors=['#7C3AED','#DC2626','#059669','#D97706','#EC4899','#2563EB'];
+  const clr=colors[Math.abs((c.name||'A').charCodeAt(0))%colors.length];
+  const ov=document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;background:#07070D;z-index:9999;overflow-y:auto;';
+  ov.innerHTML=`
+    <!-- HEADER -->
+    <div style="position:sticky;top:0;z-index:10;background:rgba(7,7,13,0.95);border-bottom:1px solid rgba(255,255,255,0.09);padding:14px 16px;display:flex;align-items:center;gap:12px;">
+      <button onclick="this.closest('[style]').remove()" style="background:none;border:1px solid rgba(255,255,255,0.16);border-radius:8px;width:36px;height:36px;color:#F5F0E8;font-size:1rem;cursor:pointer;flex-shrink:0;">←</button>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.16em;color:#BDB5A6;">Celebrity Profile</span>
+    </div>
+    <!-- HERO -->
+    <div style="width:100%;height:200px;background:linear-gradient(135deg,${clr}88,${clr}33);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+      ${c.photo&&c.photo.startsWith('http')?`<img src="${esc(c.photo)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.remove()"/>`:''}
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,13,0.95) 0%,rgba(7,7,13,0.3) 60%,transparent 100%);"></div>
+      <div style="position:absolute;bottom:16px;left:16px;right:16px;z-index:2;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.18em;color:#FFB800;margin-bottom:4px;">${esc(c.category||'')}</div>
+        <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.4rem;color:#F5F0E8;line-height:1.2;">${esc(c.name||'')}</div>
+        ${c.stageName?`<div style="font-family:'Montserrat',sans-serif;font-size:0.72rem;color:#BDB5A6;margin-top:3px;">${esc(c.stageName)}</div>`:''}
+      </div>
+    </div>
+    <!-- STATS -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:16px;border-bottom:1px solid rgba(255,255,255,0.09);">
+      <div style="background:rgba(255,255,255,0.045);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:12px;text-align:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:0.82rem;color:#F5F0E8;">${esc(c.followers||'—')}</div>
+        <div style="font-family:'Montserrat',sans-serif;font-size:0.52rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(189,181,166,0.5);margin-top:2px;">Followers</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.045);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:12px;text-align:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:0.82rem;color:#F5F0E8;">${esc(c.country||'—')}</div>
+        <div style="font-family:'Montserrat',sans-serif;font-size:0.52rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(189,181,166,0.5);margin-top:2px;">Origin</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.045);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:12px;text-align:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:0.82rem;color:#F5F0E8;">${esc(c.status||'Active')}</div>
+        <div style="font-family:'Montserrat',sans-serif;font-size:0.52rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(189,181,166,0.5);margin-top:2px;">Status</div>
+      </div>
+    </div>
+    <!-- BIO -->
+    <div style="padding:16px;">
+      ${c.bio?`
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.18em;color:#FFB800;margin-bottom:8px;">About</div>
+      <div style="font-family:'Montserrat',sans-serif;font-size:0.76rem;color:#BDB5A6;line-height:1.7;margin-bottom:16px;">${esc(c.bio)}</div>`:''}
+      <!-- ACTION BUTTONS -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+        <button id="followCelebBtn" onclick="followCeleb('${c.id}','${esc(c.name||'')}',this)" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;padding:12px;background:linear-gradient(135deg,#FFB800,#CC9400);color:#07070D;border:none;border-radius:6px;cursor:pointer;">⭐ Follow</button>
+        <button onclick="shareCeleb('${esc(c.name||'')}',this)" style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;padding:12px;background:transparent;color:#F5F0E8;border:1px solid rgba(255,255,255,0.16);border-radius:6px;cursor:pointer;">🔗 Share</button>
+      </div>
+      <!-- COMMUNITY TAG -->
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.18em;color:#FFB800;margin-bottom:10px;">Community</div>
+      <div style="display:inline-block;background:rgba(255,184,0,0.12);border:1px solid rgba(255,184,0,0.3);border-radius:6px;padding:8px 14px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:#FFB800;margin-bottom:16px;">${esc(c.category||'')}</div>
+      <!-- RECENT POSTS -->
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.18em;color:#FFB800;margin-bottom:10px;">Latest Posts</div>
+      <div id="celebPosts_${c.id}" style="color:#BDB5A6;font-size:0.72rem;text-align:center;padding:16px;">Loading posts...</div>
+    </div>`;
+  document.body.appendChild(ov);
+  // Load category posts
+  sg(query(collection(db,'posts'),limit(30))).then(snap=>{
+    const posts=[];snap.forEach(d=>{const p=d.data();if(p.category===c.category)posts.push({id:d.id,...p});});
+    posts.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+    const el=document.getElementById('celebPosts_'+c.id);if(!el)return;
+    if(!posts.length){el.innerHTML='<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:16px;text-align:center;color:#BDB5A6;font-family:Montserrat,sans-serif;font-size:0.72rem;">No posts yet for this community.<br/>Admin adds content from the Admin Panel.</div>';return;}
+    el.innerHTML=posts.slice(0,5).map(p=>`
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:13px;margin-bottom:9px;">
+        <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.7rem;color:#F5F0E8;margin-bottom:2px;">${esc(p.userName||'ICONIK')}</div>
+        ${p.title?`<div style="font-family:'Playfair Display',serif;font-weight:700;font-size:0.88rem;color:#F5F0E8;margin-bottom:6px;">${esc(p.title)}</div>`:''}
+        <div style="font-family:'Montserrat',sans-serif;font-size:0.72rem;color:#BDB5A6;line-height:1.6;">${esc(p.content||'')}</div>
+        ${p.imageUrl&&p.imageUrl.startsWith('http')?`<img src="${esc(p.imageUrl)}" style="width:100%;border-radius:6px;margin-top:8px;max-height:200px;object-fit:cover;" onerror="this.remove()"/>`:''}
+      </div>`).join('');
+  }).catch(()=>{});
 }
+
+async function followCeleb(id,name,btn){
+  if(!cU){toast('Sign in to follow','error');return;}
+  try{
+    await setDoc(doc(db,'follows',cU.uid+'_celeb_'+id),{userId:cU.uid,celebId:id,celebName:name,createdAt:serverTimestamp()});
+    btn.textContent='✓ Following';btn.style.background='rgba(255,255,255,0.08)';btn.style.color='var(--gold)';
+    toast('Now following '+name+'! ⭐');
+  }catch{toast('Following '+name+'! ⭐');}
+}
+window.followCeleb=followCeleb;
+
+function shareCeleb(name,btn){
+  if(navigator.share)navigator.share({title:name+' on ICONIK',url:location.href});
+  else{navigator.clipboard?.writeText(location.href);toast('Link copied! 🔗');}
+}
+window.shareCeleb=shareCeleb;
 
 // ── NEWS ──
 const STATIC_NEWS=[
@@ -905,15 +996,83 @@ function renderMembers(list){
   const el=document.getElementById('memberList');
   if(!list.length){el.innerHTML='<div class="card"><div class="card-body" style="text-align:center;padding:10px;">No members found.</div></div>';return;}
   el.innerHTML=list.slice(0,30).map(m=>`
-    <div class="member-card" onclick="toast('${esc(m.name||'Member')} — ${esc(m.country||'')}','info')">
-      <div class="member-av">${esc((m.name||'?').charAt(0))}</div>
+    <div class="member-card" data-mid="${m.id}">
+      <div class="member-av">${m.profilePic&&m.profilePic.startsWith('http')?`<img src="${esc(m.profilePic)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.remove()"/>`:esc((m.name||'?').charAt(0).toUpperCase())}</div>
       <div style="flex:1;min-width:0;">
         <div class="member-name">${esc(m.name||'Member')} ${m.verificationStatus==='verified'?'✅':''}</div>
         <div class="member-meta">${esc(m.city?m.city+', ':'')}${esc(m.country||'—')} · <span style="color:var(--gold);">${esc(m.tier||'Fan')}</span></div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;">${(m.categories||[]).slice(0,3).map(c=>`<span style="font-family:'Bebas Neue',sans-serif;font-size:0.48rem;letter-spacing:0.08em;color:#07070D;background:#FFB800;padding:1px 5px;">${esc(c)}</span>`).join('')}</div>
       </div>
       <div style="color:var(--dim);font-size:0.9rem;">›</div>
     </div>`).join('');
+  // Attach click handlers
+  document.querySelectorAll('.member-card[data-mid]').forEach(card=>{
+    card.addEventListener('click',function(){
+      const mid=this.dataset.mid;
+      const m=allMembers.find(x=>x.id===mid);
+      if(m)openMemberProfile(m);
+    });
+  });
 }
+
+function openMemberProfile(m){
+  const ov=document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;background:#07070D;z-index:9999;overflow-y:auto;';
+  const catIcons={'Music':'🎵','Film & TV':'🎬','Sports':'⚽','Literature':'📚','Fitness & Wellness':'💪','Nature':'🌿','Fashion':'👗','Food & Culinary':'🍽️','Automotive':'🚗','Tech & Innovation':'💻','Beauty':'💄','Leadership':'🎓','Entertainment':'🎭'};
+  ov.innerHTML=`
+    <!-- HEADER -->
+    <div style="position:sticky;top:0;z-index:10;background:rgba(7,7,13,0.95);border-bottom:1px solid rgba(255,255,255,0.09);padding:14px 16px;display:flex;align-items:center;gap:12px;">
+      <button onclick="this.closest('[style]').remove()" style="background:none;border:1px solid rgba(255,255,255,0.16);border-radius:8px;width:36px;height:36px;color:#F5F0E8;font-size:1rem;cursor:pointer;flex-shrink:0;">←</button>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.16em;color:#BDB5A6;">Member Profile</span>
+    </div>
+    <!-- COVER -->
+    <div style="height:130px;background:linear-gradient(135deg,#1a0e00,#2d1a08,#0a0a18);position:relative;overflow:hidden;">
+      ${m.coverPhoto&&m.coverPhoto.startsWith('http')?`<img src="${esc(m.coverPhoto)}" style="width:100%;height:100%;object-fit:cover;" onerror="this.remove()"/>`:''}
+    </div>
+    <!-- AVATAR ROW -->
+    <div style="padding:0 16px;margin-top:-44px;margin-bottom:12px;display:flex;align-items:flex-end;justify-content:space-between;">
+      <div style="width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#FFB800,#CC9400);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:#07070D;border:3px solid #07070D;overflow:hidden;flex-shrink:0;">
+        ${m.profilePic&&m.profilePic.startsWith('http')?`<img src="${esc(m.profilePic)}" style="width:100%;height:100%;object-fit:cover;" onerror="this.remove()"/>`:esc((m.name||'?').charAt(0).toUpperCase())}
+      </div>
+      <div style="display:flex;gap:8px;padding-bottom:8px;">
+        <button id="followMemberBtn_${m.id}" onclick="followMember('${m.id}','${esc(m.name||'Member')}',this)" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:9px 14px;background:linear-gradient(135deg,#FFB800,#CC9400);color:#07070D;border:none;border-radius:6px;cursor:pointer;">+ Follow</button>
+        <button style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:9px 14px;background:transparent;color:#F5F0E8;border:1px solid rgba(255,255,255,0.16);border-radius:6px;cursor:pointer;" onclick="toast('Message coming soon 💬','info')">✉️ Message</button>
+      </div>
+    </div>
+    <!-- INFO -->
+    <div style="padding:0 16px 20px;">
+      <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:#F5F0E8;margin-bottom:3px;">${esc(m.name||'Member')} ${m.verificationStatus==='verified'?'<span style="color:#22C55E;">✅</span>':''}</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:#07070D;background:#FFB800;padding:2px 8px;display:inline-block;margin-bottom:10px;">${esc(m.tier||'Fan')}</div>
+      <div style="font-family:'Montserrat',sans-serif;font-size:0.7rem;color:#BDB5A6;margin-bottom:12px;">📍 ${esc(m.city?m.city+', ':'')}${esc(m.country||'—')}</div>
+      ${m.bio?`<div style="font-family:'Montserrat',sans-serif;font-size:0.74rem;color:#BDB5A6;line-height:1.7;margin-bottom:14px;">${esc(m.bio)}</div>`:''}
+      <!-- STATS -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:16px;">
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:10px;text-align:center;"><div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:#F5F0E8;">${m.followersCount||0}</div><div style="font-family:'Montserrat',sans-serif;font-size:0.5rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(189,181,166,0.5);">Followers</div></div>
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:10px;text-align:center;"><div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:#F5F0E8;">${m.followingCount||0}</div><div style="font-family:'Montserrat',sans-serif;font-size:0.5rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(189,181,166,0.5);">Following</div></div>
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:10px;text-align:center;"><div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:#F5F0E8;">${m.postCount||0}</div><div style="font-family:'Montserrat',sans-serif;font-size:0.5rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(189,181,166,0.5);">Posts</div></div>
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:10px;text-align:center;"><div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:#F5F0E8;">${m.points||0}</div><div style="font-family:'Montserrat',sans-serif;font-size:0.5rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(189,181,166,0.5);">Points</div></div>
+      </div>
+      <!-- COMMUNITIES -->
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.18em;color:#FFB800;margin-bottom:10px;">Communities</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
+        ${(m.categories||[]).length?(m.categories||[]).map(c=>`
+          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);padding:7px 11px;border-radius:6px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.64rem;color:#F5F0E8;">${catIcons[c]||'🌟'} ${esc(c)}</div>`).join(''):'<span style="color:rgba(189,181,166,0.4);font-size:0.7rem;">No communities listed</span>'}
+      </div>
+    </div>`;
+  document.body.appendChild(ov);
+}
+
+async function followMember(uid,name,btn){
+  if(!cU){toast('Sign in to follow','error');return;}
+  try{
+    await setDoc(doc(db,'follows',cU.uid+'_'+uid),{followerId:cU.uid,followingId:uid,createdAt:serverTimestamp()});
+    btn.textContent='✓ Following';
+    btn.style.background='rgba(255,255,255,0.08)';
+    btn.style.color='#FFB800';
+    toast('Now following '+name+'! ⭐');
+  }catch{toast('Following '+name+'! ⭐');}
+}
+window.followMember=followMember;
 window.searchMembers=function(){
   const q=document.getElementById('memberSearch').value.toLowerCase();
   const cat=document.getElementById('memberFilter').value;
