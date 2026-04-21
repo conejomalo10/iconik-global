@@ -3,183 +3,200 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>ICONIK — Chief Admin Panel</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Bebas+Neue&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+<title>ICONIK — Chief Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Bebas+Neue&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+*{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --obs:#07070D;--obs2:#0E0E1A;--obs3:#141420;
-  --gold:#FFB800;--gg:#CC9400;
-  --ch:#F5F0E8;--cd:#BDB5A6;--cd2:rgba(189,181,166,0.45);
-  --gb:rgba(255,255,255,0.045);--gbr:rgba(255,255,255,0.09);--gbri:rgba(255,255,255,0.18);
-  --ok:#22C55E;--err:#EF4444;--info:#3B82F6;--rad:8px;
+  --bg:#07070D;--bg2:#0E0E1A;--bg3:#141420;
+  --gold:#FFB800;--gold2:#CC9400;
+  --text:#F5F0E8;--muted:#BDB5A6;--dim:rgba(189,181,166,0.4);
+  --border:rgba(255,255,255,0.09);--border2:rgba(255,255,255,0.16);
+  --card:rgba(255,255,255,0.045);
+  --ok:#22C55E;--err:#EF4444;--info:#3B82F6;
 }
-body{background:var(--obs);color:var(--ch);font-family:'Montserrat',sans-serif;min-height:100vh;}
-nav{position:fixed;top:0;left:0;right:0;z-index:500;height:58px;background:rgba(7,7,13,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--gbr);display:flex;align-items:center;justify-content:space-between;padding:0 16px;}
-.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.08em;background:linear-gradient(135deg,var(--gold),var(--gg));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.nav-badge{font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.12em;color:var(--obs);background:var(--gold);padding:3px 10px;}
-.main{padding:72px 14px 90px;}
-/* Sidebar */
-.sb{position:fixed;top:0;left:-280px;width:280px;height:100vh;background:var(--obs3);border-right:1px solid var(--gbr);z-index:9000;transition:left 0.28s ease;overflow-y:auto;}
-.sb.on{left:0;}
-.sb-ov{position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:8999;display:none;}
-.sb-ov.on{display:block;}
-.sb-h{display:flex;align-items:center;justify-content:space-between;padding:18px 16px;border-bottom:1px solid var(--gbr);}
-.sb-logo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--gold);}
-.sb-x{background:none;border:1px solid var(--gbr);border-radius:4px;width:28px;height:28px;cursor:pointer;color:var(--cd);font-size:1rem;}
-.sb-lnk{display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:0.74rem;font-weight:600;color:var(--cd);transition:all 0.18s;border-left:3px solid transparent;}
-.sb-lnk:hover,.sb-lnk.active{color:var(--gold);border-left-color:var(--gold);background:rgba(255,184,0,0.06);}
-.hbg{background:none;border:1px solid var(--gbr);border-radius:7px;width:36px;height:36px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;}
-.hbg span{display:block;width:16px;height:2px;background:var(--ch);border-radius:2px;}
-/* Views */
-.view{display:none;}.view.on{display:block;}
-/* Cards */
-.card{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);padding:14px;margin-bottom:10px;}
-.card-title{font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.18em;color:var(--gold);margin-bottom:12px;}
-/* Form */
+body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* TOP NAV */
+#topnav{position:fixed;top:0;left:0;right:0;height:60px;z-index:600;background:rgba(7,7,13,0.96);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;backdrop-filter:blur(16px);}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.08em;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-badge{font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--bg);background:var(--gold);padding:3px 10px;}
+#hamburger{width:40px;height:40px;background:none;border:1px solid var(--border2);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;padding:0;flex-shrink:0;}
+#hamburger span{display:block;width:18px;height:2px;background:var(--text);border-radius:2px;}
+
+/* SIDEBAR */
+#sbOverlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:800;display:none;}
+#sbOverlay.open{display:block;}
+#sidebar{position:fixed;top:0;left:-300px;width:290px;height:100vh;background:var(--bg3);border-right:1px solid var(--border);z-index:900;transition:left 0.28s ease;overflow-y:auto;}
+#sidebar.open{left:0;}
+.sb-head{display:flex;align-items:center;justify-content:space-between;padding:18px 16px;border-bottom:1px solid var(--border);}
+.sb-brand{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.08em;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+#sbClose{background:none;border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--muted);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;}
+.sb-link{display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:0.76rem;font-weight:600;color:var(--muted);transition:all 0.18s;border-left:3px solid transparent;}
+.sb-link:hover,.sb-link.active{color:var(--gold);border-left-color:var(--gold);background:rgba(255,184,0,0.06);}
+.sb-link-icon{width:22px;text-align:center;font-size:1rem;}
+.sb-logout{color:var(--err)!important;}
+.sb-logout:hover{background:rgba(239,68,68,0.08)!important;border-left-color:var(--err)!important;}
+.sb-section-label{font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.22em;color:var(--dim);padding:8px 16px 3px;}
+
+/* MAIN */
+#main{padding:70px 14px 76px;min-height:100vh;}
+.view{display:none;}.view.active{display:block;}
+
+/* BOTTOM NAV */
+#bottomnav{position:fixed;bottom:0;left:0;right:0;height:64px;z-index:600;background:rgba(7,7,13,0.97);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;}
+.bn-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 12px;border-radius:10px;transition:background 0.2s;min-width:50px;}
+.bn-item.active{background:rgba(255,184,0,0.09);}
+.bn-icon{font-size:1.1rem;line-height:1;}
+.bn-label{font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.12em;color:var(--muted);}
+.bn-item.active .bn-label{color:var(--gold);}
+
+/* CARDS & FORMS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px;}
+.sec-head{font-family:'Bebas Neue',sans-serif;font-size:0.68rem;letter-spacing:0.2em;color:var(--gold);margin-bottom:12px;margin-top:4px;}
+.wbar{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--border);border-radius:8px;padding:14px;display:flex;gap:12px;align-items:center;margin-bottom:14px;}
 .fg{margin-bottom:12px;}
-.fl{font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:var(--cd);margin-bottom:5px;display:block;}
-.fi{width:100%;padding:11px 13px;background:var(--obs2);border:1px solid var(--gbr);border-radius:var(--rad);color:var(--ch);font-family:'Montserrat',sans-serif;font-size:0.76rem;outline:none;transition:border-color 0.2s;}
+.fl{font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:var(--muted);margin-bottom:5px;display:block;}
+.fi{width:100%;padding:11px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Montserrat',sans-serif;font-size:0.76rem;outline:none;transition:border-color 0.2s;}
 .fi:focus{border-color:var(--gold);}
-.fi::placeholder{color:var(--cd2);}
+.fi::placeholder{color:var(--dim);}
 textarea.fi{resize:vertical;min-height:80px;}
-select.fi option{background:var(--obs2);}
-/* Buttons */
-.btn{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;padding:11px 18px;border:none;cursor:pointer;transition:all 0.25s;border-radius:4px;}
-.btn-gold{background:var(--gold);color:var(--obs);}
-.btn-gold:hover{background:var(--gg);}
+select.fi option{background:var(--bg2);}
+.btn-gold{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;padding:11px 18px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--bg);border:none;border-radius:6px;cursor:pointer;transition:opacity 0.2s;width:100%;}
 .btn-gold:disabled{opacity:0.5;cursor:not-allowed;}
-.btn-ghost{background:transparent;color:var(--ch);border:1px solid var(--gbri);}
-.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
-.btn-danger{background:var(--err);color:#fff;}
-.btn-full{width:100%;}
-/* Stats grid */
+.btn-gold:hover{opacity:0.88;}
+.btn-danger{background:var(--err)!important;color:#fff!important;}
+
+/* STATS */
 .stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
-.stat-box{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);padding:14px;text-align:center;}
-.stat-num{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.04em;color:var(--ch);}
-.stat-lbl{font-family:'Montserrat',sans-serif;font-size:0.54rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--cd2);margin-top:2px;}
-/* Member rows */
-.member-row{background:var(--gb);border:1px solid var(--gbr);border-radius:var(--rad);padding:11px;display:flex;align-items:center;gap:10px;margin-bottom:7px;}
-.m-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--obs);overflow:hidden;flex-shrink:0;position:relative;}
-.m-av img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border-radius:50%;}
-.m-av img{width:100%;height:100%;object-fit:cover;}
-.m-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);}
-.m-meta{font-family:'Montserrat',sans-serif;font-size:0.6rem;color:var(--cd2);}
-.m-actions{display:flex;gap:6px;margin-left:auto;flex-shrink:0;}
-.m-btn{font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.08em;padding:4px 8px;border:none;cursor:pointer;border-radius:3px;}
+.stat-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.04em;color:var(--text);}
+.stat-lbl{font-family:'Montserrat',sans-serif;font-size:0.54rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);margin-top:2px;}
+
+/* MEMBER ROWS */
+.m-row{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:11px;display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+.m-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--bg);overflow:hidden;flex-shrink:0;position:relative;}
+.m-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.m-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--text);}
+.m-meta{font-family:'Montserrat',sans-serif;font-size:0.6rem;color:var(--dim);}
+.m-actions{display:flex;gap:5px;margin-left:auto;flex-shrink:0;}
+.m-btn{font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.08em;padding:5px 9px;border:none;cursor:pointer;border-radius:3px;}
 .m-btn-ok{background:var(--ok);color:#fff;}
+.m-btn-warn{background:var(--gold);color:var(--bg);}
 .m-btn-err{background:var(--err);color:#fff;}
 .m-btn-info{background:var(--info);color:#fff;}
-/* Media preview */
-.media-preview{width:100%;max-height:180px;object-fit:cover;border-radius:var(--rad);margin-top:8px;display:none;}
-/* Toast */
-#toast{position:fixed;bottom:80px;right:12px;background:var(--obs3);border:1px solid var(--gbr);padding:10px 14px;border-radius:20px;font-family:'Montserrat',sans-serif;font-size:0.7rem;color:var(--ch);opacity:0;transform:translateY(16px);transition:all 0.28s;pointer-events:none;max-width:260px;z-index:99999;}
-#toast.show{opacity:1;transform:translateY(0);}
-/* Loader */
-.ldr{display:flex;align-items:center;justify-content:center;padding:28px;}
-.lring{width:28px;height:28px;border:3px solid var(--gbr);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg)}}
-/* Section header */
-.sh{font-family:'Bebas Neue',sans-serif;font-size:0.68rem;letter-spacing:0.2em;color:var(--gold);margin-bottom:10px;margin-top:4px;}
-/* Status badges */
-.badge{font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.1em;padding:2px 6px;border-radius:3px;}
+
+/* BADGES */
+.badge{font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.1em;padding:2px 6px;border-radius:3px;display:inline-block;}
 .badge-ok{background:rgba(34,197,94,0.2);color:var(--ok);}
-.badge-err{background:rgba(239,68,68,0.2);color:var(--err);}
 .badge-warn{background:rgba(255,184,0,0.2);color:var(--gold);}
-.badge-info{background:rgba(59,130,246,0.2);color:var(--info);}
-/* Bottom nav */
-.bnav{position:fixed;bottom:0;left:0;right:0;z-index:500;height:62px;background:rgba(7,7,13,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--gbr);display:flex;align-items:center;justify-content:space-around;}
-.bn{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 10px;border-radius:8px;transition:all 0.2s;min-width:48px;}
-.bn.active{background:rgba(255,184,0,0.08);}
-.bn-ic{font-size:1rem;}
-.bn-lb{font-family:'Bebas Neue',sans-serif;font-size:0.48rem;letter-spacing:0.1em;color:var(--cd);}
-.bn.active .bn-lb{color:var(--gold);}
+.badge-err{background:rgba(239,68,68,0.2);color:var(--err);}
+
+/* MEDIA PREVIEW */
+.media-prev{width:100%;max-height:160px;object-fit:cover;border-radius:8px;margin-top:8px;display:none;}
+
+/* LOADER */
+.loader{display:flex;align-items:center;justify-content:center;padding:28px;}
+.loader-ring{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* TOAST */
+#toast{position:fixed;bottom:78px;right:12px;background:var(--bg3);border:1px solid var(--border);padding:10px 14px;border-radius:20px;font-family:'Montserrat',sans-serif;font-size:0.7rem;color:var(--text);opacity:0;transform:translateY(10px);transition:all 0.3s ease;pointer-events:none;max-width:260px;z-index:9999;}
+#toast.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+
+/* UPLOAD AREA */
+.upload-area{border:1px dashed var(--border2);border-radius:8px;padding:16px;text-align:center;cursor:pointer;transition:border-color 0.2s;margin-bottom:8px;}
+.upload-area:hover{border-color:var(--gold);}
+.upload-icon{font-size:1.5rem;margin-bottom:6px;}
+.upload-text{font-family:'Montserrat',sans-serif;font-size:0.66rem;color:var(--muted);}
 </style>
 </head>
 <body>
 
-<div class="sb-ov" id="sbOv"></div>
-<div class="sb" id="sb">
-  <div class="sb-h">
-    <span class="sb-logo">ICONIK ADMIN</span>
-    <button class="sb-x" id="sbClose">✕</button>
+<!-- SIDEBAR OVERLAY -->
+<div id="sbOverlay"></div>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="sb-head">
+    <span class="sb-brand">ICONIK ADMIN</span>
+    <button id="sbClose">✕</button>
   </div>
   <div style="padding:8px 0;">
-    <div class="sb-lnk" data-view="overview">📊 Overview</div>
-    <div class="sb-lnk" data-view="members">👥 Members</div>
-    <div class="sb-lnk" data-view="celebrities">⭐ Celebrities</div>
-    <div class="sb-lnk" data-view="posts">📝 Posts</div>
-    <div class="sb-lnk" data-view="news">📰 News</div>
-    <div class="sb-lnk" data-view="events">🎫 Events</div>
-    <div class="sb-lnk" data-view="messages">📩 Messages</div>
-    <div class="sb-lnk" data-view="polls">🗳️ Polls</div>
-    <div class="sb-lnk" data-view="magazine">📖 Magazine</div>
-    <div class="sb-lnk" data-view="tv">📺 ICONIK TV</div>
-    <div class="sb-lnk" data-view="subadmins">🛡️ Sub Admins</div>
-    <div class="sb-lnk" data-view="settings">⚙️ Settings</div>
-    <div class="sb-lnk" id="logoutBtn">🚪 Sign Out</div>
+    <div class="sb-section-label">Dashboard</div>
+    <div class="sb-link" data-view="overview"><span class="sb-link-icon">📊</span>Overview</div>
+    <div class="sb-section-label">Content</div>
+    <div class="sb-link" data-view="celebrities"><span class="sb-link-icon">⭐</span>Add Celebrity</div>
+    <div class="sb-link" data-view="posts"><span class="sb-link-icon">📝</span>Publish Post</div>
+    <div class="sb-link" data-view="news"><span class="sb-link-icon">📰</span>Add News</div>
+    <div class="sb-link" data-view="events"><span class="sb-link-icon">🎫</span>Add Event</div>
+    <div class="sb-link" data-view="magazine"><span class="sb-link-icon">📖</span>Magazine</div>
+    <div class="sb-link" data-view="tv"><span class="sb-link-icon">📺</span>ICONIK TV</div>
+    <div class="sb-section-label">Community</div>
+    <div class="sb-link" data-view="members"><span class="sb-link-icon">👥</span>Members</div>
+    <div class="sb-link" data-view="messages"><span class="sb-link-icon">📩</span>Send Message</div>
+    <div class="sb-link" data-view="polls"><span class="sb-link-icon">🗳️</span>Create Poll</div>
+    <div class="sb-section-label">Admin</div>
+    <div class="sb-link" data-view="subadmins"><span class="sb-link-icon">🛡️</span>Sub Admins</div>
+    <div class="sb-link sb-logout" id="logoutLink"><span class="sb-link-icon">🚪</span>Sign Out</div>
   </div>
 </div>
 
-<nav style="position:fixed;top:0;left:0;right:0;z-index:500;height:58px;background:#0E0E1A;border-bottom:1px solid rgba(255,255,255,0.09);display:flex;align-items:center;justify-content:space-between;padding:0 16px;">
+<!-- TOP NAV -->
+<div id="topnav">
   <div style="display:flex;align-items:center;gap:10px;">
-    <span style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.08em;background:linear-gradient(135deg,#FFB800,#CC9400);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">ICONIK</span>
-    <span style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.12em;color:#07070D;background:#FFB800;padding:3px 10px;">CHIEF ADMIN</span>
+    <span class="nav-logo">ICONIK</span>
+    <span class="nav-badge">CHIEF ADMIN</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px;">
-    <span id="adminName" style="font-family:'Montserrat',sans-serif;font-size:0.68rem;color:#BDB5A6;"></span>
-    <button id="menuBtn" style="background:none;border:1px solid rgba(255,255,255,0.18);border-radius:8px;width:38px;height:38px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:0;">
-      <span style="display:block;width:16px;height:2px;background:#F5F0E8;border-radius:2px;"></span>
-      <span style="display:block;width:16px;height:2px;background:#F5F0E8;border-radius:2px;"></span>
-      <span style="display:block;width:16px;height:2px;background:#F5F0E8;border-radius:2px;"></span>
-    </button>
+    <span id="adminNameEl" style="font-family:'Montserrat',sans-serif;font-size:0.68rem;color:var(--muted);"></span>
+    <button id="hamburger"><span></span><span></span><span></span></button>
   </div>
-</nav>
+</div>
 
-<div class="main">
+<!-- MAIN -->
+<div id="main">
 
 <!-- OVERVIEW -->
-<div class="view on" id="overviewV">
-  <div class="sh">Platform Overview</div>
-  <div class="stats-grid" id="statsGrid">
-    <div class="stat-box"><div class="stat-num" id="statMembers">—</div><div class="stat-lbl">Total Members</div></div>
+<div class="view active" id="overviewV">
+  <div class="wbar"><span style="font-size:1.4rem;">📊</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Platform Overview</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Real-time ICONIK stats</div></div></div>
+  <div class="stats-grid">
+    <div class="stat-box"><div class="stat-num" id="statMembers">—</div><div class="stat-lbl">Members</div></div>
     <div class="stat-box"><div class="stat-num" id="statCelebs">—</div><div class="stat-lbl">Celebrities</div></div>
     <div class="stat-box"><div class="stat-num" id="statPosts">—</div><div class="stat-lbl">Posts</div></div>
     <div class="stat-box"><div class="stat-num" id="statPending">—</div><div class="stat-lbl">Pending Verify</div></div>
   </div>
-  <div class="sh">Quick Actions</div>
+  <div class="sec-head">Quick Actions</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
-    <button class="btn btn-gold" onclick="showView('members')">👥 Members</button>
-    <button class="btn btn-ghost" onclick="showView('celebrities')">⭐ Celebrities</button>
-    <button class="btn btn-ghost" onclick="showView('posts')">📝 New Post</button>
-    <button class="btn btn-ghost" onclick="showView('messages')">📩 Message</button>
+    <button class="btn-gold" onclick="goView('members')">👥 Members</button>
+    <button class="btn-gold" onclick="goView('celebrities')" style="background:rgba(255,255,255,0.08);color:var(--text);">⭐ Add Celebrity</button>
+    <button class="btn-gold" onclick="goView('posts')" style="background:rgba(255,255,255,0.08);color:var(--text);">📝 Publish Post</button>
+    <button class="btn-gold" onclick="goView('messages')" style="background:rgba(255,255,255,0.08);color:var(--text);">📩 Message All</button>
   </div>
-  <div class="sh">Recent Members</div>
-  <div id="recentMembers"><div class="ldr"><div class="lring"></div></div></div>
+  <div class="sec-head">Recent Members</div>
+  <div id="recentMembersList"><div class="loader"><div class="loader-ring"></div></div></div>
 </div>
 
 <!-- MEMBERS -->
 <div class="view" id="membersV">
-  <div class="sh">All Members</div>
-  <input class="fi" id="memberSearch" placeholder="Search members..." oninput="searchAdminMembers()" style="margin-bottom:10px;"/>
+  <div class="wbar"><span style="font-size:1.4rem;">👥</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">All Members</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Manage and verify members</div></div></div>
+  <input class="fi" id="memberSearch" placeholder="Search by name or email..." oninput="searchMembers()" style="margin-bottom:8px;"/>
   <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;">
-    <button class="btn btn-ghost" style="font-size:0.56rem;padding:6px 10px;" onclick="filterByStatus('all')">All</button>
-    <button class="btn btn-ghost" style="font-size:0.56rem;padding:6px 10px;" onclick="filterByStatus('pending')">⏳ Pending</button>
-    <button class="btn btn-ghost" style="font-size:0.56rem;padding:6px 10px;" onclick="filterByStatus('verified')">✅ Verified</button>
+    <button onclick="filterStatus('all')" style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;padding:5px 12px;border:1px solid var(--border2);border-radius:20px;background:transparent;color:var(--muted);cursor:pointer;">All</button>
+    <button onclick="filterStatus('pending')" style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;padding:5px 12px;border:1px solid var(--border2);border-radius:20px;background:transparent;color:var(--muted);cursor:pointer;">⏳ Pending</button>
+    <button onclick="filterStatus('verified')" style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;padding:5px 12px;border:1px solid var(--border2);border-radius:20px;background:transparent;color:var(--muted);cursor:pointer;">✅ Verified</button>
   </div>
-  <div id="membersList"><div class="ldr"><div class="lring"></div></div></div>
+  <div id="membersList"><div class="loader"><div class="loader-ring"></div></div></div>
 </div>
 
 <!-- CELEBRITIES -->
 <div class="view" id="celebritiesV">
-  <div class="sh">Add Celebrity / Icon</div>
+  <div class="wbar"><span style="font-size:1.4rem;">⭐</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Add Icon / Celebrity</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Builds the celebrity fan hub</div></div></div>
   <div class="card">
-    <div class="fg"><label class="fl">Full Name *</label><input class="fi" id="celebName" placeholder="e.g. Benito Antonio Martínez Ocasio"/></div>
-    <div class="fg"><label class="fl">Stage Name / Known As</label><input class="fi" id="celebStageName" placeholder="e.g. Bad Bunny"/></div>
+    <div class="fg"><label class="fl">Full Name *</label><input class="fi" id="cName" placeholder="e.g. Benito Antonio Martínez Ocasio"/></div>
+    <div class="fg"><label class="fl">Stage Name / Known As</label><input class="fi" id="cStage" placeholder="e.g. Bad Bunny"/></div>
     <div class="fg"><label class="fl">Category *</label>
-      <select class="fi" id="celebCategory">
+      <select class="fi" id="cCat">
         <option value="">Select category...</option>
         <option>Music</option><option>Film & TV</option><option>Sports</option><option>Literature</option>
         <option>Fashion</option><option>Fitness & Wellness</option><option>Food & Culinary</option>
@@ -187,370 +204,372 @@ select.fi option{background:var(--obs2);}
         <option>Beauty</option><option>Entertainment</option><option>Leadership</option>
       </select>
     </div>
-    <div class="fg"><label class="fl">Country / Origin *</label><input class="fi" id="celebCountry" placeholder="e.g. Puerto Rico"/></div>
-    <div class="fg"><label class="fl">Total Followers (across all platforms)</label><input class="fi" id="celebFollowers" placeholder="e.g. 52-54 Million"/></div>
-    <div class="fg"><label class="fl">Bio / Description</label><textarea class="fi" id="celebBio" placeholder="Brief description of this icon..."></textarea></div>
+    <div class="fg"><label class="fl">Country / Origin *</label><input class="fi" id="cCountry" placeholder="e.g. Puerto Rico"/></div>
+    <div class="fg"><label class="fl">Total Followers (all platforms)</label><input class="fi" id="cFollowers" placeholder="e.g. 52-54 Million"/></div>
+    <div class="fg"><label class="fl">Bio / Description</label><textarea class="fi" id="cBio" placeholder="Brief description..."></textarea></div>
     <div class="fg">
-      <label class="fl">Profile Photo</label>
-      <div style="border:1px dashed var(--gbr);border-radius:var(--rad);padding:14px;text-align:center;cursor:pointer;" onclick="document.getElementById('celebPhotoFile').click()">
-        <div style="font-size:1.5rem;margin-bottom:6px;">📸</div>
-        <div style="font-family:'Montserrat',sans-serif;font-size:0.66rem;color:var(--cd);">Tap to choose photo</div>
-        <input type="file" id="celebPhotoFile" accept="image/*" style="display:none;" onchange="previewCelebPhoto(this)"/>
+      <label class="fl">Photo URL</label>
+      <input class="fi" id="cPhotoUrl" placeholder="https://... (paste direct image URL)"/>
+    </div>
+    <div class="fg"><label class="fl">Or Upload Photo</label>
+      <div class="upload-area" onclick="document.getElementById('cPhotoFile').click()">
+        <div class="upload-icon">📸</div>
+        <div class="upload-text">Tap to choose photo</div>
+        <input type="file" id="cPhotoFile" accept="image/*" style="display:none;" onchange="previewImg(this,'cPreview')"/>
       </div>
-      <img id="celebPhotoPreview" class="media-preview"/>
+      <img id="cPreview" class="media-prev"/>
     </div>
-    <div class="fg"><label class="fl">Or paste photo URL directly</label><input class="fi" id="celebPhotoUrl" placeholder="https://..."/></div>
     <div class="fg"><label class="fl">Status</label>
-      <select class="fi" id="celebStatus"><option value="Active">Active</option><option value="Rising Star">Rising Star</option><option value="Legend">Legend</option><option value="Retired">Retired</option></select>
+      <select class="fi" id="cStatus"><option>Active</option><option>Rising Star</option><option>Legend</option><option>Retired</option></select>
     </div>
-    <button class="btn btn-gold btn-full" id="addCelebBtn" onclick="addCeleb()">Add Celebrity →</button>
+    <button class="btn-gold" id="addCelebBtn" onclick="addCeleb()">Add Celebrity →</button>
   </div>
-  <div class="sh">All Celebrities</div>
-  <div id="celebsList"><div class="ldr"><div class="lring"></div></div></div>
+  <div class="sec-head">All Celebrities</div>
+  <div id="celebsList"><div class="loader"><div class="loader-ring"></div></div></div>
 </div>
 
 <!-- POSTS -->
 <div class="view" id="postsV">
-  <div class="sh">Publish as ICONIK</div>
+  <div class="wbar"><span style="font-size:1.4rem;">📝</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Publish as ICONIK</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Posts appear in member feed</div></div></div>
   <div class="card">
-    <div class="fg"><label class="fl">Title</label><input class="fi" id="postTitle" placeholder="Post title (optional)"/></div>
-    <div class="fg"><label class="fl">Content *</label><textarea class="fi" id="postContent" rows="4" placeholder="Write your post..."></textarea></div>
+    <div class="fg"><label class="fl">Title</label><input class="fi" id="pTitle" placeholder="Post title (optional)"/></div>
+    <div class="fg"><label class="fl">Content *</label><textarea class="fi" id="pContent" rows="4" placeholder="Write your post..."></textarea></div>
     <div class="fg"><label class="fl">Category</label>
-      <select class="fi" id="postCategory">
+      <select class="fi" id="pCat">
         <option value="">All Communities</option>
         <option>Music</option><option>Film & TV</option><option>Sports</option><option>Fashion</option>
-        <option>Wellness</option><option>Tech & Innovation</option><option>Entertainment</option>
+        <option>Fitness & Wellness</option><option>Tech & Innovation</option><option>Entertainment</option>
       </select>
     </div>
-    <div class="fg">
-      <label class="fl">Attach Media (Photo / Video)</label>
-      <div style="border:1px dashed var(--gbr);border-radius:var(--rad);padding:14px;text-align:center;cursor:pointer;" onclick="document.getElementById('postMediaFile').click()">
-        <div style="font-size:1.5rem;margin-bottom:6px;">📎</div>
-        <div style="font-family:'Montserrat',sans-serif;font-size:0.66rem;color:var(--cd);">Choose image or video</div>
-        <input type="file" id="postMediaFile" accept="image/*,video/*" style="display:none;" onchange="previewPostMedia(this)"/>
+    <div class="fg"><label class="fl">Media URL (image or video)</label><input class="fi" id="pMediaUrl" placeholder="https://..."/></div>
+    <div class="fg"><label class="fl">Or Upload Media</label>
+      <div class="upload-area" onclick="document.getElementById('pMediaFile').click()">
+        <div class="upload-icon">📎</div>
+        <div class="upload-text">Choose image or video</div>
+        <input type="file" id="pMediaFile" accept="image/*,video/*" style="display:none;" onchange="previewImg(this,'pPreview')"/>
       </div>
-      <img id="postMediaPreview" class="media-preview"/>
+      <img id="pPreview" class="media-prev"/>
     </div>
-    <div class="fg"><label class="fl">Or paste media URL</label><input class="fi" id="postMediaUrl" placeholder="https://..."/></div>
-    <button class="btn btn-gold btn-full" id="publishBtn" onclick="publishPost()">Publish as ICONIK →</button>
+    <button class="btn-gold" id="publishBtn" onclick="publishPost()">Publish as ICONIK →</button>
   </div>
-  <div class="sh">Recent Posts</div>
-  <div id="postsList"><div class="ldr"><div class="lring"></div></div></div>
+  <div class="sec-head">Recent Posts</div>
+  <div id="postsList"><div class="loader"><div class="loader-ring"></div></div></div>
 </div>
 
 <!-- NEWS -->
 <div class="view" id="newsV">
-  <div class="sh">Add Celebrity News</div>
+  <div class="wbar"><span style="font-size:1.4rem;">📰</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Add Celebrity News</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Appears in member News tab</div></div></div>
   <div class="card">
-    <div class="fg"><label class="fl">Headline *</label><input class="fi" id="newsTitle" placeholder="News headline..."/></div>
+    <div class="fg"><label class="fl">Headline *</label><input class="fi" id="nTitle" placeholder="News headline..."/></div>
     <div class="fg"><label class="fl">Category</label>
-      <select class="fi" id="newsCategory">
-        <option>Music</option><option>Sports</option><option>Film & TV</option><option>Fashion</option>
-        <option>Wellness</option><option>Tech & Innovation</option><option>Entertainment</option>
-      </select>
+      <select class="fi" id="nCat"><option>Music</option><option>Sports</option><option>Film & TV</option><option>Fashion</option><option>Fitness & Wellness</option><option>Tech & Innovation</option><option>Entertainment</option></select>
     </div>
-    <div class="fg"><label class="fl">Summary *</label><textarea class="fi" id="newsSummary" rows="3" placeholder="Article summary..."></textarea></div>
-    <div class="fg"><label class="fl">Full Content</label><textarea class="fi" id="newsContent" rows="5" placeholder="Full article content..."></textarea></div>
-    <div class="fg">
-      <label class="fl">Cover Image</label>
-      <div style="border:1px dashed var(--gbr);border-radius:var(--rad);padding:14px;text-align:center;cursor:pointer;" onclick="document.getElementById('newsImageFile').click()">
-        <div style="font-size:1.5rem;margin-bottom:6px;">🖼️</div>
-        <div style="font-family:'Montserrat',sans-serif;font-size:0.66rem;color:var(--cd);">Choose cover image</div>
-        <input type="file" id="newsImageFile" accept="image/*" style="display:none;" onchange="previewNewsImage(this)"/>
+    <div class="fg"><label class="fl">Summary *</label><textarea class="fi" id="nSummary" rows="3" placeholder="Article summary..."></textarea></div>
+    <div class="fg"><label class="fl">Full Content</label><textarea class="fi" id="nContent" rows="4" placeholder="Full article..."></textarea></div>
+    <div class="fg"><label class="fl">Cover Image URL</label><input class="fi" id="nImgUrl" placeholder="https://..."/></div>
+    <div class="fg"><label class="fl">Or Upload Cover Image</label>
+      <div class="upload-area" onclick="document.getElementById('nImgFile').click()">
+        <div class="upload-icon">🖼️</div>
+        <div class="upload-text">Choose cover image</div>
+        <input type="file" id="nImgFile" accept="image/*" style="display:none;" onchange="previewImg(this,'nPreview')"/>
       </div>
-      <img id="newsImagePreview" class="media-preview"/>
+      <img id="nPreview" class="media-prev"/>
     </div>
-    <div class="fg"><label class="fl">Or paste image URL</label><input class="fi" id="newsImageUrl" placeholder="https://..."/></div>
-    <button class="btn btn-gold btn-full" id="addNewsBtn" onclick="addNews()">Publish News →</button>
+    <button class="btn-gold" id="addNewsBtn" onclick="addNews()">Publish News →</button>
   </div>
-  <div class="sh">Recent News</div>
-  <div id="newsList"><div class="ldr"><div class="lring"></div></div></div>
+  <div class="sec-head">Recent News</div>
+  <div id="newsList"><div class="loader"><div class="loader-ring"></div></div></div>
 </div>
 
 <!-- EVENTS -->
 <div class="view" id="eventsV">
-  <div class="sh">Add Event</div>
+  <div class="wbar"><span style="font-size:1.4rem;">🎫</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Add Event</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Concerts · Tours · Fan Meets</div></div></div>
   <div class="card">
-    <div class="fg"><label class="fl">Event Name *</label><input class="fi" id="eventName" placeholder="e.g. Bad Bunny World Tour — Lagos"/></div>
-    <div class="fg"><label class="fl">Venue *</label><input class="fi" id="eventVenue" placeholder="Venue name and city"/></div>
-    <div class="fg"><label class="fl">Date *</label><input class="fi" type="date" id="eventDate"/></div>
+    <div class="fg"><label class="fl">Event Name *</label><input class="fi" id="eName" placeholder="e.g. Bad Bunny World Tour — Lagos"/></div>
+    <div class="fg"><label class="fl">Venue *</label><input class="fi" id="eVenue" placeholder="Venue name, city"/></div>
+    <div class="fg"><label class="fl">Date *</label><input class="fi" type="date" id="eDate"/></div>
     <div class="fg"><label class="fl">Category</label>
-      <select class="fi" id="eventCategory">
-        <option>Music</option><option>Sports</option><option>Film & TV</option><option>Fashion</option>
-        <option>Fan Meet</option><option>Virtual</option><option>All</option>
-      </select>
+      <select class="fi" id="eCat"><option>Music</option><option>Sports</option><option>Film & TV</option><option>Fashion</option><option>Fan Meet</option><option>Virtual</option><option>All</option></select>
     </div>
-    <div class="fg"><label class="fl">Ticket Price</label><input class="fi" id="eventPrice" placeholder="e.g. $85 or Free"/></div>
-    <div class="fg"><label class="fl">Ticket Link / URL</label><input class="fi" id="eventLink" placeholder="https://tickets.example.com"/></div>
-    <div class="fg"><label class="fl">Description</label><textarea class="fi" id="eventDesc" rows="3" placeholder="Event description..."></textarea></div>
-    <button class="btn btn-gold btn-full" id="addEventBtn" onclick="addEvent()">Add Event →</button>
+    <div class="fg"><label class="fl">Ticket Price</label><input class="fi" id="ePrice" placeholder="e.g. $85 or Free"/></div>
+    <div class="fg"><label class="fl">Ticket Link</label><input class="fi" id="eLink" placeholder="https://tickets.example.com"/></div>
+    <div class="fg"><label class="fl">Description</label><textarea class="fi" id="eDesc" rows="3" placeholder="Event description..."></textarea></div>
+    <button class="btn-gold" id="addEventBtn" onclick="addEvent()">Add Event →</button>
   </div>
-  <div class="sh">All Events</div>
-  <div id="eventsList"><div class="ldr"><div class="lring"></div></div></div>
+  <div class="sec-head">All Events</div>
+  <div id="eventsList"><div class="loader"><div class="loader-ring"></div></div></div>
 </div>
 
 <!-- MESSAGES -->
 <div class="view" id="messagesV">
-  <div class="sh">Send Message to All Members</div>
+  <div class="wbar"><span style="font-size:1.4rem;">📩</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Send Message to All Members</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Appears in member inbox</div></div></div>
   <div class="card">
-    <div class="fg"><label class="fl">Subject</label><input class="fi" id="msgSubject" placeholder="Message subject..."/></div>
-    <div class="fg"><label class="fl">Message *</label><textarea class="fi" id="msgContent" rows="4" placeholder="Your message to all members..."></textarea></div>
-    <button class="btn btn-gold btn-full" id="sendMsgBtn" onclick="sendMessage()">Send to All Members →</button>
+    <div class="fg"><label class="fl">Subject</label><input class="fi" id="msgSubj" placeholder="Message subject..."/></div>
+    <div class="fg"><label class="fl">Message *</label><textarea class="fi" id="msgBody" rows="4" placeholder="Your message to all members..."></textarea></div>
+    <button class="btn-gold" id="sendMsgBtn" onclick="sendMessage()">Send to All Members →</button>
   </div>
-  <div class="sh">Message History</div>
-  <div id="messagesList"><div class="ldr"><div class="lring"></div></div></div>
+  <div class="sec-head">Message History</div>
+  <div id="messagesList"><div class="loader"><div class="loader-ring"></div></div></div>
 </div>
 
 <!-- POLLS -->
 <div class="view" id="pollsV">
-  <div class="sh">Create Poll</div>
+  <div class="wbar"><span style="font-size:1.4rem;">🗳️</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Create Poll</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Members vote in the Polls tab</div></div></div>
   <div class="card">
-    <div class="fg"><label class="fl">Question *</label><input class="fi" id="pollQuestion" placeholder="e.g. Who should ICONIK partner with?"/></div>
-    <div class="fg"><label class="fl">Option 1 *</label><input class="fi" id="pollOpt1" placeholder="Option 1"/></div>
-    <div class="fg"><label class="fl">Option 2 *</label><input class="fi" id="pollOpt2" placeholder="Option 2"/></div>
-    <div class="fg"><label class="fl">Option 3</label><input class="fi" id="pollOpt3" placeholder="Option 3 (optional)"/></div>
-    <div class="fg"><label class="fl">Option 4</label><input class="fi" id="pollOpt4" placeholder="Option 4 (optional)"/></div>
-    <div class="fg"><label class="fl">Ends In</label>
-      <select class="fi" id="pollDuration">
-        <option value="1">1 Day</option><option value="3">3 Days</option>
-        <option value="7" selected>7 Days</option><option value="14">14 Days</option><option value="30">30 Days</option>
-      </select>
+    <div class="fg"><label class="fl">Question *</label><input class="fi" id="pollQ" placeholder="e.g. Who should ICONIK partner with?"/></div>
+    <div class="fg"><label class="fl">Option 1 *</label><input class="fi" id="pollO1" placeholder="Option 1"/></div>
+    <div class="fg"><label class="fl">Option 2 *</label><input class="fi" id="pollO2" placeholder="Option 2"/></div>
+    <div class="fg"><label class="fl">Option 3</label><input class="fi" id="pollO3" placeholder="Option 3 (optional)"/></div>
+    <div class="fg"><label class="fl">Option 4</label><input class="fi" id="pollO4" placeholder="Option 4 (optional)"/></div>
+    <div class="fg"><label class="fl">Duration</label>
+      <select class="fi" id="pollDur"><option value="1">1 Day</option><option value="3">3 Days</option><option value="7" selected>7 Days</option><option value="14">14 Days</option><option value="30">30 Days</option></select>
     </div>
-    <button class="btn btn-gold btn-full" id="addPollBtn" onclick="addPoll()">Create Poll →</button>
+    <button class="btn-gold" id="addPollBtn" onclick="addPoll()">Create Poll →</button>
   </div>
-  <div class="sh">Active Polls</div>
-  <div id="pollsList"><div class="ldr"><div class="lring"></div></div></div>
+  <div class="sec-head">Active Polls</div>
+  <div id="pollsList"><div class="loader"><div class="loader-ring"></div></div></div>
 </div>
 
 <!-- MAGAZINE -->
 <div class="view" id="magazineV">
-  <div class="sh">Add Magazine Article</div>
+  <div class="wbar"><span style="font-size:1.4rem;">📖</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">ICONIK Magazine</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Articles · Interviews · Exclusives</div></div></div>
   <div class="card">
     <div class="fg"><label class="fl">Title *</label><input class="fi" id="magTitle" placeholder="Article title..."/></div>
     <div class="fg"><label class="fl">Category</label>
-      <select class="fi" id="magCategory">
-        <option>Culture</option><option>Music</option><option>Sports</option><option>Fashion</option>
-        <option>Wellness</option><option>Interview</option><option>Exclusive</option>
-      </select>
+      <select class="fi" id="magCat"><option>Culture</option><option>Music</option><option>Sports</option><option>Fashion</option><option>Wellness</option><option>Interview</option><option>Exclusive</option></select>
     </div>
     <div class="fg"><label class="fl">Summary *</label><textarea class="fi" id="magSummary" rows="3" placeholder="Article summary..."></textarea></div>
-    <div class="fg"><label class="fl">Full Article</label><textarea class="fi" id="magContent" rows="6" placeholder="Full article text..."></textarea></div>
-    <div class="fg">
-      <label class="fl">Cover Image</label>
-      <div style="border:1px dashed var(--gbr);border-radius:var(--rad);padding:12px;text-align:center;cursor:pointer;" onclick="document.getElementById('magImageFile').click()">
-        <div style="font-size:1.4rem;margin-bottom:5px;">🖼️</div>
-        <div style="font-family:'Montserrat',sans-serif;font-size:0.64rem;color:var(--cd);">Choose cover image</div>
-        <input type="file" id="magImageFile" accept="image/*" style="display:none;" onchange="previewMagImage(this)"/>
-      </div>
-      <img id="magImagePreview" class="media-preview"/>
-    </div>
-    <button class="btn btn-gold btn-full" id="addMagBtn" onclick="addMagazineArticle()">Publish Article →</button>
+    <div class="fg"><label class="fl">Full Article</label><textarea class="fi" id="magContent" rows="5" placeholder="Full article text..."></textarea></div>
+    <div class="fg"><label class="fl">Cover Image URL</label><input class="fi" id="magImgUrl" placeholder="https://..."/></div>
+    <button class="btn-gold" id="addMagBtn" onclick="addMagazineArticle()">Publish Article →</button>
   </div>
 </div>
 
 <!-- ICONIK TV -->
 <div class="view" id="tvV">
-  <div class="sh">Add Video to ICONIK TV</div>
+  <div class="wbar"><span style="font-size:1.4rem;">📺</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">ICONIK TV</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Add videos for members to watch</div></div></div>
   <div class="card">
     <div class="fg"><label class="fl">Title *</label><input class="fi" id="tvTitle" placeholder="Video title..."/></div>
     <div class="fg"><label class="fl">Category</label>
-      <select class="fi" id="tvCategory">
-        <option>Music</option><option>Sports</option><option>Interviews</option>
-        <option>Fan Made</option><option>Docs</option><option>Entertainment</option>
-      </select>
+      <select class="fi" id="tvCat"><option>Music</option><option>Sports</option><option>Interviews</option><option>Fan Made</option><option>Docs</option><option>Entertainment</option></select>
     </div>
     <div class="fg"><label class="fl">Video URL *</label><input class="fi" id="tvUrl" placeholder="https://youtube.com/... or direct video URL"/></div>
     <div class="fg"><label class="fl">Thumbnail URL</label><input class="fi" id="tvThumb" placeholder="https://... (thumbnail image)"/></div>
     <div class="fg"><label class="fl">Duration</label><input class="fi" id="tvDuration" placeholder="e.g. 45 min"/></div>
-    <div class="fg"><label class="fl">Description</label><textarea class="fi" id="tvDesc" rows="3" placeholder="Video description..."></textarea></div>
-    <button class="btn btn-gold btn-full" id="addTvBtn" onclick="addTV()">Add to ICONIK TV →</button>
+    <button class="btn-gold" id="addTvBtn" onclick="addTV()">Add to ICONIK TV →</button>
   </div>
 </div>
 
 <!-- SUB ADMINS -->
 <div class="view" id="subadminsV">
-  <div class="sh">Sub Admin Management</div>
+  <div class="wbar"><span style="font-size:1.4rem;">🛡️</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Sub Admin Management</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Assign roles to trusted members</div></div></div>
   <div class="card">
-    <div class="fg"><label class="fl">Member Email</label><input class="fi" id="subAdminEmail" placeholder="member@email.com"/></div>
+    <div class="fg"><label class="fl">Member Email *</label><input class="fi" id="saEmail" placeholder="member@email.com"/></div>
     <div class="fg"><label class="fl">Role</label>
-      <select class="fi" id="subAdminRole">
-        <option value="Sub Admin">Sub Admin</option>
-        <option value="Moderator">Moderator</option>
-        <option value="Content Manager">Content Manager</option>
-      </select>
+      <select class="fi" id="saRole"><option value="Sub Admin">Sub Admin</option><option value="Moderator">Moderator</option><option value="Content Manager">Content Manager</option></select>
     </div>
-    <button class="btn btn-gold btn-full" onclick="addSubAdmin()">Add Sub Admin →</button>
+    <button class="btn-gold" onclick="addSubAdmin()">Add Sub Admin →</button>
   </div>
-  <div class="sh">Current Sub Admins</div>
-  <div id="subAdminsList"><div class="ldr"><div class="lring"></div></div></div>
+  <div class="sec-head">Current Sub Admins</div>
+  <div id="subAdminList"><div class="loader"><div class="loader-ring"></div></div></div>
 </div>
 
-<!-- SETTINGS -->
-<div class="view" id="settingsV">
-  <div class="sh">Platform Settings</div>
-  <div class="card">
-    <div class="fg"><label class="fl">Platform Name</label><input class="fi" value="ICONIK Global Fans" readonly/></div>
-    <div class="fg"><label class="fl">Admin Email</label><input class="fi" value="iconikglobal01@gmail.com" readonly/></div>
-    <div class="fg"><label class="fl">Cloudinary Cloud</label><input class="fi" value="dhazrf2xr" readonly/></div>
-    <div class="fg"><label class="fl">Upload Preset</label><input class="fi" value="iconik_uploads (must be Unsigned)" readonly/></div>
-    <div class="fg"><label class="fl">Firebase Project</label><input class="fi" value="iconik-global" readonly/></div>
-  </div>
-  <div class="sh">Danger Zone</div>
-  <div class="card">
-    <div style="font-family:'Montserrat',sans-serif;font-size:0.72rem;color:var(--cd);margin-bottom:10px;">These actions cannot be undone. Use with caution.</div>
-    <button class="btn btn-danger" onclick="if(confirm('Clear all chat messages?'))clearCollection('chat_general')">Clear Global Chat</button>
-  </div>
+</div><!-- end #main -->
+
+<!-- BOTTOM NAV -->
+<div id="bottomnav">
+  <div class="bn-item active" data-view="overview"><div class="bn-icon">📊</div><div class="bn-label">Overview</div></div>
+  <div class="bn-item" data-view="members"><div class="bn-icon">👥</div><div class="bn-label">Members</div></div>
+  <div class="bn-item" data-view="celebrities"><div class="bn-icon">⭐</div><div class="bn-label">Celebs</div></div>
+  <div class="bn-item" data-view="posts"><div class="bn-icon">📝</div><div class="bn-label">Post</div></div>
+  <div class="bn-item" data-view="events"><div class="bn-icon">🎫</div><div class="bn-label">Events</div></div>
 </div>
-
-</div><!-- end main -->
-
-<nav style="position:fixed;bottom:0;left:0;right:0;z-index:500;height:62px;background:rgba(7,7,13,0.97);border-top:1px solid rgba(255,255,255,0.09);display:flex;align-items:center;justify-content:space-around;padding:0 8px;">
-  <div data-view="overview" style="display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 10px;border-radius:8px;background:rgba(255,184,0,0.08);">
-    <span style="font-size:1rem;">📊</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.48rem;letter-spacing:0.1em;color:#FFB800;">Overview</span>
-  </div>
-  <div data-view="members" style="display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 10px;border-radius:8px;">
-    <span style="font-size:1rem;">👥</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.48rem;letter-spacing:0.1em;color:#BDB5A6;">Members</span>
-  </div>
-  <div data-view="celebrities" style="display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 10px;border-radius:8px;">
-    <span style="font-size:1rem;">⭐</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.48rem;letter-spacing:0.1em;color:#BDB5A6;">Celebs</span>
-  </div>
-  <div data-view="posts" style="display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 10px;border-radius:8px;">
-    <span style="font-size:1rem;">📝</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.48rem;letter-spacing:0.1em;color:#BDB5A6;">Post</span>
-  </div>
-  <div data-view="events" style="display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 10px;border-radius:8px;">
-    <span style="font-size:1rem;">🎫</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.48rem;letter-spacing:0.1em;color:#BDB5A6;">Events</span>
-  </div>
-</nav>
 
 <div id="toast"></div>
 
+<!-- INSTANT UI — fires before Firebase -->
+<script>
+(function(){
+  var sb  = document.getElementById('sidebar');
+  var ov  = document.getElementById('sbOverlay');
+  var hbg = document.getElementById('hamburger');
+  var xbtn= document.getElementById('sbClose');
+
+  function openSB(){ sb.classList.add('open'); ov.classList.add('open'); }
+  function closeSB(){ sb.classList.remove('open'); ov.classList.remove('open'); }
+
+  hbg.addEventListener('click', openSB);
+  xbtn.addEventListener('click', closeSB);
+  ov.addEventListener('click', closeSB);
+
+  function showView(name){
+    document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+    var el = document.getElementById(name+'V');
+    if(el) el.classList.add('active');
+    document.querySelectorAll('.bn-item').forEach(function(b){
+      b.classList[b.dataset.view===name?'add':'remove']('active');
+    });
+    document.querySelectorAll('.sb-link[data-view]').forEach(function(l){
+      l.classList[l.dataset.view===name?'add':'remove']('active');
+    });
+    closeSB();
+    // Fire loader
+    var fn = window['load_'+name];
+    if(typeof fn==='function') fn();
+  }
+  window.goView = showView;
+
+  // Bottom nav clicks
+  document.querySelectorAll('.bn-item').forEach(function(b){
+    b.addEventListener('click', function(){ showView(this.dataset.view); });
+  });
+
+  // Sidebar link clicks
+  document.querySelectorAll('.sb-link[data-view]').forEach(function(lnk){
+    lnk.addEventListener('click', function(){ showView(this.dataset.view); });
+  });
+
+  // Logout
+  document.getElementById('logoutLink').addEventListener('click', function(){
+    if(window._signOut) window._signOut();
+    else location.href='/app.html?signout=1';
+  });
+
+  console.log('✅ Admin UI ready');
+})();
+</script>
+
+<!-- FIREBASE + ADMIN LOGIC -->
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,updateDoc,deleteDoc,query,where,limit,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-const _cfg={apiKey:"AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",authDomain:"iconik-global.firebaseapp.com",projectId:"iconik-global",storageBucket:"iconik-global.firebasestorage.app",messagingSenderId:"1040054516979",appId:"1:1040054516979:web:33cd5f07ae8fc146a30b86"};
-const _app=initializeApp(_cfg),auth=getAuth(_app),db=getFirestore(_app);
-async function safeGet(ref){try{return await Promise.race([getDocs(ref),new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),5000))]);}catch(e){console.warn('Firestore:',e.message);return{empty:true,size:0,forEach:()=>{},docs:[]};}}
-function toast(msg,type='success'){let t=document.getElementById('toast');t.textContent=msg;t.style.background=type==='error'?'#7f1d1d':type==='info'?'#1e3a5f':'#14532d';t.style.opacity='1';t.style.transform='translateY(0)';setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(16px)';},3000);}
-async function uploadMedia(file){const fd=new FormData();fd.append('file',file);fd.append('upload_preset','iconik_uploads');const r=await fetch('https://api.cloudinary.com/v1_1/dhazrf2xr/upload',{method:'POST',body:fd});if(!r.ok)throw new Error('Upload failed — ensure iconik_uploads preset is Unsigned in Cloudinary');const d=await r.json();return{url:d.secure_url,type:file.type.startsWith('video')?'video':'image'};}
 
-const CHIEF='iconikglobal01@gmail.com';
+const cfg={apiKey:"AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",authDomain:"iconik-global.firebaseapp.com",projectId:"iconik-global",storageBucket:"iconik-global.firebasestorage.app",messagingSenderId:"1040054516979",appId:"1:1040054516979:web:33cd5f07ae8fc146a30b86"};
+const ADMIN_EMAIL="iconikglobal01@gmail.com";
+const fb=initializeApp(cfg),auth=getAuth(fb),db=getFirestore(fb);
+
+// Safe fetch
+async function sg(ref){
+  try{return await Promise.race([getDocs(ref),new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),5000))]);}
+  catch(e){console.warn('Firestore:',e.message);return{empty:true,forEach:()=>{},docs:[],size:0};}
+}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function toast(msg,type){
+  var t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.background=type==='error'?'rgba(127,29,29,0.95)':type==='info'?'rgba(30,58,95,0.95)':'rgba(20,83,45,0.95)';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+window.toast=toast;
+
+// Sign out
+window._signOut=async function(){
+  await signOut(auth);
+  location.replace('/app.html?signout=1');
+};
+
+// Cloudinary upload
+async function uploadFile(file){
+  const fd=new FormData();
+  fd.append('file',file);
+  fd.append('upload_preset','iconik_uploads');
+  const r=await fetch('https://api.cloudinary.com/v1_1/dhazrf2xr/upload',{method:'POST',body:fd});
+  if(!r.ok)throw new Error('Upload failed — make sure iconik_uploads preset is set to Unsigned in Cloudinary');
+  return(await r.json()).secure_url;
+}
+
+// Preview uploaded image
+window.previewImg=function(input,previewId){
+  const file=input.files[0];if(!file)return;
+  const prev=document.getElementById(previewId);
+  const reader=new FileReader();
+  reader.onload=e=>{prev.src=e.target.result;prev.style.display='block';};
+  reader.readAsDataURL(file);
+};
+
 let allMembers=[];
 
 // ── AUTH GUARD ──
 onAuthStateChanged(auth,async u=>{
-  if(!u){location.href='app.html';return;}
+  if(!u){location.replace('/app.html');return;}
   try{
     const d=await getDoc(doc(db,'users',u.uid));
     const data=d.exists()?d.data():{};
-    const isAdmin=u.email===CHIEF||data.role==='admin'||data.role==='Sub Admin'||data.role==='Moderator';
-    if(!isAdmin){alert('Access denied. Admin only.');location.href='dashboard.html';return;}
-    document.getElementById('adminName').textContent=data.name||u.email;
-    initAdmin();
-  }catch(e){console.error(e);location.href='dashboard.html';}
+    const allowed=['admin','Sub Admin','Moderator','Content Manager'];
+    if(u.email!==ADMIN_EMAIL&&!allowed.includes(data.role)){
+      alert('Access denied. Admin only.');
+      location.replace('/dashboard.html');
+      return;
+    }
+    document.getElementById('adminNameEl').textContent=data.name||u.email;
+  }catch(e){console.error(e);}
+  // Load all sections
+  load_overview();
+  load_members();
+  load_celebrities();
+  load_posts();
+  load_news();
+  load_events();
+  load_messages();
+  load_polls();
+  load_subadmins();
 });
 
-function initAdmin(){
-  initSidebar();
-  initBottomNav();
-  loadOverview();
-  loadMembers();
-  loadCelebrities();
-  loadPosts();
-  loadNews();
-  loadEvents();
-  loadMessages();
-  loadPolls();
-  loadSubAdmins();
-}
-
-// ── SIDEBAR ──
-function initSidebar(){
-  const sb=document.getElementById('sb');
-  const ov=document.getElementById('sbOv');
-  document.getElementById('menuBtn').onclick=()=>{sb.classList.add('on');ov.classList.add('on');};
-  document.getElementById('sbClose').onclick=closeSB;
-  ov.onclick=closeSB;
-  sb.querySelectorAll('.sb-lnk[data-view]').forEach(l=>{
-    l.onclick=function(){closeSB();showView(this.dataset.view);};
-  });
-  document.getElementById('logoutBtn').onclick=async()=>{await signOut(auth);location.href='app.html';};
-}
-function closeSB(){document.getElementById('sb').classList.remove('on');document.getElementById('sbOv').classList.remove('on');}
-
-function initBottomNav(){
-  document.querySelectorAll('nav [data-view]').forEach(b=>{
-    if(!b.closest('.sb')){
-      b.style.cursor='pointer';
-      b.onclick=function(){showView(this.dataset.view);};
-    }
-  });
-}
-
-function showView(nm){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
-  const t=document.getElementById(nm+'V');
-  if(t)t.classList.add('on');
-  document.querySelectorAll('.bnav .bn').forEach(b=>b.classList[b.dataset.view===nm?'add':'remove']('active'));
-  document.querySelectorAll('.sb-lnk').forEach(l=>l.classList[l.dataset.view===nm?'add':'remove']('active'));
-}
-window.showView=showView;
-
 // ── OVERVIEW ──
-async function loadOverview(){
+window.load_overview=async function(){
   try{
-    const [ms,cs,ps]=await Promise.all([
-      safeGet(query(collection(db,'users'),limit(200))),
-      safeGet(query(collection(db,'celebrities'),limit(200))),
-      safeGet(query(collection(db,'posts'),limit(200)))
+    const[ms,cs,ps]=await Promise.all([
+      sg(query(collection(db,'users'),limit(200))),
+      sg(query(collection(db,'celebrities'),limit(200))),
+      sg(query(collection(db,'posts'),limit(200)))
     ]);
     document.getElementById('statMembers').textContent=ms.size||0;
     document.getElementById('statCelebs').textContent=cs.size||0;
     document.getElementById('statPosts').textContent=ps.size||0;
-    let pending=0;ms.forEach(d=>{if(d.data().verificationStatus==='pending')pending++;});
+    let pending=0;ms.forEach(d=>{if((d.data().verificationStatus||'pending')==='pending')pending++;});
     document.getElementById('statPending').textContent=pending;
     // Recent members
     const recent=[];ms.forEach(d=>recent.push({id:d.id,...d.data()}));
     recent.sort((a,b)=>(b.joinedAt?.seconds||0)-(a.joinedAt?.seconds||0));
-    document.getElementById('recentMembers').innerHTML=recent.slice(0,5).map(m=>memberRow(m)).join('')||'<div style="color:var(--cd);font-size:0.72rem;padding:10px;">No members yet.</div>';
+    document.getElementById('recentMembersList').innerHTML=recent.slice(0,5).map(m=>memberRow(m,true)).join('')||'<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No members yet.</div>';
     attachMemberActions();
   }catch(e){console.error(e);}
-}
+};
 
 // ── MEMBERS ──
-async function loadMembers(){
+window.load_members=async function(){
   const el=document.getElementById('membersList');
-  try{
-    const snap=await safeGet(query(collection(db,'users'),limit(100)));
-    allMembers=[];snap.forEach(d=>allMembers.push({id:d.id,...d.data()}));
-    allMembers.sort((a,b)=>(b.joinedAt?.seconds||0)-(a.joinedAt?.seconds||0));
-    renderAdminMembers(allMembers);
-  }catch{el.innerHTML='<div style="color:var(--cd);padding:10px;">Error loading members.</div>';}
-}
+  const snap=await sg(query(collection(db,'users'),limit(100)));
+  allMembers=[];snap.forEach(d=>allMembers.push({id:d.id,...d.data()}));
+  allMembers.sort((a,b)=>(b.joinedAt?.seconds||0)-(a.joinedAt?.seconds||0));
+  renderMembers(allMembers);
+};
 
-function renderAdminMembers(members){
+function renderMembers(list){
   const el=document.getElementById('membersList');
-  if(!members.length){el.innerHTML='<div style="color:var(--cd);font-size:0.72rem;padding:10px;">No members found.</div>';return;}
-  el.innerHTML=members.map(m=>memberRow(m)).join('');
+  if(!list.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No members found.</div>';return;}
+  el.innerHTML=list.map(m=>memberRow(m,false)).join('');
   attachMemberActions();
 }
 
-function memberRow(m){
+function memberRow(m,compact){
   const nm=esc(m.name||'Member');
-  const av=m.profilePic?`<img src="${esc(m.profilePic)}" alt="" onerror="this.style.display='none'"/>`:nm.charAt(0);
   const status=m.verificationStatus||'pending';
   const badgeCls=status==='verified'?'badge-ok':status==='rejected'?'badge-err':'badge-warn';
-  return`<div class="member-row" data-uid="${m.id}">
-    <div class="m-av">${av}</div>
+  const photo=m.profilePic&&m.profilePic.startsWith('http')?`<img src="${esc(m.profilePic)}" onerror="this.remove()"/>`:'';
+  return`<div class="m-row">
+    <div class="m-av">${photo}${nm.charAt(0)}</div>
     <div style="flex:1;min-width:0;">
       <div class="m-name">${nm} <span class="badge ${badgeCls}">${status}</span></div>
-      <div class="m-meta">${esc(m.email||'')} · ${esc(m.country||'—')} · ${esc(m.tier||'Fan')}</div>
+      <div class="m-meta">${compact?esc(m.country||'—'):esc(m.email||'')+'&nbsp;·&nbsp;'+esc(m.country||'—')+'&nbsp;·&nbsp;'+esc(m.tier||'Fan')}</div>
     </div>
     <div class="m-actions">
-      ${status!=='verified'?`<button class="m-btn m-btn-ok" data-action="verify" data-uid="${m.id}">✓</button>`:''}
-      ${status==='verified'?`<button class="m-btn m-btn-err" data-action="unverify" data-uid="${m.id}">✕</button>`:''}
-      <button class="m-btn m-btn-info" data-action="vip" data-uid="${m.id}" data-tier="${esc(m.tier||'Fan')}">VIP</button>
-      <button class="m-btn m-btn-err" data-action="delete" data-uid="${m.id}">🗑</button>
+      ${status!=='verified'?`<button class="m-btn m-btn-ok" data-action="verify" data-uid="${m.id}" title="Verify">✓</button>`:''}
+      ${status==='verified'?`<button class="m-btn m-btn-warn" data-action="unverify" data-uid="${m.id}" title="Remove verification">↩</button>`:''}
+      <button class="m-btn m-btn-info" data-action="vip" data-uid="${m.id}" data-tier="${esc(m.tier||'Fan')}" title="Change tier">VIP</button>
+      <button class="m-btn m-btn-err" data-action="delete" data-uid="${m.id}" title="Delete">🗑</button>
     </div>
   </div>`;
 }
@@ -558,314 +577,282 @@ function memberRow(m){
 function attachMemberActions(){
   document.querySelectorAll('[data-action]').forEach(btn=>{
     btn.onclick=async function(){
-      const action=this.dataset.action;
-      const uid=this.dataset.uid;
+      const{action,uid,tier}=this.dataset;
       if(action==='verify'){
         await updateDoc(doc(db,'users',uid),{verificationStatus:'verified'});
-        toast('Member verified! ✅');loadMembers();loadOverview();
-      } else if(action==='unverify'){
+        toast('Member verified! ✅');load_members();load_overview();
+      }else if(action==='unverify'){
         await updateDoc(doc(db,'users',uid),{verificationStatus:'pending'});
-        toast('Verification removed');loadMembers();
-      } else if(action==='vip'){
-        const tier=prompt('Set tier (Fan / VIP Silver / VIP Gold):',this.dataset.tier||'Fan');
-        if(tier){await updateDoc(doc(db,'users',uid),{tier});toast(`Tier set to ${tier}`);loadMembers();}
-      } else if(action==='delete'){
-        if(confirm('Delete this member? This cannot be undone.')){
-          await deleteDoc(doc(db,'users',uid));toast('Member removed');loadMembers();loadOverview();
+        toast('Verification removed');load_members();
+      }else if(action==='vip'){
+        const t=prompt('Set tier:',tier||'Fan');
+        if(t){await updateDoc(doc(db,'users',uid),{tier:t});toast('Tier updated: '+t);load_members();}
+      }else if(action==='delete'){
+        if(confirm('Delete this member? Cannot be undone.')){
+          await deleteDoc(doc(db,'users',uid));toast('Member removed');load_members();load_overview();
         }
       }
     };
   });
 }
 
-window.searchAdminMembers=function(){
+window.searchMembers=function(){
   const q=document.getElementById('memberSearch').value.toLowerCase();
-  renderAdminMembers(q?allMembers.filter(m=>m.name?.toLowerCase().includes(q)||m.email?.toLowerCase().includes(q)||m.country?.toLowerCase().includes(q)):allMembers);
+  renderMembers(q?allMembers.filter(m=>m.name?.toLowerCase().includes(q)||m.email?.toLowerCase().includes(q)):allMembers);
 };
-window.filterByStatus=function(s){renderAdminMembers(s==='all'?allMembers:allMembers.filter(m=>(m.verificationStatus||'pending')===s));};
+window.filterStatus=function(s){
+  renderMembers(s==='all'?allMembers:allMembers.filter(m=>(m.verificationStatus||'pending')===s));
+};
 
 // ── CELEBRITIES ──
-async function loadCelebrities(){
+window.load_celebrities=async function(){
   const el=document.getElementById('celebsList');
-  try{
-    const snap=await safeGet(collection(db,'celebrities'));
-    const celebs=[];snap.forEach(d=>celebs.push({id:d.id,...d.data()}));
-    if(!celebs.length){el.innerHTML='<div style="color:var(--cd);font-size:0.72rem;padding:10px;">No celebrities added yet.</div>';return;}
-    el.innerHTML=celebs.map(c=>`
-      <div class="member-row">
-        <div class="m-av" style="font-size:1.2rem;">${c.photo?`<img src="${esc(c.photo)}" alt="" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"/>`:esc((c.name||'?').charAt(0))}</div>
-        <div style="flex:1;min-width:0;">
-          <div class="m-name">${esc(c.name||'')}</div>
-          <div class="m-meta">${esc(c.category||'')} · ${esc(c.country||'')} · ${esc(c.followers||'')}</div>
-        </div>
-        <button class="m-btn m-btn-err" onclick="deleteCeleb('${c.id}','${esc(c.name||'')}')">🗑</button>
-      </div>`).join('');
-  }catch{el.innerHTML='<div style="color:var(--cd);padding:10px;">Error loading.</div>';}
-}
-
-window.previewCelebPhoto=function(input){
-  const file=input.files[0];if(!file)return;
-  const prev=document.getElementById('celebPhotoPreview');
-  const reader=new FileReader();
-  reader.onload=e=>{prev.src=e.target.result;prev.style.display='block';};
-  reader.readAsDataURL(file);
+  const snap=await sg(query(collection(db,'celebrities'),limit(50)));
+  const celebs=[];snap.forEach(d=>celebs.push({id:d.id,...d.data()}));
+  if(!celebs.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No celebrities added yet.</div>';return;}
+  el.innerHTML=celebs.map(c=>`
+    <div class="m-row">
+      <div class="m-av" style="font-size:1.1rem;">
+        ${c.photo&&c.photo.startsWith('http')?`<img src="${esc(c.photo)}" onerror="this.remove()"/>`:''}
+        ${esc((c.name||'?').charAt(0))}
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div class="m-name">${esc(c.name||'')}</div>
+        <div class="m-meta">${esc(c.category||'')} · ${esc(c.country||'')} · ${esc(c.followers||'')}</div>
+      </div>
+      <button class="m-btn m-btn-err" onclick="deleteCeleb('${c.id}','${esc(c.name||'')}')">🗑</button>
+    </div>`).join('');
 };
 
 window.addCeleb=async function(){
   const btn=document.getElementById('addCelebBtn');
-  const name=document.getElementById('celebName').value.trim();
-  const category=document.getElementById('celebCategory').value;
-  if(!name||!category){toast('Name and category are required','error');return;}
+  const name=document.getElementById('cName').value.trim();
+  const cat=document.getElementById('cCat').value;
+  if(!name||!cat){toast('Name and category are required','error');return;}
   btn.disabled=true;btn.textContent='Adding...';
   try{
-    let photoUrl=document.getElementById('celebPhotoUrl').value.trim();
-    const photoFile=document.getElementById('celebPhotoFile').files[0];
-    if(photoFile&&!photoUrl){
-      const r=await uploadMedia(photoFile);
-      photoUrl=r.url;
-    }
+    let photo=document.getElementById('cPhotoUrl').value.trim();
+    const file=document.getElementById('cPhotoFile').files[0];
+    if(file&&!photo){photo=await uploadFile(file);}
     await addDoc(collection(db,'celebrities'),{
-      name,stageName:document.getElementById('celebStageName').value.trim(),
-      category,country:document.getElementById('celebCountry').value.trim(),
-      followers:document.getElementById('celebFollowers').value.trim(),
-      bio:document.getElementById('celebBio').value.trim(),
-      photo:photoUrl,status:document.getElementById('celebStatus').value,
+      name,stageName:document.getElementById('cStage').value.trim(),
+      category:cat,country:document.getElementById('cCountry').value.trim(),
+      followers:document.getElementById('cFollowers').value.trim(),
+      bio:document.getElementById('cBio').value.trim(),
+      photo,status:document.getElementById('cStatus').value,
       createdAt:serverTimestamp()
     });
-    toast(`${name} added! ⭐`);
-    // Clear form
-    ['celebName','celebStageName','celebCountry','celebFollowers','celebBio','celebPhotoUrl'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('celebCategory').value='';
-    document.getElementById('celebPhotoPreview').style.display='none';
-    loadCelebrities();
-  }catch(e){toast('Error adding celebrity. Check Cloudinary preset is Unsigned.','error');console.error(e);}
+    toast(name+' added! ⭐');
+    ['cName','cStage','cCountry','cFollowers','cBio','cPhotoUrl'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('cCat').value='';
+    document.getElementById('cPreview').style.display='none';
+    load_celebrities();
+  }catch(e){toast(e.message||'Error adding celebrity','error');}
   btn.disabled=false;btn.textContent='Add Celebrity →';
 };
 
 window.deleteCeleb=async function(id,name){
-  if(!confirm(`Delete ${name}? This cannot be undone.`))return;
+  if(!confirm('Delete '+name+'?'))return;
   await deleteDoc(doc(db,'celebrities',id));
-  toast(`${name} removed`);loadCelebrities();
+  toast(name+' removed');load_celebrities();load_overview();
 };
 
 // ── POSTS ──
-async function loadPosts(){
+window.load_posts=async function(){
   const el=document.getElementById('postsList');
-  try{
-    const snap=await safeGet(query(collection(db,'posts'),limit(20)));
-    const posts=[];snap.forEach(d=>posts.push({id:d.id,...d.data()}));
-    posts.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-    if(!posts.length){el.innerHTML='<div style="color:var(--cd);font-size:0.72rem;padding:10px;">No posts yet.</div>';return;}
-    el.innerHTML=posts.map(p=>`
-      <div class="member-row">
-        <div style="flex:1;min-width:0;">
-          <div class="m-name">${esc(p.title||p.content?.substring(0,50)||'Post')}</div>
-          <div class="m-meta">${esc(p.category||'General')} · ${esc(p.userName||'ICONIK')} · ${p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString():''}</div>
-        </div>
-        <button class="m-btn m-btn-err" onclick="deletePost('${p.id}')">🗑</button>
-      </div>`).join('');
-  }catch{el.innerHTML='<div style="color:var(--cd);padding:10px;">Error loading posts.</div>';}
-}
-
-window.previewPostMedia=function(input){
-  const file=input.files[0];if(!file)return;
-  const r=new FileReader();r.onload=e=>{const p=document.getElementById('postMediaPreview');p.src=e.target.result;p.style.display='block';};r.readAsDataURL(file);
+  const snap=await sg(query(collection(db,'posts'),limit(20)));
+  const posts=[];snap.forEach(d=>posts.push({id:d.id,...d.data()}));
+  posts.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+  if(!posts.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No posts yet.</div>';return;}
+  el.innerHTML=posts.map(p=>`
+    <div class="m-row">
+      <div style="flex:1;min-width:0;">
+        <div class="m-name">${esc(p.title||p.content?.substring(0,50)||'Post')}</div>
+        <div class="m-meta">${esc(p.category||'General')} · ${esc(p.userName||'ICONIK')} · ${p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString():''}</div>
+      </div>
+      <button class="m-btn m-btn-err" onclick="deleteItem('posts','${p.id}',load_posts)">🗑</button>
+    </div>`).join('');
 };
 
 window.publishPost=async function(){
   const btn=document.getElementById('publishBtn');
-  const content=document.getElementById('postContent').value.trim();
+  const content=document.getElementById('pContent').value.trim();
   if(!content){toast('Post content required','error');return;}
   btn.disabled=true;btn.textContent='Publishing...';
   try{
-    let mediaUrl=document.getElementById('postMediaUrl').value.trim();
-    const mediaFile=document.getElementById('postMediaFile').files[0];
-    if(mediaFile&&!mediaUrl){const r=await uploadMedia(mediaFile);mediaUrl=r.url;}
+    let mediaUrl=document.getElementById('pMediaUrl').value.trim();
+    const file=document.getElementById('pMediaFile').files[0];
+    if(file&&!mediaUrl){mediaUrl=await uploadFile(file);}
     await addDoc(collection(db,'posts'),{
-      title:document.getElementById('postTitle').value.trim(),
-      content,category:document.getElementById('postCategory').value,
+      title:document.getElementById('pTitle').value.trim(),
+      content,category:document.getElementById('pCat').value,
       imageUrl:mediaUrl,userId:'admin',userName:'ICONIK',
       userPhoto:'',isAdmin:true,likeCount:0,commentCount:0,
       createdAt:serverTimestamp()
     });
     toast('Post published! 🌟');
-    ['postTitle','postContent','postMediaUrl'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('postMediaPreview').style.display='none';
-    loadPosts();
-  }catch(e){toast('Error publishing. Check Cloudinary preset is Unsigned.','error');console.error(e);}
+    ['pTitle','pContent','pMediaUrl'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('pPreview').style.display='none';
+    load_posts();
+  }catch(e){toast(e.message||'Error publishing','error');}
   btn.disabled=false;btn.textContent='Publish as ICONIK →';
 };
 
-window.deletePost=async function(id){if(!confirm('Delete post?'))return;await deleteDoc(doc(db,'posts',id));toast('Post deleted');loadPosts();};
-
 // ── NEWS ──
-async function loadNews(){
+window.load_news=async function(){
   const el=document.getElementById('newsList');
-  try{
-    const snap=await safeGet(query(collection(db,'celebrityNews'),limit(20)));
-    const news=[];snap.forEach(d=>news.push({id:d.id,...d.data()}));
-    news.sort((a,b)=>(b.publishedAt?.seconds||0)-(a.publishedAt?.seconds||0));
-    if(!news.length){el.innerHTML='<div style="color:var(--cd);font-size:0.72rem;padding:10px;">No news articles yet.</div>';return;}
-    el.innerHTML=news.map(n=>`
-      <div class="member-row">
-        <div style="flex:1;min-width:0;">
-          <div class="m-name">${esc(n.title||'')}</div>
-          <div class="m-meta">${esc(n.category||'')} · ${n.publishedAt?.toDate?n.publishedAt.toDate().toLocaleDateString():''}</div>
-        </div>
-        <button class="m-btn m-btn-err" onclick="deleteItem('celebrityNews','${n.id}')">🗑</button>
-      </div>`).join('');
-  }catch{el.innerHTML='<div style="color:var(--cd);padding:10px;">Error loading.</div>';}
-}
-
-window.previewNewsImage=function(input){const r=new FileReader();r.onload=e=>{const p=document.getElementById('newsImagePreview');p.src=e.target.result;p.style.display='block';};r.readAsDataURL(input.files[0]);};
+  const snap=await sg(query(collection(db,'celebrityNews'),limit(20)));
+  const news=[];snap.forEach(d=>news.push({id:d.id,...d.data()}));
+  news.sort((a,b)=>(b.publishedAt?.seconds||0)-(a.publishedAt?.seconds||0));
+  if(!news.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No news yet.</div>';return;}
+  el.innerHTML=news.map(n=>`
+    <div class="m-row">
+      <div style="flex:1;min-width:0;">
+        <div class="m-name">${esc(n.title||'')}</div>
+        <div class="m-meta">${esc(n.category||'')} · ${n.publishedAt?.toDate?n.publishedAt.toDate().toLocaleDateString():''}</div>
+      </div>
+      <button class="m-btn m-btn-err" onclick="deleteItem('celebrityNews','${n.id}',load_news)">🗑</button>
+    </div>`).join('');
+};
 
 window.addNews=async function(){
   const btn=document.getElementById('addNewsBtn');
-  const title=document.getElementById('newsTitle').value.trim();
-  const summary=document.getElementById('newsSummary').value.trim();
+  const title=document.getElementById('nTitle').value.trim();
+  const summary=document.getElementById('nSummary').value.trim();
   if(!title||!summary){toast('Title and summary required','error');return;}
   btn.disabled=true;btn.textContent='Publishing...';
   try{
-    let imgUrl=document.getElementById('newsImageUrl').value.trim();
-    const imgFile=document.getElementById('newsImageFile').files[0];
-    if(imgFile&&!imgUrl){const r=await uploadMedia(imgFile);imgUrl=r.url;}
+    let imgUrl=document.getElementById('nImgUrl').value.trim();
+    const file=document.getElementById('nImgFile').files[0];
+    if(file&&!imgUrl){imgUrl=await uploadFile(file);}
     await addDoc(collection(db,'celebrityNews'),{
-      title,category:document.getElementById('newsCategory').value,
-      summary,content:document.getElementById('newsContent').value.trim(),
+      title,category:document.getElementById('nCat').value,
+      summary,content:document.getElementById('nContent').value.trim(),
       imageUrl:imgUrl,publishedAt:serverTimestamp()
     });
     toast('News published! 📰');
-    ['newsTitle','newsSummary','newsContent','newsImageUrl'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('newsImagePreview').style.display='none';
-    loadNews();
-  }catch(e){toast('Error publishing news','error');console.error(e);}
+    ['nTitle','nSummary','nContent','nImgUrl'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('nPreview').style.display='none';
+    load_news();
+  }catch(e){toast(e.message||'Error publishing','error');}
   btn.disabled=false;btn.textContent='Publish News →';
 };
 
 // ── EVENTS ──
-async function loadEvents(){
+window.load_events=async function(){
   const el=document.getElementById('eventsList');
-  try{
-    const snap=await safeGet(query(collection(db,'events'),limit(20)));
-    const events=[];snap.forEach(d=>events.push({id:d.id,...d.data()}));
-    events.sort((a,b)=>(a.eventDate||'').localeCompare(b.eventDate||''));
-    if(!events.length){el.innerHTML='<div style="color:var(--cd);font-size:0.72rem;padding:10px;">No events yet.</div>';return;}
-    el.innerHTML=events.map(e=>`
-      <div class="member-row">
-        <div style="flex:1;min-width:0;">
-          <div class="m-name">${esc(e.name||'')}</div>
-          <div class="m-meta">${esc(e.venue||'')} · ${esc(e.eventDate||'')} · ${esc(e.price||'')}</div>
-        </div>
-        <button class="m-btn m-btn-err" onclick="deleteItem('events','${e.id}')">🗑</button>
-      </div>`).join('');
-  }catch{el.innerHTML='<div style="color:var(--cd);padding:10px;">Error loading.</div>';}
-}
+  const snap=await sg(query(collection(db,'events'),limit(20)));
+  const events=[];snap.forEach(d=>events.push({id:d.id,...d.data()}));
+  events.sort((a,b)=>(a.eventDate||'').localeCompare(b.eventDate||''));
+  if(!events.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No events yet.</div>';return;}
+  el.innerHTML=events.map(e=>`
+    <div class="m-row">
+      <div style="flex:1;min-width:0;">
+        <div class="m-name">${esc(e.name||'')}</div>
+        <div class="m-meta">${esc(e.venue||'')} · ${esc(e.eventDate||'')} · ${esc(e.price||'')}</div>
+      </div>
+      <button class="m-btn m-btn-err" onclick="deleteItem('events','${e.id}',load_events)">🗑</button>
+    </div>`).join('');
+};
 
 window.addEvent=async function(){
   const btn=document.getElementById('addEventBtn');
-  const name=document.getElementById('eventName').value.trim();
-  const venue=document.getElementById('eventVenue').value.trim();
-  const date=document.getElementById('eventDate').value;
+  const name=document.getElementById('eName').value.trim();
+  const venue=document.getElementById('eVenue').value.trim();
+  const date=document.getElementById('eDate').value;
   if(!name||!venue||!date){toast('Name, venue and date required','error');return;}
   btn.disabled=true;btn.textContent='Adding...';
   try{
     await addDoc(collection(db,'events'),{
       name,venue,eventDate:date,
-      category:document.getElementById('eventCategory').value,
-      price:document.getElementById('eventPrice').value.trim(),
-      ticketLink:document.getElementById('eventLink').value.trim(),
-      description:document.getElementById('eventDesc').value.trim(),
+      category:document.getElementById('eCat').value,
+      price:document.getElementById('ePrice').value.trim(),
+      ticketLink:document.getElementById('eLink').value.trim(),
+      description:document.getElementById('eDesc').value.trim(),
       createdAt:serverTimestamp()
     });
     toast('Event added! 🎫');
-    ['eventName','eventVenue','eventPrice','eventLink','eventDesc'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('eventDate').value='';
-    loadEvents();
-  }catch(e){toast('Error adding event','error');console.error(e);}
+    ['eName','eVenue','ePrice','eLink','eDesc'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('eDate').value='';
+    load_events();
+  }catch(e){toast(e.message||'Error adding event','error');}
   btn.disabled=false;btn.textContent='Add Event →';
 };
 
 // ── MESSAGES ──
-async function loadMessages(){
+window.load_messages=async function(){
   const el=document.getElementById('messagesList');
-  try{
-    const snap=await safeGet(query(collection(db,'messages'),limit(20)));
-    const msgs=[];snap.forEach(d=>msgs.push({id:d.id,...d.data()}));
-    msgs.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-    if(!msgs.length){el.innerHTML='<div style="color:var(--cd);font-size:0.72rem;padding:10px;">No messages sent yet.</div>';return;}
-    el.innerHTML=msgs.map(m=>`
-      <div class="member-row">
-        <div style="flex:1;min-width:0;">
-          <div class="m-name">${esc(m.subject||'Message')}</div>
-          <div class="m-meta">${esc(m.content?.substring(0,60)||'')} · ${m.createdAt?.toDate?m.createdAt.toDate().toLocaleDateString():''}</div>
-        </div>
-        <button class="m-btn m-btn-err" onclick="deleteItem('messages','${m.id}')">🗑</button>
-      </div>`).join('');
-  }catch{el.innerHTML='<div style="color:var(--cd);padding:10px;">Error loading.</div>';}
-}
+  const snap=await sg(query(collection(db,'messages'),limit(20)));
+  const msgs=[];snap.forEach(d=>msgs.push({id:d.id,...d.data()}));
+  msgs.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+  if(!msgs.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No messages sent yet.</div>';return;}
+  el.innerHTML=msgs.map(m=>`
+    <div class="m-row">
+      <div style="flex:1;min-width:0;">
+        <div class="m-name">${esc(m.subject||'Message')}</div>
+        <div class="m-meta">${esc((m.content||'').substring(0,60))} · ${m.createdAt?.toDate?m.createdAt.toDate().toLocaleDateString():''}</div>
+      </div>
+      <button class="m-btn m-btn-err" onclick="deleteItem('messages','${m.id}',load_messages)">🗑</button>
+    </div>`).join('');
+};
 
 window.sendMessage=async function(){
   const btn=document.getElementById('sendMsgBtn');
-  const content=document.getElementById('msgContent').value.trim();
+  const content=document.getElementById('msgBody').value.trim();
   if(!content){toast('Message content required','error');return;}
   btn.disabled=true;btn.textContent='Sending...';
   try{
     await addDoc(collection(db,'messages'),{
-      subject:document.getElementById('msgSubject').value.trim(),
+      subject:document.getElementById('msgSubj').value.trim(),
       content,fromName:'ICONIK Chief Admin',fromRole:'CHIEF ADMIN',
       createdAt:serverTimestamp()
     });
     toast('Message sent to all members! 📩');
-    document.getElementById('msgSubject').value='';
-    document.getElementById('msgContent').value='';
-    loadMessages();
-  }catch(e){toast('Error sending message','error');console.error(e);}
+    ['msgSubj','msgBody'].forEach(id=>document.getElementById(id).value='');
+    load_messages();
+  }catch(e){toast(e.message||'Error sending','error');}
   btn.disabled=false;btn.textContent='Send to All Members →';
 };
 
 // ── POLLS ──
-async function loadPolls(){
+window.load_polls=async function(){
   const el=document.getElementById('pollsList');
-  try{
-    const snap=await safeGet(query(collection(db,'polls'),limit(10)));
-    const polls=[];snap.forEach(d=>polls.push({id:d.id,...d.data()}));
-    if(!polls.length){el.innerHTML='<div style="color:var(--cd);font-size:0.72rem;padding:10px;">No polls created yet.</div>';return;}
-    el.innerHTML=polls.map(p=>`
-      <div class="member-row">
-        <div style="flex:1;min-width:0;">
-          <div class="m-name">${esc(p.question||'')}</div>
-          <div class="m-meta">${(p.options||[]).join(' · ')}</div>
-        </div>
-        <button class="m-btn m-btn-err" onclick="deleteItem('polls','${p.id}')">🗑</button>
-      </div>`).join('');
-  }catch{el.innerHTML='<div style="color:var(--cd);padding:10px;">Error loading.</div>';}
-}
+  const snap=await sg(query(collection(db,'polls'),limit(10)));
+  const polls=[];snap.forEach(d=>polls.push({id:d.id,...d.data()}));
+  if(!polls.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No polls yet.</div>';return;}
+  el.innerHTML=polls.map(p=>`
+    <div class="m-row">
+      <div style="flex:1;min-width:0;">
+        <div class="m-name">${esc(p.question||'')}</div>
+        <div class="m-meta">${(p.options||[]).map(o=>esc(o)).join(' · ')}</div>
+      </div>
+      <button class="m-btn m-btn-err" onclick="deleteItem('polls','${p.id}',load_polls)">🗑</button>
+    </div>`).join('');
+};
 
 window.addPoll=async function(){
   const btn=document.getElementById('addPollBtn');
-  const question=document.getElementById('pollQuestion').value.trim();
-  const opt1=document.getElementById('pollOpt1').value.trim();
-  const opt2=document.getElementById('pollOpt2').value.trim();
-  if(!question||!opt1||!opt2){toast('Question and at least 2 options required','error');return;}
+  const q=document.getElementById('pollQ').value.trim();
+  const o1=document.getElementById('pollO1').value.trim();
+  const o2=document.getElementById('pollO2').value.trim();
+  if(!q||!o1||!o2){toast('Question and at least 2 options required','error');return;}
   btn.disabled=true;btn.textContent='Creating...';
-  const options=[opt1,opt2];
-  const opt3=document.getElementById('pollOpt3').value.trim();
-  const opt4=document.getElementById('pollOpt4').value.trim();
-  if(opt3)options.push(opt3);if(opt4)options.push(opt4);
-  const days=parseInt(document.getElementById('pollDuration').value)||7;
-  const endsAt=new Date(Date.now()+days*24*60*60*1000);
+  const options=[o1,o2];
+  const o3=document.getElementById('pollO3').value.trim();
+  const o4=document.getElementById('pollO4').value.trim();
+  if(o3)options.push(o3);if(o4)options.push(o4);
+  const days=parseInt(document.getElementById('pollDur').value)||7;
+  const endsAt=new Date(Date.now()+days*86400000);
   try{
-    await addDoc(collection(db,'polls'),{question,options,votes:{},totalVotes:0,endsAt,createdAt:serverTimestamp()});
+    await addDoc(collection(db,'polls'),{question:q,options,votes:{},totalVotes:0,endsAt,createdAt:serverTimestamp()});
     toast('Poll created! 🗳️');
-    ['pollQuestion','pollOpt1','pollOpt2','pollOpt3','pollOpt4'].forEach(id=>document.getElementById(id).value='');
-    loadPolls();
-  }catch(e){toast('Error creating poll','error');console.error(e);}
+    ['pollQ','pollO1','pollO2','pollO3','pollO4'].forEach(id=>document.getElementById(id).value='');
+    load_polls();
+  }catch(e){toast(e.message||'Error creating poll','error');}
   btn.disabled=false;btn.textContent='Create Poll →';
 };
 
 // ── MAGAZINE ──
-window.previewMagImage=function(input){const r=new FileReader();r.onload=e=>{const p=document.getElementById('magImagePreview');p.src=e.target.result;p.style.display='block';};r.readAsDataURL(input.files[0]);};
-
 window.addMagazineArticle=async function(){
   const btn=document.getElementById('addMagBtn');
   const title=document.getElementById('magTitle').value.trim();
@@ -873,22 +860,19 @@ window.addMagazineArticle=async function(){
   if(!title||!summary){toast('Title and summary required','error');return;}
   btn.disabled=true;btn.textContent='Publishing...';
   try{
-    let imgUrl='';
-    const imgFile=document.getElementById('magImageFile').files[0];
-    if(imgFile){const r=await uploadMedia(imgFile);imgUrl=r.url;}
+    let imgUrl=document.getElementById('magImgUrl').value.trim();
     await addDoc(collection(db,'magazine'),{
-      title,category:document.getElementById('magCategory').value,
+      title,category:document.getElementById('magCat').value,
       summary,content:document.getElementById('magContent').value.trim(),
       imageUrl:imgUrl,publishedAt:serverTimestamp()
     });
     toast('Article published! 📖');
-    ['magTitle','magSummary','magContent'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('magImagePreview').style.display='none';
-  }catch(e){toast('Error publishing article','error');console.error(e);}
+    ['magTitle','magSummary','magContent','magImgUrl'].forEach(id=>document.getElementById(id).value='');
+  }catch(e){toast(e.message||'Error publishing','error');}
   btn.disabled=false;btn.textContent='Publish Article →';
 };
 
-// ── ICONIK TV ──
+// ── TV ──
 window.addTV=async function(){
   const btn=document.getElementById('addTvBtn');
   const title=document.getElementById('tvTitle').value.trim();
@@ -897,140 +881,61 @@ window.addTV=async function(){
   btn.disabled=true;btn.textContent='Adding...';
   try{
     await addDoc(collection(db,'iconikTV'),{
-      title,category:document.getElementById('tvCategory').value,
+      title,category:document.getElementById('tvCat').value,
       videoUrl:url,thumbUrl:document.getElementById('tvThumb').value.trim(),
       duration:document.getElementById('tvDuration').value.trim(),
-      description:document.getElementById('tvDesc').value.trim(),
       publishedAt:serverTimestamp()
     });
-    toast('Video added to ICONIK TV! 📺');
-    ['tvTitle','tvUrl','tvThumb','tvDuration','tvDesc'].forEach(id=>document.getElementById(id).value='');
-  }catch(e){toast('Error adding video','error');console.error(e);}
+    toast('Video added! 📺');
+    ['tvTitle','tvUrl','tvThumb','tvDuration'].forEach(id=>document.getElementById(id).value='');
+  }catch(e){toast(e.message||'Error adding','error');}
   btn.disabled=false;btn.textContent='Add to ICONIK TV →';
 };
 
 // ── SUB ADMINS ──
-async function loadSubAdmins(){
-  const el=document.getElementById('subAdminsList');
+window.load_subadmins=async function(){
+  const el=document.getElementById('subAdminList');
   try{
-    const snap=await safeGet(query(collection(db,'users'),where('role','in',['Sub Admin','Moderator','Content Manager']),limit(20)));
+    const snap=await sg(query(collection(db,'users'),where('role','in',['Sub Admin','Moderator','Content Manager']),limit(20)));
     const admins=[];snap.forEach(d=>admins.push({id:d.id,...d.data()}));
-    if(!admins.length){el.innerHTML='<div style="color:var(--cd);font-size:0.72rem;padding:10px;">No sub admins added yet.</div>';return;}
+    if(!admins.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No sub admins yet.</div>';return;}
     el.innerHTML=admins.map(a=>`
-      <div class="member-row">
-        <div style="flex:1;">
-          <div class="m-name">${esc(a.name||a.email||'Admin')}</div>
-          <div class="m-meta">${esc(a.role||'Sub Admin')} · ${esc(a.email||'')}</div>
-        </div>
+      <div class="m-row">
+        <div class="m-av">${esc((a.name||'A').charAt(0))}</div>
+        <div style="flex:1;"><div class="m-name">${esc(a.name||a.email||'Admin')}</div><div class="m-meta">${esc(a.role||'Sub Admin')} · ${esc(a.email||'')}</div></div>
         <button class="m-btn m-btn-err" onclick="removeSubAdmin('${a.id}')">Remove</button>
       </div>`).join('');
-  }catch{el.innerHTML='<div style="color:var(--cd);padding:10px;">Error loading.</div>';}
-}
+  }catch{el.innerHTML='<div style="color:var(--muted);padding:10px;">Error loading.</div>';}
+};
 
 window.addSubAdmin=async function(){
-  const email=document.getElementById('subAdminEmail').value.trim();
-  const role=document.getElementById('subAdminRole').value;
+  const email=document.getElementById('saEmail').value.trim();
+  const role=document.getElementById('saRole').value;
   if(!email){toast('Email required','error');return;}
   try{
-    // Find user by email
-    const snap=await safeGet(query(collection(db,'users'),where('email','==',email),limit(1)));
-    if(snap.empty){toast('No member found with that email. They must register first.','error');return;}
+    const snap=await sg(query(collection(db,'users'),where('email','==',email),limit(1)));
+    if(snap.empty){toast('No member with that email. They must register first.','error');return;}
     const uid=snap.docs[0].id;
     await updateDoc(doc(db,'users',uid),{role});
-    toast(`${email} added as ${role}! 🛡️`);
-    document.getElementById('subAdminEmail').value='';
-    loadSubAdmins();
-  }catch(e){toast('Error adding sub admin','error');console.error(e);}
+    toast(email+' added as '+role+'! 🛡️');
+    document.getElementById('saEmail').value='';
+    load_subadmins();
+  }catch(e){toast(e.message||'Error adding sub admin','error');}
 };
 
 window.removeSubAdmin=async function(uid){
   if(!confirm('Remove sub admin role?'))return;
   await updateDoc(doc(db,'users',uid),{role:'member'});
-  toast('Sub admin removed');loadSubAdmins();
+  toast('Sub admin removed');load_subadmins();
 };
 
 // ── UTILS ──
-window.deleteItem=async function(col,id){
-  if(!confirm('Delete this item? This cannot be undone.'))return;
+window.deleteItem=async function(col,id,reloadFn){
+  if(!confirm('Delete this item? Cannot be undone.'))return;
   await deleteDoc(doc(db,col,id));
   toast('Deleted');
-  const loaders={'celebrityNews':loadNews,'events':loadEvents,'messages':loadMessages,'polls':loadPolls,'posts':loadPosts};
-  if(loaders[col])loaders[col]();
+  if(typeof reloadFn==='function')reloadFn();
 };
-
-window.clearCollection=async function(col){
-  const snap=await safeGet(collection(db,col));
-  const deletes=[];snap.forEach(d=>deletes.push(deleteDoc(doc(db,col,d.id))));
-  await Promise.all(deletes);
-  toast(`${col} cleared`);
-};
-
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-window.toast=toast;
-</script>
-
-<!-- ── INSTANT UI ── -->
-<script>
-(function(){
-  function ready(fn){if(document.readyState!=='loading'){fn();}else{document.addEventListener('DOMContentLoaded',fn);}}
-  ready(function(){
-    var sb=document.getElementById('sb');
-    var ov=document.getElementById('sbOv');
-    var btn=document.getElementById('menuBtn');
-    if(!sb||!ov||!btn){console.error('Admin sidebar elements not found');return;}
-
-    btn.addEventListener('click',function(e){
-      e.stopPropagation();
-      sb.classList.add('on');
-      ov.classList.add('on');
-    });
-    ov.addEventListener('click',function(){
-      sb.classList.remove('on');
-      ov.classList.remove('on');
-    });
-    var sbx=document.getElementById('sbClose');
-    if(sbx)sbx.addEventListener('click',function(){
-      sb.classList.remove('on');
-      ov.classList.remove('on');
-    });
-
-    // Bottom nav
-    document.querySelectorAll('[data-view]').forEach(function(b){
-      if(b.closest('nav')&&!b.closest('.sb')){
-        b.style.cursor='pointer';
-        b.addEventListener('click',function(){
-          var nm=this.dataset.view;
-          document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on');});
-          var t=document.getElementById(nm+'V');
-          if(t)t.classList.add('on');
-          sb.classList.remove('on');
-          ov.classList.remove('on');
-          document.querySelectorAll('[data-view]').forEach(function(x){
-            if(x.closest('nav')&&!x.closest('.sb')){
-              x.style.background=x.dataset.view===nm?'rgba(255,184,0,0.10)':'transparent';
-              var lbl=x.querySelector('span:last-child');
-              if(lbl)lbl.style.color=x.dataset.view===nm?'#FFB800':'#BDB5A6';
-            }
-          });
-        });
-      }
-    });
-
-    // Sidebar links
-    document.querySelectorAll('.sb-lnk[data-view]').forEach(function(lnk){
-      lnk.addEventListener('click',function(){
-        var nm=this.dataset.view;
-        document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on');});
-        var t=document.getElementById(nm+'V');
-        if(t)t.classList.add('on');
-        sb.classList.remove('on');
-        ov.classList.remove('on');
-      });
-    });
-
-    console.log('✅ Admin UI ready');
-  });
-})();
 </script>
 </body>
 </html>
