@@ -577,6 +577,15 @@ function toast(msg,type){
 let cU=null,cD=null,allCelebs=[],allMembers=[],allNews=[],chatRoom='general',chatTimer=null;
 
 // ── SIGN OUT ──
+// Browser back button closes overlay instead of leaving page
+window.addEventListener('popstate',function(e){
+  if(window._overlayClose){window._overlayClose();return;}
+  // No overlay open — stay on dashboard, don't go to login
+  history.pushState(null,'','');
+});
+// Push initial state so back button is interceptable
+history.pushState(null,'','');
+
 window._firebaseSignOut=async function(){
   await signOut(auth);
   location.replace('/app.html?signout=1');
@@ -651,10 +660,80 @@ window.load_feed=async function(){
 };
 
 window.openPostComposer=function(){
-  const txt=prompt('Share with your community:');
-  if(!txt||!cU)return;
-  addDoc(collection(db,'posts'),{content:txt,title:'',category:cD?.categories?.[0]||'',userId:cU.uid,userName:cD?.name||'Member',userPhoto:cD?.profilePic||'',imageUrl:'',isAdmin:false,likeCount:0,commentCount:0,createdAt:serverTimestamp()})
-  .then(()=>{toast('Posted! 🌟');load_feed();}).catch(()=>toast('Error posting','error'));
+  const existing=document.getElementById('postComposerOv');
+  if(existing)existing.remove();
+  const ov=document.createElement('div');
+  ov.id='postComposerOv';
+  ov.style.cssText='position:fixed;inset:0;background:rgba(7,7,13,0.97);z-index:9999;overflow-y:auto;padding:16px;';
+  ov.innerHTML=`
+    <div style="position:sticky;top:0;background:#07070D;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.09);margin-bottom:16px;display:flex;align-items:center;gap:12px;">
+      <button onclick="document.getElementById('postComposerOv').remove()" style="background:none;border:1px solid rgba(255,255,255,0.16);border-radius:8px;width:36px;height:36px;color:#F5F0E8;font-size:1rem;cursor:pointer;flex-shrink:0;">✕</button>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.8rem;letter-spacing:0.16em;color:#FFB800;">Share with Community</span>
+    </div>
+    <div style="margin-bottom:12px;">
+      <label style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:#BDB5A6;display:block;margin-bottom:5px;">What's on your mind? *</label>
+      <textarea id="pcText" rows="5" style="width:100%;padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:8px;color:#F5F0E8;font-family:'Montserrat',sans-serif;font-size:0.76rem;outline:none;resize:vertical;" placeholder="Share your thoughts with the ICONIK community..."></textarea>
+    </div>
+    <div style="margin-bottom:12px;">
+      <label style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:#BDB5A6;display:block;margin-bottom:5px;">Photo URL (optional)</label>
+      <input id="pcPhoto" type="url" style="width:100%;padding:11px 13px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:8px;color:#F5F0E8;font-family:'Montserrat',sans-serif;font-size:0.76rem;outline:none;" placeholder="https://... paste image link"/>
+    </div>
+    <div style="margin-bottom:12px;">
+      <label style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:#BDB5A6;display:block;margin-bottom:5px;">Video URL (optional)</label>
+      <input id="pcVideo" type="url" style="width:100%;padding:11px 13px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:8px;color:#F5F0E8;font-family:'Montserrat',sans-serif;font-size:0.76rem;outline:none;" placeholder="https://youtube.com/... or direct video link"/>
+    </div>
+    <div style="margin-bottom:16px;">
+      <label style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:#BDB5A6;display:block;margin-bottom:5px;">Upload Photo / Video</label>
+      <div onclick="document.getElementById('pcFile').click()" style="border:1px dashed rgba(255,255,255,0.16);border-radius:8px;padding:16px;text-align:center;cursor:pointer;">
+        <div style="font-size:1.4rem;margin-bottom:4px;">📎</div>
+        <div style="font-family:'Montserrat',sans-serif;font-size:0.66rem;color:#BDB5A6;" id="pcFileName">Tap to choose file</div>
+        <input type="file" id="pcFile" accept="image/*,video/*" style="display:none;" onchange="document.getElementById('pcFileName').textContent=this.files[0]?.name||'File selected'"/>
+      </div>
+    </div>
+    <div style="margin-bottom:12px;">
+      <label style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:#BDB5A6;display:block;margin-bottom:5px;">Community</label>
+      <select id="pcCat" style="width:100%;padding:11px 13px;background:#0E0E1A;border:1px solid rgba(255,255,255,0.09);border-radius:8px;color:#F5F0E8;font-family:'Montserrat',sans-serif;font-size:0.76rem;outline:none;">
+        <option value="">All Communities</option>
+        <option>Music</option><option>Sports</option><option>Film & TV</option><option>Fashion</option><option>Fitness & Wellness</option><option>Tech & Innovation</option><option>Entertainment</option>
+      </select>
+    </div>
+    <div id="pcErr" style="display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#FCA5A5;font-family:Montserrat,sans-serif;font-size:0.7rem;padding:10px 12px;border-radius:6px;margin-bottom:12px;"></div>
+    <button id="pcBtn" onclick="submitPost()" style="width:100%;padding:13px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.74rem;letter-spacing:0.14em;text-transform:uppercase;background:linear-gradient(135deg,#FFB800,#CC9400);color:#07070D;border:none;border-radius:8px;cursor:pointer;">Share Post →</button>`;
+  document.body.appendChild(ov);
+};
+
+window.submitPost=async function(){
+  if(!cU)return;
+  const text=document.getElementById('pcText')?.value.trim();
+  if(!text){const err=document.getElementById('pcErr');if(err){err.textContent='Please write something to share.';err.style.display='block';}return;}
+  const btn=document.getElementById('pcBtn');
+  if(btn){btn.disabled=true;btn.textContent='Sharing...';}
+  try{
+    let imageUrl=document.getElementById('pcPhoto')?.value.trim()||'';
+    let videoUrl=document.getElementById('pcVideo')?.value.trim()||'';
+    const file=document.getElementById('pcFile')?.files[0];
+    if(file&&!imageUrl&&!videoUrl){
+      try{
+        const fd=new FormData();fd.append('file',file);fd.append('upload_preset','iconik_uploads');
+        const r=await fetch('https://api.cloudinary.com/v1_1/dhazrf2xr/upload',{method:'POST',body:fd});
+        if(r.ok){const d=await r.json();if(file.type.startsWith('video')){videoUrl=d.secure_url;}else{imageUrl=d.secure_url;}}
+      }catch(ue){console.warn('Upload failed:',ue);}
+    }
+    const cat=document.getElementById('pcCat')?.value||cD?.categories?.[0]||'';
+    await addDoc(collection(db,'posts'),{
+      content:text,title:'',category:cat,
+      userId:cU.uid,userName:cD?.name||'Member',userPhoto:cD?.profilePic||'',
+      imageUrl,videoUrl,isAdmin:false,likeCount:0,commentCount:0,
+      createdAt:serverTimestamp()
+    });
+    document.getElementById('postComposerOv')?.remove();
+    toast('Post shared! 🌟');
+    load_feed();
+  }catch(e){
+    const err=document.getElementById('pcErr');
+    if(err){err.textContent='Error sharing. Try again.';err.style.display='block';}
+    if(btn){btn.disabled=false;btn.textContent='Share Post →';}
+  }
 };
 
 window.likePost=function(id,el){
@@ -681,7 +760,7 @@ function renderCelebs(list){
         ${c.photo&&c.photo.startsWith('http')?`<img src="${esc(c.photo)}" onerror="this.style.display='none'"/>`:'' }
         <span style="position:relative;z-index:0;">${c.photo&&c.photo.startsWith('http')?'':esc((c.name||'?').charAt(0))}</span>
       </div>
-        <span style="position:relative;z-index:0;display:none;"></span>
+        <span style="position:relative;z-index:0;">${c.photo&&c.photo.startsWith('http')?'':(c.name||'?').charAt(0)}</span>
       </div>
       <div class="celeb-info">
         <div class="celeb-name">${esc(c.name||'')}</div>
@@ -753,6 +832,9 @@ function openCeleb(id){
       <div id="celebPosts_${c.id}" style="color:#BDB5A6;font-size:0.72rem;text-align:center;padding:16px;">Loading posts...</div>
     </div>`;
   document.body.appendChild(ov);
+  // Push history state so browser back button closes overlay instead of leaving page
+  history.pushState({overlay:true},'','');
+  window._overlayClose=function(){ov.remove();window._overlayClose=null;};
   // Load category posts
   sg(query(collection(db,'posts'),limit(30))).then(snap=>{
     const posts=[];snap.forEach(d=>{const p=d.data();if(p.category===c.category)posts.push({id:d.id,...p});});
@@ -1026,17 +1108,18 @@ function openMemberProfile(m){
       <span style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.16em;color:#BDB5A6;">Member Profile</span>
     </div>
     <!-- COVER -->
-    <div style="height:130px;background:linear-gradient(135deg,#1a0e00,#2d1a08,#0a0a18);position:relative;overflow:hidden;">
+    <div style="height:140px;background:linear-gradient(135deg,#1a0e00,#2d1a08,#0a0a18);position:relative;overflow:hidden;">
       ${m.coverPhoto&&m.coverPhoto.startsWith('http')?`<img src="${esc(m.coverPhoto)}" style="width:100%;height:100%;object-fit:cover;" onerror="this.remove()"/>`:''}
     </div>
     <!-- AVATAR ROW -->
-    <div style="padding:0 16px;margin-top:-44px;margin-bottom:12px;display:flex;align-items:flex-end;justify-content:space-between;">
-      <div style="width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#FFB800,#CC9400);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:#07070D;border:3px solid #07070D;overflow:hidden;flex-shrink:0;">
+    <div style="padding:12px 16px 0;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#FFB800,#CC9400);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#07070D;border:3px solid rgba(255,255,255,0.12);overflow:hidden;flex-shrink:0;margin-top:-52px;">
         ${m.profilePic&&m.profilePic.startsWith('http')?`<img src="${esc(m.profilePic)}" style="width:100%;height:100%;object-fit:cover;" onerror="this.remove()"/>`:esc((m.name||'?').charAt(0).toUpperCase())}
       </div>
       <div style="display:flex;gap:8px;padding-bottom:8px;">
         <button id="followMemberBtn_${m.id}" onclick="followMember('${m.id}','${esc(m.name||'Member')}',this)" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:9px 14px;background:linear-gradient(135deg,#FFB800,#CC9400);color:#07070D;border:none;border-radius:6px;cursor:pointer;">+ Follow</button>
         <button style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:9px 14px;background:transparent;color:#F5F0E8;border:1px solid rgba(255,255,255,0.16);border-radius:6px;cursor:pointer;" onclick="toast('Message coming soon 💬','info')">✉️ Message</button>
+        <button onclick="if(navigator.share)navigator.share({title:m.name+' on ICONIK',url:location.href});else{navigator.clipboard?.writeText(location.href);toast('Link copied! 🔗');}" style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.62rem;padding:9px;background:transparent;color:#F5F0E8;border:1px solid rgba(255,255,255,0.16);border-radius:6px;cursor:pointer;">🔗</button>
       </div>
     </div>
     <!-- INFO -->
@@ -1060,6 +1143,8 @@ function openMemberProfile(m){
       </div>
     </div>`;
   document.body.appendChild(ov);
+  history.pushState({overlay:true},'','');
+  window._overlayClose=function(){ov.remove();window._overlayClose=null;};
 }
 
 async function followMember(uid,name,btn){
