@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -445,8 +446,27 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
       <div class="sec-head">Edit Profile</div>
       <div class="card">
         <div class="fg"><label class="fl">Bio</label><textarea class="fi" id="editBio" rows="3" placeholder="Tell the community about yourself..."></textarea></div>
-        <div class="fg"><label class="fl">Profile Picture URL</label><input class="fi" id="editPic" placeholder="https://... (paste image URL)"/></div>
-        <button class="btn-gold btn-full" onclick="saveProfile()">Save Profile →</button>
+        <div class="fg">
+          <label class="fl">Profile Picture</label>
+          <div onclick="document.getElementById('picUpload').click()" style="border:1px dashed rgba(255,255,255,0.16);border-radius:8px;padding:14px;text-align:center;cursor:pointer;margin-bottom:8px;">
+            <div style="font-size:1.4rem;margin-bottom:4px;">📸</div>
+            <div style="font-family:'Montserrat',sans-serif;font-size:0.66rem;color:#BDB5A6;" id="picUploadName">Tap to upload profile picture</div>
+            <input type="file" id="picUpload" accept="image/*" style="display:none;" onchange="previewProfilePic(this)"/>
+          </div>
+          <img id="picPreview" style="display:none;width:80px;height:80px;border-radius:50%;object-fit:cover;margin:0 auto 8px;border:3px solid rgba(255,184,0,0.4);"/>
+          <input class="fi" id="editPic" placeholder="Or paste image URL: https://..."/>
+        </div>
+        <div class="fg">
+          <label class="fl">Cover Photo</label>
+          <div onclick="document.getElementById('coverUpload').click()" style="border:1px dashed rgba(255,255,255,0.16);border-radius:8px;padding:14px;text-align:center;cursor:pointer;margin-bottom:8px;">
+            <div style="font-size:1.4rem;margin-bottom:4px;">🖼️</div>
+            <div style="font-family:'Montserrat',sans-serif;font-size:0.66rem;color:#BDB5A6;" id="coverUploadName">Tap to upload cover photo</div>
+            <input type="file" id="coverUpload" accept="image/*" style="display:none;" onchange="previewCoverPhoto(this)"/>
+          </div>
+          <img id="coverPreview" style="display:none;width:100%;height:80px;object-fit:cover;border-radius:8px;margin-bottom:8px;"/>
+          <input class="fi" id="editCover" placeholder="Or paste cover URL: https://..."/>
+        </div>
+        <button class="btn-gold btn-full" id="saveProfileBtn" onclick="saveProfile()">Save Profile →</button>
       </div>
     </div>
   </div>
@@ -565,7 +585,8 @@ async function sg(ref){
   try{return await Promise.race([getDocs(ref),new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),5000))]);}
   catch(e){console.warn('Firestore:',e.message);return{empty:true,forEach:()=>{},docs:[]};}
 }
-function esc(s){return String(s||'').replace(/&/g,'&lt;').replace(/>/g,'&gt;');}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function escUrl(s){return String(s||'').replace(/"/g,'%22').replace(/'/g,'%27');}
 function toast(msg,type){
   var t=document.getElementById('toast');
   t.textContent=msg;
@@ -577,8 +598,25 @@ function toast(msg,type){
 let cU=null,cD=null,allCelebs=[],allMembers=[],allNews=[],chatRoom='general',chatTimer=null;
 
 // ── SIGN OUT ──
-// Browser back button closes overlay instead of leaving page
+// ── OVERLAY STACK — tracks all open overlays ──
+const overlayStack=[];
+function pushOverlay(el){
+  overlayStack.push(el);
+  history.pushState({overlay:overlayStack.length},'','');
+}
+function popOverlay(){
+  const top=overlayStack.pop();
+  if(top&&top.parentNode)top.remove();
+}
 window.addEventListener('popstate',function(e){
+  if(overlayStack.length>0){popOverlay();return;}
+  // No overlays — push state back so we stay on dashboard
+  history.pushState(null,'','');
+});
+history.pushState(null,'','');
+
+// Browser back button closes overlay instead of leaving page (legacy)
+window.addEventListener('popstate_legacy_disabled',function(e){
   if(window._overlayClose){window._overlayClose();return;}
   // No overlay open — stay on dashboard, don't go to login
   history.pushState(null,'','');
@@ -649,7 +687,7 @@ window.load_feed=async function(){
       </div>
       ${p.title?`<div class="card-title">${esc(p.title)}</div>`:''}
       <div class="card-body">${esc(p.content||'')}</div>
-      ${p.imageUrl&&p.imageUrl.startsWith('http')?`<img src="${esc(p.imageUrl)}" style="width:100%;border-radius:6px;margin-top:9px;max-height:240px;object-fit:cover;" loading="lazy" onerror="this.remove()"/>`:''}
+      ${p.imageUrl&&p.imageUrl.startsWith('http')?`<img src="${escUrl(p.imageUrl)}" style="width:100%;border-radius:6px;margin-top:9px;max-height:240px;object-fit:cover;" loading="lazy" onerror="this.remove()"/>`:''}
       <div class="card-actions">
         <span class="card-action" onclick="likePost('${p.id}',this)">♡ ${p.likeCount||0}</span>
         <span class="card-action">💬 ${p.commentCount||0}</span>
@@ -758,7 +796,7 @@ function renderCelebs(list){
     const hasPhoto=c.photo&&c.photo.startsWith('http');
     return`<div class="celeb-card" data-id="${c.id}">
       <div class="celeb-thumb" style="background:${clr}22;">
-        ${hasPhoto?`<img src="${esc(c.photo)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;" onerror="this.remove()"/>`:''}
+        ${hasPhoto?`<img src="${escUrl(c.photo)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;" onerror="this.remove()"/>`:''}
         <span style="position:relative;z-index:1;font-size:2rem;">${hasPhoto?'':esc((c.name||'?').charAt(0))}</span>
       </div>
       <div class="celeb-info">
@@ -785,12 +823,12 @@ function openCeleb(id){
   ov.innerHTML=`
     <!-- HEADER -->
     <div style="position:sticky;top:0;z-index:10;background:rgba(7,7,13,0.95);border-bottom:1px solid rgba(255,255,255,0.09);padding:14px 16px;display:flex;align-items:center;gap:12px;">
-      <button onclick="this.closest('[style]').remove()" style="background:none;border:1px solid rgba(255,255,255,0.16);border-radius:8px;width:36px;height:36px;color:#F5F0E8;font-size:1rem;cursor:pointer;flex-shrink:0;">←</button>
+      <button onclick="popOverlay()" style="background:none;border:1px solid rgba(255,255,255,0.16);border-radius:8px;width:36px;height:36px;color:#F5F0E8;font-size:1rem;cursor:pointer;flex-shrink:0;">←</button>
       <span style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.16em;color:#BDB5A6;">Celebrity Profile</span>
     </div>
     <!-- HERO -->
     <div style="width:100%;height:200px;background:linear-gradient(135deg,${clr}88,${clr}33);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-      ${c.photo&&c.photo.startsWith('http')?`<img src="${esc(c.photo)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.remove()"/>`:''}
+      ${c.photo&&c.photo.startsWith('http')?`<img src="${escUrl(c.photo)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.remove()"/>`:''}
       <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,13,0.95) 0%,rgba(7,7,13,0.3) 60%,transparent 100%);"></div>
       <div style="position:absolute;bottom:16px;left:16px;right:16px;z-index:2;">
         <div style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.18em;color:#FFB800;margin-bottom:4px;">${esc(c.category||'')}</div>
@@ -845,7 +883,7 @@ function openCeleb(id){
         <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.7rem;color:#F5F0E8;margin-bottom:2px;">${esc(p.userName||'ICONIK')}</div>
         ${p.title?`<div style="font-family:'Playfair Display',serif;font-weight:700;font-size:0.88rem;color:#F5F0E8;margin-bottom:6px;">${esc(p.title)}</div>`:''}
         <div style="font-family:'Montserrat',sans-serif;font-size:0.72rem;color:#BDB5A6;line-height:1.6;">${esc(p.content||'')}</div>
-        ${p.imageUrl&&p.imageUrl.startsWith('http')?`<img src="${esc(p.imageUrl)}" style="width:100%;border-radius:6px;margin-top:8px;max-height:200px;object-fit:cover;" onerror="this.remove()"/>`:''}
+        ${p.imageUrl&&p.imageUrl.startsWith('http')?`<img src="${escUrl(p.imageUrl)}" style="width:100%;border-radius:6px;margin-top:8px;max-height:200px;object-fit:cover;" onerror="this.remove()"/>`:''}
       </div>`).join('');
   }).catch(()=>{});
 }
@@ -906,7 +944,7 @@ window.openNewsItem=function(i){
   const n=allNews[i];if(!n)return;
   const ov=document.createElement('div');
   ov.style.cssText='position:fixed;inset:0;background:rgba(7,7,13,0.97);z-index:9999;overflow-y:auto;padding:20px;';
-  ov.innerHTML=`<button onclick="this.closest('[style]').remove()" style="font-family:Montserrat,sans-serif;font-weight:700;font-size:0.62rem;padding:8px 14px;background:transparent;border:1px solid rgba(255,255,255,0.12);color:#BDB5A6;cursor:pointer;margin-bottom:16px;border-radius:4px;">← Back</button>
+  ov.innerHTML=`<button onclick="popOverlay()" style="font-family:Montserrat,sans-serif;font-weight:700;font-size:0.62rem;padding:8px 14px;background:transparent;border:1px solid rgba(255,255,255,0.12);color:#BDB5A6;cursor:pointer;margin-bottom:16px;border-radius:4px;">← Back</button>
   <div style="text-align:center;font-size:2.5rem;margin-bottom:12px;">${n.icon||'📰'}</div>
   <div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:#FFB800;margin-bottom:8px;">${esc(n.category||'')} · ${esc(n.time||'')}</div>
   <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:#F5F0E8;line-height:1.3;margin-bottom:14px;">${esc(n.title)}</div>
@@ -1078,7 +1116,7 @@ function renderMembers(list){
   if(!list.length){el.innerHTML='<div class="card"><div class="card-body" style="text-align:center;padding:10px;">No members found.</div></div>';return;}
   el.innerHTML=list.slice(0,30).map(m=>`
     <div class="member-card" data-mid="${m.id}">
-      <div class="member-av">${m.profilePic&&m.profilePic.startsWith('http')?`<img src="${esc(m.profilePic)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.remove()"/>`:esc((m.name||'?').charAt(0).toUpperCase())}</div>
+      <div class="member-av">${m.profilePic&&m.profilePic.startsWith('http')?`<img src="${escUrl(m.profilePic)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.remove()"/>`:esc((m.name||'?').charAt(0).toUpperCase())}</div>
       <div style="flex:1;min-width:0;">
         <div class="member-name">${esc(m.name||'Member')} ${m.verificationStatus==='verified'?'✅':''}</div>
         <div class="member-meta">${esc(m.city?m.city+', ':'')}${esc(m.country||'—')} · <span style="color:var(--gold);">${esc(m.tier||'Fan')}</span></div>
@@ -1103,17 +1141,17 @@ function openMemberProfile(m){
   ov.innerHTML=`
     <!-- HEADER -->
     <div style="position:sticky;top:0;z-index:10;background:rgba(7,7,13,0.95);border-bottom:1px solid rgba(255,255,255,0.09);padding:14px 16px;display:flex;align-items:center;gap:12px;">
-      <button onclick="this.closest('[style]').remove()" style="background:none;border:1px solid rgba(255,255,255,0.16);border-radius:8px;width:36px;height:36px;color:#F5F0E8;font-size:1rem;cursor:pointer;flex-shrink:0;">←</button>
+      <button onclick="popOverlay()" style="background:none;border:1px solid rgba(255,255,255,0.16);border-radius:8px;width:36px;height:36px;color:#F5F0E8;font-size:1rem;cursor:pointer;flex-shrink:0;">←</button>
       <span style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.16em;color:#BDB5A6;">Member Profile</span>
     </div>
     <!-- COVER -->
     <div style="height:160px;background:linear-gradient(135deg,#1a0e00,#2d1a08,#0a0a18);position:relative;overflow:hidden;">
-      ${m.coverPhoto&&m.coverPhoto.startsWith('http')?`<img src="${esc(m.coverPhoto)}" style="width:100%;height:100%;object-fit:cover;" onerror="this.remove()"/>`:''}
+      ${m.coverPhoto&&m.coverPhoto.startsWith('http')?`<img src="${escUrl(m.coverPhoto)}" style="width:100%;height:100%;object-fit:cover;" onerror="this.remove()"/>`:''}
     </div>
     <!-- AVATAR ROW — avatar peeks out from below cover by 40px -->
     <div style="padding:0 16px;display:flex;align-items:flex-end;justify-content:space-between;min-height:50px;margin-bottom:10px;">
       <div style="width:82px;height:82px;border-radius:50%;background:linear-gradient(135deg,#FFB800,#CC9400);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#07070D;border:4px solid #07070D;overflow:hidden;flex-shrink:0;margin-top:-50px;position:relative;z-index:5;">
-        ${m.profilePic&&m.profilePic.startsWith('http')?`<img src="${esc(m.profilePic)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.remove()"/>`:esc((m.name||'?').charAt(0).toUpperCase())}
+        ${m.profilePic&&m.profilePic.startsWith('http')?`<img src="${escUrl(m.profilePic)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.remove()"/>`:esc((m.name||'?').charAt(0).toUpperCase())}
       </div>
       <div style="display:flex;gap:7px;padding-bottom:4px;">
         <button id="followMemberBtn_${m.id}" onclick="followMember('${m.id}','${esc(m.name||'Member')}',this)" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 13px;background:linear-gradient(135deg,#FFB800,#CC9400);color:#07070D;border:none;border-radius:6px;cursor:pointer;">+ Follow</button>
@@ -1142,8 +1180,7 @@ function openMemberProfile(m){
       </div>
     </div>`;
   document.body.appendChild(ov);
-  history.pushState({overlay:true},'','');
-  window._overlayClose=function(){ov.remove();window._overlayClose=null;};
+  pushOverlay(ov);window._overlayClose=null;};
 }
 
 async function followMember(uid,name,btn){
@@ -1215,17 +1252,59 @@ window.load_profile=function(){
   av.textContent=cD.name?.charAt(0).toUpperCase()||'M';
   if(cD.profilePic&&cD.profilePic.startsWith('http')){const img=document.createElement('img');img.src=cD.profilePic;img.onerror=()=>img.remove();av.innerHTML='';av.appendChild(img);}
   if(cD.bio)document.getElementById('editBio').value=cD.bio;
-  if(cD.profilePic)document.getElementById('editPic').value=cD.profilePic;
+  if(cD.profilePic){const ep=document.getElementById('editPic');if(ep)ep.value=cD.profilePic;}
+  if(cD.coverPhoto){const ec=document.getElementById('editCover');if(ec)ec.value=cD.coverPhoto;}
 };
+window.previewProfilePic=function(input){
+  const file=input.files[0];if(!file)return;
+  document.getElementById('picUploadName').textContent=file.name;
+  const r=new FileReader();
+  r.onload=e=>{const p=document.getElementById('picPreview');p.src=e.target.result;p.style.display='block';};
+  r.readAsDataURL(file);
+};
+window.previewCoverPhoto=function(input){
+  const file=input.files[0];if(!file)return;
+  document.getElementById('coverUploadName').textContent=file.name;
+  const r=new FileReader();
+  r.onload=e=>{const p=document.getElementById('coverPreview');p.src=e.target.result;p.style.display='block';};
+  r.readAsDataURL(file);
+};
+
 window.saveProfile=async function(){
   if(!cU)return;
-  const bio=document.getElementById('editBio').value.trim();
-  const pic=document.getElementById('editPic').value.trim();
+  const btn=document.getElementById('saveProfileBtn');
+  if(btn){btn.disabled=true;btn.textContent='Saving...';}
   try{
-    await setDoc(doc(db,'users',cU.uid),{bio,profilePic:pic},{merge:true});
-    if(cD){cD.bio=bio;cD.profilePic=pic;}
-    load_profile();toast('Profile saved! ✅');
-  }catch{toast('Error saving','error');}
+    const bio=document.getElementById('editBio')?.value.trim()||'';
+    let pic=document.getElementById('editPic')?.value.trim()||cD?.profilePic||'';
+    let cover=document.getElementById('editCover')?.value.trim()||cD?.coverPhoto||'';
+    // Upload profile pic if file selected
+    const picFile=document.getElementById('picUpload')?.files[0];
+    if(picFile){
+      try{
+        const fd=new FormData();fd.append('file',picFile);fd.append('upload_preset','iconik_uploads');
+        const r=await fetch('https://api.cloudinary.com/v1_1/dhazrf2xr/upload',{method:'POST',body:fd});
+        if(r.ok){const d=await r.json();pic=d.secure_url;}
+      }catch(e){console.warn('Pic upload failed:',e);}
+    }
+    // Upload cover photo if file selected
+    const coverFile=document.getElementById('coverUpload')?.files[0];
+    if(coverFile){
+      try{
+        const fd=new FormData();fd.append('file',coverFile);fd.append('upload_preset','iconik_uploads');
+        const r=await fetch('https://api.cloudinary.com/v1_1/dhazrf2xr/upload',{method:'POST',body:fd});
+        if(r.ok){const d=await r.json();cover=d.secure_url;}
+      }catch(e){console.warn('Cover upload failed:',e);}
+    }
+    await setDoc(doc(db,'users',cU.uid),{bio,profilePic:pic,coverPhoto:cover},{merge:true});
+    if(cD){cD.bio=bio;cD.profilePic=pic;cD.coverPhoto=cover;}
+    load_profile();
+    // Update nav avatar
+    const av=document.getElementById('navAvatar');
+    if(av&&pic){const img=av.querySelector('img')||document.createElement('img');img.src=pic;img.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;';img.onerror=()=>img.remove();av.appendChild(img);}
+    toast('Profile saved! ✅');
+  }catch(e){toast('Error saving profile','error');console.error(e);}
+  if(btn){btn.disabled=false;btn.textContent='Save Profile →';}
 };
 
 // ── MESSAGES ──
