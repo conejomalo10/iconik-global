@@ -1,1373 +1,845 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>ICONIK — My Dashboard</title>
-<link rel="manifest" href="/manifest.json"/>
-<meta name="theme-color" content="#07070D"/>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Bebas+Neue&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
 <style>
-/* ── RESET & BASE ── */
 *{margin:0;padding:0;box-sizing:border-box;}
-:root{
-  --bg:#07070D; --bg2:#0E0E1A; --bg3:#141420;
-  --gold:#FFB800; --gold2:#CC9400;
-  --text:#F5F0E8; --muted:#BDB5A6; --dim:rgba(189,181,166,0.4);
-  --border:rgba(255,255,255,0.09); --border2:rgba(255,255,255,0.16);
-  --card:rgba(255,255,255,0.045);
-  --ok:#22C55E; --err:#EF4444;
-}
-body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;min-height:100vh;overflow-x:hidden;}
-
-/* ── TOP NAV ── */
-#topnav{
-  position:fixed;top:0;left:0;right:0;height:60px;z-index:600;
-  background:rgba(7,7,13,0.96);
-  border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 16px;
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-}
-.nav-logo{
-  font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:0.08em;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.nav-right{display:flex;align-items:center;gap:10px;}
-.nav-bell{font-size:1.1rem;cursor:pointer;position:relative;}
-.nav-av{
-  width:34px;height:34px;border-radius:50%;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Bebas Neue',sans-serif;font-size:0.95rem;color:var(--bg);
-  cursor:pointer;overflow:hidden;border:2px solid var(--border2);
-  position:relative;flex-shrink:0;
-}
-.nav-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;}
-
-/* ── HAMBURGER ── */
-#hamburger{
-  width:40px;height:40px;
-  background:none;
-  border:1px solid var(--border2);
-  border-radius:8px;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  gap:5px;cursor:pointer;padding:0;
-  flex-shrink:0;
-}
-#hamburger span{display:block;width:18px;height:2px;background:var(--text);border-radius:2px;}
-
-/* ── SIDEBAR OVERLAY ── */
-#sbOverlay{
-  position:fixed;inset:0;background:rgba(0,0,0,0.7);
-  z-index:800;display:none;
-}
-#sbOverlay.open{display:block;}
-
-/* ── SIDEBAR ── */
-#sidebar{
-  position:fixed;top:0;left:-300px;width:290px;height:100vh;
-  background:var(--bg3);border-right:1px solid var(--border);
-  z-index:900;transition:left 0.28s ease;overflow-y:auto;
-}
-#sidebar.open{left:0;}
-.sb-head{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:18px 16px;border-bottom:1px solid var(--border);
-}
-.sb-brand{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.08em;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-#sbClose{background:none;border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--muted);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;}
-.sb-user{padding:14px 16px;border-bottom:1px solid var(--border);}
-.sb-username{font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:var(--text);margin-bottom:3px;}
-.sb-tier{font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--bg);background:var(--gold);padding:2px 8px;display:inline-block;}
-.sb-section{padding:10px 0;}
-.sb-label{font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.22em;color:var(--dim);padding:6px 16px 3px;}
-.sb-link{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 16px;cursor:pointer;
-  font-family:'Montserrat',sans-serif;font-size:0.76rem;font-weight:600;
-  color:var(--muted);transition:all 0.18s;
-  border-left:3px solid transparent;
-}
-.sb-link:hover,.sb-link.active{color:var(--gold);border-left-color:var(--gold);background:rgba(255,184,0,0.06);}
-.sb-link-icon{width:20px;text-align:center;font-size:1rem;}
-.sb-logout{color:var(--err)!important;}
-.sb-logout:hover{background:rgba(239,68,68,0.08)!important;border-left-color:var(--err)!important;}
-
-/* ── MAIN CONTENT ── */
+:root{--bg:#07070D;--bg2:#0E0E1A;--bg3:#141420;--gold:#FFB800;--gold2:#CC9400;--text:#F5F0E8;--muted:#BDB5A6;--dim:rgba(189,181,166,0.4);--border:rgba(255,255,255,0.09);--border2:rgba(255,255,255,0.16);--card:rgba(255,255,255,0.045);--ok:#22C55E;--err:#EF4444;}
+body{background:var(--bg);color:var(--text);font-family:"Montserrat",sans-serif;min-height:100vh;overflow-x:hidden;}
+#topnav{position:fixed;top:0;left:0;right:0;height:60px;z-index:600;background:rgba(7,7,13,0.96);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;}
+.nav-logo{font-family:"Bebas Neue",sans-serif;font-size:1.35rem;letter-spacing:0.08em;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+#navAv{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:0.95rem;color:var(--bg);cursor:pointer;overflow:hidden;border:2px solid var(--border2);position:relative;flex-shrink:0;}
+#navAv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;}
+#hbg{width:40px;height:40px;background:none;border:1px solid var(--border2);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;padding:0;flex-shrink:0;}
+#hbg span{display:block;width:18px;height:2px;background:var(--text);border-radius:2px;}
+#sbOv{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:800;display:none;}
+#sbOv.open{display:block;}
+#sb{position:fixed;top:0;left:-300px;width:290px;height:100vh;background:var(--bg3);border-right:1px solid var(--border);z-index:900;transition:left 0.28s ease;overflow-y:auto;}
+#sb.open{left:0;}
+.sb-hd{display:flex;align-items:center;justify-content:space-between;padding:18px 16px;border-bottom:1px solid var(--border);}
+.sb-br{font-family:"Bebas Neue",sans-serif;font-size:1.1rem;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+#sbX{background:none;border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--muted);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;}
+.sb-usr{padding:14px 16px;border-bottom:1px solid var(--border);}
+.sb-unm{font-family:"Playfair Display",serif;font-weight:700;font-size:1rem;color:var(--text);margin-bottom:3px;}
+.sb-ti{font-family:"Bebas Neue",sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--bg);background:var(--gold);padding:2px 8px;display:inline-block;}
+.sb-lbl{font-family:"Bebas Neue",sans-serif;font-size:0.58rem;letter-spacing:0.22em;color:var(--dim);padding:8px 16px 3px;}
+.sb-lnk{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;font-family:"Montserrat",sans-serif;font-size:0.76rem;font-weight:600;color:var(--muted);transition:all 0.18s;border-left:3px solid transparent;}
+.sb-lnk:hover,.sb-lnk.on{color:var(--gold);border-left-color:var(--gold);background:rgba(255,184,0,0.06);}
+.sb-out{color:var(--err)!important;}
+.sb-out:hover{background:rgba(239,68,68,0.08)!important;border-left-color:var(--err)!important;}
 #main{padding:70px 14px 76px;min-height:100vh;}
-
-/* ── VIEWS ── */
-.view{display:none;}
-.view.active{display:block;}
-
-/* ── BOTTOM NAV ── */
-#bottomnav{
-  position:fixed;bottom:0;left:0;right:0;height:64px;z-index:600;
-  background:rgba(7,7,13,0.97);
-  border-top:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-around;
-}
-.bn-item{
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  cursor:pointer;padding:6px 12px;border-radius:10px;
-  transition:background 0.2s;min-width:50px;
-}
-.bn-item:hover{background:var(--card);}
-.bn-item.active{background:rgba(255,184,0,0.09);}
-.bn-icon{font-size:1.15rem;line-height:1;}
-.bn-label{font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.12em;color:var(--muted);}
-.bn-item.active .bn-label{color:var(--gold);}
-
-/* ── SECTION HEADER ── */
-.sec-head{
-  font-family:'Bebas Neue',sans-serif;font-size:0.68rem;
-  letter-spacing:0.2em;color:var(--gold);
-  margin-bottom:12px;margin-top:4px;
-}
-.wbar{
-  background:linear-gradient(135deg,var(--bg2),var(--bg3));
-  border:1px solid var(--border);border-radius:8px;
-  padding:14px;display:flex;gap:12px;align-items:center;
-  margin-bottom:14px;
-}
-.wbar-icon{font-size:1.4rem;}
-.wbar-title{font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);}
-.wbar-sub{font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);}
-
-/* ── CARDS ── */
-.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:13px;margin-bottom:10px;transition:border-color 0.2s;}
-.card:hover{border-color:var(--border2);}
-.card-head{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
-.card-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.85rem;color:var(--bg);flex-shrink:0;overflow:hidden;}
-.card-av img{width:100%;height:100%;object-fit:cover;}
-.card-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.74rem;color:var(--text);}
-.card-meta{font-family:'Montserrat',sans-serif;font-size:0.58rem;color:var(--dim);}
-.card-title{font-family:'Playfair Display',serif;font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;line-height:1.3;}
-.card-body{font-family:'Montserrat',sans-serif;font-size:0.72rem;color:var(--muted);line-height:1.6;}
-.card-actions{display:flex;gap:14px;margin-top:10px;}
-.card-action{font-size:0.66rem;color:var(--muted);cursor:pointer;transition:color 0.2s;}
-.card-action:hover{color:var(--gold);}
-
-/* ── LOADER ── */
+.view{display:none;}.view.on{display:block;}
+#bnav{position:fixed;bottom:0;left:0;right:0;height:64px;z-index:600;background:rgba(7,7,13,0.97);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 12px;border-radius:10px;min-width:50px;}
+.bn.on{background:rgba(255,184,0,0.09);}
+.bn-ic{font-size:1.15rem;line-height:1;}
+.bn-lb{font-family:"Bebas Neue",sans-serif;font-size:0.5rem;letter-spacing:0.12em;color:var(--muted);}
+.bn.on .bn-lb{color:var(--gold);}
+.wbar{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--border);border-radius:8px;padding:14px;display:flex;gap:12px;align-items:center;margin-bottom:14px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:13px;margin-bottom:10px;}
 .loader{display:flex;align-items:center;justify-content:center;padding:32px;}
-.loader-ring{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;}
+.lring{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* ── CELEBRITY GRID ── */
-.celeb-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
-.celeb-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:all 0.25s;}
-.celeb-card:hover{border-color:var(--border2);transform:translateY(-2px);}
-.celeb-thumb{height:90px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative;overflow:hidden;}
-.celeb-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
-.celeb-info{padding:9px;}
-.celeb-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.7rem;color:var(--text);margin-bottom:2px;}
-.celeb-cat{font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.12em;color:var(--gold);}
-.celeb-meta{font-family:'Montserrat',sans-serif;font-size:0.56rem;color:var(--dim);margin-top:1px;}
-
-/* ── NEWS CARD ── */
-.news-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;display:flex;gap:11px;margin-bottom:8px;cursor:pointer;transition:border-color 0.2s;}
-.news-card:hover{border-color:var(--border2);}
-.news-icon{width:40px;height:40px;border-radius:6px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
-.news-cat{font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.14em;color:var(--gold);margin-bottom:3px;}
-.news-title{font-family:'Playfair Display',serif;font-weight:700;font-size:0.82rem;color:var(--text);line-height:1.3;}
-.news-time{font-family:'Montserrat',sans-serif;font-size:0.58rem;color:var(--dim);margin-top:3px;}
-
-/* ── MEMBER CARD ── */
-.member-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:11px;display:flex;align-items:center;gap:10px;margin-bottom:8px;cursor:pointer;transition:border-color 0.2s;}
-.member-card:hover{border-color:var(--border2);}
-.member-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--bg);flex-shrink:0;overflow:hidden;}
-.member-av img{width:100%;height:100%;object-fit:cover;}
-.member-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.74rem;color:var(--text);}
-.member-meta{font-family:'Montserrat',sans-serif;font-size:0.6rem;color:var(--dim);}
-
-/* ── PROFILE ── */
-.profile-cover{height:140px;background:linear-gradient(135deg,#1a0e00,#2d1a08,#0a0a18);position:relative;border-radius:8px;overflow:hidden;margin-bottom:-40px;}
-.profile-cover img{width:100%;height:100%;object-fit:cover;}
-.profile-av-wrap{padding:0 16px;position:relative;z-index:1;}
-.profile-av-lg{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--bg);border:3px solid var(--bg);overflow:hidden;}
-.profile-av-lg img{width:100%;height:100%;object-fit:cover;}
-.profile-body{padding:10px 0 0;}
-.profile-name{font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--text);margin-bottom:3px;}
-.profile-tier{font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--bg);background:var(--gold);padding:2px 8px;display:inline-block;margin-bottom:8px;}
-.profile-bio{font-family:'Montserrat',sans-serif;font-size:0.72rem;color:var(--muted);line-height:1.6;}
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px 0;}
-.stat-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center;}
-.stat-num{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--text);}
-.stat-lbl{font-family:'Montserrat',sans-serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);}
-
-/* ── FORMS ── */
-.fi{width:100%;padding:11px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Montserrat',sans-serif;font-size:0.76rem;outline:none;transition:border-color 0.2s;}
+.cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
+.cc{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:all 0.25s;}
+.cc:hover{border-color:var(--border2);transform:translateY(-2px);}
+.cthumb{height:90px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative;overflow:hidden;}
+.cthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;}
+.cletter{position:relative;z-index:1;}
+.cinfo{padding:9px;}
+.cnm{font-weight:700;font-size:0.7rem;color:var(--text);margin-bottom:2px;}
+.ccat{font-family:"Bebas Neue",sans-serif;font-size:0.54rem;letter-spacing:0.12em;color:var(--gold);}
+.cmeta{font-size:0.56rem;color:var(--dim);margin-top:1px;}
+.mcard{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:11px;display:flex;align-items:center;gap:10px;margin-bottom:8px;cursor:pointer;transition:border-color 0.2s;}
+.mcard:hover{border-color:var(--border2);}
+.mav{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:1rem;color:var(--bg);flex-shrink:0;overflow:hidden;position:relative;}
+.mav img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.ncard{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;display:flex;gap:11px;margin-bottom:8px;cursor:pointer;}
+.ncard:hover{border-color:var(--border2);}
+.nic{width:40px;height:40px;border-radius:6px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.ftab{font-family:"Bebas Neue",sans-serif;font-size:0.62rem;letter-spacing:0.12em;padding:6px 13px;border:1px solid var(--border);border-radius:20px;cursor:pointer;color:var(--muted);white-space:nowrap;transition:all 0.2s;flex-shrink:0;}
+.ftab.on{background:var(--gold);color:var(--bg);border-color:var(--gold);}
+.frow{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;scrollbar-width:none;}
+.frow::-webkit-scrollbar{display:none;}
+.fi{width:100%;padding:11px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:"Montserrat",sans-serif;font-size:0.76rem;outline:none;transition:border-color 0.2s;}
 .fi:focus{border-color:var(--gold);}
 .fi::placeholder{color:var(--dim);}
-.fl{font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:var(--muted);margin-bottom:5px;display:block;}
+textarea.fi{resize:vertical;}
+select.fi option{background:var(--bg2);}
+.btn-g{font-family:"Montserrat",sans-serif;font-weight:800;font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;padding:11px 18px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--bg);border:none;border-radius:6px;cursor:pointer;width:100%;}
+.btn-g:disabled{opacity:0.5;cursor:not-allowed;}
+.btn-gh{font-family:"Montserrat",sans-serif;font-weight:700;font-size:0.62rem;padding:9px 12px;background:transparent;color:var(--text);border:1px solid var(--border2);border-radius:6px;cursor:pointer;}
+.btn-act{font-family:"Montserrat",sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:9px 14px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--bg);border:none;border-radius:6px;cursor:pointer;}
 .fg{margin-bottom:12px;}
-.btn-gold{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;padding:11px 18px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--bg);border:none;border-radius:6px;cursor:pointer;transition:opacity 0.2s;}
-.btn-gold:hover{opacity:0.88;}
-.btn-ghost{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.66rem;letter-spacing:0.12em;text-transform:uppercase;padding:11px 18px;background:transparent;color:var(--text);border:1px solid var(--border2);border-radius:6px;cursor:pointer;transition:all 0.2s;}
-.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
-.btn-full{width:100%;}
-
-/* ── FILTER TABS ── */
-.filter-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;scrollbar-width:none;}
-.filter-row::-webkit-scrollbar{display:none;}
-.ftab{font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.12em;padding:6px 13px;border:1px solid var(--border);border-radius:20px;cursor:pointer;color:var(--muted);white-space:nowrap;transition:all 0.2s;}
-.ftab.active{background:var(--gold);color:var(--bg);border-color:var(--gold);}
-
-/* ── CHAT ── */
-.chat-area{height:calc(100vh - 280px);overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:10px;}
-.msg-row{display:flex;gap:8px;align-items:flex-start;}
-.msg-row.me{flex-direction:row-reverse;}
-.msg-bub{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:8px 11px;font-family:'Montserrat',sans-serif;font-size:0.72rem;color:var(--text);max-width:75%;line-height:1.5;}
-.msg-row.me .msg-bub{background:rgba(255,184,0,0.12);border-color:rgba(255,184,0,0.25);}
-.msg-who{font-family:'Montserrat',sans-serif;font-size:0.56rem;font-weight:700;color:var(--dim);margin-bottom:3px;}
-.chat-foot{display:flex;gap:8px;padding:10px 0;border-top:1px solid var(--border);}
-.chat-inp{flex:1;padding:10px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;color:var(--text);font-family:'Montserrat',sans-serif;font-size:0.74rem;outline:none;}
+.fl{font-family:"Bebas Neue",sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:var(--muted);margin-bottom:5px;display:block;}
+.sh2{font-family:"Bebas Neue",sans-serif;font-size:0.68rem;letter-spacing:0.2em;color:var(--gold);margin-bottom:10px;margin-top:4px;}
+.sbox{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center;}
+.snum{font-family:"Bebas Neue",sans-serif;font-size:1.2rem;color:var(--text);}
+.slbl{font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);}
+.cgrd2{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
+.comcard{border-radius:8px;overflow:hidden;cursor:pointer;border:1px solid var(--border);transition:all 0.3s;}
+.comcard:hover{border-color:rgba(255,184,0,0.35);transform:translateY(-2px);}
+.combg{height:80px;background-size:cover;background-position:center;filter:brightness(0.6);}
+.combd{padding:8px 10px;background:var(--bg2);}
+.chat-area{height:calc(100vh - 290px);overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:10px;}
+.mb{display:flex;gap:8px;align-items:flex-start;}
+.mb.me{flex-direction:row-reverse;}
+.mbub{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:8px 11px;font-size:0.72rem;color:var(--text);max-width:75%;line-height:1.5;}
+.mb.me .mbub{background:rgba(255,184,0,0.12);border-color:rgba(255,184,0,0.25);}
+.chat-ft{display:flex;gap:8px;padding:10px 0;border-top:1px solid var(--border);}
+.chat-inp{flex:1;padding:10px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;color:var(--text);font-family:"Montserrat",sans-serif;font-size:0.74rem;outline:none;}
 .chat-inp:focus{border-color:var(--gold);}
-.chat-send{width:38px;height:38px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;font-size:1rem;flex-shrink:0;}
-
-/* ── TOAST ── */
-#toast{
-  position:fixed;bottom:78px;right:12px;
-  background:var(--bg3);border:1px solid var(--border);
-  padding:10px 14px;border-radius:20px;
-  font-family:'Montserrat',sans-serif;font-size:0.7rem;color:var(--text);
-  opacity:0;transform:translateY(10px);
-  transition:all 0.3s ease;
-  pointer-events:none;max-width:260px;z-index:9999;
-}
-#toast.show{opacity:1;transform:translateY(0);pointer-events:auto;}
-
-/* ── COMMUNITIES ── */
-.com-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
-.com-card{border-radius:8px;overflow:hidden;cursor:pointer;border:1px solid var(--border);transition:all 0.3s;position:relative;}
-.com-card:hover{border-color:rgba(255,184,0,0.35);transform:translateY(-2px);}
-.com-bg{height:80px;background-size:cover;background-position:center;filter:brightness(0.6);}
-.com-body{padding:8px 10px;background:var(--bg2);}
-.com-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.66rem;color:var(--text);}
-.com-desc{font-family:'Montserrat',sans-serif;font-size:0.52rem;color:var(--dim);}
+.chat-snd{width:38px;height:38px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;font-size:1rem;flex-shrink:0;}
+.upbox{border:1px dashed var(--border2);border-radius:8px;padding:14px;text-align:center;cursor:pointer;margin-bottom:8px;}
+.upbox:hover{border-color:var(--gold);}
+.ov{position:fixed;inset:0;background:var(--bg);z-index:9000;overflow-y:auto;}
+.ov-nav{position:sticky;top:0;background:rgba(7,7,13,0.97);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;gap:12px;z-index:10;}
+.back-btn{background:none;border:1px solid var(--border2);border-radius:8px;width:36px;height:36px;color:var(--text);font-size:1.1rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+#toast{position:fixed;bottom:78px;right:12px;background:var(--bg3);border:1px solid var(--border);padding:10px 14px;border-radius:20px;font-size:0.7rem;color:var(--text);opacity:0;transform:translateY(10px);transition:all 0.3s ease;pointer-events:none;max-width:260px;z-index:9999;}
+#toast.on{opacity:1;transform:translateY(0);}
 </style>
 </head>
 <body>
-
-<!-- ══ SIDEBAR OVERLAY ══ -->
-<div id="sbOverlay"></div>
-
-<!-- ══ SIDEBAR ══ -->
-<div id="sidebar">
-  <div class="sb-head">
-    <span class="sb-brand">ICONIK</span>
-    <button id="sbClose">✕</button>
-  </div>
-  <div class="sb-user">
-    <div class="sb-username" id="sbName">Member</div>
-    <div class="sb-tier" id="sbTier">Fan</div>
-  </div>
-  <div class="sb-section">
-    <div class="sb-label">Main</div>
-    <div class="sb-link" data-view="feed"><span class="sb-link-icon">🏠</span>Feed</div>
-    <div class="sb-link" data-view="icons"><span class="sb-link-icon">⭐</span>Icons & Celebrities</div>
-    <div class="sb-link" data-view="news"><span class="sb-link-icon">📰</span>Celebrity News</div>
-    <div class="sb-link" data-view="communities"><span class="sb-link-icon">🌍</span>Communities</div>
-    <div class="sb-link" data-view="chat"><span class="sb-link-icon">💬</span>Live Chat</div>
-    <div class="sb-label">Discover</div>
-    <div class="sb-link" data-view="events"><span class="sb-link-icon">🎫</span>Events & Tickets</div>
-    <div class="sb-link" data-view="radio"><span class="sb-link-icon">🎵</span>ICONIK Radio</div>
-    <div class="sb-link" data-view="tv"><span class="sb-link-icon">📺</span>ICONIK TV</div>
-    <div class="sb-link" data-view="magazine"><span class="sb-link-icon">📖</span>Magazine</div>
-    <div class="sb-link" data-view="wellness"><span class="sb-link-icon">💪</span>Wellness Hub</div>
-    <div class="sb-label">Community</div>
-    <div class="sb-link" data-view="members"><span class="sb-link-icon">🔍</span>Find Members</div>
-    <div class="sb-link" data-view="rankings"><span class="sb-link-icon">🏆</span>Fan Rankings</div>
-    <div class="sb-link" data-view="polls"><span class="sb-link-icon">🗳️</span>Fan Voting</div>
-    <div class="sb-label">My ICONIK</div>
-    <div class="sb-link" data-view="profile"><span class="sb-link-icon">👤</span>My Profile</div>
-    <div class="sb-link" data-view="messages"><span class="sb-link-icon">📩</span>Messages</div>
-    <div class="sb-link" data-view="notifications"><span class="sb-link-icon">🔔</span>Notifications</div>
-    <div class="sb-link" data-view="vip"><span class="sb-link-icon">👑</span>VIP Lounge</div>
-    <div class="sb-link sb-logout" id="logoutLink"><span class="sb-link-icon">🚪</span>Sign Out</div>
+<div id="sbOv"></div>
+<div id="sb">
+  <div class="sb-hd"><span class="sb-br">ICONIK</span><button id="sbX">&#x2715;</button></div>
+  <div class="sb-usr"><div class="sb-unm" id="sbNm">Member</div><div class="sb-ti" id="sbTi">Fan</div></div>
+  <div style="padding:8px 0;">
+    <div class="sb-lbl">Main</div>
+    <div class="sb-lnk" data-v="feed">&#127968; Feed</div>
+    <div class="sb-lnk" data-v="icons">&#11088; Icons &amp; Celebrities</div>
+    <div class="sb-lnk" data-v="news">&#128240; Celebrity News</div>
+    <div class="sb-lnk" data-v="coms">&#127758; Communities</div>
+    <div class="sb-lnk" data-v="chat">&#128172; Live Chat</div>
+    <div class="sb-lbl">Discover</div>
+    <div class="sb-lnk" data-v="events">&#127915; Events &amp; Tickets</div>
+    <div class="sb-lnk" data-v="radio">&#127925; ICONIK Radio</div>
+    <div class="sb-lnk" data-v="tv">&#128250; ICONIK TV</div>
+    <div class="sb-lnk" data-v="mag">&#128218; Magazine</div>
+    <div class="sb-lnk" data-v="well">&#128170; Wellness Hub</div>
+    <div class="sb-lbl">Community</div>
+    <div class="sb-lnk" data-v="members">&#128269; Find Members</div>
+    <div class="sb-lnk" data-v="ranks">&#127942; Fan Rankings</div>
+    <div class="sb-lnk" data-v="polls">&#128379; Fan Voting</div>
+    <div class="sb-lbl">My ICONIK</div>
+    <div class="sb-lnk" data-v="profile">&#128100; My Profile</div>
+    <div class="sb-lnk" data-v="msgs">&#128233; Messages</div>
+    <div class="sb-lnk" data-v="notifs">&#128276; Notifications</div>
+    <div class="sb-lnk" data-v="vip">&#128081; VIP Lounge</div>
+    <div class="sb-lnk sb-out" id="logoutBtn">&#128682; Sign Out</div>
   </div>
 </div>
-
-<!-- ══ TOP NAV ══ -->
 <div id="topnav">
   <span class="nav-logo">ICONIK</span>
-  <div class="nav-right">
-    <span class="nav-bell" id="bellBtn">🔔</span>
-    <div class="nav-av" id="navAvatar">M</div>
-    <button id="hamburger">
-      <span></span><span></span><span></span>
-    </button>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span style="font-size:1.1rem;cursor:pointer;" id="bellBtn">&#128276;</span>
+    <div id="navAv">M</div>
+    <button id="hbg"><span></span><span></span><span></span></button>
   </div>
 </div>
-
-<!-- ══ MAIN ══ -->
 <div id="main">
-
-  <!-- FEED -->
-  <div class="view active" id="feedV">
-    <div class="wbar"><span class="wbar-icon">🏠</span><div><div class="wbar-title">Fan Feed</div><div class="wbar-sub">Latest from your communities</div></div></div>
+  <div class="view on" id="feedV">
+    <div class="wbar"><span style="font-size:1.4rem;">&#127968;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Fan Feed</div><div style="font-size:0.62rem;color:var(--muted);">Latest from your communities</div></div></div>
     <div class="card" style="margin-bottom:14px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-        <div class="card-av" id="postAv">M</div>
-        <input class="fi" style="flex:1;" placeholder="Share with your community..." readonly onclick="openPostComposer()"/>
+        <div class="mav" id="postAv" style="width:34px;height:34px;font-size:0.85rem;">M</div>
+        <div id="composerBar" style="flex:1;padding:9px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;font-size:0.76rem;color:var(--dim);cursor:pointer;">What&apos;s on your mind?</div>
       </div>
-      <div style="display:flex;gap:7px;">
-        <button class="btn-ghost" style="font-size:0.58rem;padding:7px 11px;" onclick="openPostComposer()">📝 Post</button>
-        <button class="btn-ghost" style="font-size:0.58rem;padding:7px 11px;" onclick="openPostComposer()">📸 Photo</button>
+      <div style="display:flex;gap:6px;">
+        <button id="pbtn1" style="flex:1;padding:8px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:0.62rem;cursor:pointer;">&#128221; Post</button>
+        <button id="pbtn2" style="flex:1;padding:8px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:0.62rem;cursor:pointer;">&#128247; Photo</button>
+        <button id="pbtn3" style="flex:1;padding:8px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:0.62rem;cursor:pointer;">&#127909; Video</button>
       </div>
     </div>
-    <div id="feedList"><div class="loader"><div class="loader-ring"></div></div></div>
+    <div id="feedList"><div class="loader"><div class="lring"></div></div></div>
   </div>
-
-  <!-- ICONS -->
   <div class="view" id="iconsV">
-    <div class="wbar"><span class="wbar-icon">⭐</span><div><div class="wbar-title">All Icons & Celebrities</div><div class="wbar-sub">Dedicated fan hubs for every icon</div></div></div>
-    <input class="fi" style="margin-bottom:12px;" id="celebSearch" placeholder="Search by name or category..." oninput="filterCelebs()"/>
-    <div class="celeb-grid" id="celebGrid"><div class="loader" style="grid-column:span 2;"><div class="loader-ring"></div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#11088;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">All Icons &amp; Celebrities</div><div style="font-size:0.62rem;color:var(--muted);">Dedicated fan hubs for every icon</div></div></div>
+    <input class="fi" style="margin-bottom:12px;" id="celebSrch" placeholder="Search by name or category..."/>
+    <div class="cgrid" id="celebGrid"><div class="loader" style="grid-column:span 2;"><div class="lring"></div></div></div>
   </div>
-
-  <!-- NEWS -->
   <div class="view" id="newsV">
-    <div class="wbar"><span class="wbar-icon">📰</span><div><div class="wbar-title">Celebrity News</div><div class="wbar-sub">Latest from the world of icons</div></div></div>
-    <div class="filter-row" id="newsFilter">
-      <div class="ftab active" onclick="filterNews(this,'All')">All</div>
-      <div class="ftab" onclick="filterNews(this,'Music')">🎵 Music</div>
-      <div class="ftab" onclick="filterNews(this,'Sports')">⚽ Sports</div>
-      <div class="ftab" onclick="filterNews(this,'Film & TV')">🎬 Film</div>
-      <div class="ftab" onclick="filterNews(this,'Fashion')">👗 Fashion</div>
-      <div class="ftab" onclick="filterNews(this,'Tech & Innovation')">💻 Tech</div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#128240;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Celebrity News</div><div style="font-size:0.62rem;color:var(--muted);">Latest from the world of icons</div></div></div>
+    <div class="frow" id="newsFrow">
+      <div class="ftab on" data-cat="All">All</div>
+      <div class="ftab" data-cat="Music">Music</div>
+      <div class="ftab" data-cat="Sports">Sports</div>
+      <div class="ftab" data-cat="Film & TV">Film</div>
+      <div class="ftab" data-cat="Fashion">Fashion</div>
     </div>
-    <div id="newsList"><div class="loader"><div class="loader-ring"></div></div></div>
+    <div id="newsList"><div class="loader"><div class="lring"></div></div></div>
   </div>
-
-  <!-- COMMUNITIES -->
-  <div class="view" id="communitiesV">
-    <div class="wbar"><span class="wbar-icon">🌍</span><div><div class="wbar-title">13 Communities</div><div class="wbar-sub">Find your circle</div></div></div>
-    <div class="com-grid" id="comGrid"></div>
+  <div class="view" id="comsV">
+    <div class="wbar"><span style="font-size:1.4rem;">&#127758;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">13 Communities</div><div style="font-size:0.62rem;color:var(--muted);">Find your circle</div></div></div>
+    <div class="cgrd2" id="comGrid"></div>
   </div>
-
-  <!-- CHAT -->
   <div class="view" id="chatV">
-    <div class="wbar"><span class="wbar-icon">💬</span><div><div class="wbar-title">Live Community Chat</div><div class="wbar-sub">Real-time fan conversations</div></div></div>
-    <div class="filter-row" id="chatRooms">
-      <div class="ftab active" data-room="general" onclick="switchRoom(this)">🌍 Global</div>
-      <div class="ftab" data-room="music" onclick="switchRoom(this)">🎵 Music</div>
-      <div class="ftab" data-room="sports" onclick="switchRoom(this)">⚽ Sports</div>
-      <div class="ftab" data-room="film" onclick="switchRoom(this)">🎬 Film</div>
-      <div class="ftab" data-room="fashion" onclick="switchRoom(this)">👗 Fashion</div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#128172;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Live Community Chat</div><div style="font-size:0.62rem;color:var(--muted);">Real-time fan conversations</div></div></div>
+    <div class="frow" id="chatRooms">
+      <div class="ftab on" data-room="general">Global</div>
+      <div class="ftab" data-room="music">Music</div>
+      <div class="ftab" data-room="sports">Sports</div>
+      <div class="ftab" data-room="film">Film</div>
+      <div class="ftab" data-room="fashion">Fashion</div>
     </div>
-    <div class="chat-area" id="chatArea"><div class="loader"><div class="loader-ring"></div></div></div>
-    <div class="chat-foot">
-      <input class="chat-inp" id="chatInp" placeholder="Say something..."/>
-      <button class="chat-send" onclick="sendChat()">➤</button>
-    </div>
+    <div class="chat-area" id="chatArea"></div>
+    <div class="chat-ft"><input class="chat-inp" id="chatInp" placeholder="Say something..."/><button class="chat-snd" id="chatSnd">&#10148;</button></div>
   </div>
-
-  <!-- EVENTS -->
   <div class="view" id="eventsV">
-    <div class="wbar"><span class="wbar-icon">🎫</span><div><div class="wbar-title">Events & Tickets</div><div class="wbar-sub">Concerts · Tours · Fan Meets</div></div></div>
-    <div id="eventsList"><div class="loader"><div class="loader-ring"></div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#127915;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Events &amp; Tickets</div><div style="font-size:0.62rem;color:var(--muted);">Concerts &middot; Tours &middot; Fan Meets</div></div></div>
+    <div id="evList"><div class="loader"><div class="lring"></div></div></div>
   </div>
-
-  <!-- RADIO -->
   <div class="view" id="radioV">
-    <div class="wbar"><span class="wbar-icon">🎵</span><div><div class="wbar-title">ICONIK Radio</div><div class="wbar-sub">Music · Podcasts · Fan Mixes</div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#127925;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">ICONIK Radio</div><div style="font-size:0.62rem;color:var(--muted);">Music &middot; Podcasts &middot; Fan Mixes</div></div></div>
     <div id="radioList"></div>
   </div>
-
-  <!-- TV -->
   <div class="view" id="tvV">
-    <div class="wbar"><span class="wbar-icon">📺</span><div><div class="wbar-title">ICONIK TV</div><div class="wbar-sub">Watch · Discover · React</div></div></div>
-    <div id="tvList"><div class="loader"><div class="loader-ring"></div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#128250;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">ICONIK TV</div><div style="font-size:0.62rem;color:var(--muted);">Watch &middot; Discover &middot; React</div></div></div>
+    <div id="tvList"><div class="loader"><div class="lring"></div></div></div>
   </div>
-
-  <!-- MAGAZINE -->
-  <div class="view" id="magazineV">
-    <div class="wbar"><span class="wbar-icon">📖</span><div><div class="wbar-title">ICONIK Magazine</div><div class="wbar-sub">Stories · Interviews · Exclusives</div></div></div>
-    <div id="magList"><div class="loader"><div class="loader-ring"></div></div></div>
+  <div class="view" id="magV">
+    <div class="wbar"><span style="font-size:1.4rem;">&#128218;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">ICONIK Magazine</div><div style="font-size:0.62rem;color:var(--muted);">Stories &middot; Interviews &middot; Exclusives</div></div></div>
+    <div id="magList"><div class="loader"><div class="lring"></div></div></div>
   </div>
-
-  <!-- WELLNESS -->
-  <div class="view" id="wellnessV">
-    <div class="wbar"><span class="wbar-icon">💪</span><div><div class="wbar-title">Wellness Hub</div><div class="wbar-sub">Health · Fitness · Nutrition · Beauty</div></div></div>
-    <div class="filter-row">
-      <div class="ftab active" onclick="showWellness('fitness',this)">💪 Fitness</div>
-      <div class="ftab" onclick="showWellness('nutrition',this)">🥗 Nutrition</div>
-      <div class="ftab" onclick="showWellness('mental',this)">🧘 Mental</div>
-      <div class="ftab" onclick="showWellness('beauty',this)">💄 Beauty</div>
-      <div class="ftab" onclick="showWellness('recovery',this)">💆 Recovery</div>
+  <div class="view" id="wellV">
+    <div class="wbar"><span style="font-size:1.4rem;">&#128170;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Wellness Hub</div><div style="font-size:0.62rem;color:var(--muted);">Health &middot; Fitness &middot; Nutrition</div></div></div>
+    <div class="frow" id="wellFrow">
+      <div class="ftab on" data-w="fitness">Fitness</div>
+      <div class="ftab" data-w="nutrition">Nutrition</div>
+      <div class="ftab" data-w="mental">Mental</div>
+      <div class="ftab" data-w="beauty">Beauty</div>
+      <div class="ftab" data-w="recovery">Recovery</div>
     </div>
-    <div id="wellnessContent"></div>
+    <div id="wellContent"></div>
   </div>
-
-  <!-- FIND MEMBERS -->
   <div class="view" id="membersV">
-    <div class="wbar"><span class="wbar-icon">🔍</span><div><div class="wbar-title">Find Members</div><div class="wbar-sub">Discover fans worldwide</div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#128269;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Find Members</div><div style="font-size:0.62rem;color:var(--muted);">Discover fans worldwide</div></div></div>
     <div style="display:flex;gap:8px;margin-bottom:12px;">
-      <input class="fi" style="flex:1;" id="memberSearch" placeholder="Search by name..." oninput="searchMembers()"/>
-      <select class="fi" style="width:100px;" id="memberFilter" onchange="searchMembers()">
-        <option value="">All</option>
-        <option>Music</option><option>Sports</option><option>Fashion</option><option>Tech & Innovation</option>
-      </select>
+      <input class="fi" style="flex:1;" id="mSrch" placeholder="Search by name..."/>
+      <select class="fi" style="width:110px;" id="mFilt"><option value="">All</option><option>Music</option><option>Sports</option><option>Fashion</option><option>Tech &amp; Innovation</option></select>
     </div>
-    <div id="memberList"><div class="loader"><div class="loader-ring"></div></div></div>
+    <div id="memberList"><div class="loader"><div class="lring"></div></div></div>
   </div>
-
-  <!-- RANKINGS -->
-  <div class="view" id="rankingsV">
-    <div class="wbar"><span class="wbar-icon">🏆</span><div><div class="wbar-title">Fan Rankings</div><div class="wbar-sub">Top fans across ICONIK</div></div></div>
-    <div id="rankList"><div class="loader"><div class="loader-ring"></div></div></div>
+  <div class="view" id="ranksV">
+    <div class="wbar"><span style="font-size:1.4rem;">&#127942;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Fan Rankings</div><div style="font-size:0.62rem;color:var(--muted);">Top fans across ICONIK</div></div></div>
+    <div id="rankList"><div class="loader"><div class="lring"></div></div></div>
   </div>
-
-  <!-- POLLS -->
   <div class="view" id="pollsV">
-    <div class="wbar"><span class="wbar-icon">🗳️</span><div><div class="wbar-title">Fan Voting</div><div class="wbar-sub">Your vote shapes the community</div></div></div>
-    <div id="pollList"><div class="loader"><div class="loader-ring"></div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#128379;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Fan Voting</div><div style="font-size:0.62rem;color:var(--muted);">Your vote shapes the community</div></div></div>
+    <div id="pollList"><div class="loader"><div class="lring"></div></div></div>
   </div>
-
-  <!-- PROFILE -->
   <div class="view" id="profileV">
-    <div class="profile-cover" id="profileCover"></div>
-    <div class="profile-av-wrap"><div class="profile-av-lg" id="profileAvLg">M</div></div>
-    <div class="profile-body">
-      <div class="profile-name" id="profileName">Member</div>
-      <div class="profile-tier" id="profileTierBadge">Fan</div>
-      <div class="profile-bio" id="profileBioText"></div>
-      <div class="stats-row">
-        <div class="stat-box"><div class="stat-num" id="pFollowers">0</div><div class="stat-lbl">Followers</div></div>
-        <div class="stat-box"><div class="stat-num" id="pFollowing">0</div><div class="stat-lbl">Following</div></div>
-        <div class="stat-box"><div class="stat-num" id="pPosts">0</div><div class="stat-lbl">Posts</div></div>
-        <div class="stat-box"><div class="stat-num" id="pPoints">0</div><div class="stat-lbl">Points</div></div>
-      </div>
-      <div class="sec-head">Edit Profile</div>
-      <div class="card">
-        <div class="fg"><label class="fl">Bio</label><textarea class="fi" id="editBio" rows="3" placeholder="Tell the community about yourself..."></textarea></div>
-        <div class="fg">
-          <label class="fl">Profile Picture</label>
-          <div onclick="document.getElementById('picUpload').click()" style="border:1px dashed rgba(255,255,255,0.16);border-radius:8px;padding:14px;text-align:center;cursor:pointer;margin-bottom:8px;">
-            <div style="font-size:1.4rem;margin-bottom:4px;">📸</div>
-            <div style="font-family:'Montserrat',sans-serif;font-size:0.66rem;color:#BDB5A6;" id="picUploadName">Tap to upload profile picture</div>
-            <input type="file" id="picUpload" accept="image/*" style="display:none;" onchange="previewProfilePic(this)"/>
-          </div>
-          <img id="picPreview" style="display:none;width:80px;height:80px;border-radius:50%;object-fit:cover;margin:0 auto 8px;border:3px solid rgba(255,184,0,0.4);"/>
-          <input class="fi" id="editPic" placeholder="Or paste image URL: https://..."/>
-        </div>
-        <div class="fg">
-          <label class="fl">Cover Photo</label>
-          <div onclick="document.getElementById('coverUpload').click()" style="border:1px dashed rgba(255,255,255,0.16);border-radius:8px;padding:14px;text-align:center;cursor:pointer;margin-bottom:8px;">
-            <div style="font-size:1.4rem;margin-bottom:4px;">🖼️</div>
-            <div style="font-family:'Montserrat',sans-serif;font-size:0.66rem;color:#BDB5A6;" id="coverUploadName">Tap to upload cover photo</div>
-            <input type="file" id="coverUpload" accept="image/*" style="display:none;" onchange="previewCoverPhoto(this)"/>
-          </div>
-          <img id="coverPreview" style="display:none;width:100%;height:80px;object-fit:cover;border-radius:8px;margin-bottom:8px;"/>
-          <input class="fi" id="editCover" placeholder="Or paste cover URL: https://..."/>
-        </div>
-        <button class="btn-gold btn-full" id="saveProfileBtn" onclick="saveProfile()">Save Profile →</button>
-      </div>
-    </div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#128100;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">My Profile</div><div style="font-size:0.62rem;color:var(--muted);">Your ICONIK identity</div></div></div>
+    <div id="profileContent"><div class="loader"><div class="lring"></div></div></div>
   </div>
-
-  <!-- MESSAGES -->
-  <div class="view" id="messagesV">
-    <div class="wbar"><span class="wbar-icon">📩</span><div><div class="wbar-title">Messages</div><div class="wbar-sub">From Admin & Sub Admins</div></div></div>
-    <div id="msgList"><div class="loader"><div class="loader-ring"></div></div></div>
+  <div class="view" id="msgsV">
+    <div class="wbar"><span style="font-size:1.4rem;">&#128233;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Messages</div><div style="font-size:0.62rem;color:var(--muted);">From Admin &amp; Sub Admins</div></div></div>
+    <div id="msgList"><div class="loader"><div class="lring"></div></div></div>
   </div>
-
-  <!-- NOTIFICATIONS -->
-  <div class="view" id="notificationsV">
-    <div class="wbar"><span class="wbar-icon">🔔</span><div><div class="wbar-title">Notifications</div><div class="wbar-sub">Your latest activity & alerts</div></div></div>
-    <div id="notifList"><div class="loader"><div class="loader-ring"></div></div></div>
+  <div class="view" id="notifsV">
+    <div class="wbar"><span style="font-size:1.4rem;">&#128276;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Notifications</div><div style="font-size:0.62rem;color:var(--muted);">Your latest alerts</div></div></div>
+    <div id="notifList"><div class="loader"><div class="lring"></div></div></div>
   </div>
-
-  <!-- VIP -->
   <div class="view" id="vipV">
     <div style="background:linear-gradient(135deg,#3a2800,#8B5E00,#FFB800,#8B5E00,#3a2800);border-radius:8px;padding:22px;text-align:center;margin-bottom:14px;">
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.12em;color:#fff;">👑 VIP Inner Circle</div>
-      <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:0.82rem;color:rgba(255,255,255,0.75);margin-top:4px;">Unlock the Inner Circle</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.12em;color:#fff;">&#128081; VIP Inner Circle</div>
+      <div style="font-style:italic;font-size:0.82rem;color:rgba(255,255,255,0.75);margin-top:4px;">Unlock the Inner Circle</div>
     </div>
-    <div id="vipContent"><div class="loader"><div class="loader-ring"></div></div></div>
-  </div>
-
-</div><!-- end #main -->
-
-<!-- ══ BOTTOM NAV ══ -->
-<div id="bottomnav">
-  <div class="bn-item active" data-view="feed">
-    <div class="bn-icon">🏠</div><div class="bn-label">Feed</div>
-  </div>
-  <div class="bn-item" data-view="icons">
-    <div class="bn-icon">⭐</div><div class="bn-label">Icons</div>
-  </div>
-  <div class="bn-item" data-view="news">
-    <div class="bn-icon">📰</div><div class="bn-label">News</div>
-  </div>
-  <div class="bn-item" data-view="wellness">
-    <div class="bn-icon">💪</div><div class="bn-label">Wellness</div>
-  </div>
-  <div class="bn-item" data-view="vip">
-    <div class="bn-icon">👑</div><div class="bn-label">VIP</div>
+    <div id="vipContent"><div class="loader"><div class="lring"></div></div></div>
   </div>
 </div>
-
+<div id="bnav">
+  <div class="bn on" data-v="feed"><div class="bn-ic">&#127968;</div><div class="bn-lb">Feed</div></div>
+  <div class="bn" data-v="icons"><div class="bn-ic">&#11088;</div><div class="bn-lb">Icons</div></div>
+  <div class="bn" data-v="news"><div class="bn-ic">&#128240;</div><div class="bn-lb">News</div></div>
+  <div class="bn" data-v="well"><div class="bn-ic">&#128170;</div><div class="bn-lb">Wellness</div></div>
+  <div class="bn" data-v="vip"><div class="bn-ic">&#128081;</div><div class="bn-lb">VIP</div></div>
+</div>
 <div id="toast"></div>
-
-<!-- ══ INSTANT UI — fires before Firebase ══ -->
 <script>
 (function(){
-  var sb  = document.getElementById('sidebar');
-  var ov  = document.getElementById('sbOverlay');
-  var hbg = document.getElementById('hamburger');
-  var xbtn= document.getElementById('sbClose');
-
-  function openSB(){ sb.classList.add('open'); ov.classList.add('open'); }
-  function closeSB(){ sb.classList.remove('open'); ov.classList.remove('open'); }
-
-  hbg.addEventListener('click', openSB);
-  xbtn.addEventListener('click', closeSB);
-  ov.addEventListener('click', closeSB);
-
-  // Show/hide views
-  function showView(name){
-    document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
-    var el = document.getElementById(name+'V');
-    if(el){ el.classList.add('active'); }
-    // Update bottom nav
-    document.querySelectorAll('.bn-item').forEach(function(b){
-      b.classList[b.dataset.view===name?'add':'remove']('active');
-    });
+  var sb=document.getElementById("sb");
+  var ov=document.getElementById("sbOv");
+  function openSB(){sb.classList.add("open");ov.classList.add("open");}
+  function closeSB(){sb.classList.remove("open");ov.classList.remove("open");}
+  document.getElementById("hbg").onclick=openSB;
+  document.getElementById("sbX").onclick=closeSB;
+  ov.onclick=closeSB;
+  window.sv=function(name){
+    document.querySelectorAll(".view").forEach(function(v){v.classList.remove("on");});
+    var el=document.getElementById(name+"V");if(el)el.classList.add("on");
+    document.querySelectorAll(".bn").forEach(function(b){b.classList[b.dataset.v===name?"add":"remove"]("on");});
+    document.querySelectorAll(".sb-lnk[data-v]").forEach(function(l){l.classList[l.dataset.v===name?"add":"remove"]("on");});
     closeSB();
-    // Fire load function if exists
-    var fn = window['load_'+name];
-    if(typeof fn === 'function') fn();
-  }
-  window.goView = showView;
-
-  // Bottom nav
-  document.querySelectorAll('.bn-item').forEach(function(b){
-    b.addEventListener('click', function(){ showView(this.dataset.view); });
-  });
-
-  // Sidebar links
-  document.querySelectorAll('.sb-link[data-view]').forEach(function(lnk){
-    lnk.addEventListener('click', function(){ showView(this.dataset.view); });
-  });
-
-  // Logout
-  document.getElementById('logoutLink').addEventListener('click', function(){
-    if(window._firebaseSignOut){ window._firebaseSignOut(); }
-    else{ window.location.href='/app.html?signout=1'; }
-  });
-
-  // Bell
-  document.getElementById('bellBtn').addEventListener('click', function(){ showView('notifications'); });
-  // Avatar
-  document.getElementById('navAvatar').addEventListener('click', function(){ showView('profile'); });
-
-  console.log('✅ ICONIK dashboard UI ready');
+  };
+  document.querySelectorAll(".bn[data-v]").forEach(function(b){b.onclick=function(){window.sv(this.dataset.v);};});
+  document.querySelectorAll(".sb-lnk[data-v]").forEach(function(l){l.onclick=function(){window.sv(this.dataset.v);};});
+  document.getElementById("bellBtn").onclick=function(){window.sv("notifs");};
+  document.getElementById("navAv").onclick=function(){window.sv("profile");};
+  document.getElementById("logoutBtn").onclick=function(){if(window._so)window._so();else location.href="/app.html?signout=1";};
 })();
 </script>
-
-<!-- ══ FIREBASE + DATA ══ -->
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,query,limit,where,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
+import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,query,limit,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 const cfg={apiKey:"AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",authDomain:"iconik-global.firebaseapp.com",projectId:"iconik-global",storageBucket:"iconik-global.firebasestorage.app",messagingSenderId:"1040054516979",appId:"1:1040054516979:web:33cd5f07ae8fc146a30b86"};
 const fb=initializeApp(cfg),auth=getAuth(fb),db=getFirestore(fb);
-
-// Safe fetch with 5s timeout
-async function sg(ref){
-  try{return await Promise.race([getDocs(ref),new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),5000))]);}
-  catch(e){console.warn('Firestore:',e.message);return{empty:true,forEach:()=>{},docs:[]};}
-}
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function escUrl(s){return String(s||'').replace(/"/g,'%22').replace(/'/g,'%27');}
-function toast(msg,type){
-  var t=document.getElementById('toast');
-  t.textContent=msg;
-  t.style.background=type==='error'?'#7f1d1d':type==='info'?'#1e3a5f':'#14532d';
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3000);
-}
-
-let cU=null,cD=null,allCelebs=[],allMembers=[],allNews=[],chatRoom='general',chatTimer=null;
-
-// ── SIGN OUT ──
-// ── OVERLAY STACK — tracks all open overlays ──
-const overlayStack=[];
-function pushOverlay(el){
-  overlayStack.push(el);
-  history.pushState({overlay:overlayStack.length},'','');
-}
-function popOverlay(){
-  const top=overlayStack.pop();
-  if(top&&top.parentNode)top.remove();
-}
-window.addEventListener('popstate',function(e){
-  if(overlayStack.length>0){popOverlay();return;}
-  // No overlays — push state back so we stay on dashboard
-  history.pushState(null,'','');
-});
-history.pushState(null,'','');
-
-// Browser back button closes overlay instead of leaving page (legacy)
-window.addEventListener('popstate_legacy_disabled',function(e){
-  if(window._overlayClose){window._overlayClose();return;}
-  // No overlay open — stay on dashboard, don't go to login
-  history.pushState(null,'','');
-});
-// Push initial state so back button is interceptable
-history.pushState(null,'','');
-
-window._firebaseSignOut=async function(){
-  await signOut(auth);
-  location.replace('/app.html?signout=1');
-};
-
-// ── AUTH ──
-onAuthStateChanged(auth,async u=>{
-  if(!u){location.replace('/app.html');return;}
+async function sg(r){try{return await Promise.race([getDocs(r),new Promise((_,j)=>setTimeout(()=>j(new Error("t")),5000))]);}catch(e){return{empty:true,forEach:()=>{},docs:[],size:0};}}
+function xe(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function xu(s){return String(s||"").replace(/"/g,"'");}
+function toast(msg,t){var el=document.getElementById("toast");el.textContent=msg;el.style.background=t==="error"?"rgba(127,29,29,0.97)":t==="info"?"rgba(30,58,95,0.97)":"rgba(20,83,45,0.97)";el.classList.add("on");clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove("on");},3000);}
+async function upload(f){var fd=new FormData();fd.append("file",f);fd.append("upload_preset","iconik_uploads");var r=await fetch("https://api.cloudinary.com/v1_1/dhazrf2xr/upload",{method:"POST",body:fd});if(!r.ok)throw new Error("Upload failed");return(await r.json()).secure_url;}
+function mkOv(){var o=document.createElement("div");o.className="ov";document.body.appendChild(o);return o;}
+function navRow(title){return "<div class=\"ov-nav\"><button class=\"back-btn\" id=\"ovBack\">&#8592;</button><span style=\"font-size:0.72rem;letter-spacing:0.16em;color:var(--muted);\">"+title+"</span></div>";}
+let cU=null,cD=null,allC=[],allM=[],allN=[],chatRoom="general",cTick=null;
+window._so=async function(){await signOut(auth);location.replace("/app.html?signout=1");};
+onAuthStateChanged(auth,async function(u){
+  if(!u){location.replace("/app.html");return;}
   cU=u;
-  try{const d=await getDoc(doc(db,'users',u.uid));if(d.exists())cD={id:d.id,...d.data()};}catch{}
-  initDash();
+  try{var d=await getDoc(doc(db,"users",u.uid));if(d.exists())cD={id:d.id,...d.data()};}catch{}
+  boot();
 });
+function boot(){
+  var nm=cD&&cD.name?cD.name:"Member";
+  var av=document.getElementById("navAv");av.textContent=nm.charAt(0).toUpperCase();
+  if(cD&&cD.profilePic&&cD.profilePic.startsWith("http")){var img=document.createElement("img");img.src=cD.profilePic;img.onerror=function(){this.remove();};av.appendChild(img);}
+  document.getElementById("sbNm").textContent=nm;
+  document.getElementById("sbTi").textContent=(cD&&cD.tier)||"Fan";
+  document.getElementById("postAv").textContent=nm.charAt(0).toUpperCase();
+  ["composerBar","pbtn1","pbtn2","pbtn3"].forEach(function(id){var el=document.getElementById(id);if(el)el.onclick=openComposer;});
+  document.getElementById("celebSrch").addEventListener("input",filterCelebs);
+  document.getElementById("mSrch").addEventListener("input",filterMembers);
+  document.getElementById("mFilt").addEventListener("change",filterMembers);
+  document.getElementById("newsFrow").addEventListener("click",function(ev){var t=ev.target.closest(".ftab");if(!t)return;document.querySelectorAll("#newsFrow .ftab").forEach(function(x){x.classList.remove("on");});t.classList.add("on");var cat=t.dataset.cat;renderNews(cat==="All"?allN:allN.filter(function(n){return n.category===cat;}));});
+  document.getElementById("wellFrow").addEventListener("click",function(ev){var t=ev.target.closest(".ftab");if(!t)return;document.querySelectorAll("#wellFrow .ftab").forEach(function(x){x.classList.remove("on");});t.classList.add("on");loadWell(t.dataset.w);});
+  document.getElementById("chatRooms").addEventListener("click",function(ev){var t=ev.target.closest(".ftab");if(!t)return;document.querySelectorAll("#chatRooms .ftab").forEach(function(x){x.classList.remove("on");});t.classList.add("on");chatRoom=t.dataset.room;loadChat();});
+  document.getElementById("chatSnd").onclick=sendChat;
+  document.getElementById("chatInp").addEventListener("keydown",function(ev){if(ev.key==="Enter")sendChat();});
+  var osv=window.sv;
+  window.sv=function(nm2){if(cTick){clearInterval(cTick);cTick=null;}osv(nm2);if(nm2==="chat"){loadChat();cTick=setInterval(loadChat,8000);}};
+  loadFeed();loadCelebs();loadNews();loadComs();loadEvents();loadRadio();loadTV();loadMag();loadWell("fitness");loadMembers();loadRanks();loadPolls();loadProfile();loadMsgs();loadNotifs();loadVIP();
+}
+function attachBack(ov){var btn=document.getElementById("ovBack");if(btn)btn.onclick=function(){ov.remove();};}
 
-function initDash(){
-  const nm=cD?.name||'Member';
-  // Nav avatar
-  const av=document.getElementById('navAvatar');
-  av.textContent=nm.charAt(0).toUpperCase();
-  if(cD?.profilePic&&cD.profilePic.startsWith('http')){
-    const img=document.createElement('img');img.src=cD.profilePic;img.onerror=()=>img.remove();av.appendChild(img);
-  }
-  // Sidebar
-  document.getElementById('sbName').textContent=nm;
-  document.getElementById('sbTier').textContent=cD?.tier||'Fan';
-  // Post composer avatar
-  const pa=document.getElementById('postAv');if(pa)pa.textContent=nm.charAt(0).toUpperCase();
-  // Load initial views
-  load_feed();
-  load_icons();
-  load_news();
-  load_communities();
-  load_events();
-  load_radio();
-  load_tv();
-  load_magazine();
-  load_wellness_content('fitness');
-  load_members();
-  load_rankings();
-  load_polls();
-  load_profile();
-  load_messages();
-  load_notifications();
-  load_vip();
+// FEED
+async function loadFeed(){
+  var el=document.getElementById("feedList");
+  var snap=await sg(query(collection(db,"posts"),limit(30)));
+  var posts=[];snap.forEach(function(d){posts.push({id:d.id,...d.data()});});
+  posts.sort(function(a,b){return(b.createdAt&&b.createdAt.seconds||0)-(a.createdAt&&a.createdAt.seconds||0);});
+  if(!posts.length){el.innerHTML="<div class=\"card\" style=\"text-align:center;padding:14px;color:var(--muted);\">No posts yet. Be the first to share!</div>";return;}
+  var h="";
+  posts.forEach(function(p){
+    var nm=xe(p.userName||"ICONIK");
+    var dt=p.createdAt&&p.createdAt.toDate?p.createdAt.toDate().toLocaleDateString("en",{month:"short",day:"numeric"}):"";
+    h+="<div class=\"card\">";
+    h+="<div style=\"display:flex;align-items:center;gap:9px;margin-bottom:9px;\">";
+    h+="<div class=\"mav\" style=\"width:34px;height:34px;font-size:0.85rem;\">"+nm.charAt(0)+"</div>";
+    h+="<div><div style=\"font-weight:700;font-size:0.74rem;color:var(--text);\">"+nm+(p.isAdmin?" <span style=\"font-size:0.48rem;background:var(--gold);color:var(--bg);padding:1px 5px;\">ICONIK</span>":"")+"</div>";
+    h+="<div style=\"font-size:0.58rem;color:var(--dim);\">"+xe(p.category||"")+(dt?" · "+dt:"")+"</div></div></div>";
+    if(p.title)h+="<div style=\"font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;\">"+xe(p.title)+"</div>";
+    h+="<div style=\"font-size:0.72rem;color:var(--muted);line-height:1.6;\">"+xe(p.content||"")+"</div>";
+    if(p.imageUrl&&p.imageUrl.startsWith("http"))h+="<img src=\""+xu(p.imageUrl)+"\" style=\"width:100%;border-radius:6px;margin-top:9px;max-height:240px;object-fit:cover;\" loading=\"lazy\" onerror=\"this.remove()\"/>";
+    if(p.videoUrl&&p.videoUrl.startsWith("http"))h+="<video src=\""+xu(p.videoUrl)+"\" controls style=\"width:100%;border-radius:6px;margin-top:9px;\" onerror=\"this.remove()\"></video>";
+    h+="<div style=\"display:flex;gap:14px;margin-top:10px;\">";
+    h+="<span style=\"font-size:0.66rem;color:var(--muted);cursor:pointer;\" data-pid=\""+p.id+"\">&#9825; "+(p.likeCount||0)+"</span>";
+    h+="<span style=\"font-size:0.66rem;color:var(--muted);\">&#128172; "+(p.commentCount||0)+"</span>";
+    h+="<span style=\"font-size:0.66rem;color:var(--muted);cursor:pointer;\" id=\"shareBtn_"+p.id+"\">&#128279; Share</span>";
+    h+="</div></div>";
+  });
+  el.innerHTML=h;
+  el.addEventListener("click",async function(ev){
+    var t=ev.target.closest("[data-pid]");
+    if(t){var pid=t.dataset.pid;var n=parseInt(t.textContent.replace(/\D/g,""))||0;t.textContent="&#9829; "+(n+1);t.style.color="var(--err)";if(cU)try{await setDoc(doc(db,"likes",cU.uid+"_"+pid),{userId:cU.uid,postId:pid,createdAt:serverTimestamp()});}catch{}}
+    var s=ev.target.closest("[id^=shareBtn_]");
+    if(s){if(navigator.share)navigator.share({title:"ICONIK",url:location.href});else if(navigator.clipboard)navigator.clipboard.writeText(location.href).then(function(){toast("Link copied!");});}
+  });
 }
 
-// ── FEED ──
-window.load_feed=async function(){
-  const el=document.getElementById('feedList');
-  const snap=await sg(query(collection(db,'posts'),limit(30)));
-  const posts=[];snap.forEach(d=>posts.push({id:d.id,...d.data()}));
-  posts.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-  if(!posts.length){el.innerHTML='<div class="card"><div class="card-body" style="text-align:center;padding:10px;">No posts yet. Be the first to share! 🌟</div></div>';return;}
-  el.innerHTML=posts.map(p=>{
-    const nm=esc(p.userName||'ICONIK');
-    const av=nm.charAt(0);
-    const dt=p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString('en',{month:'short',day:'numeric'}):'';
-    return`<div class="card">
-      <div class="card-head">
-        <div class="card-av">${av}</div>
-        <div><div class="card-name">${nm}${p.isAdmin?' <span style="font-family:\'Bebas Neue\',sans-serif;font-size:0.48rem;background:var(--gold);color:var(--bg);padding:1px 5px;">ICONIK</span>':''}</div><div class="card-meta">${esc(p.category||'')}${dt?' · '+dt:''}</div></div>
-      </div>
-      ${p.title?`<div class="card-title">${esc(p.title)}</div>`:''}
-      <div class="card-body">${esc(p.content||'')}</div>
-      ${p.imageUrl&&p.imageUrl.startsWith('http')?`<img src="${escUrl(p.imageUrl)}" style="width:100%;border-radius:6px;margin-top:9px;max-height:240px;object-fit:cover;" loading="lazy" onerror="this.remove()"/>`:''}
-      <div class="card-actions">
-        <span class="card-action" onclick="likePost('${p.id}',this)">♡ ${p.likeCount||0}</span>
-        <span class="card-action">💬 ${p.commentCount||0}</span>
-        <span class="card-action" onclick="shareUrl()">🔗 Share</span>
-      </div>
-    </div>`;
-  }).join('');
-};
+// COMPOSER
+function openComposer(){
+  var ov=mkOv();
+  var h=navRow("Share with Community");
+  h+="<div style=\"padding:16px;\">";
+  h+="<div class=\"fg\"><label class=\"fl\">What's on your mind? *</label><textarea class=\"fi\" id=\"pcTxt\" rows=\"5\" placeholder=\"Share your thoughts...\"></textarea></div>";
+  h+="<div class=\"fg\"><label class=\"fl\">Photo URL (optional)</label><input class=\"fi\" id=\"pcPh\" placeholder=\"https://...\"/></div>";
+  h+="<div class=\"fg\"><label class=\"fl\">Video URL (optional)</label><input class=\"fi\" id=\"pcVid\" placeholder=\"https://youtube.com/...\"/></div>";
+  h+="<div class=\"fg\"><label class=\"fl\">Upload File</label><div class=\"upbox\" id=\"pcUpBox\"><div style=\"font-size:1.4rem;margin-bottom:4px;\">&#128206;</div><div id=\"pcFnm\" style=\"font-size:0.64rem;color:var(--muted);\">Tap to choose photo or video</div><input type=\"file\" id=\"pcF\" accept=\"image/*,video/*\" style=\"display:none;\"/></div></div>";
+  h+="<div class=\"fg\"><label class=\"fl\">Community</label><select class=\"fi\" id=\"pcCat\"><option value=\"\">All Communities</option><option>Music</option><option>Sports</option><option>Film &amp; TV</option><option>Fashion</option><option>Fitness &amp; Wellness</option><option>Tech &amp; Innovation</option></select></div>";
+  h+="<div id=\"pcErr\" style=\"display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#FCA5A5;font-size:0.7rem;padding:10px;border-radius:6px;margin-bottom:10px;\"></div>";
+  h+="<button class=\"btn-g\" id=\"pcSbm\">Share Post &#8594;</button></div>";
+  ov.innerHTML=h;
+  attachBack(ov);
+  document.getElementById("pcUpBox").onclick=function(){document.getElementById("pcF").click();};
+  document.getElementById("pcF").onchange=function(){document.getElementById("pcFnm").textContent=this.files[0]?this.files[0].name:"File selected";};
+  document.getElementById("pcSbm").onclick=async function(){
+    var txt=document.getElementById("pcTxt").value.trim();
+    if(!txt){var er=document.getElementById("pcErr");er.textContent="Please write something.";er.style.display="block";return;}
+    this.disabled=true;this.textContent="Sharing...";
+    try{
+      var imgUrl=document.getElementById("pcPh").value.trim();
+      var vidUrl=document.getElementById("pcVid").value.trim();
+      var f=document.getElementById("pcF").files[0];
+      if(f&&!imgUrl&&!vidUrl){try{var url=await upload(f);if(f.type.startsWith("video"))vidUrl=url;else imgUrl=url;}catch{}}
+      await addDoc(collection(db,"posts"),{content:txt,title:"",category:document.getElementById("pcCat").value||(cD&&cD.categories&&cD.categories[0])||"",userId:cU.uid,userName:(cD&&cD.name)||"Member",userPhoto:(cD&&cD.profilePic)||"",imageUrl:imgUrl||"",videoUrl:vidUrl||"",isAdmin:false,likeCount:0,commentCount:0,createdAt:serverTimestamp()});
+      ov.remove();toast("Post shared!");loadFeed();
+    }catch{var er=document.getElementById("pcErr");er.textContent="Error. Try again.";er.style.display="block";this.disabled=false;this.textContent="Share Post &#8594;";}
+  };
+}
 
-window.openPostComposer=function(){
-  const existing=document.getElementById('postComposerOv');
-  if(existing)existing.remove();
-  const ov=document.createElement('div');
-  ov.id='postComposerOv';
-  ov.style.cssText='position:fixed;inset:0;background:rgba(7,7,13,0.97);z-index:9999;overflow-y:auto;padding:16px;';
-  ov.innerHTML=`
-    <div style="position:sticky;top:0;background:#07070D;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.09);margin-bottom:16px;display:flex;align-items:center;gap:12px;">
-      <button onclick="document.getElementById('postComposerOv').remove()" style="background:none;border:1px solid rgba(255,255,255,0.16);border-radius:8px;width:36px;height:36px;color:#F5F0E8;font-size:1rem;cursor:pointer;flex-shrink:0;">✕</button>
-      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.8rem;letter-spacing:0.16em;color:#FFB800;">Share with Community</span>
-    </div>
-    <div style="margin-bottom:12px;">
-      <label style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:#BDB5A6;display:block;margin-bottom:5px;">What's on your mind? *</label>
-      <textarea id="pcText" rows="5" style="width:100%;padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:8px;color:#F5F0E8;font-family:'Montserrat',sans-serif;font-size:0.76rem;outline:none;resize:vertical;" placeholder="Share your thoughts with the ICONIK community..."></textarea>
-    </div>
-    <div style="margin-bottom:12px;">
-      <label style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:#BDB5A6;display:block;margin-bottom:5px;">Photo URL (optional)</label>
-      <input id="pcPhoto" type="url" style="width:100%;padding:11px 13px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:8px;color:#F5F0E8;font-family:'Montserrat',sans-serif;font-size:0.76rem;outline:none;" placeholder="https://... paste image link"/>
-    </div>
-    <div style="margin-bottom:12px;">
-      <label style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:#BDB5A6;display:block;margin-bottom:5px;">Video URL (optional)</label>
-      <input id="pcVideo" type="url" style="width:100%;padding:11px 13px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:8px;color:#F5F0E8;font-family:'Montserrat',sans-serif;font-size:0.76rem;outline:none;" placeholder="https://youtube.com/... or direct video link"/>
-    </div>
-    <div style="margin-bottom:16px;">
-      <label style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:#BDB5A6;display:block;margin-bottom:5px;">Upload Photo / Video</label>
-      <div onclick="document.getElementById('pcFile').click()" style="border:1px dashed rgba(255,255,255,0.16);border-radius:8px;padding:16px;text-align:center;cursor:pointer;">
-        <div style="font-size:1.4rem;margin-bottom:4px;">📎</div>
-        <div style="font-family:'Montserrat',sans-serif;font-size:0.66rem;color:#BDB5A6;" id="pcFileName">Tap to choose file</div>
-        <input type="file" id="pcFile" accept="image/*,video/*" style="display:none;" onchange="document.getElementById('pcFileName').textContent=this.files[0]?.name||'File selected'"/>
-      </div>
-    </div>
-    <div style="margin-bottom:12px;">
-      <label style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:#BDB5A6;display:block;margin-bottom:5px;">Community</label>
-      <select id="pcCat" style="width:100%;padding:11px 13px;background:#0E0E1A;border:1px solid rgba(255,255,255,0.09);border-radius:8px;color:#F5F0E8;font-family:'Montserrat',sans-serif;font-size:0.76rem;outline:none;">
-        <option value="">All Communities</option>
-        <option>Music</option><option>Sports</option><option>Film & TV</option><option>Fashion</option><option>Fitness & Wellness</option><option>Tech & Innovation</option><option>Entertainment</option>
-      </select>
-    </div>
-    <div id="pcErr" style="display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#FCA5A5;font-family:Montserrat,sans-serif;font-size:0.7rem;padding:10px 12px;border-radius:6px;margin-bottom:12px;"></div>
-    <button id="pcBtn" onclick="submitPost()" style="width:100%;padding:13px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.74rem;letter-spacing:0.14em;text-transform:uppercase;background:linear-gradient(135deg,#FFB800,#CC9400);color:#07070D;border:none;border-radius:8px;cursor:pointer;">Share Post →</button>`;
-  document.body.appendChild(ov);
-};
-
-window.submitPost=async function(){
-  if(!cU)return;
-  const text=document.getElementById('pcText')?.value.trim();
-  if(!text){const err=document.getElementById('pcErr');if(err){err.textContent='Please write something to share.';err.style.display='block';}return;}
-  const btn=document.getElementById('pcBtn');
-  if(btn){btn.disabled=true;btn.textContent='Sharing...';}
-  try{
-    let imageUrl=document.getElementById('pcPhoto')?.value.trim()||'';
-    let videoUrl=document.getElementById('pcVideo')?.value.trim()||'';
-    const file=document.getElementById('pcFile')?.files[0];
-    if(file&&!imageUrl&&!videoUrl){
-      try{
-        const fd=new FormData();fd.append('file',file);fd.append('upload_preset','iconik_uploads');
-        const r=await fetch('https://api.cloudinary.com/v1_1/dhazrf2xr/upload',{method:'POST',body:fd});
-        if(r.ok){const d=await r.json();if(file.type.startsWith('video')){videoUrl=d.secure_url;}else{imageUrl=d.secure_url;}}
-      }catch(ue){console.warn('Upload failed:',ue);}
-    }
-    const cat=document.getElementById('pcCat')?.value||cD?.categories?.[0]||'';
-    await addDoc(collection(db,'posts'),{
-      content:text,title:'',category:cat,
-      userId:cU.uid,userName:cD?.name||'Member',userPhoto:cD?.profilePic||'',
-      imageUrl,videoUrl,isAdmin:false,likeCount:0,commentCount:0,
-      createdAt:serverTimestamp()
-    });
-    document.getElementById('postComposerOv')?.remove();
-    toast('Post shared! 🌟');
-    load_feed();
-  }catch(e){
-    const err=document.getElementById('pcErr');
-    if(err){err.textContent='Error sharing. Try again.';err.style.display='block';}
-    if(btn){btn.disabled=false;btn.textContent='Share Post →';}
-  }
-};
-
-window.likePost=function(id,el){
-  if(el){const n=parseInt(el.textContent.replace(/[^\d]/g,''))||0;el.textContent='♥ '+(n+1);el.style.color='var(--err)';}
-  if(cU)setDoc(doc(db,'likes',cU.uid+'_'+id),{userId:cU.uid,postId:id,createdAt:serverTimestamp()}).catch(()=>{});
-};
-window.shareUrl=function(){if(navigator.share)navigator.share({title:'ICONIK',url:location.href});else{navigator.clipboard?.writeText(location.href);toast('Link copied!');}};
-
-// ── CELEBRITIES ──
-window.load_icons=async function(){
-  const el=document.getElementById('celebGrid');
-  const snap=await sg(query(collection(db,'celebrities'),limit(50)));
-  allCelebs=[];snap.forEach(d=>allCelebs.push({id:d.id,...d.data()}));
-  renderCelebs(allCelebs);
-};
+// CELEBRITIES
+async function loadCelebs(){
+  var snap=await sg(query(collection(db,"celebrities"),limit(50)));
+  allC=[];snap.forEach(function(d){allC.push({id:d.id,...d.data()});});
+  renderCelebs(allC);
+}
 function renderCelebs(list){
-  const el=document.getElementById('celebGrid');
-  if(!list.length){el.innerHTML='<div style="grid-column:span 2;text-align:center;padding:24px;color:var(--muted);">No celebrities added yet. Admin adds them from the Admin Panel. ⭐</div>';return;}
-  el.innerHTML=list.map(c=>{
-    const colors=['#7C3AED','#DC2626','#059669','#D97706','#EC4899','#2563EB'];
-    const clr=colors[Math.abs((c.name||'A').charCodeAt(0))%colors.length];
-    const hasPhoto=c.photo&&c.photo.startsWith('http');
-    return`<div class="celeb-card" data-id="${c.id}">
-      <div class="celeb-thumb" style="background:${clr}22;">
-        ${hasPhoto?`<img src="${escUrl(c.photo)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;" onerror="this.remove()"/>`:''}
-        <span style="position:relative;z-index:1;font-size:2rem;">${hasPhoto?'':esc((c.name||'?').charAt(0))}</span>
-      </div>
-      <div class="celeb-info">
-        <div class="celeb-name">${esc(c.name||'')}</div>
-        <div class="celeb-cat">${esc(c.category||'')}</div>
-        <div class="celeb-meta">${esc(c.country||'')}${c.followers?' · '+esc(c.followers):''}</div>
-      </div>
-    </div>`;
-  }).join('');
-  document.querySelectorAll('.celeb-card').forEach(card=>{
-    card.addEventListener('click',function(){openCeleb(this.dataset.id);});
+  var el=document.getElementById("celebGrid");
+  if(!list.length){el.innerHTML="<div style=\"grid-column:span 2;text-align:center;padding:24px;color:var(--muted);\">No celebrities added yet. Admin adds them from the Admin Panel.</div>";return;}
+  var clrs=["#7C3AED","#DC2626","#059669","#D97706","#EC4899","#2563EB"];
+  var h="";
+  list.forEach(function(c){
+    var cl=clrs[Math.abs((c.name||"A").charCodeAt(0))%clrs.length];
+    var hp=c.photo&&c.photo.startsWith("http");
+    h+="<div class=\"cc\" data-cid=\""+c.id+"\">";
+    h+="<div class=\"cthumb\" style=\"background:"+cl+"22;\">";
+    if(hp)h+="<img src=\""+xu(c.photo)+"\" onerror=\"this.remove()\"/>";
+    h+="<span class=\"cletter\"" + (hp?" style=\"display:none;\"":"") + ">"+xe((c.name||"?").charAt(0))+"</span></div>";
+    h+="<div class=\"cinfo\"><div class=\"cnm\">"+xe(c.name||"")+"</div>";
+    h+="<div class=\"ccat\">"+xe(c.category||"")+"</div>";
+    h+="<div class=\"cmeta\">"+xe(c.country||"")+(c.followers?" · "+xe(c.followers):"")+"</div></div></div>";
   });
+  el.innerHTML=h;
+  document.querySelectorAll(".cc[data-cid]").forEach(function(card){card.onclick=function(){openCeleb(this.dataset.cid);};});
 }
-window.filterCelebs=function(){
-  const q=document.getElementById('celebSearch').value.toLowerCase();
-  renderCelebs(q?allCelebs.filter(c=>c.name?.toLowerCase().includes(q)||c.category?.toLowerCase().includes(q)):allCelebs);
-};
+function filterCelebs(){var q=document.getElementById("celebSrch").value.toLowerCase();renderCelebs(q?allC.filter(function(c){return(c.name&&c.name.toLowerCase().includes(q))||(c.category&&c.category.toLowerCase().includes(q));}):allC);}
+
 function openCeleb(id){
-  const c=allCelebs.find(x=>x.id===id);if(!c)return;
-  const colors=['#7C3AED','#DC2626','#059669','#D97706','#EC4899','#2563EB'];
-  const clr=colors[Math.abs((c.name||'A').charCodeAt(0))%colors.length];
-  const ov=document.createElement('div');
-  ov.style.cssText='position:fixed;inset:0;background:#07070D;z-index:9999;overflow-y:auto;';
-  ov.innerHTML=`
-    <!-- HEADER -->
-    <div style="position:sticky;top:0;z-index:10;background:rgba(7,7,13,0.95);border-bottom:1px solid rgba(255,255,255,0.09);padding:14px 16px;display:flex;align-items:center;gap:12px;">
-      <button onclick="popOverlay()" style="background:none;border:1px solid rgba(255,255,255,0.16);border-radius:8px;width:36px;height:36px;color:#F5F0E8;font-size:1rem;cursor:pointer;flex-shrink:0;">←</button>
-      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.16em;color:#BDB5A6;">Celebrity Profile</span>
-    </div>
-    <!-- HERO -->
-    <div style="width:100%;height:200px;background:linear-gradient(135deg,${clr}88,${clr}33);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-      ${c.photo&&c.photo.startsWith('http')?`<img src="${escUrl(c.photo)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.remove()"/>`:''}
-      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,13,0.95) 0%,rgba(7,7,13,0.3) 60%,transparent 100%);"></div>
-      <div style="position:absolute;bottom:16px;left:16px;right:16px;z-index:2;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.18em;color:#FFB800;margin-bottom:4px;">${esc(c.category||'')}</div>
-        <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.4rem;color:#F5F0E8;line-height:1.2;">${esc(c.name||'')}</div>
-        ${c.stageName?`<div style="font-family:'Montserrat',sans-serif;font-size:0.72rem;color:#BDB5A6;margin-top:3px;">${esc(c.stageName)}</div>`:''}
-      </div>
-    </div>
-    <!-- STATS -->
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:16px;border-bottom:1px solid rgba(255,255,255,0.09);">
-      <div style="background:rgba(255,255,255,0.045);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:12px;text-align:center;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:0.82rem;color:#F5F0E8;">${esc(c.followers||'—')}</div>
-        <div style="font-family:'Montserrat',sans-serif;font-size:0.52rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(189,181,166,0.5);margin-top:2px;">Followers</div>
-      </div>
-      <div style="background:rgba(255,255,255,0.045);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:12px;text-align:center;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:0.82rem;color:#F5F0E8;">${esc(c.country||'—')}</div>
-        <div style="font-family:'Montserrat',sans-serif;font-size:0.52rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(189,181,166,0.5);margin-top:2px;">Origin</div>
-      </div>
-      <div style="background:rgba(255,255,255,0.045);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:12px;text-align:center;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:0.82rem;color:#F5F0E8;">${esc(c.status||'Active')}</div>
-        <div style="font-family:'Montserrat',sans-serif;font-size:0.52rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(189,181,166,0.5);margin-top:2px;">Status</div>
-      </div>
-    </div>
-    <!-- BIO -->
-    <div style="padding:16px;">
-      ${c.bio?`
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.18em;color:#FFB800;margin-bottom:8px;">About</div>
-      <div style="font-family:'Montserrat',sans-serif;font-size:0.76rem;color:#BDB5A6;line-height:1.7;margin-bottom:16px;">${esc(c.bio)}</div>`:''}
-      <!-- ACTION BUTTONS -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
-        <button id="followCelebBtn" onclick="followCeleb('${c.id}','${esc(c.name||'')}',this)" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;padding:12px;background:linear-gradient(135deg,#FFB800,#CC9400);color:#07070D;border:none;border-radius:6px;cursor:pointer;">⭐ Follow</button>
-        <button onclick="shareCeleb('${esc(c.name||'')}',this)" style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;padding:12px;background:transparent;color:#F5F0E8;border:1px solid rgba(255,255,255,0.16);border-radius:6px;cursor:pointer;">🔗 Share</button>
-      </div>
-      <!-- COMMUNITY TAG -->
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.18em;color:#FFB800;margin-bottom:10px;">Community</div>
-      <div style="display:inline-block;background:rgba(255,184,0,0.12);border:1px solid rgba(255,184,0,0.3);border-radius:6px;padding:8px 14px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:#FFB800;margin-bottom:16px;">${esc(c.category||'')}</div>
-      <!-- RECENT POSTS -->
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.18em;color:#FFB800;margin-bottom:10px;">Latest Posts</div>
-      <div id="celebPosts_${c.id}" style="color:#BDB5A6;font-size:0.72rem;text-align:center;padding:16px;">Loading posts...</div>
-    </div>`;
-  document.body.appendChild(ov);
-  // Push history state so browser back button closes overlay instead of leaving page
-  history.pushState({overlay:true},'','');
-  window._overlayClose=function(){ov.remove();window._overlayClose=null;};
-  // Load category posts
-  sg(query(collection(db,'posts'),limit(30))).then(snap=>{
-    const posts=[];snap.forEach(d=>{const p=d.data();if(p.category===c.category)posts.push({id:d.id,...p});});
-    posts.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-    const el=document.getElementById('celebPosts_'+c.id);if(!el)return;
-    if(!posts.length){el.innerHTML='<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:16px;text-align:center;color:#BDB5A6;font-family:Montserrat,sans-serif;font-size:0.72rem;">No posts yet for this community.<br/>Admin adds content from the Admin Panel.</div>';return;}
-    el.innerHTML=posts.slice(0,5).map(p=>`
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:13px;margin-bottom:9px;">
-        <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.7rem;color:#F5F0E8;margin-bottom:2px;">${esc(p.userName||'ICONIK')}</div>
-        ${p.title?`<div style="font-family:'Playfair Display',serif;font-weight:700;font-size:0.88rem;color:#F5F0E8;margin-bottom:6px;">${esc(p.title)}</div>`:''}
-        <div style="font-family:'Montserrat',sans-serif;font-size:0.72rem;color:#BDB5A6;line-height:1.6;">${esc(p.content||'')}</div>
-        ${p.imageUrl&&p.imageUrl.startsWith('http')?`<img src="${escUrl(p.imageUrl)}" style="width:100%;border-radius:6px;margin-top:8px;max-height:200px;object-fit:cover;" onerror="this.remove()"/>`:''}
-      </div>`).join('');
-  }).catch(()=>{});
-}
-
-async function followCeleb(id,name,btn){
-  if(!cU){toast('Sign in to follow','error');return;}
-  try{
-    await setDoc(doc(db,'follows',cU.uid+'_celeb_'+id),{userId:cU.uid,celebId:id,celebName:name,createdAt:serverTimestamp()});
-    btn.textContent='✓ Following';btn.style.background='rgba(255,255,255,0.08)';btn.style.color='var(--gold)';
-    toast('Now following '+name+'! ⭐');
-  }catch{toast('Following '+name+'! ⭐');}
-}
-window.followCeleb=followCeleb;
-
-function shareCeleb(name,btn){
-  if(navigator.share)navigator.share({title:name+' on ICONIK',url:location.href});
-  else{navigator.clipboard?.writeText(location.href);toast('Link copied! 🔗');}
-}
-window.shareCeleb=shareCeleb;
-
-// ── NEWS ──
-const STATIC_NEWS=[
-  {title:'Bad Bunny Announces 2026 World Tour',category:'Music',summary:'The Latin superstar announces a massive new world tour spanning 5 continents.',icon:'🎵',time:'Today'},
-  {title:'Champions League — Shock Quarter Final Results',category:'Sports',summary:'Unexpected upsets shake the Champions League bracket.',icon:'⚽',time:'Yesterday'},
-  {title:'New Blockbuster Shatters Opening Weekend Records',category:'Film & TV',summary:'A record-breaking opening weekend sets the stage for one of the biggest films of 2026.',icon:'🎬',time:'2 days ago'},
-  {title:'Paris Fashion Week — Top 10 Looks of the Season',category:'Fashion',summary:'Designers unveil their most stunning collections yet.',icon:'👗',time:'3 days ago'},
-  {title:'Grammy Nominations Announced — Big Surprises',category:'Music',summary:'This year nominations include several unexpected global artists.',icon:'🎤',time:'5 days ago'},
-  {title:'Sports Star Signs Historic $500M Contract',category:'Sports',summary:'A landmark deal reshapes professional sports economics globally.',icon:'🏆',time:'6 days ago'},
-  {title:'Tech Giant Launches Revolutionary Fan Platform',category:'Tech & Innovation',summary:'New AI-powered fan experience promises to transform celebrity-fan relationships.',icon:'💻',time:'1 week ago'},
-  {title:'Wellness Icon Goes Viral With New Training Method',category:'Fitness & Wellness',summary:'Millions of followers adopt the revolutionary approach to fitness.',icon:'💪',time:'1 week ago'},
-];
-window.load_news=async function(){
-  const el=document.getElementById('newsList');
-  try{
-    const snap=await sg(query(collection(db,'celebrityNews'),limit(20)));
-    if(!snap.empty){allNews=[];snap.forEach(d=>allNews.push({id:d.id,...d.data()}));allNews.sort((a,b)=>(b.publishedAt?.seconds||0)-(a.publishedAt?.seconds||0));renderNews(allNews);return;}
-  }catch{}
-  allNews=STATIC_NEWS;renderNews(allNews);
-};
-function renderNews(list){
-  const el=document.getElementById('newsList');
-  el.innerHTML=list.map((n,i)=>`<div class="news-card" onclick="openNewsItem(${i})">
-    <div class="news-icon">${n.icon||'📰'}</div>
-    <div style="flex:1;">
-      <div class="news-cat">${esc(n.category||'NEWS')}</div>
-      <div class="news-title">${esc(n.title)}</div>
-      <div class="news-time">${esc(n.time||'')}${n.source?' · '+esc(n.source):''}</div>
-    </div>
-    <div style="color:var(--dim);font-size:0.9rem;flex-shrink:0;">›</div>
-  </div>`).join('');
-}
-window.filterNews=function(btn,cat){
-  document.querySelectorAll('#newsFilter .ftab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderNews(cat==='All'?allNews:allNews.filter(n=>n.category===cat));
-};
-window.openNewsItem=function(i){
-  const n=allNews[i];if(!n)return;
-  const ov=document.createElement('div');
-  ov.style.cssText='position:fixed;inset:0;background:rgba(7,7,13,0.97);z-index:9999;overflow-y:auto;padding:20px;';
-  ov.innerHTML=`<button onclick="popOverlay()" style="font-family:Montserrat,sans-serif;font-weight:700;font-size:0.62rem;padding:8px 14px;background:transparent;border:1px solid rgba(255,255,255,0.12);color:#BDB5A6;cursor:pointer;margin-bottom:16px;border-radius:4px;">← Back</button>
-  <div style="text-align:center;font-size:2.5rem;margin-bottom:12px;">${n.icon||'📰'}</div>
-  <div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:#FFB800;margin-bottom:8px;">${esc(n.category||'')} · ${esc(n.time||'')}</div>
-  <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:#F5F0E8;line-height:1.3;margin-bottom:14px;">${esc(n.title)}</div>
-  <div style="font-family:Montserrat,sans-serif;font-size:0.76rem;color:#BDB5A6;line-height:1.8;">${esc(n.summary||n.content||'Full article content coming soon.')}</div>`;
-  document.body.appendChild(ov);
-};
-
-// ── COMMUNITIES ──
-const COMS=[
-  {name:'Music',icon:'🎵',desc:'Artists · Albums · Concerts',img:'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&q=75'},
-  {name:'Film & TV',icon:'🎬',desc:'Movies · Series · Directors',img:'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&q=75'},
-  {name:'Sports',icon:'⚽',desc:'Football · Basketball · Athletics',img:'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=300&q=75'},
-  {name:'Literature',icon:'📚',desc:'Authors · Books · Knowledge',img:'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&q=75'},
-  {name:'Fashion',icon:'👗',desc:'Style · Designers · Trends',img:'https://images.unsplash.com/photo-1445205170230-053b83016050?w=300&q=75'},
-  {name:'Fitness & Wellness',icon:'💪',desc:'Health · Fitness · Mind',img:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&q=75'},
-  {name:'Food & Culinary',icon:'🍽️',desc:'Chefs · Recipes · Culture',img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=75'},
-  {name:'Nature',icon:'🌿',desc:'Adventure · Wildlife · Earth',img:'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=300&q=75'},
-  {name:'Automotive',icon:'🚗',desc:'Cars · Bikes · Lifestyle',img:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=300&q=75'},
-  {name:'Tech & Innovation',icon:'💻',desc:'AI · Gadgets · Future',img:'https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&q=75'},
-  {name:'Beauty',icon:'💄',desc:'Makeup · Skincare · Art',img:'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=300&q=75'},
-  {name:'Entertainment',icon:'🎭',desc:'Comedy · Talent · Shows',img:'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=300&q=75'},
-  {name:'Leadership',icon:'🎓',desc:'Vision · Motivation · Growth',img:'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=300&q=75'},
-];
-window.load_communities=function(){
-  const joined=cD?.categories||[];
-  document.getElementById('comGrid').innerHTML=COMS.map(c=>`
-    <div class="com-card" onclick="toast('${esc(c.name)} community','info')">
-      <div class="com-bg" style="background-image:url('${c.img}');"></div>
-      <div class="com-body">
-        <div class="com-name">${c.icon} ${esc(c.name)}${joined.includes(c.name)?' ✓':''}</div>
-        <div class="com-desc">${esc(c.desc)}</div>
-      </div>
-    </div>`).join('');
-};
-
-// ── CHAT ──
-window.load_chat=window.load_chat||function(){};
-window.switchRoom=function(btn){
-  document.querySelectorAll('#chatRooms .ftab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');chatRoom=btn.dataset.room;loadChat();
-};
-async function loadChat(){
-  const el=document.getElementById('chatArea');
-  const snap=await sg(query(collection(db,'chat_'+chatRoom),limit(40)));
-  const msgs=[];snap.forEach(d=>msgs.push({id:d.id,...d.data()}));
-  msgs.sort((a,b)=>(a.createdAt?.seconds||0)-(b.createdAt?.seconds||0));
-  if(!msgs.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--dim);">No messages yet. Say hello! 👋</div>';return;}
-  el.innerHTML=msgs.map(m=>{
-    const mine=m.userId===cU?.uid;
-    const t=m.createdAt?.toDate?m.createdAt.toDate().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'';
-    return`<div class="msg-row${mine?' me':''}">
-      <div style="width:26px;height:26px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.7rem;flex-shrink:0;">${esc((m.name||'?').charAt(0))}</div>
-      <div><div class="msg-who">${mine?'You':esc(m.name||'Fan')}</div><div class="msg-bub">${esc(m.text||'')}</div><div style="font-size:0.5rem;color:var(--dim);margin-top:2px;">${t}</div></div>
-    </div>`;
-  }).join('');
-  el.scrollTop=el.scrollHeight;
-}
-window.sendChat=async function(){
-  const inp=document.getElementById('chatInp');
-  const txt=inp.value.trim();if(!txt||!cU)return;
-  try{
-    await addDoc(collection(db,'chat_'+chatRoom),{text:txt,name:cD?.name||'Fan',userId:cU.uid,createdAt:serverTimestamp()});
-    inp.value='';loadChat();
-  }catch{toast('Error sending','error');}
-};
-document.getElementById('chatInp').addEventListener('keydown',e=>{if(e.key==='Enter')sendChat();});
-// Override goView to start chat polling
-const _origGoView=window.goView;
-window.goView=function(name){
-  if(chatTimer){clearInterval(chatTimer);chatTimer=null;}
-  if(name==='chat'){loadChat();chatTimer=setInterval(loadChat,8000);}
-  _origGoView(name);
-};
-
-// ── EVENTS ──
-window.load_events=async function(){
-  const el=document.getElementById('eventsList');
-  try{const snap=await sg(query(collection(db,'events'),limit(20)));if(!snap.empty){const evs=[];snap.forEach(d=>evs.push({id:d.id,...d.data()}));evs.sort((a,b)=>(a.eventDate||'').localeCompare(b.eventDate||''));el.innerHTML=evs.map(e=>evCard(e)).join('');return;}}catch{}
-  el.innerHTML=[
-    {name:'Bad Bunny — World Tour',venue:'Madison Square Garden, NY',eventDate:'2026-05-15',price:'$85',icon:'🎵'},
-    {name:'Champions League Final 2026',venue:'Wembley Stadium, London',eventDate:'2026-06-01',price:'$120',icon:'⚽'},
-    {name:'ICONIK Fan Meet & Greet',venue:'Virtual + Global Chapters',eventDate:'2026-08-10',price:'Free',icon:'🌍'},
-    {name:'Met Gala Fan Experience',venue:'Metropolitan Museum, NY',eventDate:'2026-05-05',price:'$45',icon:'👗'},
-  ].map(e=>evCard(e)).join('');
-};
-function evCard(e){
-  const d=new Date(e.eventDate||'');
-  const mo=isNaN(d)?'TBD':d.toLocaleString('en',{month:'short'}).toUpperCase();
-  const dy=isNaN(d)?'':d.getDate();
-  return`<div class="card" style="display:flex;gap:12px;align-items:flex-start;cursor:pointer;" onclick="toast('Booking for ${esc(e.name)}! 🎫')">
-    <div style="text-align:center;min-width:38px;"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.1em;color:var(--gold);">${mo}</div><div style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--text);line-height:1;">${dy}</div></div>
-    <div style="flex:1;"><div style="font-family:Montserrat,sans-serif;font-weight:700;font-size:0.76rem;color:var(--text);margin-bottom:3px;">${esc(e.name||'')}</div><div style="font-family:Montserrat,sans-serif;font-size:0.62rem;color:var(--muted);">📍 ${esc(e.venue||'')}</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;color:var(--gold);margin-top:3px;">${esc(e.price||'')}</div></div>
-    <span style="font-size:1.3rem;">${e.icon||'🎫'}</span>
-  </div>`;
-}
-
-// ── RADIO ──
-window.load_radio=function(){
-  const stations=[
-    {name:'ICONIK Gold',genre:'Top Hits · Global',icon:'🏆'},
-    {name:'Latin Vibes',genre:'Latin · Reggaeton · Urban',icon:'🎸'},
-    {name:'Afro Beats FM',genre:'Afrobeats · Dancehall',icon:'🥁'},
-    {name:'Hip-Hop Central',genre:'Hip-Hop · R&B · Trap',icon:'🎤'},
-    {name:'ICONIK Chill',genre:'Lo-fi · Ambient · Relax',icon:'🌙'},
-    {name:'Sports Anthems',genre:'Rock · EDM · Motivation',icon:'⚽'},
-  ];
-  document.getElementById('radioList').innerHTML=stations.map(s=>`
-    <div class="card" style="display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="toast('▶ Now playing: ${esc(s.name)}')">
-      <div style="width:42px;height:42px;border-radius:8px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">${s.icon}</div>
-      <div style="flex:1;"><div style="font-family:Montserrat,sans-serif;font-weight:700;font-size:0.74rem;color:var(--text);">${esc(s.name)}</div><div style="font-family:Montserrat,sans-serif;font-size:0.6rem;color:var(--dim);">${esc(s.genre)}</div></div>
-      <button style="width:32px;height:32px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;font-size:0.8rem;">▶</button>
-    </div>`).join('');
-};
-
-// ── TV ──
-window.load_tv=async function(){
-  const el=document.getElementById('tvList');
-  try{const snap=await sg(query(collection(db,'iconikTV'),limit(10)));if(!snap.empty){const vids=[];snap.forEach(d=>vids.push({id:d.id,...d.data()}));el.innerHTML=vids.map(v=>tvCard(v)).join('');return;}}catch{}
-  el.innerHTML=[
-    {title:'Bad Bunny — Live at MSG',category:'Music',duration:'45 min',icon:'🎵'},
-    {title:'Messi: The GOAT Documentary',category:'Sports',duration:'1h 20min',icon:'⚽'},
-    {title:'ICONIK Fan Spotlight — Ep.12',category:'Fan Made',duration:'22 min',icon:'🎬'},
-    {title:'Fashion Week — Behind the Scenes',category:'Fashion',duration:'35 min',icon:'👗'},
-  ].map(v=>tvCard(v)).join('');
-};
-function tvCard(v){
-  return`<div class="card" style="padding:0;overflow:hidden;cursor:pointer;margin-bottom:10px;" onclick="toast('${esc(v.title)} coming soon 📺','info')">
-    <div style="height:120px;background:linear-gradient(135deg,var(--bg2),var(--bg3));display:flex;align-items:center;justify-content:center;position:relative;">
-      ${v.thumbUrl?`<img src="${esc(v.thumbUrl)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.remove()"/>`:'' }
-      <span style="font-size:2.5rem;position:relative;z-index:1;">${v.icon||'🎬'}</span>
-      <div style="position:absolute;width:42px;height:42px;border-radius:50%;background:rgba(255,184,0,0.9);display:flex;align-items:center;justify-content:center;z-index:2;">▶</div>
-    </div>
-    <div style="padding:10px 12px;"><div style="font-family:Montserrat,sans-serif;font-weight:700;font-size:0.74rem;color:var(--text);margin-bottom:3px;">${esc(v.title)}</div><div style="font-family:Montserrat,sans-serif;font-size:0.6rem;color:var(--dim);">${esc(v.category||'')}${v.duration?' · '+esc(v.duration):''}</div></div>
-  </div>`;
-}
-
-// ── MAGAZINE ──
-window.load_magazine=async function(){
-  const el=document.getElementById('magList');
-  try{const snap=await sg(query(collection(db,'magazine'),limit(10)));if(!snap.empty){const arts=[];snap.forEach(d=>arts.push({id:d.id,...d.data()}));arts.sort((a,b)=>(b.publishedAt?.seconds||0)-(a.publishedAt?.seconds||0));el.innerHTML=arts.map(a=>magCard(a)).join('');return;}}catch{}
-  el.innerHTML=[
-    {title:'The Rise of Global Fan Culture',category:'Culture',summary:'How ICONIK is redefining the relationship between icons and fans.',icon:'🌍'},
-    {title:'Inside Bad Bunny\'s Creative Process',category:'Music',summary:'An exclusive look at how the global superstar crafts his sound.',icon:'🎵'},
-    {title:'Fashion Forward: Icons Shaping Tomorrow\'s Style',category:'Fashion',summary:'The designers and celebrities setting trends for the next decade.',icon:'👗'},
-  ].map(a=>magCard(a)).join('');
-};
-function magCard(a){
-  return`<div class="card" style="display:flex;gap:10px;cursor:pointer;" onclick="toast('${esc(a.title)}','info')">
-    <div style="width:60px;height:60px;border-radius:6px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">${a.icon||'📖'}</div>
-    <div><div style="font-family:Montserrat,sans-serif;font-weight:700;font-size:0.72rem;color:var(--text);line-height:1.3;margin-bottom:4px;">${esc(a.title)}</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.1em;color:var(--gold);">${esc(a.category||'')}</div></div>
-  </div>`;
-}
-
-// ── WELLNESS ──
-const WELL={fitness:{t:'Fitness & Training 💪',b:'Build strength and peak performance. Follow certified coaches and elite athletes shaping the fitness world.'},nutrition:{t:'Nutrition & Diet 🥗',b:'Science-backed nutrition advice and meal plans from certified nutritionists worldwide.'},mental:{t:'Mental Wellness 🧘',b:'Mindfulness, meditation and mental health. Reduce stress and build resilience with top coaches.'},beauty:{t:'Beauty & Skincare 💄',b:'Skincare science, anti-aging and beauty wellness from dermatologists and beauty icons.'},recovery:{t:'Sports Recovery 💆',b:'Recovery science for athletes — physiotherapy, sleep optimization and injury prevention.'}};
-function load_wellness_content(tab){const w=WELL[tab]||WELL.fitness;document.getElementById('wellnessContent').innerHTML=`<div class="card"><div style="font-family:'Playfair Display',serif;font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:8px;">${w.t}</div><div class="card-body">${w.b}</div></div><div class="card"><div class="card-body" style="text-align:center;padding:10px;">Admin adds coaches and partners from the Admin Panel. 💪</div></div>`;}
-window.load_wellness=function(){load_wellness_content('fitness');};
-window.showWellness=function(tab,btn){document.querySelectorAll('#wellnessV .ftab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');load_wellness_content(tab);};
-
-// ── FIND MEMBERS ──
-window.load_members=async function(){
-  const el=document.getElementById('memberList');
-  const snap=await sg(query(collection(db,'users'),limit(50)));
-  allMembers=[];snap.forEach(d=>{if(d.id!==cU?.uid)allMembers.push({id:d.id,...d.data()});});
-  renderMembers(allMembers);
-};
-function renderMembers(list){
-  const el=document.getElementById('memberList');
-  if(!list.length){el.innerHTML='<div class="card"><div class="card-body" style="text-align:center;padding:10px;">No members found.</div></div>';return;}
-  el.innerHTML=list.slice(0,30).map(m=>`
-    <div class="member-card" data-mid="${m.id}">
-      <div class="member-av">${m.profilePic&&m.profilePic.startsWith('http')?`<img src="${escUrl(m.profilePic)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.remove()"/>`:esc((m.name||'?').charAt(0).toUpperCase())}</div>
-      <div style="flex:1;min-width:0;">
-        <div class="member-name">${esc(m.name||'Member')} ${m.verificationStatus==='verified'?'✅':''}</div>
-        <div class="member-meta">${esc(m.city?m.city+', ':'')}${esc(m.country||'—')} · <span style="color:var(--gold);">${esc(m.tier||'Fan')}</span></div>
-        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;">${(m.categories||[]).slice(0,3).map(c=>`<span style="font-family:'Bebas Neue',sans-serif;font-size:0.48rem;letter-spacing:0.08em;color:#07070D;background:#FFB800;padding:1px 5px;">${esc(c)}</span>`).join('')}</div>
-      </div>
-      <div style="color:var(--dim);font-size:0.9rem;">›</div>
-    </div>`).join('');
-  // Attach click handlers
-  document.querySelectorAll('.member-card[data-mid]').forEach(card=>{
-    card.addEventListener('click',function(){
-      const mid=this.dataset.mid;
-      const m=allMembers.find(x=>x.id===mid);
-      if(m)openMemberProfile(m);
+  var c=allC.find(function(x){return x.id===id;});if(!c)return;
+  var clrs=["#7C3AED","#DC2626","#059669","#D97706","#EC4899","#2563EB"];
+  var cl=clrs[Math.abs((c.name||"A").charCodeAt(0))%clrs.length];
+  var hp=c.photo&&c.photo.startsWith("http");
+  var ov=mkOv();
+  var h=navRow("Celebrity Profile");
+  h+="<div style=\"height:200px;background:linear-gradient(135deg,"+cl+"88,"+cl+"22);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;\">";
+  if(hp)h+="<img src=\""+xu(c.photo)+"\" style=\"position:absolute;inset:0;width:100%;height:100%;object-fit:cover;\" onerror=\"this.remove()\"/>";
+  h+="<div style=\"position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,13,0.95) 0%,transparent 60%);\"></div>";
+  h+="<div style=\"position:absolute;bottom:16px;left:16px;right:16px;\">";
+  h+="<div style=\"font-size:0.62rem;letter-spacing:0.18em;color:var(--gold);margin-bottom:4px;\">"+xe(c.category||"")+"</div>";
+  h+="<div style=\"font-weight:700;font-size:1.4rem;color:#F5F0E8;\">"+xe(c.name||"")+"</div>";
+  if(c.stageName)h+="<div style=\"font-size:0.72rem;color:var(--muted);\">"+xe(c.stageName)+"</div>";
+  h+="</div></div><div style=\"padding:16px;\">";
+  h+="<div style=\"display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;\">";
+  h+="<div class=\"sbox\"><div class=\"snum\" style=\"font-size:0.8rem;\">"+xe(c.followers||"—")+"</div><div class=\"slbl\">Followers</div></div>";
+  h+="<div class=\"sbox\"><div class=\"snum\" style=\"font-size:0.8rem;\">"+xe(c.country||"—")+"</div><div class=\"slbl\">Origin</div></div>";
+  h+="<div class=\"sbox\"><div class=\"snum\" style=\"font-size:0.8rem;\">"+xe(c.status||"Active")+"</div><div class=\"slbl\">Status</div></div></div>";
+  if(c.bio){h+="<div style=\"font-size:0.62rem;letter-spacing:0.18em;color:var(--gold);margin-bottom:8px;\">About</div>";h+="<div class=\"card\"><div style=\"font-size:0.74rem;color:var(--muted);line-height:1.7;\">"+xe(c.bio)+"</div></div>";}
+  h+="<div style=\"display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;\">";
+  h+="<button class=\"btn-act\" id=\"fCBtn\">&#11088; Follow</button>";
+  h+="<button class=\"btn-gh\" id=\"sCBtn\">&#128279; Share</button></div>";
+  h+="<div style=\"font-size:0.62rem;letter-spacing:0.18em;color:var(--gold);margin-bottom:10px;\">Latest Posts</div>";
+  h+="<div id=\"cPosts\"><div class=\"loader\"><div class=\"lring\"></div></div></div></div>";
+  ov.innerHTML=h;
+  attachBack(ov);
+  document.getElementById("fCBtn").onclick=async function(){
+    if(!cU)return;
+    try{await setDoc(doc(db,"follows",cU.uid+"_celeb_"+c.id),{userId:cU.uid,celebId:c.id,celebName:c.name||"",createdAt:serverTimestamp()});}catch{}
+    this.textContent="&#10003; Following";this.style.background="rgba(255,255,255,0.08)";this.style.color="var(--gold)";
+    toast("Following "+c.name+"!");
+  };
+  document.getElementById("sCBtn").onclick=function(){
+    if(navigator.share)navigator.share({title:(c.name||"")+" on ICONIK",url:location.href});
+    else if(navigator.clipboard)navigator.clipboard.writeText(location.href).then(function(){toast("Link copied!");});
+  };
+  sg(query(collection(db,"posts"),limit(30))).then(function(snap){
+    var posts=[];
+    snap.forEach(function(d){var p=d.data();if(p.category===c.category)posts.push({id:d.id,...p});});
+    posts.sort(function(a,b){return(b.createdAt&&b.createdAt.seconds||0)-(a.createdAt&&a.createdAt.seconds||0);});
+    var pEl=document.getElementById("cPosts");if(!pEl)return;
+    if(!posts.length){pEl.innerHTML="<div class=\"card\" style=\"text-align:center;color:var(--muted);padding:12px;\">No posts yet for "+xe(c.category||"this community")+".</div>";return;}
+    var ph="";
+    posts.slice(0,5).forEach(function(p){
+      ph+="<div class=\"card\">";
+      ph+="<div style=\"font-weight:700;font-size:0.7rem;color:var(--text);margin-bottom:4px;\">"+xe(p.userName||"ICONIK")+"</div>";
+      if(p.title)ph+="<div style=\"font-weight:700;font-size:0.88rem;color:var(--text);margin-bottom:4px;\">"+xe(p.title)+"</div>";
+      ph+="<div style=\"font-size:0.72rem;color:var(--muted);line-height:1.6;\">"+xe(p.content||"")+"</div>";
+      if(p.imageUrl&&p.imageUrl.startsWith("http"))ph+="<img src=\""+xu(p.imageUrl)+"\" style=\"width:100%;border-radius:6px;margin-top:8px;max-height:200px;object-fit:cover;\" onerror=\"this.remove()\"/>";
+      ph+="</div>";
     });
+    pEl.innerHTML=ph;
+  }).catch(function(){});
+}
+
+// NEWS
+var SNEWS=[
+  {title:"Bad Bunny Announces 2026 World Tour",category:"Music",summary:"The Latin superstar announces a massive world tour spanning 5 continents.",icon:"&#127925;",time:"Today"},
+  {title:"Champions League — Shock Quarter Finals",category:"Sports",summary:"Unexpected upsets shake the Champions League bracket.",icon:"&#9917;",time:"Yesterday"},
+  {title:"New Blockbuster Shatters Opening Records",category:"Film & TV",summary:"A record-breaking opening weekend sets the stage for 2026s biggest film.",icon:"&#127909;",time:"2 days ago"},
+  {title:"Paris Fashion Week — Top 10 Looks",category:"Fashion",summary:"Designers unveil their most stunning collections yet.",icon:"&#128247;",time:"3 days ago"},
+  {title:"Grammy Nominations — Big Surprises",category:"Music",summary:"This years nominations include several unexpected global artists.",icon:"&#127908;",time:"5 days ago"},
+  {title:"Sports Star Signs Historic $500M Deal",category:"Sports",summary:"A landmark deal reshapes professional sports economics globally.",icon:"&#127942;",time:"6 days ago"}
+];
+async function loadNews(){
+  try{var snap=await sg(query(collection(db,"celebrityNews"),limit(20)));if(!snap.empty){allN=[];snap.forEach(function(d){allN.push({id:d.id,...d.data()});});allN.sort(function(a,b){return(b.publishedAt&&b.publishedAt.seconds||0)-(a.publishedAt&&a.publishedAt.seconds||0);});renderNews(allN);return;}}catch{}
+  allN=SNEWS;renderNews(allN);
+}
+function renderNews(list){
+  var el=document.getElementById("newsList");
+  var h="";
+  list.forEach(function(n,i){
+    h+="<div class=\"ncard\" data-ni=\""+i+"\">";
+    h+="<div class=\"nic\">"+(n.icon||"&#128240;")+"</div>";
+    h+="<div style=\"flex:1;\">";
+    h+="<div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.14em;color:var(--gold);margin-bottom:3px;\">"+xe(n.category||"NEWS")+"</div>";
+    h+="<div style=\"font-weight:700;font-size:0.82rem;color:var(--text);line-height:1.3;\">"+xe(n.title||"")+"</div>";
+    h+="<div style=\"font-size:0.58rem;color:var(--dim);margin-top:3px;\">"+xe(n.time||"")+"</div></div>";
+    h+="<div style=\"color:var(--dim);font-size:0.9rem;flex-shrink:0;\">&#8250;</div></div>";
+  });
+  el.innerHTML=h;
+  el.querySelectorAll(".ncard[data-ni]").forEach(function(card){
+    card.onclick=function(){
+      var n=list[parseInt(this.dataset.ni)];if(!n)return;
+      var ov=mkOv();
+      var h=navRow(xe(n.category||"News"));
+      h+="<div style=\"padding:20px;\">";
+      h+="<div style=\"text-align:center;font-size:2.5rem;margin-bottom:12px;\">"+(n.icon||"&#128240;")+"</div>";
+      h+="<div style=\"font-size:0.6rem;letter-spacing:0.16em;color:var(--gold);margin-bottom:8px;\">"+xe(n.category||"")+" · "+xe(n.time||"")+"</div>";
+      h+="<div style=\"font-weight:700;font-size:1.1rem;color:var(--text);line-height:1.3;margin-bottom:14px;\">"+xe(n.title||"")+"</div>";
+      h+="<div style=\"font-size:0.76rem;color:var(--muted);line-height:1.8;\">"+xe(n.summary||n.content||"Full article coming soon.")+"</div></div>";
+      ov.innerHTML=h;attachBack(ov);
+    };
   });
 }
 
-function openMemberProfile(m){
-  const ov=document.createElement('div');
-  ov.style.cssText='position:fixed;inset:0;background:#07070D;z-index:9999;overflow-y:auto;';
-  const catIcons={'Music':'🎵','Film & TV':'🎬','Sports':'⚽','Literature':'📚','Fitness & Wellness':'💪','Nature':'🌿','Fashion':'👗','Food & Culinary':'🍽️','Automotive':'🚗','Tech & Innovation':'💻','Beauty':'💄','Leadership':'🎓','Entertainment':'🎭'};
-  ov.innerHTML=`
-    <!-- HEADER -->
-    <div style="position:sticky;top:0;z-index:10;background:rgba(7,7,13,0.95);border-bottom:1px solid rgba(255,255,255,0.09);padding:14px 16px;display:flex;align-items:center;gap:12px;">
-      <button onclick="popOverlay()" style="background:none;border:1px solid rgba(255,255,255,0.16);border-radius:8px;width:36px;height:36px;color:#F5F0E8;font-size:1rem;cursor:pointer;flex-shrink:0;">←</button>
-      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.16em;color:#BDB5A6;">Member Profile</span>
-    </div>
-    <!-- COVER -->
-    <div style="height:160px;background:linear-gradient(135deg,#1a0e00,#2d1a08,#0a0a18);position:relative;overflow:hidden;">
-      ${m.coverPhoto&&m.coverPhoto.startsWith('http')?`<img src="${escUrl(m.coverPhoto)}" style="width:100%;height:100%;object-fit:cover;" onerror="this.remove()"/>`:''}
-    </div>
-    <!-- AVATAR ROW — avatar peeks out from below cover by 40px -->
-    <div style="padding:0 16px;display:flex;align-items:flex-end;justify-content:space-between;min-height:50px;margin-bottom:10px;">
-      <div style="width:82px;height:82px;border-radius:50%;background:linear-gradient(135deg,#FFB800,#CC9400);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#07070D;border:4px solid #07070D;overflow:hidden;flex-shrink:0;margin-top:-50px;position:relative;z-index:5;">
-        ${m.profilePic&&m.profilePic.startsWith('http')?`<img src="${escUrl(m.profilePic)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.remove()"/>`:esc((m.name||'?').charAt(0).toUpperCase())}
-      </div>
-      <div style="display:flex;gap:7px;padding-bottom:4px;">
-        <button id="followMemberBtn_${m.id}" onclick="followMember('${m.id}','${esc(m.name||'Member')}',this)" style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;padding:8px 13px;background:linear-gradient(135deg,#FFB800,#CC9400);color:#07070D;border:none;border-radius:6px;cursor:pointer;">+ Follow</button>
-        <button onclick="toast('Message coming soon 💬','info')" style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.6rem;padding:8px 10px;background:transparent;color:#F5F0E8;border:1px solid rgba(255,255,255,0.16);border-radius:6px;cursor:pointer;">✉️</button>
-        <button onclick="if(navigator.share)navigator.share({title:'${esc(m.name||'Member')} on ICONIK',url:location.href});else{navigator.clipboard?.writeText(location.href);toast('Link copied! 🔗');}" style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.6rem;padding:8px 10px;background:transparent;color:#F5F0E8;border:1px solid rgba(255,255,255,0.16);border-radius:6px;cursor:pointer;">🔗</button>
-      </div>
-    </div>
-    <!-- INFO -->
-    <div style="padding:0 16px 20px;">
-      <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:#F5F0E8;margin-bottom:3px;">${esc(m.name||'Member')} ${m.verificationStatus==='verified'?'<span style="color:#22C55E;">✅</span>':''}</div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:#07070D;background:#FFB800;padding:2px 8px;display:inline-block;margin-bottom:10px;">${esc(m.tier||'Fan')}</div>
-      <div style="font-family:'Montserrat',sans-serif;font-size:0.7rem;color:#BDB5A6;margin-bottom:12px;">📍 ${esc(m.city?m.city+', ':'')}${esc(m.country||'—')}</div>
-      ${m.bio?`<div style="font-family:'Montserrat',sans-serif;font-size:0.74rem;color:#BDB5A6;line-height:1.7;margin-bottom:14px;">${esc(m.bio)}</div>`:''}
-      <!-- STATS -->
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:16px;">
-        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:10px;text-align:center;"><div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:#F5F0E8;">${m.followersCount||0}</div><div style="font-family:'Montserrat',sans-serif;font-size:0.5rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(189,181,166,0.5);">Followers</div></div>
-        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:10px;text-align:center;"><div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:#F5F0E8;">${m.followingCount||0}</div><div style="font-family:'Montserrat',sans-serif;font-size:0.5rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(189,181,166,0.5);">Following</div></div>
-        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:10px;text-align:center;"><div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:#F5F0E8;">${m.postCount||0}</div><div style="font-family:'Montserrat',sans-serif;font-size:0.5rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(189,181,166,0.5);">Posts</div></div>
-        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:8px;padding:10px;text-align:center;"><div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:#F5F0E8;">${m.points||0}</div><div style="font-family:'Montserrat',sans-serif;font-size:0.5rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(189,181,166,0.5);">Points</div></div>
-      </div>
-      <!-- COMMUNITIES -->
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.18em;color:#FFB800;margin-bottom:10px;">Communities</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
-        ${(m.categories||[]).length?(m.categories||[]).map(c=>`
-          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);padding:7px 11px;border-radius:6px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.64rem;color:#F5F0E8;">${catIcons[c]||'🌟'} ${esc(c)}</div>`).join(''):'<span style="color:rgba(189,181,166,0.4);font-size:0.7rem;">No communities listed</span>'}
-      </div>
-    </div>`;
-  document.body.appendChild(ov);
-  pushOverlay(ov);window._overlayClose=null;};
+// COMMUNITIES
+var COMS=[
+  {name:"Music",icon:"&#127925;",desc:"Artists · Albums · Concerts",img:"https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&q=75"},
+  {name:"Film & TV",icon:"&#127909;",desc:"Movies · Series · Directors",img:"https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&q=75"},
+  {name:"Sports",icon:"&#9917;",desc:"Football · Basketball · Athletics",img:"https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=300&q=75"},
+  {name:"Literature",icon:"&#128218;",desc:"Authors · Books · Knowledge",img:"https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&q=75"},
+  {name:"Fashion",icon:"&#128247;",desc:"Style · Designers · Trends",img:"https://images.unsplash.com/photo-1445205170230-053b83016050?w=300&q=75"},
+  {name:"Fitness & Wellness",icon:"&#128170;",desc:"Health · Fitness · Mind",img:"https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&q=75"},
+  {name:"Food & Culinary",icon:"&#127869;",desc:"Chefs · Recipes · Culture",img:"https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=75"},
+  {name:"Nature",icon:"&#127807;",desc:"Adventure · Wildlife · Earth",img:"https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=300&q=75"},
+  {name:"Automotive",icon:"&#128663;",desc:"Cars · Bikes · Lifestyle",img:"https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=300&q=75"},
+  {name:"Tech & Innovation",icon:"&#128187;",desc:"AI · Gadgets · Future",img:"https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&q=75"},
+  {name:"Beauty",icon:"&#128132;",desc:"Makeup · Skincare · Art",img:"https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=300&q=75"},
+  {name:"Entertainment",icon:"&#127917;",desc:"Comedy · Talent · Shows",img:"https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=300&q=75"},
+  {name:"Leadership",icon:"&#127891;",desc:"Vision · Motivation · Growth",img:"https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=300&q=75"}
+];
+function loadComs(){
+  var j=cD&&cD.categories||[];
+  var h="";
+  COMS.forEach(function(c){
+    var joined=j.some(function(x){return x.toLowerCase().replace(/&/g,"").includes(c.name.toLowerCase().replace(/&/g,""));});
+    h+="<div class=\"comcard\">";
+    h+="<div class=\"combg\" style=\"background-image:url('"+c.img+"');\"></div>";
+    h+="<div class=\"combd\">";
+    h+="<div style=\"font-weight:700;font-size:0.66rem;color:var(--text);\">"+c.icon+" "+c.name+(joined?" &#10003;":"")+"</div>";
+    h+="<div style=\"font-size:0.52rem;color:var(--dim);\">"+c.desc+"</div></div></div>";
+  });
+  document.getElementById("comGrid").innerHTML=h;
 }
 
-async function followMember(uid,name,btn){
-  if(!cU){toast('Sign in to follow','error');return;}
-  try{
-    await setDoc(doc(db,'follows',cU.uid+'_'+uid),{followerId:cU.uid,followingId:uid,createdAt:serverTimestamp()});
-    btn.textContent='✓ Following';
-    btn.style.background='rgba(255,255,255,0.08)';
-    btn.style.color='#FFB800';
-    toast('Now following '+name+'! ⭐');
-  }catch{toast('Following '+name+'! ⭐');}
+// CHAT
+async function loadChat(){
+  var el=document.getElementById("chatArea");
+  var snap=await sg(query(collection(db,"chat_"+chatRoom),limit(40)));
+  var msgs=[];snap.forEach(function(d){msgs.push({id:d.id,...d.data()});});
+  msgs.sort(function(a,b){return(a.createdAt&&a.createdAt.seconds||0)-(b.createdAt&&b.createdAt.seconds||0);});
+  if(!msgs.length){el.innerHTML="<div style=\"text-align:center;padding:20px;color:var(--dim);\">No messages yet. Say hello!</div>";return;}
+  var h="";
+  msgs.forEach(function(m){
+    var mine=m.userId===cU.uid;
+    var t=m.createdAt&&m.createdAt.toDate?m.createdAt.toDate().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}):"";
+    h+="<div class=\"mb"+(mine?" me":"")+"\">";
+    h+="<div style=\"width:26px;height:26px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.7rem;flex-shrink:0;\">"+xe((m.name||"?").charAt(0))+"</div>";
+    h+="<div><div style=\"font-size:0.56rem;color:var(--dim);margin-bottom:3px;\">"+(mine?"You":xe(m.name||"Fan"))+"</div>";
+    h+="<div class=\"mbub\">"+xe(m.text||"")+"</div>";
+    h+="<div style=\"font-size:0.5rem;color:var(--dim);margin-top:2px;\">"+t+"</div></div></div>";
+  });
+  el.innerHTML=h;el.scrollTop=el.scrollHeight;
 }
-window.followMember=followMember;
-window.searchMembers=function(){
-  const q=document.getElementById('memberSearch').value.toLowerCase();
-  const cat=document.getElementById('memberFilter').value;
-  let r=allMembers;
-  if(q)r=r.filter(m=>m.name?.toLowerCase().includes(q)||m.country?.toLowerCase().includes(q));
-  if(cat)r=r.filter(m=>(m.categories||[]).some(c=>c.toLowerCase().includes(cat.toLowerCase())));
-  renderMembers(r);
-};
+async function sendChat(){
+  var inp=document.getElementById("chatInp");var txt=inp.value.trim();if(!txt||!cU)return;inp.value="";
+  try{await addDoc(collection(db,"chat_"+chatRoom),{text:txt,name:(cD&&cD.name)||"Fan",userId:cU.uid,createdAt:serverTimestamp()});loadChat();}
+  catch{toast("Error sending","error");}
+}
 
-// ── RANKINGS ──
-window.load_rankings=async function(){
-  const el=document.getElementById('rankList');
-  const snap=await sg(query(collection(db,'users'),limit(20)));
-  const users=[];snap.forEach(d=>users.push({id:d.id,...d.data()}));
-  users.sort((a,b)=>(b.points||0)-(a.points||0));
-  const medals=['🥇','🥈','🥉'];
-  el.innerHTML=users.length?users.map((u,i)=>`
-    <div class="card" style="display:flex;align-items:center;gap:10px;">
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--dim);width:22px;text-align:center;">${i<3?medals[i]:i+1}</div>
-      <div class="member-av">${esc((u.name||'?').charAt(0))}</div>
-      <div style="flex:1;"><div class="member-name">${esc(u.name||'Member')}</div><div class="member-meta">${esc(u.country||'—')}</div></div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:0.8rem;color:var(--gold);">${u.points||0} pts</div>
-    </div>`).join(''):'<div class="card"><div class="card-body" style="text-align:center;padding:10px;">Earn points by posting and engaging! 🏆</div></div>';
-};
-
-// ── POLLS ──
-window.load_polls=async function(){
-  const el=document.getElementById('pollList');
-  try{const snap=await sg(query(collection(db,'polls'),limit(10)));if(!snap.empty){const polls=[];snap.forEach(d=>polls.push({id:d.id,...d.data()}));el.innerHTML=polls.map(p=>pollCard(p)).join('');return;}}catch{}
+// EVENTS
+async function loadEvents(){
+  var el=document.getElementById("evList");
+  try{var snap=await sg(query(collection(db,"events"),limit(20)));if(!snap.empty){var evs=[];snap.forEach(function(d){evs.push({id:d.id,...d.data()});});evs.sort(function(a,b){return(a.eventDate||"").localeCompare(b.eventDate||"");});el.innerHTML=evs.map(evCard).join("");return;}}catch{}
   el.innerHTML=[
-    {id:'p1',question:'Who should ICONIK partner with next?',options:['Bad Bunny','Beyoncé','Cristiano Ronaldo','BTS'],totalVotes:247},
-    {id:'p2',question:'Which community should ICONIK add?',options:['Gaming 🎮','K-Drama 🎭','Comedy 😂','Anime 🎌'],totalVotes:183},
-  ].map(p=>pollCard(p)).join('');
-};
-function pollCard(p){
-  return`<div class="card" style="margin-bottom:12px;">
-    <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:0.88rem;color:var(--text);margin-bottom:12px;line-height:1.35;">${esc(p.question||'')}</div>
-    ${(p.options||[]).map(opt=>`<div style="margin-bottom:7px;"><button onclick="castVote('${esc(p.id)}','${esc(opt)}',this)" style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:Montserrat,sans-serif;font-size:0.7rem;font-weight:600;text-align:left;cursor:pointer;transition:all 0.2s;">${esc(opt)}</button></div>`).join('')}
-    <div style="font-family:Montserrat,sans-serif;font-size:0.6rem;color:var(--dim);margin-top:6px;">${p.totalVotes||0} votes</div>
-  </div>`;
+    {name:"Bad Bunny — World Tour",venue:"Madison Square Garden, NY",eventDate:"2026-05-15",price:"$85",icon:"&#127925;"},
+    {name:"Champions League Final 2026",venue:"Wembley Stadium, London",eventDate:"2026-06-01",price:"$120",icon:"&#9917;"},
+    {name:"ICONIK Global Fan Meet",venue:"Virtual + Global Chapters",eventDate:"2026-08-10",price:"Free",icon:"&#127758;"},
+    {name:"Met Gala Fan Experience",venue:"Metropolitan Museum, NY",eventDate:"2026-05-05",price:"$45",icon:"&#128247;"}
+  ].map(evCard).join("");
 }
-window.castVote=function(pollId,option,btn){btn.style.borderColor='var(--gold)';btn.style.color='var(--gold)';toast('Voted for '+option+'! 🗳️');if(cU)setDoc(doc(db,'votes',cU.uid+'_'+pollId),{userId:cU.uid,pollId,option,createdAt:serverTimestamp()}).catch(()=>{});};
+function evCard(ev){
+  var d=new Date(ev.eventDate||"");var mo=isNaN(d)?"TBD":d.toLocaleString("en",{month:"short"}).toUpperCase();var dy=isNaN(d)?"":d.getDate();
+  return "<div class=\"card\" style=\"display:flex;gap:12px;align-items:center;\"><div style=\"text-align:center;min-width:38px;\"><div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.1em;color:var(--gold);\">"+mo+"</div><div style=\"font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--text);line-height:1;\">"+dy+"</div></div><div style=\"flex:1;\"><div style=\"font-weight:700;font-size:0.76rem;color:var(--text);margin-bottom:3px;\">"+xe(ev.name||"")+"</div><div style=\"font-size:0.62rem;color:var(--muted);\">&#128205; "+xe(ev.venue||"")+"</div><div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.7rem;color:var(--gold);margin-top:3px;\">"+xe(ev.price||"")+"</div></div><span style=\"font-size:1.3rem;\">"+(ev.icon||"&#127915;")+"</span></div>";
+}
 
-// ── PROFILE ──
-window.load_profile=function(){
+// RADIO
+function loadRadio(){
+  var sts=[{n:"ICONIK Gold",g:"Top Hits · Global",ic:"&#127942;"},{n:"Latin Vibes",g:"Latin · Reggaeton · Urban",ic:"&#127928;"},{n:"Afro Beats FM",g:"Afrobeats · Dancehall",ic:"&#129345;"},{n:"Hip-Hop Central",g:"Hip-Hop · R&B · Trap",ic:"&#127908;"},{n:"ICONIK Chill",g:"Lo-fi · Ambient · Relax",ic:"&#127769;"},{n:"Sports Anthems",g:"Rock · EDM · Motivation",ic:"&#9917;"}];
+  var h="";sts.forEach(function(s){h+="<div class=\"card\" style=\"display:flex;align-items:center;gap:12px;\"><div style=\"width:42px;height:42px;border-radius:8px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;\">"+s.ic+"</div><div style=\"flex:1;\"><div style=\"font-weight:700;font-size:0.74rem;color:var(--text);\">"+xe(s.n)+"</div><div style=\"font-size:0.6rem;color:var(--dim);\">"+xe(s.g)+"</div></div><button data-sn=\""+xe(s.n)+"\" style=\"width:32px;height:32px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;font-size:0.8rem;\">&#9654;</button></div>";});
+  document.getElementById("radioList").innerHTML=h;
+  document.getElementById("radioList").addEventListener("click",function(ev){var btn=ev.target.closest("[data-sn]");if(btn)toast("Now playing: "+btn.dataset.sn);});
+}
+
+// TV
+async function loadTV(){
+  var el=document.getElementById("tvList");
+  try{var snap=await sg(query(collection(db,"iconikTV"),limit(10)));if(!snap.empty){var v=[];snap.forEach(function(d){v.push({id:d.id,...d.data()});});el.innerHTML=v.map(tvCard).join("");return;}}catch{}
+  el.innerHTML=[{title:"Bad Bunny — Live at MSG",category:"Music",duration:"45 min",icon:"&#127925;"},{title:"Messi: The GOAT Documentary",category:"Sports",duration:"1h 20min",icon:"&#9917;"},{title:"ICONIK Fan Spotlight — Ep.12",category:"Fan Made",duration:"22 min",icon:"&#127909;"}].map(tvCard).join("");
+}
+function tvCard(v){
+  return "<div class=\"card\" style=\"padding:0;overflow:hidden;margin-bottom:10px;\"><div style=\"height:120px;background:linear-gradient(135deg,var(--bg2),var(--bg3));display:flex;align-items:center;justify-content:center;position:relative;\">"+(v.thumbUrl?"<img src=\""+xu(v.thumbUrl)+"\" style=\"position:absolute;inset:0;width:100%;height:100%;object-fit:cover;\" onerror=\"this.remove()\"/>":"")+"<span style=\"font-size:2.5rem;position:relative;z-index:1;\">"+(v.icon||"&#127909;")+"</span><div style=\"position:absolute;width:42px;height:42px;border-radius:50%;background:rgba(255,184,0,0.9);display:flex;align-items:center;justify-content:center;z-index:2;\">&#9654;</div></div><div style=\"padding:10px 12px;\"><div style=\"font-weight:700;font-size:0.74rem;color:var(--text);margin-bottom:3px;\">"+xe(v.title||"")+"</div><div style=\"font-size:0.6rem;color:var(--dim);\">"+xe(v.category||"")+(v.duration?" · "+xe(v.duration):"")+"</div></div></div>";
+}
+
+// MAGAZINE
+async function loadMag(){
+  var el=document.getElementById("magList");
+  try{var snap=await sg(query(collection(db,"magazine"),limit(10)));if(!snap.empty){var a=[];snap.forEach(function(d){a.push({id:d.id,...d.data()});});a.sort(function(x,y){return(y.publishedAt&&y.publishedAt.seconds||0)-(x.publishedAt&&x.publishedAt.seconds||0);});el.innerHTML=a.map(magCard).join("");return;}}catch{}
+  el.innerHTML=[{title:"The Rise of Global Fan Culture",category:"Culture",icon:"&#127758;"},{title:"Inside Bad Bunnys Creative Process",category:"Music",icon:"&#127925;"},{title:"Fashion Forward: Icons Shaping Tomorrow",category:"Fashion",icon:"&#128247;"}].map(magCard).join("");
+}
+function magCard(a){
+  return "<div class=\"card\" style=\"display:flex;gap:10px;\"><div style=\"width:60px;height:60px;border-radius:6px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;\">"+(a.icon||"&#128218;")+"</div><div><div style=\"font-weight:700;font-size:0.72rem;color:var(--text);line-height:1.3;margin-bottom:4px;\">"+xe(a.title||"")+"</div><div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.1em;color:var(--gold);\">"+xe(a.category||"")+"</div></div></div>";
+}
+
+// WELLNESS
+var WELL={fitness:{t:"Fitness & Training",b:"Build strength and peak performance. Follow certified coaches and elite athletes shaping the fitness world."},nutrition:{t:"Nutrition & Diet",b:"Science-backed nutrition advice and meal plans from certified nutritionists worldwide."},mental:{t:"Mental Wellness",b:"Mindfulness, meditation and mental health. Reduce stress and build resilience with top coaches."},beauty:{t:"Beauty & Skincare",b:"Skincare science, anti-aging and beauty wellness from dermatologists and beauty icons."},recovery:{t:"Sports Recovery",b:"Recovery science for athletes — physiotherapy, sleep optimization and injury prevention."}};
+function loadWell(tab){var w=WELL[tab]||WELL.fitness;document.getElementById("wellContent").innerHTML="<div class=\"card\"><div style=\"font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:8px;\">"+w.t+"</div><div style=\"font-size:0.72rem;color:var(--muted);line-height:1.6;\">"+w.b+"</div></div><div class=\"card\" style=\"text-align:center;color:var(--muted);padding:12px;\">Admin adds coaches and partners from the Admin Panel.</div>";}
+
+// FIND MEMBERS
+async function loadMembers(){
+  var snap=await sg(query(collection(db,"users"),limit(50)));
+  allM=[];snap.forEach(function(d){if(d.id!==cU.uid)allM.push({id:d.id,...d.data()});});
+  renderMembers(allM);
+}
+function renderMembers(list){
+  var el=document.getElementById("memberList");
+  if(!list.length){el.innerHTML="<div class=\"card\" style=\"text-align:center;color:var(--muted);padding:14px;\">No members found.</div>";return;}
+  var h="";
+  list.slice(0,30).forEach(function(m){
+    h+="<div class=\"mcard\" data-mid=\""+m.id+"\">";
+    h+="<div class=\"mav\">";
+    if(m.profilePic&&m.profilePic.startsWith("http"))h+="<img src=\""+xu(m.profilePic)+"\" onerror=\"this.remove()\"/>";
+    else h+=xe((m.name||"?").charAt(0).toUpperCase());
+    h+="</div><div style=\"flex:1;min-width:0;\">";
+    h+="<div style=\"font-weight:700;font-size:0.74rem;color:var(--text);\">"+xe(m.name||"Member")+(m.verificationStatus==="verified"?" &#9989;":"")+"</div>";
+    h+="<div style=\"font-size:0.6rem;color:var(--dim);\">"+(m.city?xe(m.city)+", ":"")+xe(m.country||"—")+" · <span style=\"color:var(--gold);\">"+xe(m.tier||"Fan")+"</span></div>";
+    var cats=m.categories||[];if(cats.length){h+="<div style=\"display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;\">";cats.slice(0,3).forEach(function(c){h+="<span style=\"font-size:0.48rem;color:var(--bg);background:var(--gold);padding:1px 5px;\">"+xe(c)+"</span>";});h+="</div>";}
+    h+="</div><div style=\"color:var(--dim);font-size:0.9rem;\">&#8250;</div></div>";
+  });
+  el.innerHTML=h;
+  el.querySelectorAll(".mcard[data-mid]").forEach(function(card){card.onclick=function(){var m=allM.find(function(x){return x.id===this.dataset.mid;}.bind(this));if(m)openMember(m);};});
+}
+function filterMembers(){
+  var q=document.getElementById("mSrch").value.toLowerCase();
+  var cat=document.getElementById("mFilt").value;
+  var r=allM;
+  if(q)r=r.filter(function(m){return(m.name&&m.name.toLowerCase().includes(q))||(m.country&&m.country.toLowerCase().includes(q));});
+  if(cat)r=r.filter(function(m){return(m.categories||[]).some(function(c){return c.toLowerCase().includes(cat.toLowerCase());});});
+  renderMembers(r);
+}
+function openMember(m){
+  var ci={"Music":"&#127925;","Film & TV":"&#127909;","Sports":"&#9917;","Literature":"&#128218;","Fitness & Wellness":"&#128170;","Nature":"&#127807;","Fashion":"&#128247;","Food & Culinary":"&#127869;","Automotive":"&#128663;","Tech & Innovation":"&#128187;","Beauty":"&#128132;","Leadership":"&#127891;","Entertainment":"&#127917;"};
+  var ov=mkOv();
+  var h=navRow("Member Profile");
+  h+="<div style=\"height:160px;background:linear-gradient(135deg,#1a0e00,#2d1a08,#0a0a18);position:relative;overflow:hidden;\">";
+  if(m.coverPhoto&&m.coverPhoto.startsWith("http"))h+="<img src=\""+xu(m.coverPhoto)+"\" style=\"width:100%;height:100%;object-fit:cover;\" onerror=\"this.remove()\"/>";
+  h+="</div>";
+  h+="<div style=\"padding:0 16px;display:flex;align-items:flex-end;justify-content:space-between;min-height:50px;margin-bottom:10px;\">";
+  h+="<div style=\"width:82px;height:82px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--bg);border:4px solid var(--bg);overflow:hidden;flex-shrink:0;margin-top:-50px;position:relative;z-index:5;\">";
+  if(m.profilePic&&m.profilePic.startsWith("http"))h+="<img src=\""+xu(m.profilePic)+"\" style=\"width:100%;height:100%;object-fit:cover;border-radius:50%;\" onerror=\"this.remove()\"/>";
+  else h+=xe((m.name||"?").charAt(0).toUpperCase());
+  h+="</div>";
+  h+="<div style=\"display:flex;gap:7px;padding-bottom:4px;\">";
+  h+="<button class=\"btn-act\" id=\"fMBtn\">+ Follow</button>";
+  h+="<button class=\"btn-gh\" id=\"sMBtn\">&#128279;</button></div></div>";
+  h+="<div style=\"padding:0 16px 24px;\">";
+  h+="<div style=\"font-weight:700;font-size:1.1rem;color:var(--text);margin-bottom:3px;\">"+xe(m.name||"Member")+(m.verificationStatus==="verified"?" &#9989;":"")+"</div>";
+  h+="<div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--bg);background:var(--gold);padding:2px 8px;display:inline-block;margin-bottom:10px;\">"+xe(m.tier||"Fan")+"</div>";
+  h+="<div style=\"font-size:0.7rem;color:var(--muted);margin-bottom:12px;\">&#128205; "+(m.city?xe(m.city)+", ":"")+xe(m.country||"—")+"</div>";
+  if(m.bio)h+="<div style=\"font-size:0.74rem;color:var(--muted);line-height:1.7;margin-bottom:14px;\">"+xe(m.bio)+"</div>";
+  h+="<div style=\"display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:16px;\">";
+  h+="<div class=\"sbox\"><div class=\"snum\">"+(m.followersCount||0)+"</div><div class=\"slbl\">Followers</div></div>";
+  h+="<div class=\"sbox\"><div class=\"snum\">"+(m.followingCount||0)+"</div><div class=\"slbl\">Following</div></div>";
+  h+="<div class=\"sbox\"><div class=\"snum\">"+(m.postCount||0)+"</div><div class=\"slbl\">Posts</div></div>";
+  h+="<div class=\"sbox\"><div class=\"snum\">"+(m.points||0)+"</div><div class=\"slbl\">Points</div></div></div>";
+  h+="<div style=\"font-size:0.62rem;letter-spacing:0.18em;color:var(--gold);margin-bottom:10px;\">Communities</div>";
+  h+="<div style=\"display:flex;gap:6px;flex-wrap:wrap;\">";
+  var cats=m.categories||[];
+  if(cats.length){cats.forEach(function(c){h+="<div style=\"background:var(--card);border:1px solid var(--border);padding:7px 11px;border-radius:6px;font-size:0.64rem;color:var(--text);\">"+(ci[c]||"&#127775;")+" "+xe(c)+"</div>";});}
+  else h+="<span style=\"color:var(--dim);font-size:0.7rem;\">No communities listed</span>";
+  h+="</div></div>";
+  ov.innerHTML=h;attachBack(ov);
+  document.getElementById("fMBtn").onclick=async function(){
+    if(!cU)return;
+    try{await setDoc(doc(db,"follows",cU.uid+"_"+m.id),{followerId:cU.uid,followingId:m.id,createdAt:serverTimestamp()});}catch{}
+    this.textContent="&#10003; Following";this.style.background="rgba(255,255,255,0.08)";this.style.color="var(--gold)";
+    toast("Following "+xe(m.name||"Member")+"!");
+  };
+  document.getElementById("sMBtn").onclick=function(){
+    if(navigator.share)navigator.share({title:xe(m.name||"Member")+" on ICONIK",url:location.href});
+    else if(navigator.clipboard)navigator.clipboard.writeText(location.href).then(function(){toast("Link copied!");});
+  };
+}
+
+// RANKINGS
+async function loadRanks(){
+  var el=document.getElementById("rankList");
+  var snap=await sg(query(collection(db,"users"),limit(20)));
+  var us=[];snap.forEach(function(d){us.push({id:d.id,...d.data()});});
+  us.sort(function(a,b){return(b.points||0)-(a.points||0);});
+  var md=["&#129351;","&#129352;","&#129353;"];
+  var h="";
+  us.forEach(function(u,i){
+    h+="<div class=\"card\" style=\"display:flex;align-items:center;gap:10px;\">";
+    h+="<div style=\"font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--dim);width:22px;text-align:center;\">"+(i<3?md[i]:i+1)+"</div>";
+    h+="<div class=\"mav\" style=\"width:36px;height:36px;font-size:0.9rem;\">"+xe((u.name||"?").charAt(0))+"</div>";
+    h+="<div style=\"flex:1;\"><div style=\"font-weight:700;font-size:0.72rem;color:var(--text);\">"+xe(u.name||"Member")+"</div><div style=\"font-size:0.6rem;color:var(--dim);\">"+xe(u.country||"—")+"</div></div>";
+    h+="<div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.8rem;color:var(--gold);\">"+(u.points||0)+" pts</div></div>";
+  });
+  el.innerHTML=h||"<div class=\"card\" style=\"text-align:center;color:var(--muted);padding:12px;\">Earn points by posting and engaging!</div>";
+}
+
+// POLLS
+async function loadPolls(){
+  var el=document.getElementById("pollList");
+  try{var snap=await sg(query(collection(db,"polls"),limit(10)));if(!snap.empty){var p=[];snap.forEach(function(d){p.push({id:d.id,...d.data()});});renderPolls(p);return;}}catch{}
+  renderPolls([{id:"p1",question:"Who should ICONIK partner with next?",options:["Bad Bunny","Beyonce","Cristiano Ronaldo","BTS"],totalVotes:247},{id:"p2",question:"Which community should ICONIK add?",options:["Gaming","K-Drama","Comedy","Anime"],totalVotes:183}]);
+}
+function renderPolls(polls){
+  var el=document.getElementById("pollList");
+  var h="";
+  polls.forEach(function(p){
+    h+="<div class=\"card\" style=\"margin-bottom:12px;\">";
+    h+="<div style=\"font-weight:700;font-size:0.88rem;color:var(--text);margin-bottom:12px;line-height:1.35;\">"+xe(p.question||"")+"</div>";
+    (p.options||[]).forEach(function(opt){
+      h+="<div style=\"margin-bottom:7px;\"><button data-poll=\""+p.id+"\" data-opt=\""+xe(opt)+"\" style=\"width:100%;padding:9px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:0.7rem;font-weight:600;text-align:left;cursor:pointer;\">"+xe(opt)+"</button></div>";
+    });
+    h+="<div style=\"font-size:0.6rem;color:var(--dim);margin-top:6px;\">"+(p.totalVotes||0)+" votes</div></div>";
+  });
+  el.innerHTML=h;
+  el.addEventListener("click",async function(ev){
+    var btn=ev.target.closest("[data-poll]");if(!btn)return;
+    btn.style.borderColor="var(--gold)";btn.style.color="var(--gold)";
+    toast("Voted for "+btn.dataset.opt+"!");
+    if(cU)try{await setDoc(doc(db,"votes",cU.uid+"_"+btn.dataset.poll),{userId:cU.uid,pollId:btn.dataset.poll,option:btn.dataset.opt,createdAt:serverTimestamp()});}catch{}
+  });
+}
+
+// PROFILE
+function loadProfile(){
   if(!cD)return;
-  const nm=esc(cD.name||'Member');
-  document.getElementById('profileName').innerHTML=nm+(cD.verificationStatus==='verified'?' <span style="color:var(--ok);">✅</span>':'');
-  document.getElementById('profileTierBadge').textContent=cD.tier||'Fan';
-  if(cD.bio)document.getElementById('profileBioText').textContent=cD.bio;
-  document.getElementById('pFollowers').textContent=cD.followersCount||0;
-  document.getElementById('pFollowing').textContent=cD.followingCount||0;
-  document.getElementById('pPosts').textContent=cD.postCount||0;
-  document.getElementById('pPoints').textContent=cD.points||0;
-  const av=document.getElementById('profileAvLg');
-  av.textContent=cD.name?.charAt(0).toUpperCase()||'M';
-  if(cD.profilePic&&cD.profilePic.startsWith('http')){const img=document.createElement('img');img.src=cD.profilePic;img.onerror=()=>img.remove();av.innerHTML='';av.appendChild(img);}
-  if(cD.bio)document.getElementById('editBio').value=cD.bio;
-  if(cD.profilePic){const ep=document.getElementById('editPic');if(ep)ep.value=cD.profilePic;}
-  if(cD.coverPhoto){const ec=document.getElementById('editCover');if(ec)ec.value=cD.coverPhoto;}
-};
-window.previewProfilePic=function(input){
-  const file=input.files[0];if(!file)return;
-  document.getElementById('picUploadName').textContent=file.name;
-  const r=new FileReader();
-  r.onload=e=>{const p=document.getElementById('picPreview');p.src=e.target.result;p.style.display='block';};
-  r.readAsDataURL(file);
-};
-window.previewCoverPhoto=function(input){
-  const file=input.files[0];if(!file)return;
-  document.getElementById('coverUploadName').textContent=file.name;
-  const r=new FileReader();
-  r.onload=e=>{const p=document.getElementById('coverPreview');p.src=e.target.result;p.style.display='block';};
-  r.readAsDataURL(file);
-};
-
-window.saveProfile=async function(){
+  var nm=xe(cD.name||"Member");
+  var h="";
+  h+="<div style=\"height:160px;background:linear-gradient(135deg,#1a0e00,#2d1a08,#0a0a18);position:relative;overflow:hidden;border-radius:8px;margin-bottom:14px;\">";
+  if(cD.coverPhoto&&cD.coverPhoto.startsWith("http"))h+="<img src=\""+xu(cD.coverPhoto)+"\" style=\"width:100%;height:100%;object-fit:cover;\" onerror=\"this.remove()\"/>";
+  h+="</div>";
+  h+="<div style=\"display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px;margin-top:-54px;padding:0 4px;\">";
+  h+="<div style=\"width:82px;height:82px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--bg);border:4px solid var(--bg);overflow:hidden;flex-shrink:0;position:relative;z-index:5;\">";
+  if(cD.profilePic&&cD.profilePic.startsWith("http"))h+="<img src=\""+xu(cD.profilePic)+"\" style=\"width:100%;height:100%;object-fit:cover;border-radius:50%;\" onerror=\"this.remove()\"/>";
+  else h+=(cD.name||"M").charAt(0).toUpperCase();
+  h+="</div>";
+  h+="<div style=\"padding-bottom:4px;\"><span style=\"font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--bg);background:var(--gold);padding:3px 10px;\">"+xe(cD.tier||"Fan")+"</span></div></div>";
+  h+="<div style=\"font-weight:700;font-size:1.1rem;color:var(--text);margin-bottom:4px;\">"+nm+(cD.verificationStatus==="verified"?" &#9989;":"")+"</div>";
+  if(cD.bio)h+="<div style=\"font-size:0.72rem;color:var(--muted);line-height:1.6;margin-bottom:12px;\">"+xe(cD.bio)+"</div>";
+  h+="<div style=\"display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:16px;\">";
+  h+="<div class=\"sbox\"><div class=\"snum\">"+(cD.followersCount||0)+"</div><div class=\"slbl\">Followers</div></div>";
+  h+="<div class=\"sbox\"><div class=\"snum\">"+(cD.followingCount||0)+"</div><div class=\"slbl\">Following</div></div>";
+  h+="<div class=\"sbox\"><div class=\"snum\">"+(cD.postCount||0)+"</div><div class=\"slbl\">Posts</div></div>";
+  h+="<div class=\"sbox\"><div class=\"snum\">"+(cD.points||0)+"</div><div class=\"slbl\">Points</div></div></div>";
+  h+="<div class=\"sh2\">Edit Profile</div><div class=\"card\">";
+  h+="<div class=\"fg\"><label class=\"fl\">Bio</label><textarea class=\"fi\" id=\"eBio\" rows=\"3\" placeholder=\"Tell the community about yourself...\">"+xe(cD.bio||"")+"</textarea></div>";
+  h+="<div class=\"fg\"><label class=\"fl\">Profile Picture</label><div class=\"upbox\" id=\"picBox\"><div style=\"font-size:1.3rem;margin-bottom:4px;\">&#128247;</div><div id=\"picFnm\" style=\"font-size:0.64rem;color:var(--muted);\">Tap to upload profile picture</div><input type=\"file\" id=\"picF\" accept=\"image/*\" style=\"display:none;\"/></div><input class=\"fi\" id=\"ePic\" placeholder=\"Or paste URL: https://...\" value=\""+xu(cD.profilePic||"")+"\"/></div>";
+  h+="<div class=\"fg\"><label class=\"fl\">Cover Photo</label><div class=\"upbox\" id=\"covBox\"><div style=\"font-size:1.3rem;margin-bottom:4px;\">&#128444;</div><div id=\"covFnm\" style=\"font-size:0.64rem;color:var(--muted);\">Tap to upload cover photo</div><input type=\"file\" id=\"covF\" accept=\"image/*\" style=\"display:none;\"/></div><input class=\"fi\" id=\"eCov\" placeholder=\"Or paste URL: https://...\" value=\""+xu(cD.coverPhoto||"")+"\"/></div>";
+  h+="<button class=\"btn-g\" id=\"saveBtn\">Save Profile &#8594;</button></div>";
+  h+="<div class=\"sh2\">My Communities</div><div style=\"display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;\">";
+  (cD.categories||[]).forEach(function(c){h+="<div style=\"background:var(--card);border:1px solid var(--border);padding:7px 11px;border-radius:6px;font-size:0.64rem;color:var(--text);\">"+xe(c)+"</div>";});
+  h+="</div>";
+  document.getElementById("profileContent").innerHTML=h;
+  document.getElementById("picBox").onclick=function(){document.getElementById("picF").click();};
+  document.getElementById("covBox").onclick=function(){document.getElementById("covF").click();};
+  document.getElementById("picF").onchange=function(){document.getElementById("picFnm").textContent=this.files[0]?this.files[0].name:"File selected";};
+  document.getElementById("covF").onchange=function(){document.getElementById("covFnm").textContent=this.files[0]?this.files[0].name:"File selected";};
+  document.getElementById("saveBtn").onclick=saveProfile;
+}
+async function saveProfile(){
   if(!cU)return;
-  const btn=document.getElementById('saveProfileBtn');
-  if(btn){btn.disabled=true;btn.textContent='Saving...';}
+  var btn=document.getElementById("saveBtn");btn.disabled=true;btn.textContent="Saving...";
   try{
-    const bio=document.getElementById('editBio')?.value.trim()||'';
-    let pic=document.getElementById('editPic')?.value.trim()||cD?.profilePic||'';
-    let cover=document.getElementById('editCover')?.value.trim()||cD?.coverPhoto||'';
-    // Upload profile pic if file selected
-    const picFile=document.getElementById('picUpload')?.files[0];
-    if(picFile){
-      try{
-        const fd=new FormData();fd.append('file',picFile);fd.append('upload_preset','iconik_uploads');
-        const r=await fetch('https://api.cloudinary.com/v1_1/dhazrf2xr/upload',{method:'POST',body:fd});
-        if(r.ok){const d=await r.json();pic=d.secure_url;}
-      }catch(e){console.warn('Pic upload failed:',e);}
-    }
-    // Upload cover photo if file selected
-    const coverFile=document.getElementById('coverUpload')?.files[0];
-    if(coverFile){
-      try{
-        const fd=new FormData();fd.append('file',coverFile);fd.append('upload_preset','iconik_uploads');
-        const r=await fetch('https://api.cloudinary.com/v1_1/dhazrf2xr/upload',{method:'POST',body:fd});
-        if(r.ok){const d=await r.json();cover=d.secure_url;}
-      }catch(e){console.warn('Cover upload failed:',e);}
-    }
-    await setDoc(doc(db,'users',cU.uid),{bio,profilePic:pic,coverPhoto:cover},{merge:true});
-    if(cD){cD.bio=bio;cD.profilePic=pic;cD.coverPhoto=cover;}
-    load_profile();
-    // Update nav avatar
-    const av=document.getElementById('navAvatar');
-    if(av&&pic){const img=av.querySelector('img')||document.createElement('img');img.src=pic;img.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;';img.onerror=()=>img.remove();av.appendChild(img);}
-    toast('Profile saved! ✅');
-  }catch(e){toast('Error saving profile','error');console.error(e);}
-  if(btn){btn.disabled=false;btn.textContent='Save Profile →';}
-};
+    var bio=document.getElementById("eBio").value.trim();
+    var pic=document.getElementById("ePic").value.trim()||(cD&&cD.profilePic)||"";
+    var cov=document.getElementById("eCov").value.trim()||(cD&&cD.coverPhoto)||"";
+    var pf=document.getElementById("picF").files[0];
+    var cf=document.getElementById("covF").files[0];
+    if(pf)try{pic=await upload(pf);}catch{}
+    if(cf)try{cov=await upload(cf);}catch{}
+    await setDoc(doc(db,"users",cU.uid),{bio:bio,profilePic:pic,coverPhoto:cov},{merge:true});
+    if(cD){cD.bio=bio;cD.profilePic=pic;cD.coverPhoto=cov;}
+    var av=document.getElementById("navAv");av.textContent=(cD.name||"M").charAt(0).toUpperCase();
+    if(pic){var img=document.createElement("img");img.src=pic;img.onerror=function(){this.remove();};av.appendChild(img);}
+    toast("Profile saved!");loadProfile();
+  }catch{toast("Error saving","error");}
+  btn.disabled=false;btn.textContent="Save Profile &#8594;";
+}
 
-// ── MESSAGES ──
-window.load_messages=async function(){
-  const el=document.getElementById('msgList');
-  const snap=await sg(query(collection(db,'messages'),limit(20)));
-  const msgs=[];snap.forEach(d=>msgs.push({id:d.id,...d.data()}));
-  msgs.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-  if(!msgs.length){el.innerHTML='<div class="card"><div class="card-body" style="text-align:center;padding:10px;">No messages yet. Admin will reach out when needed. 📩</div></div>';return;}
-  el.innerHTML=msgs.map(m=>`
-    <div class="card">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-        <span style="font-family:Montserrat,sans-serif;font-weight:700;font-size:0.74rem;color:var(--text);">${esc(m.fromName||'ICONIK Admin')}</span>
-        <span style="font-family:'Bebas Neue',sans-serif;font-size:0.5rem;color:var(--bg);background:var(--gold);padding:1px 6px;">${esc(m.fromRole||'ADMIN')}</span>
-        <span style="font-family:Montserrat,sans-serif;font-size:0.56rem;color:var(--dim);margin-left:auto;">${m.createdAt?.toDate?m.createdAt.toDate().toLocaleDateString():''}</span>
-      </div>
-      ${m.subject?`<div style="font-family:Montserrat,sans-serif;font-weight:700;font-size:0.74rem;color:var(--text);margin-bottom:5px;">${esc(m.subject)}</div>`:''}
-      <div class="card-body">${esc(m.content||'')}</div>
-    </div>`).join('');
-};
+// MESSAGES
+async function loadMsgs(){
+  var el=document.getElementById("msgList");
+  var snap=await sg(query(collection(db,"messages"),limit(20)));
+  var ms=[];snap.forEach(function(d){ms.push({id:d.id,...d.data()});});
+  ms.sort(function(a,b){return(b.createdAt&&b.createdAt.seconds||0)-(a.createdAt&&a.createdAt.seconds||0);});
+  if(!ms.length){el.innerHTML="<div class=\"card\" style=\"text-align:center;color:var(--muted);padding:12px;\">No messages yet. &#128233;</div>";return;}
+  var h="";
+  ms.forEach(function(m){
+    h+="<div class=\"card\"><div style=\"display:flex;align-items:center;gap:8px;margin-bottom:6px;\">";
+    h+="<span style=\"font-weight:700;font-size:0.74rem;color:var(--text);\">"+xe(m.fromName||"ICONIK Admin")+"</span>";
+    h+="<span style=\"font-family:'Bebas Neue',sans-serif;font-size:0.5rem;color:var(--bg);background:var(--gold);padding:1px 6px;\">"+xe(m.fromRole||"ADMIN")+"</span>";
+    h+="<span style=\"font-size:0.56rem;color:var(--dim);margin-left:auto;\">"+(m.createdAt&&m.createdAt.toDate?m.createdAt.toDate().toLocaleDateString():"")+"</span></div>";
+    if(m.subject)h+="<div style=\"font-weight:700;font-size:0.74rem;color:var(--text);margin-bottom:5px;\">"+xe(m.subject)+"</div>";
+    h+="<div style=\"font-size:0.72rem;color:var(--muted);line-height:1.6;\">"+xe(m.content||"")+"</div></div>";
+  });
+  el.innerHTML=h;
+}
 
-// ── NOTIFICATIONS ──
-window.load_notifications=async function(){
-  const el=document.getElementById('notifList');
-  const items=[
-    {icon:cD?.verificationStatus==='verified'?'✅':'⏳',title:cD?.verificationStatus==='verified'?'Account Verified!':'Verification Pending',body:cD?.verificationStatus==='verified'?'Identity confirmed.':'Admin reviewing your account.',unread:cD?.verificationStatus!=='verified'},
-    {icon:'🌟',title:'Welcome to ICONIK!',body:`You are part of ${(cD?.categories||[]).length} fan communities.`,unread:false},
+// NOTIFICATIONS
+async function loadNotifs(){
+  var el=document.getElementById("notifList");
+  var items=[
+    {icon:cD&&cD.verificationStatus==="verified"?"&#9989;":"&#8987;",title:cD&&cD.verificationStatus==="verified"?"Account Verified!":"Verification Pending",body:cD&&cD.verificationStatus==="verified"?"Your identity is confirmed.":"Admin is reviewing your account.",unread:!cD||cD.verificationStatus!=="verified"},
+    {icon:"&#127775;",title:"Welcome to ICONIK!",body:"You are part of "+((cD&&cD.categories)||[]).length+" fan communities.",unread:false}
   ];
-  try{const snap=await sg(query(collection(db,'notifications'),limit(10)));snap.forEach(d=>{const n=d.data();items.unshift({icon:'🔔',title:n.message||'New notification',body:n.fromName?'From '+n.fromName:'',unread:true});});}catch{}
-  el.innerHTML=items.map(n=>`
-    <div class="card" style="${n.unread?'border-left:3px solid var(--gold);':''} display:flex;gap:10px;">
-      <span style="font-size:1.1rem;flex-shrink:0;">${n.icon}</span>
-      <div>
-        <div style="font-family:Montserrat,sans-serif;font-weight:700;font-size:0.72rem;color:var(--text);margin-bottom:2px;">${esc(n.title)}</div>
-        <div class="card-body" style="font-size:0.64rem;">${esc(n.body)}</div>
-      </div>
-    </div>`).join('');
-};
+  try{var snap=await sg(query(collection(db,"notifications"),limit(10)));snap.forEach(function(d){var n=d.data();items.unshift({icon:"&#128276;",title:n.message||"New notification",body:n.fromName?"From "+n.fromName:"",unread:true});});}catch{}
+  var h="";
+  items.forEach(function(n){
+    h+="<div class=\"card\" style=\""+(n.unread?"border-left:3px solid var(--gold);":"")+"display:flex;gap:10px;\">";
+    h+="<span style=\"font-size:1.1rem;flex-shrink:0;\">"+n.icon+"</span>";
+    h+="<div><div style=\"font-weight:700;font-size:0.72rem;color:var(--text);margin-bottom:2px;\">"+xe(n.title)+"</div>";
+    h+="<div style=\"font-size:0.64rem;color:var(--muted);\">"+xe(n.body)+"</div></div></div>";
+  });
+  el.innerHTML=h;
+}
 
-// ── VIP ──
-window.load_vip=async function(){
-  const el=document.getElementById('vipContent');
-  const isVIP=cD?.tier?.includes('VIP');
-  if(!isVIP){
-    el.innerHTML=`<div style="background:rgba(7,7,13,0.8);border:1px solid rgba(255,184,0,0.3);border-radius:8px;padding:24px;text-align:center;">
-      <div style="font-size:2rem;margin-bottom:10px;">🔒</div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;color:var(--gold);margin-bottom:8px;">Upgrade to VIP</div>
-      <div class="card-body" style="margin-bottom:16px;">VIP Silver $9.99/month or VIP Gold $19.99/month unlocks exclusive content, VIP chat, creator fund and more.</div>
-      <button class="btn-gold" onclick="toast('Upgrade coming soon! 👑','info')">Upgrade to VIP →</button>
-    </div>`;
-    return;
-  }
-  try{const snap=await sg(query(collection(db,'vipContent'),limit(10)));const items=[];snap.forEach(d=>items.push({id:d.id,...d.data()}));el.innerHTML=items.length?items.map(c=>`<div class="card"><div class="card-title">${esc(c.title||'')}</div><div class="card-body">${esc(c.content||'')}</div></div>`).join(''):'<div class="card"><div class="card-body" style="text-align:center;padding:10px;">VIP content coming soon! 👑</div></div>';}catch{el.innerHTML='<div class="card"><div class="card-body" style="text-align:center;padding:10px;">VIP content loading... 👑</div></div>';}
-};
+// VIP
+async function loadVIP(){
+  var el=document.getElementById("vipContent");
+  var isVIP=cD&&cD.tier&&cD.tier.includes("VIP");
+  if(!isVIP){el.innerHTML="<div style=\"background:rgba(7,7,13,0.8);border:1px solid rgba(255,184,0,0.3);border-radius:8px;padding:24px;text-align:center;\"><div style=\"font-size:2rem;margin-bottom:10px;\">&#128274;</div><div style=\"font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;color:var(--gold);margin-bottom:8px;\">Upgrade to VIP</div><div style=\"font-size:0.72rem;color:var(--muted);line-height:1.6;margin-bottom:16px;\">VIP Silver $9.99/month or VIP Gold $19.99/month unlocks exclusive content, VIP chat, creator fund and more.</div><button class=\"btn-g\" id=\"vipUpBtn\">Upgrade to VIP &#8594;</button></div>";document.getElementById("vipUpBtn").onclick=function(){toast("Upgrade coming soon!","info");};return;}
+  try{var snap=await sg(query(collection(db,"vipContent"),limit(10)));var items=[];snap.forEach(function(d){items.push({id:d.id,...d.data()});});el.innerHTML=items.length?items.map(function(c){return "<div class=\"card\"><div style=\"font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;\">"+xe(c.title||"")+"</div><div style=\"font-size:0.72rem;color:var(--muted);line-height:1.6;\">"+xe(c.content||"")+"</div></div>";}).join(""):"<div class=\"card\" style=\"text-align:center;color:var(--muted);padding:12px;\">VIP content coming soon! &#128081;</div>";}catch{el.innerHTML="<div class=\"card\" style=\"text-align:center;color:var(--muted);padding:12px;\">Loading VIP content...</div>";}
+}
 
-// ── TOAST ──
-window.toast=function(msg,type){
-  var t=document.getElementById('toast');
-  t.textContent=msg;
-  t.style.background=type==='error'?'rgba(127,29,29,0.95)':type==='info'?'rgba(30,58,95,0.95)':'rgba(20,83,45,0.95)';
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3000);
-};
+window.toast=toast;
 </script>
 </body>
 </html>
