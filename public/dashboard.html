@@ -47,7 +47,7 @@ body{background:var(--bg);color:var(--text);font-family:"Montserrat",sans-serif;
 .cc{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:all 0.25s;}
 .cc:hover{border-color:var(--border2);transform:translateY(-2px);}
 .cthumb{height:90px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative;overflow:hidden;}
-.cthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;}
+.cthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:2;}
 .cletter{position:relative;z-index:1;}
 .cinfo{padding:9px;}
 .cnm{font-weight:700;font-size:0.7rem;color:var(--text);margin-bottom:2px;}
@@ -391,25 +391,39 @@ function openComposer(){
   };
 }
 
-// CELEBRITIES
+// CELEBRITIES — FIXED: photos now display correctly from Cloudinary
+function getCelebPhoto(c){
+  var url=c.photo||c.photoUrl||c.imageUrl||c.coverPhoto||"";
+  return(url&&url.startsWith("http"))?url:"";
+}
 async function loadCelebs(){
-  var snap=await sg(query(collection(db,"celebrities"),limit(50)));
+  var snap=await sg(query(collection(db,"celebrities"),limit(100)));
   allC=[];snap.forEach(function(d){allC.push({id:d.id,...d.data()});});
   renderCelebs(allC);
 }
 function renderCelebs(list){
   var el=document.getElementById("celebGrid");
-  if(!list.length){el.innerHTML="<div style=\"grid-column:span 2;text-align:center;padding:24px;color:var(--muted);\">No celebrities added yet. Admin adds them from the Admin Panel.</div>";return;}
-  var clrs=["#7C3AED","#DC2626","#059669","#D97706","#EC4899","#2563EB"];
+  if(!list.length){
+    el.innerHTML="<div style=\"grid-column:span 2;text-align:center;padding:24px;color:var(--muted);\">No celebrities added yet. Admin adds them from the Admin Panel. ⭐</div>";
+    return;
+  }
+  var clrs=["#7C3AED","#DC2626","#059669","#D97706","#EC4899","#2563EB","#B45309"];
   var h="";
   list.forEach(function(c){
     var cl=clrs[Math.abs((c.name||"A").charCodeAt(0))%clrs.length];
-    var hp=c.photo&&c.photo.startsWith("http");
-    h+="<div class=\"cc\" data-cid=\""+c.id+"\">";
-    h+="<div class=\"cthumb\" style=\"background:"+cl+"22;\">";
-    if(hp)h+="<img src=\""+xu(c.photo)+"\" onerror=\"this.remove()\"/>";
-    h+="<span class=\"cletter\"" + (hp?" style=\"display:none;\"":"") + ">"+xe((c.name||"?").charAt(0))+"</span></div>";
-    h+="<div class=\"cinfo\"><div class=\"cnm\">"+xe(c.name||"")+"</div>";
+    var photoUrl=getCelebPhoto(c);
+    var initials=xe((c.stageName||c.name||"?").charAt(0).toUpperCase());
+    var isVerified=c.status==="Active"||c.status==="Legend"||c.status==="verified";
+    // Build photo layer — real photo on top, initial fallback beneath
+    var photoLayer=photoUrl
+      ?"<img src=\""+xu(photoUrl)+"\" alt=\""+xe(c.name||"")+"\" loading=\"lazy\" style=\"position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:2;\" onerror=\"this.style.display='none';this.nextElementSibling.style.display='flex';\"/>"
+       +"<span class=\"cletter\" style=\"position:absolute;inset:0;z-index:1;display:none;align-items:center;justify-content:center;\">"+initials+"</span>"
+      :"<span class=\"cletter\" style=\"position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;\">"+initials+"</span>";
+    var verBadge=isVerified?"<span style=\"width:13px;height:13px;background:#3B82F6;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.48rem;color:#fff;flex-shrink:0;margin-left:3px;\">✓</span>":"";
+    h+="<div class=\"cc\" data-cid=\""+xe(c.id||"")+"\">";
+    h+="<div class=\"cthumb\" style=\"background:"+cl+"22;position:relative;overflow:hidden;\">"+photoLayer+"</div>";
+    h+="<div class=\"cinfo\">";
+    h+="<div class=\"cnm\" style=\"display:flex;align-items:center;\">"+xe(c.stageName||c.name||"")+""+verBadge+"</div>";
     h+="<div class=\"ccat\">"+xe(c.category||"")+"</div>";
     h+="<div class=\"cmeta\">"+xe(c.country||"")+(c.followers?" · "+xe(c.followers):"")+"</div></div></div>";
   });
@@ -420,18 +434,23 @@ function filterCelebs(){var q=document.getElementById("celebSrch").value.toLower
 
 function openCeleb(id){
   var c=allC.find(function(x){return x.id===id;});if(!c)return;
-  var clrs=["#7C3AED","#DC2626","#059669","#D97706","#EC4899","#2563EB"];
+  var clrs=["#7C3AED","#DC2626","#059669","#D97706","#EC4899","#2563EB","#B45309"];
   var cl=clrs[Math.abs((c.name||"A").charCodeAt(0))%clrs.length];
-  var hp=c.photo&&c.photo.startsWith("http");
+  // ── FIXED: use getCelebPhoto to check all photo fields ──
+  var photoUrl=getCelebPhoto(c);
   var ov=mkOv();
   var h=navRow("Celebrity Profile");
-  h+="<div style=\"height:200px;background:linear-gradient(135deg,"+cl+"88,"+cl+"22);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;\">";
-  if(hp)h+="<img src=\""+xu(c.photo)+"\" style=\"position:absolute;inset:0;width:100%;height:100%;object-fit:cover;\" onerror=\"this.remove()\"/>";
-  h+="<div style=\"position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,13,0.95) 0%,transparent 60%);\"></div>";
-  h+="<div style=\"position:absolute;bottom:16px;left:16px;right:16px;\">";
-  h+="<div style=\"font-size:0.62rem;letter-spacing:0.18em;color:var(--gold);margin-bottom:4px;\">"+xe(c.category||"")+"</div>";
-  h+="<div style=\"font-weight:700;font-size:1.4rem;color:#F5F0E8;\">"+xe(c.name||"")+"</div>";
-  if(c.stageName)h+="<div style=\"font-size:0.72rem;color:var(--muted);\">"+xe(c.stageName)+"</div>";
+  // Hero — large photo if available, gradient+initial fallback
+  h+="<div style=\"height:240px;background:linear-gradient(135deg,"+cl+"88,"+cl+"22);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;\">";
+  if(photoUrl){
+    h+="<img src=\""+xu(photoUrl)+"\" alt=\""+xe(c.name||"")+"\" loading=\"eager\" style=\"position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:2;\" onerror=\"this.style.display='none';\"/>";
+  }
+  h+="<div style=\"position:relative;z-index:1;font-family:'Bebas Neue',sans-serif;font-size:6rem;opacity:0.12;color:#fff;\">"+xe((c.name||"?").charAt(0))+"</div>";
+  h+="<div style=\"position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,13,0.95) 0%,rgba(7,7,13,0.2) 60%,transparent 100%);z-index:3;\"></div>";
+  h+="<div style=\"position:absolute;bottom:16px;left:16px;right:16px;z-index:4;\">";
+  h+="<div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.18em;color:var(--gold);margin-bottom:4px;\">"+xe(c.category||"")+"</div>";
+  h+="<div style=\"font-family:'Playfair Display',serif;font-weight:700;font-size:1.4rem;color:#F5F0E8;line-height:1.2;\">"+xe(c.name||"")+"</div>";
+  if(c.stageName)h+="<div style=\"font-family:'Montserrat',sans-serif;font-size:0.72rem;color:#BDB5A6;margin-top:2px;\">&ldquo;"+xe(c.stageName)+"&rdquo;</div>";
   h+="</div></div><div style=\"padding:16px;\">";
   h+="<div style=\"display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;\">";
   h+="<div class=\"sbox\"><div class=\"snum\" style=\"font-size:0.8rem;\">"+xe(c.followers||"—")+"</div><div class=\"slbl\">Followers</div></div>";
