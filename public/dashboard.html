@@ -45,14 +45,14 @@ body{background:var(--bg);color:var(--text);font-family:"Montserrat",sans-serif;
 @keyframes spin{to{transform:rotate(360deg)}}
 .cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
 .cc{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:all 0.25s;}
-.cc:hover{border-color:var(--border2);transform:translateY(-2px);}
-.cthumb{height:90px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative;overflow:hidden;}
+.cc:hover{border-color:rgba(255,184,0,0.5);transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,184,0,0.1);}
+.cthumb{height:120px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative;overflow:hidden;}
 .cthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:2;}
 .cletter{position:relative;z-index:1;}
-.cinfo{padding:9px;}
-.cnm{font-weight:700;font-size:0.7rem;color:var(--text);margin-bottom:2px;}
-.ccat{font-family:"Bebas Neue",sans-serif;font-size:0.54rem;letter-spacing:0.12em;color:var(--gold);}
-.cmeta{font-size:0.56rem;color:var(--dim);margin-top:1px;}
+.cinfo{padding:10px;}
+.cnm{font-family:"Montserrat",sans-serif;font-weight:700;font-size:0.76rem;color:var(--text);margin-bottom:3px;line-height:1.3;}
+.ccat{font-family:"Bebas Neue",sans-serif;font-size:0.58rem;letter-spacing:0.14em;color:var(--gold);margin-bottom:2px;}
+.cmeta{font-family:"Montserrat",sans-serif;font-size:0.58rem;color:var(--dim);margin-top:1px;}
 .mcard{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:11px;display:flex;align-items:center;gap:10px;margin-bottom:8px;cursor:pointer;transition:border-color 0.2s;}
 .mcard:hover{border-color:var(--border2);}
 .mav{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:1rem;color:var(--bg);flex-shrink:0;overflow:hidden;position:relative;}
@@ -348,15 +348,53 @@ async function loadFeed(){
     h+="<div style=\"display:flex;gap:14px;margin-top:10px;\">";
     h+="<span style=\"font-size:0.66rem;color:var(--muted);cursor:pointer;\" data-pid=\""+p.id+"\">&#9825; "+(p.likeCount||0)+"</span>";
     h+="<span style=\"font-size:0.66rem;color:var(--muted);\">&#128172; "+(p.commentCount||0)+"</span>";
-    h+="<span style=\"font-size:0.66rem;color:var(--muted);cursor:pointer;\" id=\"shareBtn_"+p.id+"\">&#128279; Share</span>";
+    h+="<span style=\"font-size:0.66rem;color:var(--muted);cursor:pointer;\" data-share-pid=\""+p.id+"\" data-share-title=\""+xu(p.userName||"ICONIK")+"\" data-share-body=\""+xu((p.content||"").substring(0,80))+"\">&#128279; Share</span>";
+    h+="<span style=\"font-size:0.66rem;color:var(--muted);cursor:pointer;\" data-repost-pid=\""+p.id+"\" data-repost-content=\""+xu((p.content||"").substring(0,200))+"\" data-repost-author=\""+xu(p.userName||"ICONIK")+"\">&#128257; Repost</span>";
     h+="</div></div>";
   });
   el.innerHTML=h;
   el.addEventListener("click",async function(ev){
+    // Like
     var t=ev.target.closest("[data-pid]");
-    if(t){var pid=t.dataset.pid;var n=parseInt(t.textContent.replace(/\D/g,""))||0;t.textContent="&#9829; "+(n+1);t.style.color="var(--err)";if(cU)try{await setDoc(doc(db,"likes",cU.uid+"_"+pid),{userId:cU.uid,postId:pid,createdAt:serverTimestamp()});}catch{}}
-    var s=ev.target.closest("[id^=shareBtn_]");
-    if(s){if(navigator.share)navigator.share({title:"ICONIK",url:location.href});else if(navigator.clipboard)navigator.clipboard.writeText(location.href).then(function(){toast("Link copied!");});}
+    if(t&&!t.dataset.sharePid&&!t.dataset.repostPid){
+      var pid=t.dataset.pid;
+      var n=parseInt(t.textContent.replace(/\D/g,""))||0;
+      t.textContent="&#9829; "+(n+1);t.style.color="var(--err)";
+      if(cU)try{await setDoc(doc(db,"likes",cU.uid+"_"+pid),{userId:cU.uid,postId:pid,createdAt:serverTimestamp()});}catch{}
+    }
+    // Share post — opens real share sheet
+    var s=ev.target.closest("[data-share-pid]");
+    if(s){
+      doShare(
+        (s.dataset.shareTitle||"ICONIK")+" on ICONIK",
+        (s.dataset.shareBody||"Check this out on ICONIK!")+" — iconik-global.web.app",
+        "https://iconik-global.web.app"
+      );
+    }
+    // Repost — creates a new post quoting the original
+    var r=ev.target.closest("[data-repost-pid]");
+    if(r){
+      if(!cU){toast("Sign in to repost","error");return;}
+      var origContent=r.dataset.repostContent||"";
+      var origAuthor=r.dataset.repostAuthor||"ICONIK";
+      var confirmed=confirm("Repost this to your feed?\n\n\""+origContent.substring(0,80)+(origContent.length>80?"...":"")+"\"");
+      if(!confirmed)return;
+      try{
+        await addDoc(collection(db,"posts"),{
+          content:origContent,
+          title:"🔁 Reposted from "+origAuthor,
+          category:(cD&&cD.categories&&cD.categories[0])||"",
+          userId:cU.uid,userName:(cD&&cD.name)||"Member",
+          userPhoto:(cD&&cD.profilePic)||"",
+          imageUrl:"",videoUrl:"",
+          isAdmin:false,isRepost:true,
+          originalAuthor:origAuthor,
+          likeCount:0,commentCount:0,
+          createdAt:serverTimestamp()
+        });
+        toast("Reposted! 🔁");loadFeed();
+      }catch{toast("Error reposting","error");}
+    }
   });
 }
 
@@ -391,20 +429,72 @@ function openComposer(){
   };
 }
 
-// CELEBRITIES — FIXED: photos now display correctly from Cloudinary
+// ══════════════════════════════════════════════
+// CELEBRITIES — FULLY FIXED
+// Photo fix: reads every possible Firestore field
+// Typography fix: bigger, bolder stat labels
+// Share fix: real Web Share API + WhatsApp + Twitter + Copy fallback
+// ══════════════════════════════════════════════
+
+// Returns best available photo URL from any Firestore field
 function getCelebPhoto(c){
-  var url=c.photo||c.photoUrl||c.imageUrl||c.coverPhoto||"";
-  return(url&&url.startsWith("http"))?url:"";
+  var candidates=[c.photo,c.photoUrl,c.imageUrl,c.profilePic,c.coverPhoto,c.avatarUrl,c.picture];
+  for(var i=0;i<candidates.length;i++){
+    var u=candidates[i]||"";
+    if(u&&u.startsWith("http"))return u;
+  }
+  return "";
 }
+
+// Real share sheet — opens native share, WhatsApp, Twitter or copies link
+function doShare(title,text,url){
+  var shareUrl=url||location.href;
+  var shareTitle=title||"ICONIK";
+  var shareText=text||"Check this out on ICONIK!";
+  if(navigator.share){
+    navigator.share({title:shareTitle,text:shareText,url:shareUrl}).catch(function(){});
+    return;
+  }
+  // Fallback: show share options overlay
+  var so=document.createElement("div");
+  so.style.cssText="position:fixed;inset:0;background:rgba(7,7,13,0.92);z-index:99999;display:flex;align-items:flex-end;justify-content:center;padding:0 0 24px;";
+  so.innerHTML="<div style=\"width:100%;max-width:420px;background:#141420;border:1px solid rgba(255,184,0,0.2);border-radius:16px 16px 0 0;padding:20px 16px;\">"
+    +"<div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.2em;color:#BDB5A6;margin-bottom:16px;text-align:center;\">SHARE</div>"
+    +"<div style=\"display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;\">"
+    +"<a href=\"https://wa.me/?text="+encodeURIComponent(shareText+" "+shareUrl)+"\" target=\"_blank\" rel=\"noopener\" style=\"display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;\">"
+    +"<div style=\"width:52px;height:52px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;font-size:1.4rem;\">📱</div>"
+    +"<span style=\"font-family:'Montserrat',sans-serif;font-size:0.54rem;color:#BDB5A6;\">WhatsApp</span></a>"
+    +"<a href=\"https://twitter.com/intent/tweet?text="+encodeURIComponent(shareText)+"&url="+encodeURIComponent(shareUrl)+"\" target=\"_blank\" rel=\"noopener\" style=\"display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;\">"
+    +"<div style=\"width:52px;height:52px;border-radius:50%;background:#000;display:flex;align-items:center;justify-content:center;font-size:1.4rem;\">𝕏</div>"
+    +"<span style=\"font-family:'Montserrat',sans-serif;font-size:0.54rem;color:#BDB5A6;\">Twitter/X</span></a>"
+    +"<a href=\"https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(shareUrl)+"\" target=\"_blank\" rel=\"noopener\" style=\"display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;\">"
+    +"<div style=\"width:52px;height:52px;border-radius:50%;background:#1877F2;display:flex;align-items:center;justify-content:center;font-size:1.4rem;\">📘</div>"
+    +"<span style=\"font-family:'Montserrat',sans-serif;font-size:0.54rem;color:#BDB5A6;\">Facebook</span></a>"
+    +"<div id=\"copyShareBtn\" style=\"display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;\">"
+    +"<div style=\"width:52px;height:52px;border-radius:50%;background:rgba(255,184,0,0.15);border:1px solid rgba(255,184,0,0.3);display:flex;align-items:center;justify-content:center;font-size:1.4rem;\">🔗</div>"
+    +"<span style=\"font-family:'Montserrat',sans-serif;font-size:0.54rem;color:#BDB5A6;\">Copy Link</span></div>"
+    +"</div>"
+    +"<button id=\"cancelShareBtn\" style=\"width:100%;padding:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#F5F0E8;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.7rem;cursor:pointer;\">Cancel</button>"
+    +"</div>";
+  document.body.appendChild(so);
+  document.getElementById("cancelShareBtn").onclick=function(){so.remove();};
+  document.getElementById("copyShareBtn").onclick=function(){
+    if(navigator.clipboard)navigator.clipboard.writeText(shareUrl).then(function(){toast("Link copied! 🔗");so.remove();});
+    else{so.remove();}
+  };
+  so.onclick=function(e){if(e.target===so)so.remove();};
+}
+
 async function loadCelebs(){
   var snap=await sg(query(collection(db,"celebrities"),limit(100)));
   allC=[];snap.forEach(function(d){allC.push({id:d.id,...d.data()});});
   renderCelebs(allC);
 }
+
 function renderCelebs(list){
   var el=document.getElementById("celebGrid");
   if(!list.length){
-    el.innerHTML="<div style=\"grid-column:span 2;text-align:center;padding:24px;color:var(--muted);\">No celebrities added yet. Admin adds them from the Admin Panel. ⭐</div>";
+    el.innerHTML="<div style=\"grid-column:span 2;text-align:center;padding:24px;color:var(--muted);\">No celebrities added yet. ⭐</div>";
     return;
   }
   var clrs=["#7C3AED","#DC2626","#059669","#D97706","#EC4899","#2563EB","#B45309"];
@@ -414,66 +504,125 @@ function renderCelebs(list){
     var photoUrl=getCelebPhoto(c);
     var initials=xe((c.stageName||c.name||"?").charAt(0).toUpperCase());
     var isVerified=c.status==="Active"||c.status==="Legend"||c.status==="verified";
-    // Build photo layer — real photo on top, initial fallback beneath
-    var photoLayer=photoUrl
-      ?"<img src=\""+xu(photoUrl)+"\" alt=\""+xe(c.name||"")+"\" loading=\"lazy\" style=\"position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:2;\" onerror=\"this.style.display='none';this.nextElementSibling.style.display='flex';\"/>"
-       +"<span class=\"cletter\" style=\"position:absolute;inset:0;z-index:1;display:none;align-items:center;justify-content:center;\">"+initials+"</span>"
-      :"<span class=\"cletter\" style=\"position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;\">"+initials+"</span>";
-    var verBadge=isVerified?"<span style=\"width:13px;height:13px;background:#3B82F6;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.48rem;color:#fff;flex-shrink:0;margin-left:3px;\">✓</span>":"";
+    // ── PHOTO LAYER ──
+    // Real photo sits on top (z-index:2), gold initial beneath (z-index:1)
+    // onerror hides the img and shows the initial span
+    var imgTag=photoUrl
+      ?"<img src=\""+xu(photoUrl)+"\" alt=\""+xe(c.name||"")+"\" crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\" loading=\"lazy\""
+       +" style=\"position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:2;\""
+       +" onerror=\"this.style.display='none';\"/>"
+      :"";
+    var initSpan="<span style=\"position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;"
+      +"font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:rgba(255,255,255,0.5);\">"+initials+"</span>";
+    var verBadge=isVerified
+      ?"<span style=\"width:14px;height:14px;background:#3B82F6;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.5rem;color:#fff;flex-shrink:0;margin-left:4px;vertical-align:middle;\">✓</span>"
+      :"";
     h+="<div class=\"cc\" data-cid=\""+xe(c.id||"")+"\">";
-    h+="<div class=\"cthumb\" style=\"background:"+cl+"22;position:relative;overflow:hidden;\">"+photoLayer+"</div>";
+    h+="<div class=\"cthumb\" style=\"background:linear-gradient(135deg,"+cl+"55,"+cl+"22);position:relative;overflow:hidden;\">";
+    h+=imgTag+initSpan;
+    h+="</div>";
     h+="<div class=\"cinfo\">";
-    h+="<div class=\"cnm\" style=\"display:flex;align-items:center;\">"+xe(c.stageName||c.name||"")+""+verBadge+"</div>";
+    h+="<div class=\"cnm\">"+xe(c.stageName||c.name||"")+""+verBadge+"</div>";
     h+="<div class=\"ccat\">"+xe(c.category||"")+"</div>";
-    h+="<div class=\"cmeta\">"+xe(c.country||"")+(c.followers?" · "+xe(c.followers):"")+"</div></div></div>";
+    h+="<div class=\"cmeta\">"+xe(c.country||"")+(c.followers?" · "+xe(c.followers):"")+"</div>";
+    h+="</div></div>";
   });
   el.innerHTML=h;
-  document.querySelectorAll(".cc[data-cid]").forEach(function(card){card.onclick=function(){openCeleb(this.dataset.cid);};});
+  document.querySelectorAll(".cc[data-cid]").forEach(function(card){
+    card.onclick=function(){openCeleb(this.dataset.cid);};
+  });
 }
-function filterCelebs(){var q=document.getElementById("celebSrch").value.toLowerCase();renderCelebs(q?allC.filter(function(c){return(c.name&&c.name.toLowerCase().includes(q))||(c.category&&c.category.toLowerCase().includes(q));}):allC);}
+
+function filterCelebs(){
+  var q=document.getElementById("celebSrch").value.toLowerCase();
+  renderCelebs(q?allC.filter(function(c){
+    return(c.name&&c.name.toLowerCase().includes(q))||(c.category&&c.category.toLowerCase().includes(q));
+  }):allC);
+}
 
 function openCeleb(id){
   var c=allC.find(function(x){return x.id===id;});if(!c)return;
   var clrs=["#7C3AED","#DC2626","#059669","#D97706","#EC4899","#2563EB","#B45309"];
   var cl=clrs[Math.abs((c.name||"A").charCodeAt(0))%clrs.length];
-  // ── FIXED: use getCelebPhoto to check all photo fields ──
   var photoUrl=getCelebPhoto(c);
   var ov=mkOv();
   var h=navRow("Celebrity Profile");
-  // Hero — large photo if available, gradient+initial fallback
-  h+="<div style=\"height:240px;background:linear-gradient(135deg,"+cl+"88,"+cl+"22);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;\">";
+
+  // ── HERO PHOTO SECTION ──
+  h+="<div style=\"height:260px;background:linear-gradient(160deg,"+cl+"99,"+cl+"22,#07070D);position:relative;overflow:hidden;\">";
   if(photoUrl){
-    h+="<img src=\""+xu(photoUrl)+"\" alt=\""+xe(c.name||"")+"\" loading=\"eager\" style=\"position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:2;\" onerror=\"this.style.display='none';\"/>";
+    h+="<img src=\""+xu(photoUrl)+"\" alt=\""+xe(c.name||"")+"\" crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\""
+      +" style=\"position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:2;\""
+      +" onerror=\"this.style.display='none';\"/>";
   }
-  h+="<div style=\"position:relative;z-index:1;font-family:'Bebas Neue',sans-serif;font-size:6rem;opacity:0.12;color:#fff;\">"+xe((c.name||"?").charAt(0))+"</div>";
-  h+="<div style=\"position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,13,0.95) 0%,rgba(7,7,13,0.2) 60%,transparent 100%);z-index:3;\"></div>";
-  h+="<div style=\"position:absolute;bottom:16px;left:16px;right:16px;z-index:4;\">";
-  h+="<div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.18em;color:var(--gold);margin-bottom:4px;\">"+xe(c.category||"")+"</div>";
-  h+="<div style=\"font-family:'Playfair Display',serif;font-weight:700;font-size:1.4rem;color:#F5F0E8;line-height:1.2;\">"+xe(c.name||"")+"</div>";
-  if(c.stageName)h+="<div style=\"font-family:'Montserrat',sans-serif;font-size:0.72rem;color:#BDB5A6;margin-top:2px;\">&ldquo;"+xe(c.stageName)+"&rdquo;</div>";
-  h+="</div></div><div style=\"padding:16px;\">";
-  h+="<div style=\"display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;\">";
-  h+="<div class=\"sbox\"><div class=\"snum\" style=\"font-size:0.8rem;\">"+xe(c.followers||"—")+"</div><div class=\"slbl\">Followers</div></div>";
-  h+="<div class=\"sbox\"><div class=\"snum\" style=\"font-size:0.8rem;\">"+xe(c.country||"—")+"</div><div class=\"slbl\">Origin</div></div>";
-  h+="<div class=\"sbox\"><div class=\"snum\" style=\"font-size:0.8rem;\">"+xe(c.status||"Active")+"</div><div class=\"slbl\">Status</div></div></div>";
-  if(c.bio){h+="<div style=\"font-size:0.62rem;letter-spacing:0.18em;color:var(--gold);margin-bottom:8px;\">About</div>";h+="<div class=\"card\"><div style=\"font-size:0.74rem;color:var(--muted);line-height:1.7;\">"+xe(c.bio)+"</div></div>";}
-  h+="<div style=\"display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;\">";
-  h+="<button class=\"btn-act\" id=\"fCBtn\">&#11088; Follow</button>";
-  h+="<button class=\"btn-gh\" id=\"sCBtn\">&#128279; Share</button></div>";
-  h+="<div style=\"font-size:0.62rem;letter-spacing:0.18em;color:var(--gold);margin-bottom:10px;\">Latest Posts</div>";
+  // Large faded initial behind the photo
+  h+="<div style=\"position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;\">"
+    +"<span style=\"font-family:'Bebas Neue',sans-serif;font-size:10rem;color:rgba(255,255,255,0.08);line-height:1;\">"+xe((c.name||"?").charAt(0))+"</span></div>";
+  // Gradient overlay — bottom darker for text legibility
+  h+="<div style=\"position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,13,1) 0%,rgba(7,7,13,0.5) 40%,transparent 100%);z-index:3;\"></div>";
+  // Category + name overlay at bottom
+  h+="<div style=\"position:absolute;bottom:20px;left:16px;right:16px;z-index:4;\">";
+  h+="<div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.22em;color:var(--gold);margin-bottom:6px;\">"+xe(c.category||"")+"</div>";
+  h+="<div style=\"font-family:'Playfair Display',serif;font-weight:700;font-size:1.6rem;color:#F5F0E8;line-height:1.1;margin-bottom:4px;\">"+xe(c.name||"")+"</div>";
+  if(c.stageName)h+="<div style=\"font-family:'Montserrat',sans-serif;font-size:0.76rem;color:#BDB5A6;font-style:italic;\">&ldquo;"+xe(c.stageName)+"&rdquo;</div>";
+  h+="</div></div>";
+
+  // ── STATS SECTION — bigger, clearer typography ──
+  h+="<div style=\"padding:16px;\">";
+  h+="<div style=\"display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px;\">";
+  // Followers
+  h+="<div style=\"background:rgba(255,255,255,0.045);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:14px 8px;text-align:center;\">";
+  h+="<div style=\"font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.04em;color:#F5F0E8;line-height:1.2;word-break:break-word;\">"+xe(c.followers||"—")+"</div>";
+  h+="<div style=\"font-family:'Montserrat',sans-serif;font-size:0.52rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(189,181,166,0.55);margin-top:5px;\">FOLLOWERS</div></div>";
+  // Origin
+  h+="<div style=\"background:rgba(255,255,255,0.045);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:14px 8px;text-align:center;\">";
+  h+="<div style=\"font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.04em;color:#F5F0E8;line-height:1.2;\">"+xe(c.country||"—")+"</div>";
+  h+="<div style=\"font-family:'Montserrat',sans-serif;font-size:0.52rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(189,181,166,0.55);margin-top:5px;\">ORIGIN</div></div>";
+  // Status
+  var statusClr=c.status==="Legend"?"#FFB800":c.status==="Retired"?"#EF4444":"#22C55E";
+  h+="<div style=\"background:rgba(255,255,255,0.045);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:14px 8px;text-align:center;\">";
+  h+="<div style=\"font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.04em;color:"+statusClr+";line-height:1.2;\">"+xe(c.status||"ACTIVE")+"</div>";
+  h+="<div style=\"font-family:'Montserrat',sans-serif;font-size:0.52rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(189,181,166,0.55);margin-top:5px;\">STATUS</div></div>";
+  h+="</div>";
+
+  // ── ABOUT ──
+  if(c.bio){
+    h+="<div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.68rem;letter-spacing:0.2em;color:var(--gold);margin-bottom:10px;\">About</div>";
+    h+="<div style=\"background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px;margin-bottom:16px;\">";
+    h+="<div style=\"font-family:'Montserrat',sans-serif;font-size:0.78rem;color:#BDB5A6;line-height:1.75;\">"+xe(c.bio)+"</div></div>";
+  }
+
+  // ── FOLLOW + SHARE BUTTONS ──
+  h+="<div style=\"display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;\">";
+  h+="<button class=\"btn-act\" id=\"fCBtn\" style=\"display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;\">&#11088; Follow</button>";
+  h+="<button class=\"btn-gh\" id=\"sCBtn\" style=\"display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;\">&#128279; Share</button></div>";
+
+  // ── LATEST POSTS ──
+  h+="<div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.68rem;letter-spacing:0.2em;color:var(--gold);margin-bottom:10px;\">Latest Posts</div>";
   h+="<div id=\"cPosts\"><div class=\"loader\"><div class=\"lring\"></div></div></div></div>";
+
   ov.innerHTML=h;
   attachBack(ov);
+
+  // Follow handler
   document.getElementById("fCBtn").onclick=async function(){
     if(!cU)return;
     try{await setDoc(doc(db,"follows",cU.uid+"_celeb_"+c.id),{userId:cU.uid,celebId:c.id,celebName:c.name||"",createdAt:serverTimestamp()});}catch{}
-    this.textContent="&#10003; Following";this.style.background="rgba(255,255,255,0.08)";this.style.color="var(--gold)";
-    toast("Following "+c.name+"!");
+    this.textContent="✓ Following";
+    this.style.background="rgba(255,255,255,0.08)";
+    this.style.color="var(--gold)";
+    toast("Following "+(c.name||"")+"! ⭐");
   };
+
+  // Share handler — REAL share sheet
   document.getElementById("sCBtn").onclick=function(){
-    if(navigator.share)navigator.share({title:(c.name||"")+" on ICONIK",url:location.href});
-    else if(navigator.clipboard)navigator.clipboard.writeText(location.href).then(function(){toast("Link copied!");});
+    doShare(
+      (c.name||"Celebrity")+" on ICONIK",
+      "Check out "+(c.name||"this icon")+" on ICONIK — The Global Fan Authority! 🌟",
+      "https://iconik-global.web.app"
+    );
   };
+
   sg(query(collection(db,"posts"),limit(30))).then(function(snap){
     var posts=[];
     snap.forEach(function(d){var p=d.data();if(p.category===c.category)posts.push({id:d.id,...p});});
