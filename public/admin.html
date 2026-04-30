@@ -368,7 +368,16 @@ select.fi option{background:var(--bg2);}
     <div class="fg"><label class="fl">Role</label>
       <select class="fi" id="saRole"><option value="Sub Admin">Sub Admin</option><option value="Moderator">Moderator</option><option value="Content Manager">Content Manager</option></select>
     </div>
-    <button class="btn-gold" onclick="addSubAdmin()">Add Sub Admin →</button>
+    <div class="fg"><label class="fl">Assign Community Category</label>
+      <select class="fi" id="saCat">
+        <option value="All">All Categories</option>
+        <option>Music</option><option>Film & TV</option><option>Sports</option><option>Fashion</option>
+        <option>Fitness & Wellness</option><option>Food & Culinary</option><option>Nature</option>
+        <option>Automotive</option><option>Tech & Innovation</option><option>Beauty</option>
+        <option>Entertainment</option><option>Leadership</option><option>Literature</option>
+      </select>
+    </div>
+    <button class="btn-gold" onclick="addSubAdmin()">Assign Sub Admin →</button>
   </div>
   <div class="sec-head">Current Sub Admins</div>
   <div id="subAdminList"><div class="loader"><div class="loader-ring"></div></div></div>
@@ -558,17 +567,21 @@ function memberRow(m,compact){
   const nm=esc(m.name||'Member');
   const status=m.verificationStatus||'pending';
   const badgeCls=status==='verified'?'badge-ok':status==='rejected'?'badge-err':'badge-warn';
-  const photo=m.profilePic&&m.profilePic.startsWith('http')?`<img src="${esc(m.profilePic)}" onerror="this.remove()"/>`:'';
+  const photo=m.profilePic&&m.profilePic.startsWith('http')?`<img src="${esc(m.profilePic)}" onerror="this.remove()"/>`:''
+  const isBanned=m.banned===true;
   return`<div class="m-row">
     <div class="m-av">${photo}${nm.charAt(0)}</div>
     <div style="flex:1;min-width:0;">
-      <div class="m-name">${nm} <span class="badge ${badgeCls}">${status}</span></div>
+      <div class="m-name">${nm} <span class="badge ${badgeCls}">${status}</span>${isBanned?'<span class="badge badge-err" style="margin-left:3px;">BANNED</span>':''}</div>
       <div class="m-meta">${compact?esc(m.country||'—'):esc(m.email||'')+'&nbsp;·&nbsp;'+esc(m.country||'—')+'&nbsp;·&nbsp;'+esc(m.tier||'Fan')}</div>
     </div>
     <div class="m-actions">
       ${status!=='verified'?`<button class="m-btn m-btn-ok" data-action="verify" data-uid="${m.id}" title="Verify">✓</button>`:''}
       ${status==='verified'?`<button class="m-btn m-btn-warn" data-action="unverify" data-uid="${m.id}" title="Remove verification">↩</button>`:''}
       <button class="m-btn m-btn-info" data-action="vip" data-uid="${m.id}" data-tier="${esc(m.tier||'Fan')}" title="Change tier">VIP</button>
+      ${isBanned
+        ?`<button class="m-btn m-btn-ok" data-action="unban" data-uid="${m.id}" data-name="${nm}" title="Unban">🔓</button>`
+        :`<button class="m-btn m-btn-warn" data-action="ban" data-uid="${m.id}" data-name="${nm}" title="Ban">🚫</button>`}
       <button class="m-btn m-btn-err" data-action="delete" data-uid="${m.id}" title="Delete">🗑</button>
     </div>
   </div>`;
@@ -577,7 +590,7 @@ function memberRow(m,compact){
 function attachMemberActions(){
   document.querySelectorAll('[data-action]').forEach(btn=>{
     btn.onclick=async function(){
-      const{action,uid,tier}=this.dataset;
+      const{action,uid,tier,name}=this.dataset;
       if(action==='verify'){
         await updateDoc(doc(db,'users',uid),{verificationStatus:'verified'});
         toast('Member verified! ✅');load_members();load_overview();
@@ -587,6 +600,14 @@ function attachMemberActions(){
       }else if(action==='vip'){
         const t=prompt('Set tier:',tier||'Fan');
         if(t){await updateDoc(doc(db,'users',uid),{tier:t});toast('Tier updated: '+t);load_members();}
+      }else if(action==='ban'){
+        if(confirm('Ban '+name+'? They will lose access to ICONIK.')){
+          await updateDoc(doc(db,'users',uid),{banned:true,banDate:serverTimestamp()});
+          toast(name+' banned 🚫');load_members();
+        }
+      }else if(action==='unban'){
+        await updateDoc(doc(db,'users',uid),{banned:false,banDate:null});
+        toast(name+' access restored ✅');load_members();
       }else if(action==='delete'){
         if(confirm('Delete this member? Cannot be undone.')){
           await deleteDoc(doc(db,'users',uid));toast('Member removed');load_members();load_overview();
@@ -604,39 +625,102 @@ window.filterStatus=function(s){
   renderMembers(s==='all'?allMembers:allMembers.filter(m=>(m.verificationStatus||'pending')===s));
 };
 
-// ── CELEBRITIES ── (FIXED: photos display correctly)
+// ── CELEBRITIES ── (FULL EDIT/DELETE/PHOTO FIX)
 window.load_celebrities=async function(){
   const el=document.getElementById('celebsList');
   const snap=await sg(query(collection(db,'celebrities'),limit(50)));
   const celebs=[];snap.forEach(d=>celebs.push({id:d.id,...d.data()}));
-  if(!celebs.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No celebrities added yet.</div>';return;}
+  if(!celebs.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No celebrities added yet. Use the form above to add your first icon.</div>';return;}
   el.innerHTML=celebs.map(c=>{
-    // Check all possible photo fields
-    const photoUrl=c.photo||c.photoUrl||c.imageUrl||c.coverPhoto||'';
+    const photoUrl=c.photo||c.photoUrl||c.imageUrl||c.profilePic||c.coverPhoto||'';
     const hasPhoto=photoUrl&&photoUrl.startsWith('http');
     const nm=esc(c.name||'?');
     const initials=nm.charAt(0);
     const photoHTML=hasPhoto
-      ?`<img
-           src="${esc(photoUrl)}"
-           alt="${nm}"
-           loading="lazy"
+      ?`<img src="${esc(photoUrl)}" alt="${nm}" loading="lazy"
            style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;border-radius:50%;"
-           onerror="this.style.display='none';"
-         />`
+           onerror="this.style.display='none';"/>`
       :'';
-    return`<div class="m-row">
-      <div class="m-av" style="position:relative;overflow:hidden;">
+    return`<div class="m-row" style="align-items:flex-start;flex-wrap:wrap;gap:8px;">
+      <div class="m-av" style="position:relative;overflow:hidden;flex-shrink:0;">
         ${photoHTML}
         <span style="position:relative;z-index:0;">${initials}</span>
       </div>
       <div style="flex:1;min-width:0;">
-        <div class="m-name">${nm}</div>
+        <div class="m-name">${nm}${c.stageName?` <span style="font-size:0.58rem;color:var(--muted);">"${esc(c.stageName)}"</span>`:''}</div>
         <div class="m-meta">${esc(c.category||'')} · ${esc(c.country||'')} · ${esc(c.followers||'')}</div>
+        ${hasPhoto?`<div style="font-size:0.52rem;color:var(--ok);margin-top:2px;">✓ Photo linked</div>`:`<div style="font-size:0.52rem;color:var(--err);margin-top:2px;">⚠ No photo — paste URL in form to add</div>`}
       </div>
-      <button class="m-btn m-btn-err" onclick="deleteCeleb('${c.id}','${esc(c.name||'')}')">🗑</button>
+      <div style="display:flex;gap:5px;flex-shrink:0;">
+        <button class="m-btn m-btn-warn" onclick="editCeleb('${c.id}')">✏️ Edit</button>
+        <button class="m-btn m-btn-err" onclick="deleteCeleb('${c.id}','${nm}')">🗑 Delete</button>
+      </div>
     </div>`;
   }).join('');
+};
+
+// ── EDIT CELEBRITY ──
+window.editCeleb=async function(celebId){
+  try{
+    const d=await getDoc(doc(db,'celebrities',celebId));
+    if(!d.exists()){toast('Celebrity not found','error');return;}
+    const c={id:d.id,...d.data()};
+    // Fill form with existing data
+    document.getElementById('cName').value=c.name||'';
+    document.getElementById('cStage').value=c.stageName||'';
+    document.getElementById('cCat').value=c.category||'';
+    document.getElementById('cCountry').value=c.country||'';
+    document.getElementById('cFollowers').value=c.followers||'';
+    document.getElementById('cBio').value=c.bio||'';
+    document.getElementById('cPhotoUrl').value=c.photo||c.photoUrl||c.imageUrl||'';
+    document.getElementById('cStatus').value=c.status||'Active';
+    // Show photo preview
+    const photoUrl=c.photo||c.photoUrl||c.imageUrl||'';
+    if(photoUrl){
+      const prev=document.getElementById('cPreview');
+      if(prev){prev.src=photoUrl;prev.style.display='block';}
+    }
+    // Change button to Update mode
+    const btn=document.getElementById('addCelebBtn');
+    btn.textContent='Update Celebrity →';
+    btn.dataset.editId=celebId;
+    btn.onclick=function(){updateCeleb(celebId);};
+    // Scroll to form
+    document.getElementById('cName').scrollIntoView({behavior:'smooth',block:'start'});
+    toast('Editing '+c.name+' — update fields and tap Save ✏️','info');
+  }catch(e){toast('Error loading celebrity','error');console.error(e);}
+};
+
+window.updateCeleb=async function(celebId){
+  const btn=document.getElementById('addCelebBtn');
+  const name=document.getElementById('cName').value.trim();
+  const cat=document.getElementById('cCat').value;
+  if(!name||!cat){toast('Name and category are required','error');return;}
+  btn.disabled=true;btn.textContent='Saving...';
+  try{
+    let photo=document.getElementById('cPhotoUrl').value.trim();
+    const file=document.getElementById('cPhotoFile').files[0];
+    if(file&&!photo){photo=await uploadFile(file);}
+    await setDoc(doc(db,'celebrities',celebId),{
+      name,stageName:document.getElementById('cStage').value.trim(),
+      category:cat,country:document.getElementById('cCountry').value.trim(),
+      followers:document.getElementById('cFollowers').value.trim(),
+      bio:document.getElementById('cBio').value.trim(),
+      photo,photoUrl:photo,imageUrl:photo,
+      status:document.getElementById('cStatus').value,
+      updatedAt:serverTimestamp()
+    },{merge:true});
+    toast(name+' updated! ✅');
+    // Reset form to Add mode
+    ['cName','cStage','cCountry','cFollowers','cBio','cPhotoUrl'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('cCat').value='';
+    document.getElementById('cPreview').style.display='none';
+    btn.textContent='Add Celebrity →';
+    btn.dataset.editId='';
+    btn.onclick=function(){addCeleb();};
+    load_celebrities();
+  }catch(e){toast(e.message||'Error updating','error');}
+  btn.disabled=false;
 };
 
 window.addCeleb=async function(){
@@ -672,21 +756,66 @@ window.deleteCeleb=async function(id,name){
   toast(name+' removed');load_celebrities();load_overview();
 };
 
-// ── POSTS ──
+// ── POSTS ── (with Edit + Delete for Chief Admin)
 window.load_posts=async function(){
   const el=document.getElementById('postsList');
-  const snap=await sg(query(collection(db,'posts'),limit(20)));
+  const snap=await sg(query(collection(db,'posts'),limit(30)));
   const posts=[];snap.forEach(d=>posts.push({id:d.id,...d.data()}));
   posts.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
   if(!posts.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No posts yet.</div>';return;}
-  el.innerHTML=posts.map(p=>`
-    <div class="m-row">
+  el.innerHTML=posts.map(p=>{
+    const dt=p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString():'';
+    const preview=esc((p.title||p.content||'').substring(0,60));
+    const hasImg=p.imageUrl&&p.imageUrl.startsWith('http');
+    return`<div class="m-row" style="align-items:flex-start;flex-wrap:wrap;gap:8px;">
+      ${hasImg?`<img src="${esc(p.imageUrl)}" style="width:44px;height:44px;object-fit:cover;border-radius:6px;flex-shrink:0;" onerror="this.remove()"/>`:
+        `<div style="width:44px;height:44px;background:var(--card);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">${p.isAdmin?'🌟':'👤'}</div>`}
       <div style="flex:1;min-width:0;">
-        <div class="m-name">${esc(p.title||p.content?.substring(0,50)||'Post')}</div>
-        <div class="m-meta">${esc(p.category||'General')} · ${esc(p.userName||'ICONIK')} · ${p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString():''}</div>
+        <div class="m-name">${preview||'(no content)'}</div>
+        <div class="m-meta">${esc(p.userName||'ICONIK')} · ${esc(p.category||'General')} · ${dt}</div>
       </div>
-      <button class="m-btn m-btn-err" onclick="deleteItem('posts','${p.id}',load_posts)">🗑</button>
-    </div>`).join('');
+      <div style="display:flex;gap:5px;flex-shrink:0;">
+        <button class="m-btn m-btn-warn" onclick="editPost('${p.id}')">✏️</button>
+        <button class="m-btn m-btn-err" onclick="deleteItem('posts','${p.id}',load_posts)">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+};
+
+// ── EDIT POST ──
+window.editPost=async function(postId){
+  try{
+    const d=await getDoc(doc(db,'posts',postId));
+    if(!d.exists()){toast('Post not found','error');return;}
+    const p={id:d.id,...d.data()};
+    // Fill publish form
+    document.getElementById('pTitle').value=p.title||'';
+    document.getElementById('pContent').value=p.content||'';
+    document.getElementById('pCat').value=p.category||'';
+    document.getElementById('pMediaUrl').value=p.imageUrl||'';
+    // Switch button to update mode
+    const btn=document.getElementById('publishBtn');
+    btn.textContent='Update Post →';
+    btn.onclick=async function(){
+      btn.disabled=true;btn.textContent='Updating...';
+      try{
+        await setDoc(doc(db,'posts',postId),{
+          title:document.getElementById('pTitle').value.trim(),
+          content:document.getElementById('pContent').value.trim(),
+          category:document.getElementById('pCat').value,
+          imageUrl:document.getElementById('pMediaUrl').value.trim(),
+          updatedAt:serverTimestamp()
+        },{merge:true});
+        toast('Post updated! ✅');
+        btn.textContent='Publish as ICONIK →';
+        btn.onclick=function(){publishPost();};
+        load_posts();
+      }catch(e){toast('Error updating','error');}
+      btn.disabled=false;
+    };
+    document.getElementById('pTitle').scrollIntoView({behavior:'smooth'});
+    toast('Editing post — make changes and tap Update ✏️','info');
+  }catch(e){toast('Error loading post','error');}
 };
 
 window.publishPost=async function(){
@@ -907,48 +1036,81 @@ window.addTV=async function(){
   btn.disabled=false;btn.textContent='Add to ICONIK TV →';
 };
 
-// ── SUB ADMINS ──
+// ── SUB ADMINS — FULL CHIEF ADMIN CONTROL ──
 window.load_subadmins=async function(){
   const el=document.getElementById('subAdminList');
   try{
     const snap=await sg(query(collection(db,'users'),where('role','in',['Sub Admin','Moderator','Content Manager']),limit(20)));
     const admins=[];snap.forEach(d=>admins.push({id:d.id,...d.data()}));
-    if(!admins.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No sub admins yet.</div>';return;}
-    el.innerHTML=admins.map(a=>`
-      <div class="m-row">
-        <div class="m-av">${esc((a.name||'A').charAt(0))}</div>
-        <div style="flex:1;"><div class="m-name">${esc(a.name||a.email||'Admin')}</div><div class="m-meta">${esc(a.role||'Sub Admin')} · ${esc(a.email||'')}</div></div>
-        <button class="m-btn m-btn-err" onclick="removeSubAdmin('${a.id}')">Remove</button>
-      </div>`).join('');
-  }catch{el.innerHTML='<div style="color:var(--muted);padding:10px;">Error loading.</div>';}
+    if(!admins.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No sub admins yet. Use the form above to assign one.</div>';return;}
+    el.innerHTML=admins.map(a=>{
+      const nm=esc(a.name||a.email||'Admin');
+      const photoUrl=a.profilePic&&a.profilePic.startsWith('http')?a.profilePic:'';
+      const avHTML=photoUrl?`<img src="${esc(photoUrl)}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.remove()"/>`:'';
+      return`<div class="m-row" style="flex-wrap:wrap;gap:8px;">
+        <div class="m-av" style="position:relative;overflow:hidden;">${avHTML}<span style="position:relative;z-index:0;">${nm.charAt(0)}</span></div>
+        <div style="flex:1;min-width:0;">
+          <div class="m-name">${nm} <span class="badge badge-ok">${esc(a.role||'Sub Admin')}</span></div>
+          <div class="m-meta">${esc(a.email||'')} · 📂 ${esc(a.category||'All categories')}</div>
+        </div>
+        <div style="display:flex;gap:5px;flex-shrink:0;flex-wrap:wrap;">
+          <button class="m-btn m-btn-info" onclick="viewSubAdminDash('${a.id}','${nm}')">👁 View</button>
+          <button class="m-btn m-btn-warn" onclick="reassignSubAdmin('${a.id}','${nm}')">🔄 Edit</button>
+          <button class="m-btn m-btn-err" onclick="fireSubAdmin('${a.id}','${nm}')">🔥 Remove</button>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){el.innerHTML='<div style="color:var(--muted);padding:10px;">Error loading sub admins.</div>';}
 };
 
 window.addSubAdmin=async function(){
   const email=document.getElementById('saEmail').value.trim();
   const role=document.getElementById('saRole').value;
+  const catEl=document.getElementById('saCat');
+  const category=catEl?catEl.value:'All';
   if(!email){toast('Email required','error');return;}
   try{
     const snap=await sg(query(collection(db,'users'),where('email','==',email),limit(1)));
-    if(snap.empty){toast('No member with that email. They must register first.','error');return;}
+    if(snap.empty){toast('No member found with that email. They must register first.','error');return;}
     const uid=snap.docs[0].id;
-    await updateDoc(doc(db,'users',uid),{role});
-    toast(email+' added as '+role+'! 🛡️');
+    await updateDoc(doc(db,'users',uid),{role,category:category||'All'});
+    toast(email+' assigned as '+role+'! 🛡️');
     document.getElementById('saEmail').value='';
     load_subadmins();
-  }catch(e){toast(e.message||'Error adding sub admin','error');}
+  }catch(e){toast(e.message||'Error assigning sub admin','error');}
 };
 
-window.removeSubAdmin=async function(uid){
-  if(!confirm('Remove sub admin role?'))return;
-  await updateDoc(doc(db,'users',uid),{role:'member'});
-  toast('Sub admin removed');load_subadmins();
+window.reassignSubAdmin=async function(uid,name){
+  const newRole=prompt('New role for '+name+':\n(Sub Admin / Moderator / Content Manager)','Sub Admin');
+  if(!newRole)return;
+  const newCat=prompt('Assign community category\n(e.g. Music, Sports, Fashion, All):','All');
+  if(newCat===null)return;
+  try{
+    await updateDoc(doc(db,'users',uid),{role:newRole,category:newCat||'All'});
+    toast(name+' updated as '+newRole+' — '+newCat+' ✅');
+    load_subadmins();
+  }catch(e){toast('Error updating sub admin','error');}
+};
+
+window.fireSubAdmin=async function(uid,name){
+  if(!confirm('Remove '+name+' from Sub Admin role?\nThey will revert to regular member.'))return;
+  try{
+    await updateDoc(doc(db,'users',uid),{role:'member',category:''});
+    toast(name+' removed from Sub Admin role 🔥');
+    load_subadmins();
+  }catch(e){toast('Error removing sub admin','error');}
+};
+
+window.viewSubAdminDash=function(uid,name){
+  toast('Opening '+name+"'s Sub Admin panel 👁","info");
+  window.open('/subadmin.html','_blank');
 };
 
 // ── UTILS ──
 window.deleteItem=async function(col,id,reloadFn){
   if(!confirm('Delete this item? Cannot be undone.'))return;
   await deleteDoc(doc(db,col,id));
-  toast('Deleted');
+  toast('Deleted ✅');
   if(typeof reloadFn==='function')reloadFn();
 };
 </script>
