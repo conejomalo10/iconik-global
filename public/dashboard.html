@@ -325,77 +325,280 @@ function boot(){
 }
 function attachBack(ov){var btn=document.getElementById("ovBack");if(btn)btn.onclick=function(){ov.remove();};}
 
-// FEED
+// ══════════════════════════════════════════
+// FEED — FULLY REBUILT WITH ALL FIXES
+// 1. Heart ♥ emoji instead of HTML entity
+// 2. Category + date clearly visible
+// 3. Internal share (member profile link)
+// 4. Repost with quote
+// 5. Comment box opens on click
+// ══════════════════════════════════════════
 async function loadFeed(){
   var el=document.getElementById("feedList");
   var snap=await sg(query(collection(db,"posts"),limit(30)));
   var posts=[];snap.forEach(function(d){posts.push({id:d.id,...d.data()});});
   posts.sort(function(a,b){return(b.createdAt&&b.createdAt.seconds||0)-(a.createdAt&&a.createdAt.seconds||0);});
-  if(!posts.length){el.innerHTML="<div class=\"card\" style=\"text-align:center;padding:14px;color:var(--muted);\">No posts yet. Be the first to share!</div>";return;}
-  var h="";
-  posts.forEach(function(p){
-    var nm=xe(p.userName||"ICONIK");
-    var dt=p.createdAt&&p.createdAt.toDate?p.createdAt.toDate().toLocaleDateString("en",{month:"short",day:"numeric"}):"";
-    h+="<div class=\"card\">";
-    h+="<div style=\"display:flex;align-items:center;gap:9px;margin-bottom:9px;\">";
-    h+="<div class=\"mav\" style=\"width:34px;height:34px;font-size:0.85rem;\">"+nm.charAt(0)+"</div>";
-    h+="<div><div style=\"font-weight:700;font-size:0.74rem;color:var(--text);\">"+nm+(p.isAdmin?" <span style=\"font-size:0.48rem;background:var(--gold);color:var(--bg);padding:1px 5px;\">ICONIK</span>":"")+"</div>";
-    h+="<div style=\"font-size:0.58rem;color:var(--dim);\">"+xe(p.category||"")+(dt?" · "+dt:"")+"</div></div></div>";
-    if(p.title)h+="<div style=\"font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;\">"+xe(p.title)+"</div>";
-    h+="<div style=\"font-size:0.72rem;color:var(--muted);line-height:1.6;\">"+xe(p.content||"")+"</div>";
-    if(p.imageUrl&&p.imageUrl.startsWith("http"))h+="<img src=\""+xu(p.imageUrl)+"\" style=\"width:100%;border-radius:6px;margin-top:9px;max-height:240px;object-fit:cover;\" loading=\"lazy\" onerror=\"this.remove()\"/>";
-    if(p.videoUrl&&p.videoUrl.startsWith("http"))h+="<video src=\""+xu(p.videoUrl)+"\" controls style=\"width:100%;border-radius:6px;margin-top:9px;\" onerror=\"this.remove()\"></video>";
-    h+="<div style=\"display:flex;gap:14px;margin-top:10px;\">";
-    h+="<span style=\"font-size:0.66rem;color:var(--muted);cursor:pointer;\" data-pid=\""+p.id+"\">&#9825; "+(p.likeCount||0)+"</span>";
-    h+="<span style=\"font-size:0.66rem;color:var(--muted);\">&#128172; "+(p.commentCount||0)+"</span>";
-    h+="<span style=\"font-size:0.66rem;color:var(--muted);cursor:pointer;\" data-share-pid=\""+p.id+"\" data-share-title=\""+xu(p.userName||"ICONIK")+"\" data-share-body=\""+xu((p.content||"").substring(0,80))+"\">&#128279; Share</span>";
-    h+="<span style=\"font-size:0.66rem;color:var(--muted);cursor:pointer;\" data-repost-pid=\""+p.id+"\" data-repost-content=\""+xu((p.content||"").substring(0,200))+"\" data-repost-author=\""+xu(p.userName||"ICONIK")+"\">&#128257; Repost</span>";
-    h+="</div></div>";
-  });
-  el.innerHTML=h;
+  if(!posts.length){el.innerHTML="<div class=\"card\" style=\"text-align:center;padding:14px;color:var(--muted);\">No posts yet. Be the first to share! 🌟</div>";return;}
+  el.innerHTML=posts.map(function(p){return buildPostCard(p);}).join("");
+  // Attach all interactions via event delegation
+  el.onclick=null;
   el.addEventListener("click",async function(ev){
-    // Like
-    var t=ev.target.closest("[data-pid]");
-    if(t&&!t.dataset.sharePid&&!t.dataset.repostPid){
-      var pid=t.dataset.pid;
-      var n=parseInt(t.textContent.replace(/\D/g,""))||0;
-      t.textContent="&#9829; "+(n+1);t.style.color="var(--err)";
+    // ── LIKE ──
+    var lk=ev.target.closest("[data-like]");
+    if(lk){
+      var pid=lk.dataset.like;
+      var hrt=lk.querySelector(".heart-icon");
+      var cnt=lk.querySelector(".heart-count");
+      var n=parseInt((cnt&&cnt.textContent)||"0")||0;
+      if(hrt)hrt.textContent="♥";
+      if(hrt)hrt.style.color="var(--err)";
+      if(cnt)cnt.textContent=n+1;
       if(cU)try{await setDoc(doc(db,"likes",cU.uid+"_"+pid),{userId:cU.uid,postId:pid,createdAt:serverTimestamp()});}catch{}
+      return;
     }
-    // Share post — opens real share sheet
-    var s=ev.target.closest("[data-share-pid]");
-    if(s){
+    // ── COMMENT ──
+    var cm=ev.target.closest("[data-comment]");
+    if(cm){openCommentBox(cm.dataset.comment,cm.dataset.postAuthor||"Member");return;}
+    // ── EXTERNAL SHARE ──
+    var sh=ev.target.closest("[data-share-ext]");
+    if(sh){
       doShare(
-        (s.dataset.shareTitle||"ICONIK")+" on ICONIK",
-        (s.dataset.shareBody||"Check this out on ICONIK!")+" — iconik-global.web.app",
+        (sh.dataset.shareTitle||"ICONIK")+" on ICONIK",
+        (sh.dataset.shareBody||"Check this out on ICONIK!")+" 🌟",
         "https://iconik-global.web.app"
       );
+      return;
     }
-    // Repost — creates a new post quoting the original
-    var r=ev.target.closest("[data-repost-pid]");
-    if(r){
+    // ── INTERNAL SHARE (to member profile) ──
+    var si=ev.target.closest("[data-share-int]");
+    if(si){
+      var authorId=si.dataset.shareInt;
+      if(authorId&&authorId!=="admin"){
+        openMemberById(authorId);
+      } else {
+        toast("This is an ICONIK official post 🌟","info");
+      }
+      return;
+    }
+    // ── REPOST ──
+    var rp=ev.target.closest("[data-repost]");
+    if(rp){
       if(!cU){toast("Sign in to repost","error");return;}
-      var origContent=r.dataset.repostContent||"";
-      var origAuthor=r.dataset.repostAuthor||"ICONIK";
-      var confirmed=confirm("Repost this to your feed?\n\n\""+origContent.substring(0,80)+(origContent.length>80?"...":"")+"\"");
-      if(!confirmed)return;
-      try{
-        await addDoc(collection(db,"posts"),{
-          content:origContent,
-          title:"🔁 Reposted from "+origAuthor,
-          category:(cD&&cD.categories&&cD.categories[0])||"",
-          userId:cU.uid,userName:(cD&&cD.name)||"Member",
-          userPhoto:(cD&&cD.profilePic)||"",
-          imageUrl:"",videoUrl:"",
-          isAdmin:false,isRepost:true,
-          originalAuthor:origAuthor,
-          likeCount:0,commentCount:0,
-          createdAt:serverTimestamp()
-        });
-        toast("Reposted! 🔁");loadFeed();
-      }catch{toast("Error reposting","error");}
+      openRepostModal(rp.dataset.repost,rp.dataset.repostContent||"",rp.dataset.repostAuthor||"ICONIK",rp.dataset.repostImg||"");
+      return;
     }
   });
+}
+
+function buildPostCard(p){
+  var nm=xe(p.userName||"ICONIK");
+  var dt="";
+  if(p.createdAt&&p.createdAt.toDate){
+    dt=p.createdAt.toDate().toLocaleDateString("en",{month:"short",day:"numeric",year:"numeric"});
+  }
+  var cat=p.category||"";
+  var likeCount=p.likeCount||0;
+  var commentCount=p.commentCount||0;
+  // Avatar
+  var avContent=nm.charAt(0);
+  if(p.userPhoto&&p.userPhoto.startsWith("http")){
+    avContent="<img src=\""+xu(p.userPhoto)+"\" style=\"width:100%;height:100%;object-fit:cover;border-radius:50%;\" onerror=\"this.remove()\"/>";
+  }
+  // Repost badge
+  var repostBadge=p.isRepost?"<div style=\"font-family:'Montserrat',sans-serif;font-size:0.58rem;color:var(--muted);margin-bottom:6px;\">🔁 Reposted from <strong style=\"color:var(--text);\">"+xe(p.originalAuthor||"")+"</strong></div>":"";
+  // ICONIK badge
+  var adminBadge=p.isAdmin?" <span style=\"font-size:0.46rem;background:var(--gold);color:var(--bg);padding:1px 5px;border-radius:2px;vertical-align:middle;\">ICONIK</span>":"";
+  var h="<div class=\"card\" style=\"margin-bottom:10px;\">";
+  // Header row
+  h+="<div style=\"display:flex;align-items:center;gap:9px;margin-bottom:8px;\">";
+  h+="<div class=\"mav\" style=\"width:36px;height:36px;font-size:0.85rem;overflow:hidden;position:relative;flex-shrink:0;\">"+avContent+"</div>";
+  h+="<div style=\"flex:1;min-width:0;\">";
+  h+="<div style=\"font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--text);\">"
+    +nm+adminBadge+"</div>";
+  // ── CATEGORY + DATE — now clearly visible ──
+  if(cat||dt){
+    h+="<div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;color:var(--gold);margin-top:1px;\">";
+    if(cat)h+=xe(cat.toUpperCase());
+    if(cat&&dt)h+=" · ";
+    if(dt)h+="<span style=\"color:var(--muted);font-family:'Montserrat',sans-serif;font-size:0.56rem;font-weight:600;letter-spacing:0;\">"+dt+"</span>";
+    h+="</div>";
+  }
+  h+="</div></div>";
+  h+=repostBadge;
+  if(p.title)h+="<div style=\"font-family:'Playfair Display',serif;font-weight:700;font-size:0.94rem;color:var(--text);margin-bottom:6px;line-height:1.3;\">"+xe(p.title)+"</div>";
+  h+="<div style=\"font-family:'Montserrat',sans-serif;font-size:0.74rem;color:var(--muted);line-height:1.65;margin-bottom:8px;\">"+xe(p.content||"")+"</div>";
+  if(p.imageUrl&&p.imageUrl.startsWith("http"))
+    h+="<img src=\""+xu(p.imageUrl)+"\" style=\"width:100%;border-radius:8px;margin-bottom:8px;max-height:260px;object-fit:cover;\" loading=\"lazy\" onerror=\"this.remove()\"/>";
+  if(p.videoUrl&&p.videoUrl.startsWith("http"))
+    h+="<video src=\""+xu(p.videoUrl)+"\" controls style=\"width:100%;border-radius:8px;margin-bottom:8px;\" onerror=\"this.remove()\"></video>";
+  // ── ACTION BAR ──
+  h+="<div style=\"display:flex;align-items:center;gap:16px;padding-top:8px;border-top:1px solid var(--border);\">";
+  // Like — ♥ emoji with count beside it
+  h+="<button data-like=\""+p.id+"\" style=\"background:none;border:none;display:flex;align-items:center;gap:4px;cursor:pointer;padding:4px 0;\">"
+    +"<span class=\"heart-icon\" style=\"font-size:1rem;color:var(--muted);\">♡</span>"
+    +"<span class=\"heart-count\" style=\"font-family:'Montserrat',sans-serif;font-size:0.66rem;color:var(--muted);\">"+likeCount+"</span>"
+    +"</button>";
+  // Comment
+  h+="<button data-comment=\""+p.id+"\" data-post-author=\""+xu(nm)+"\" style=\"background:none;border:none;display:flex;align-items:center;gap:4px;cursor:pointer;padding:4px 0;\">"
+    +"<span style=\"font-size:1rem;\">💬</span>"
+    +"<span id=\"cc-"+p.id+"\" style=\"font-family:'Montserrat',sans-serif;font-size:0.66rem;color:var(--muted);\">"+commentCount+"</span>"
+    +"</button>";
+  // External share
+  h+="<button data-share-ext=\""+p.id+"\" data-share-title=\""+xu(nm)+"\" data-share-body=\""+xu((p.content||"").substring(0,80))+"\" style=\"background:none;border:none;display:flex;align-items:center;gap:4px;cursor:pointer;padding:4px 0;\">"
+    +"<span style=\"font-size:1rem;\">🔗</span>"
+    +"<span style=\"font-family:'Montserrat',sans-serif;font-size:0.66rem;color:var(--muted);\">Share</span>"
+    +"</button>";
+  // Internal share (go to poster's profile)
+  h+="<button data-share-int=\""+xe(p.userId||"admin")+"\" style=\"background:none;border:none;display:flex;align-items:center;gap:4px;cursor:pointer;padding:4px 0;\">"
+    +"<span style=\"font-size:1rem;\">👤</span>"
+    +"<span style=\"font-family:'Montserrat',sans-serif;font-size:0.66rem;color:var(--muted);\">Profile</span>"
+    +"</button>";
+  // Repost
+  h+="<button data-repost=\""+p.id+"\" data-repost-content=\""+xu((p.content||"").substring(0,200))+"\" data-repost-author=\""+xu(nm)+"\" data-repost-img=\""+xu(p.imageUrl||"")+"\" style=\"background:none;border:none;display:flex;align-items:center;gap:4px;cursor:pointer;padding:4px 0;\">"
+    +"<span style=\"font-size:1rem;\">🔁</span>"
+    +"<span style=\"font-family:'Montserrat',sans-serif;font-size:0.66rem;color:var(--muted);\">Repost</span>"
+    +"</button>";
+  h+="</div>";
+  // Comment thread container (hidden initially)
+  h+="<div id=\"thread-"+p.id+"\" style=\"display:none;\"></div>";
+  h+="</div>";
+  return h;
+}
+
+// ── OPEN COMMENT BOX ──
+function openCommentBox(postId,postAuthor){
+  var thread=document.getElementById("thread-"+postId);
+  if(!thread)return;
+  // Toggle
+  if(thread.style.display==="block"){thread.style.display="none";return;}
+  thread.style.display="block";
+  // Load existing comments
+  loadComments(postId,thread);
+}
+
+async function loadComments(postId,thread){
+  thread.innerHTML="<div style=\"padding:8px 0;\">"
+    +"<div id=\"cList-"+postId+"\" style=\"margin-bottom:8px;\"><div style=\"font-size:0.68rem;color:var(--muted);text-align:center;padding:8px;\">Loading comments...</div></div>"
+    +"<div style=\"display:flex;gap:8px;align-items:center;\">"
+    +"<input id=\"cInp-"+postId+"\" placeholder=\"Write a comment...\" style=\"flex:1;padding:9px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;color:var(--text);font-family:'Montserrat',sans-serif;font-size:0.74rem;outline:none;\"/>"
+    +"<button id=\"cBtn-"+postId+"\" style=\"width:36px;height:36px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;font-size:0.9rem;flex-shrink:0;\">➤</button>"
+    +"</div></div>";
+  // Load comments from Firestore
+  try{
+    var snap=await sg(query(collection(db,"comments_"+postId),limit(20)));
+    var comments=[];
+    snap.forEach(function(d){comments.push({id:d.id,...d.data()});});
+    comments.sort(function(a,b){return(a.createdAt&&a.createdAt.seconds||0)-(b.createdAt&&b.createdAt.seconds||0);});
+    var cList=document.getElementById("cList-"+postId);
+    if(!cList)return;
+    if(!comments.length){
+      cList.innerHTML="<div style=\"font-size:0.68rem;color:var(--muted);text-align:center;padding:8px;\">No comments yet. Be first! 💬</div>";
+    } else {
+      cList.innerHTML=comments.map(function(c){
+        var avC=(c.userName||"?").charAt(0).toUpperCase();
+        var avHTML=c.userPhoto&&c.userPhoto.startsWith("http")
+          ?"<img src=\""+xu(c.userPhoto)+"\" style=\"width:100%;height:100%;object-fit:cover;border-radius:50%;\" onerror=\"this.remove()\"/>"
+          :avC;
+        return "<div style=\"display:flex;gap:8px;margin-bottom:8px;\">"
+          +"<div style=\"width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.72rem;color:var(--bg);flex-shrink:0;overflow:hidden;\">"
+          +avHTML+"</div>"
+          +"<div style=\"flex:1;background:var(--bg2);border-radius:10px;padding:8px 11px;\">"
+          +"<div style=\"font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.64rem;color:var(--text);margin-bottom:3px;\">"+xe(c.userName||"Member")+"</div>"
+          +"<div style=\"font-family:'Montserrat',sans-serif;font-size:0.7rem;color:var(--muted);line-height:1.5;\">"+xe(c.text||"")+"</div>"
+          +"</div></div>";
+      }).join("");
+    }
+  }catch(e){
+    var cList2=document.getElementById("cList-"+postId);
+    if(cList2)cList2.innerHTML="<div style=\"font-size:0.68rem;color:var(--muted);text-align:center;padding:8px;\">Comments loading... 💬</div>";
+  }
+  // Submit handler
+  var cBtn=document.getElementById("cBtn-"+postId);
+  var cInp=document.getElementById("cInp-"+postId);
+  if(cBtn&&cInp){
+    var submitComment=async function(){
+      var txt=cInp.value.trim();
+      if(!txt){return;}
+      if(!cU){toast("Sign in to comment","error");return;}
+      cBtn.disabled=true;
+      try{
+        await addDoc(collection(db,"comments_"+postId),{
+          text:txt,
+          userName:(cD&&cD.name)||"Member",
+          userPhoto:(cD&&cD.profilePic)||"",
+          userId:cU.uid,
+          createdAt:serverTimestamp()
+        });
+        // Update comment count
+        var cc=document.getElementById("cc-"+postId);
+        if(cc)cc.textContent=parseInt(cc.textContent||"0")+1;
+        cInp.value="";
+        loadComments(postId,thread);
+      }catch(e){toast("Error posting comment","error");}
+      cBtn.disabled=false;
+    };
+    cBtn.onclick=submitComment;
+    cInp.addEventListener("keydown",function(e){if(e.key==="Enter")submitComment();});
+  }
+}
+
+// ── OPEN REPOST MODAL ──
+function openRepostModal(postId,content,author,imgUrl){
+  var mo=document.createElement("div");
+  mo.style.cssText="position:fixed;inset:0;background:rgba(7,7,13,0.92);z-index:9999;display:flex;align-items:flex-end;justify-content:center;padding:0;";
+  var imgPreview=imgUrl&&imgUrl.startsWith("http")
+    ?"<img src=\""+xu(imgUrl)+"\" style=\"width:100%;max-height:120px;object-fit:cover;border-radius:8px;margin-bottom:10px;\" onerror=\"this.remove()\"/>"
+    :"";
+  mo.innerHTML="<div style=\"width:100%;max-width:480px;background:var(--bg3);border:1px solid rgba(255,184,0,0.2);border-radius:16px 16px 0 0;padding:20px 16px;\">"
+    +"<div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.2em;color:#BDB5A6;margin-bottom:14px;text-align:center;\">🔁 REPOST</div>"
+    +imgPreview
+    +"<div style=\"background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:14px;\">"
+    +"<div style=\"font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.66rem;color:var(--gold);margin-bottom:6px;\">"+xe(author)+"</div>"
+    +"<div style=\"font-family:'Montserrat',sans-serif;font-size:0.72rem;color:var(--muted);line-height:1.6;\">"+xe(content.substring(0,150))+(content.length>150?"...":"")+"</div>"
+    +"</div>"
+    +"<div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.15em;color:var(--muted);margin-bottom:6px;\">Add your thoughts (optional)</div>"
+    +"<textarea id=\"repostCaption\" placeholder=\"Say something about this post...\" rows=\"2\" style=\"width:100%;padding:10px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Montserrat',sans-serif;font-size:0.74rem;outline:none;resize:none;margin-bottom:12px;\"></textarea>"
+    +"<div style=\"display:grid;grid-template-columns:1fr 1fr;gap:8px;\">"
+    +"<button id=\"cancelRepost\" style=\"padding:12px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;cursor:pointer;\">Cancel</button>"
+    +"<button id=\"confirmRepost\" style=\"padding:12px;background:var(--gold);border:none;border-radius:8px;color:var(--bg);font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.68rem;cursor:pointer;\">Repost 🔁</button>"
+    +"</div></div>";
+  document.body.appendChild(mo);
+  document.getElementById("cancelRepost").onclick=function(){mo.remove();};
+  mo.onclick=function(e){if(e.target===mo)mo.remove();};
+  document.getElementById("confirmRepost").onclick=async function(){
+    if(!cU){toast("Sign in to repost","error");mo.remove();return;}
+    this.disabled=true;this.textContent="Reposting...";
+    var caption=document.getElementById("repostCaption").value.trim();
+    var fullContent=(caption?caption+"\n\n":"")+content;
+    try{
+      await addDoc(collection(db,"posts"),{
+        content:fullContent,
+        title:"🔁 Reposted from "+author,
+        category:(cD&&cD.categories&&cD.categories[0])||"",
+        userId:cU.uid,userName:(cD&&cD.name)||"Member",
+        userPhoto:(cD&&cD.profilePic)||"",
+        imageUrl:imgUrl&&imgUrl.startsWith("http")?imgUrl:"",
+        videoUrl:"",isAdmin:false,isRepost:true,
+        originalAuthor:author,likeCount:0,commentCount:0,
+        createdAt:serverTimestamp()
+      });
+      toast("Reposted! 🔁");mo.remove();loadFeed();
+    }catch{toast("Error reposting","error");this.disabled=false;this.textContent="Repost 🔁";}
+  };
+}
+
+// ── OPEN MEMBER BY UID (internal share) ──
+async function openMemberById(uid){
+  if(!uid||uid==="admin"){toast("ICONIK Official Post 🌟","info");return;}
+  // Check cache first
+  var m=allM.find(function(x){return x.id===uid;});
+  if(m){openMember(m);return;}
+  // Fetch from Firestore
+  try{
+    var d=await getDoc(doc(db,"users",uid));
+    if(d.exists()){openMember({id:d.id,...d.data()});}
+    else{toast("Member profile not found","info");}
+  }catch{toast("Could not load profile","error");}
 }
 
 // COMPOSER
