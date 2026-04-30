@@ -6,14 +6,22 @@
 <title>ICONIK — Sub Admin Panel</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@400;600;800;900&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-:root{--obs:#07070D;--obs2:#0F0F1A;--obs3:#141420;--gold:#FFB800;--gg:#FF9500;--ch:#F5F0E8;--cd:#BDB5A6;--gb:rgba(255,184,0,0.04);--gbr:rgba(255,184,0,0.15);--gbri:rgba(255,184,0,0.4);--ok:#22C55E;--err:#EF4444;--ab:#3B82F6;--warn:#F59E0B;--purple:#8B5CF6;--pg:#10B981;--pg2:rgba(16,185,129,0.08);}
+:root{
+  --obs:#07070D;--obs2:#0F0F1A;--obs3:#141420;
+  --gold:#FFB800;--gg:#FF9500;
+  --ch:#F5F0E8;--cd:#BDB5A6;
+  --gb:rgba(255,184,0,0.04);--gbr:rgba(255,184,0,0.15);--gbri:rgba(255,184,0,0.4);
+  --ok:#22C55E;--err:#EF4444;--ab:#3B82F6;--warn:#F59E0B;
+  --purple:#8B5CF6;--pg:#10B981;--pg2:rgba(16,185,129,0.08);
+}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-height:100vh;}
+
+/* ── GATE ── */
 .gate{display:none;min-height:100vh;background:linear-gradient(135deg,var(--obs),#0A0A14,var(--obs));align-items:center;justify-content:center;padding:16px;}
 .gate.on{display:flex;}
 .gbox{width:100%;max-width:400px;background:var(--obs3);border:1px solid var(--gbr);padding:32px 24px;box-shadow:0 40px 120px rgba(0,0,0,0.6);}
 .glogo{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.15em;color:var(--gold);text-align:center;display:block;text-decoration:none;text-shadow:0 0 30px rgba(255,184,0,0.4);margin-bottom:5px;}
-.glogo span{color:var(--ch);}
 .gsub{font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);text-align:center;margin-bottom:5px;}
 .grole{font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:var(--obs);background:var(--pg);padding:3px 10px;display:block;text-align:center;width:fit-content;margin:0 auto 18px;}
 .fg{margin-bottom:12px;}
@@ -21,23 +29,28 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-he
 .fi{width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--gbr);color:var(--ch);font-family:'Inter',sans-serif;font-size:0.8rem;outline:none;transition:all 0.3s;}
 .fi:focus{border-color:var(--pg);}
 .fi::placeholder{color:rgba(189,181,166,0.3);}
+.fi option{background:var(--obs3);}
 .btn{width:100%;padding:11px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.67rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;border:none;transition:all 0.3s;}
 .btn-pg{background:linear-gradient(135deg,var(--pg),#059669);color:#fff;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);}
 .gm{font-family:'Inter',sans-serif;font-size:0.7rem;text-align:center;margin-top:10px;padding:8px;display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:var(--err);}
-/* ADMIN PAGE */
+
+/* ── ADMIN PAGE ── */
 .pg{display:none;}.pg.on{display:block;}
-/* TOP BAR */
-.tbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,7,13,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(16,185,129,0.2);}
+
+/* ── TOP BAR ── */
+.tbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,7,13,0.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(16,185,129,0.2);}
 .tbar-logo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.12em;color:var(--gold);text-decoration:none;}
 .tbar-logo span{color:var(--ch);}
 .tbar-badge{font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.14em;color:#fff;background:var(--pg);padding:3px 9px;margin-left:8px;}
 .tbar-cat{font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.1em;color:var(--pg);border:1px solid rgba(16,185,129,0.3);padding:2px 7px;margin-left:5px;}
 .tbar-right{display:flex;align-items:center;gap:8px;}
 .tbar-user{font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);}
-.tbar-av{width:29px;height:29px;background:linear-gradient(135deg,var(--pg),#059669);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.78rem;color:#fff;cursor:pointer;}
+.tbar-av{width:29px;height:29px;background:linear-gradient(135deg,var(--pg),#059669);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.78rem;color:#fff;cursor:pointer;overflow:hidden;position:relative;flex-shrink:0;}
+.tbar-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;}
 .hbg{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:4px;}
 .hbg span{display:block;width:16px;height:2px;background:var(--gold);}
-/* SIDEBAR */
+
+/* ── SIDEBAR ── */
 .sb{position:fixed;top:0;left:-278px;width:278px;height:100vh;background:var(--obs3);border-right:1px solid rgba(16,185,129,0.15);z-index:2000;transition:left 0.3s;overflow-y:auto;}
 .sb.on{left:0;}
 .sb-ov{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1999;display:none;}
@@ -45,8 +58,9 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-he
 .sb-h{padding:15px;border-bottom:1px solid rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:space-between;}
 .sb-logo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.1em;color:var(--pg);}
 .sb-x{background:none;border:none;color:var(--cd);font-size:0.95rem;cursor:pointer;}
-.sb-u{padding:13px 15px;border-bottom:1px solid rgba(16,185,129,0.15);}
-.sb-av{width:40px;height:40px;background:linear-gradient(135deg,var(--pg),#059669);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.95rem;color:#fff;margin-bottom:6px;}
+.sb-u{padding:13px 15px;border-bottom:1px solid rgba(16,185,129,0.15);display:flex;align-items:center;gap:10px;}
+.sb-av{width:44px;height:44px;background:linear-gradient(135deg,var(--pg),#059669);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1rem;color:#fff;flex-shrink:0;overflow:hidden;position:relative;}
+.sb-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;}
 .sb-nm{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);margin-bottom:2px;}
 .sb-role{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.09em;color:#fff;background:var(--pg);padding:2px 6px;}
 .sb-cat{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.08em;color:var(--pg);border:1px solid rgba(16,185,129,0.3);padding:2px 6px;margin-left:3px;}
@@ -55,24 +69,41 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-he
 .sb-lnk{display:flex;align-items:center;gap:8px;padding:9px 15px;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.73rem;color:var(--cd);transition:all 0.2s;border-left:3px solid transparent;}
 .sb-lnk:hover,.sb-lnk.on{color:var(--pg);background:var(--pg2);border-left-color:var(--pg);}
 .sb-ic{font-size:0.85rem;width:15px;text-align:center;}
-/* MAIN */
-.main{padding:62px 14px 32px;}
+.sb-logout{color:var(--err)!important;}
+.sb-logout:hover{background:rgba(239,68,68,0.06)!important;border-left-color:var(--err)!important;}
+
+/* ── MAIN ── */
+.main{padding:62px 14px 80px;}
 .view{display:none;}.view.on{display:block;}
-/* WELCOME */
+
+/* ── BOTTOM NAV ── */
+.bnav{position:fixed;bottom:0;left:0;right:0;height:64px;z-index:600;background:rgba(7,7,13,0.97);border-top:1px solid rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:space-around;}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 10px;border-radius:10px;min-width:48px;transition:background 0.2s;}
+.bn.on{background:rgba(16,185,129,0.1);}
+.bn-ic{font-size:1.1rem;line-height:1;}
+.bn-lb{font-family:'Bebas Neue',sans-serif;font-size:0.48rem;letter-spacing:0.12em;color:var(--cd);}
+.bn.on .bn-lb{color:var(--pg);}
+
+/* ── WELCOME BAR ── */
 .wbar{background:linear-gradient(135deg,rgba(16,185,129,0.09),rgba(16,185,129,0.03));border:1px solid rgba(16,185,129,0.2);padding:15px;margin-bottom:15px;display:flex;align-items:center;gap:10px;}
-.wi{font-size:1.5rem;}.wh{font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:var(--ch);}
+.wi{font-size:1.5rem;}
+.wh{font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:var(--ch);}
 .ws{font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);margin-top:2px;}
-/* STATS */
+
+/* ── STATS ── */
 .srow{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px;}
 .sbox{background:var(--pg2);border:1px solid rgba(16,185,129,0.15);padding:10px;text-align:center;}
 .snum{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--pg);}
 .slbl{font-family:'Inter',sans-serif;font-size:0.5rem;color:var(--cd);letter-spacing:0.08em;text-transform:uppercase;margin-top:1px;}
-/* SECTION HEAD */
+
+/* ── SECTION HEAD ── */
 .sh{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--pg);margin-bottom:10px;display:flex;align-items:center;gap:5px;}
 .sh::after{content:'';flex:1;height:1px;background:rgba(16,185,129,0.15);}
-/* NOTICE */
+
+/* ── NOTICE ── */
 .notice{background:var(--pg2);border:1px solid rgba(16,185,129,0.2);border-left:3px solid var(--pg);padding:10px 12px;margin-bottom:12px;font-family:'Inter',sans-serif;font-size:0.7rem;color:#6EE7B7;}
-/* FORM */
+
+/* ── FORM ── */
 .fs,.fi2{width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--gbr);color:var(--ch);font-family:'Inter',sans-serif;font-size:0.8rem;outline:none;transition:all 0.3s;}
 .fi2:focus,.fs:focus{border-color:var(--pg);}
 .fi2::placeholder{color:rgba(189,181,166,0.3);}
@@ -81,327 +112,908 @@ body{background:var(--obs);color:var(--ch);font-family:'Inter',sans-serif;min-he
 .aform-t{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.6rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
 .fg2{margin-bottom:11px;}
 .fl2{font-family:'Montserrat',sans-serif;font-size:0.56rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--cd);margin-bottom:5px;display:block;}
-.btn-g{background:linear-gradient(135deg,var(--gold),var(--gg));color:var(--obs);clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);}
-/* TABLE */
+.btn-pg2{background:linear-gradient(135deg,var(--pg),#059669);color:#fff;font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.67rem;letter-spacing:0.15em;text-transform:uppercase;padding:11px;border:none;cursor:pointer;width:100%;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);transition:opacity 0.2s;}
+.btn-pg2:disabled{opacity:0.5;cursor:not-allowed;}
+.btn-g{background:linear-gradient(135deg,var(--gold),var(--gg));color:var(--obs);font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.67rem;letter-spacing:0.15em;text-transform:uppercase;padding:11px;border:none;cursor:pointer;width:100%;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);transition:opacity 0.2s;}
+.btn-g:disabled{opacity:0.5;cursor:not-allowed;}
+
+/* ── TABLE ── */
 .dtwrap{overflow-x:auto;}
 .dt{width:100%;border-collapse:collapse;font-size:0.68rem;}
 .dt th{font-family:'Montserrat',sans-serif;font-size:0.52rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:var(--pg);padding:7px 8px;border-bottom:1px solid rgba(16,185,129,0.15);text-align:left;white-space:nowrap;}
 .dt td{font-family:'Inter',sans-serif;font-size:0.67rem;color:var(--cd);padding:7px 8px;border-bottom:1px solid rgba(255,255,255,0.03);vertical-align:middle;}
 .dt tr:hover td{color:var(--ch);}
-/* TAGS */
+
+/* ── TAGS ── */
 .tag{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.08em;padding:2px 5px;}
 .tg{background:rgba(255,184,0,0.12);color:var(--gold);}
 .tok{background:rgba(34,197,94,0.12);color:var(--ok);}
 .twarn{background:rgba(245,158,11,0.12);color:var(--warn);}
 .terr{background:rgba(239,68,68,0.12);color:var(--err);}
-/* POSTS */
+
+/* ── POSTS ── */
 .pcard{background:var(--gb);border:1px solid var(--gbr);padding:13px;margin-bottom:7px;}
 .ph{display:flex;align-items:center;gap:7px;margin-bottom:7px;}
 .pav{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.72rem;color:var(--obs);flex-shrink:0;}
 .pau{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.7rem;color:var(--ch);}
 .pt{font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--cd);}
 .pbody{font-family:'Inter',sans-serif;font-size:0.72rem;color:var(--cd);line-height:1.6;}
-/* MSG */
+
+/* ── MSG ── */
 .msg-card{background:var(--gb);border:1px solid rgba(16,185,129,0.15);padding:12px;margin-bottom:7px;}
-.msg-from{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;color:var(--pg);margin-bottom:3px;}
-.msg-body{font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);line-height:1.5;}
-/* BTN SMALL */
-.btn-sm{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.55rem;letter-spacing:0.08em;padding:5px 10px;border:none;cursor:pointer;text-transform:uppercase;}
-.btn-ok{background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.3);color:var(--ok);}
-.btn-d{background:rgba(239,68,68,0.09);border:1px solid rgba(239,68,68,0.25);color:var(--err);}
-/* TOAST */
-.toast{position:fixed;bottom:16px;right:12px;z-index:9999;background:var(--obs3);border:1px solid var(--gbr);padding:10px 14px;font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--ch);transform:translateY(80px);opacity:0;transition:all 0.3s;pointer-events:none;max-width:270px;}
-.toast.on{transform:translateY(0);opacity:1;}
-.toast.success{border-color:rgba(34,197,94,0.4);color:var(--ok);}
-.toast.error{border-color:rgba(239,68,68,0.4);color:var(--err);}
-.ldr{display:flex;align-items:center;justify-content:center;padding:22px;}
-.lring{width:24px;height:24px;border:3px solid var(--gbr);border-top-color:var(--pg);border-radius:50%;animation:sp 0.8s linear infinite;}
-@keyframes sp{to{transform:rotate(360deg)}}
+.msg-from{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--pg);margin-bottom:4px;}
+.msg-body{font-family:'Inter',sans-serif;font-size:0.7rem;color:var(--cd);line-height:1.6;}
+
+/* ── CELEBRITY GRID ── */
+.celeb-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:14px;}
+.celeb-card{background:var(--gb);border:1px solid var(--gbr);border-radius:6px;overflow:hidden;transition:all 0.25s;cursor:pointer;}
+.celeb-card:hover{border-color:var(--gbri);transform:translateY(-2px);}
+.celeb-photo{height:100px;background:var(--obs2);display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative;overflow:hidden;}
+.celeb-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;}
+.celeb-photo-fallback{position:relative;z-index:1;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--obs);}
+.celeb-info{padding:9px;}
+.celeb-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.7rem;color:var(--ch);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.celeb-cat{font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.12em;color:var(--gold);}
+.celeb-meta{font-size:0.56rem;color:var(--cd);margin-top:2px;}
+.celeb-badge{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;background:var(--ab);border-radius:50%;font-size:0.5rem;color:#fff;margin-left:4px;vertical-align:middle;}
+
+/* ── AFFILIATE CARDS ── */
+.aff-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.aff-card{background:var(--gb);border:1px solid var(--gbr);padding:12px;transition:border-color 0.2s;}
+.aff-card:hover{border-color:var(--gbri);}
+.aff-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);margin-bottom:2px;}
+.aff-comm{font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.1em;color:var(--pg);margin-bottom:4px;}
+.aff-desc{font-family:'Inter',sans-serif;font-size:0.6rem;color:var(--cd);line-height:1.5;}
+.aff-btn{display:inline-block;margin-top:8px;font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.1em;color:var(--obs);background:var(--gold);padding:3px 8px;text-decoration:none;transition:opacity 0.2s;}
+.aff-btn:hover{opacity:0.8;}
+
+/* ── COMMUNITY CHIPS ── */
+.comm-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.comm-chip{font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;padding:5px 10px;border:1px solid var(--gbr);color:var(--cd);cursor:pointer;transition:all 0.2s;}
+.comm-chip:hover,.comm-chip.on{color:var(--obs);background:var(--gold);border-color:var(--gold);}
+
+/* ── LOADER / TOAST ── */
+.loader{display:flex;align-items:center;justify-content:center;padding:24px;}
+.lring{width:26px;height:26px;border:3px solid var(--gbr);border-top-color:var(--pg);border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:72px;right:12px;padding:10px 14px;border-radius:20px;font-family:'Inter',sans-serif;font-size:0.7rem;color:#fff;opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none;max-width:260px;z-index:9999;background:var(--obs3);border:1px solid var(--gbr);}
+.toast.on{opacity:1;transform:translateY(0);}
+.toast.success{background:#14532d;border-color:var(--ok);}
+.toast.error{background:#7f1d1d;border-color:var(--err);}
+.toast.info{background:#1e3a5f;border-color:var(--ab);}
 </style>
 </head>
 <body>
 
-<!-- AUTH GATE -->
-<div class="gate on" id="gatePg">
- <div class="gbox">
-  <a class="glogo" href="/"><span>ICON</span>IK</a>
-  <p class="gsub">Sub Admin Control Panel</p>
-  <span class="grole">SUB ADMIN ACCESS</span>
-  <div class="fg"><label class="fl">Your Email</label><input class="fi" type="email" id="ge" placeholder="your@email.com"/></div>
-  <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="gp" placeholder="••••••••"/></div>
-  <button class="btn btn-pg" onclick="doLogin()">Access Sub Admin Panel →</button>
-  <div class="gm" id="gm"></div>
-  <p style="font-family:'Inter',sans-serif;font-size:0.66rem;color:var(--cd);text-align:center;margin-top:12px;"><a href="/app.html" style="color:var(--gold);">← Back to Member Dashboard</a></p>
- </div>
+<!-- ── GATE ── -->
+<div class="gate on" id="gate">
+  <div class="gbox">
+    <span class="glogo">ICONIK</span>
+    <div class="gsub">Sub Admin Access Portal</div>
+    <span class="grole">AUTHORIZED PERSONNEL ONLY</span>
+    <div class="fg">
+      <label class="fl">Email</label>
+      <input class="fi" type="email" id="gEmail" placeholder="your@email.com" autocomplete="email"/>
+    </div>
+    <div class="fg">
+      <label class="fl">Password</label>
+      <input class="fi" type="password" id="gPass" placeholder="••••••••"/>
+    </div>
+    <button class="btn btn-pg" id="gBtn" onclick="doLogin()">Access Panel →</button>
+    <div class="gm" id="gMsg"></div>
+  </div>
 </div>
 
-<!-- SUB ADMIN PANEL -->
+<!-- ── ADMIN PAGE ── -->
 <div class="pg" id="adminPg">
- <div class="tbar">
-  <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;">
-   <a class="tbar-logo" href="/"><span>ICON</span>IK</a>
-   <span class="tbar-badge">SUB ADMIN</span>
-   <span class="tbar-cat" id="tbarCat">—</span>
-  </div>
-  <div class="tbar-right">
-   <div class="tbar-av" id="tbarAv">S</div>
-   <button class="hbg" onclick="togSB()"><span></span><span></span><span></span></button>
-  </div>
- </div>
 
- <div class="sb-ov" id="sbOv" onclick="cSB()"></div>
- <div class="sb" id="sb">
-  <div class="sb-h"><span class="sb-logo">SUB ADMIN</span><button class="sb-x" onclick="cSB()">✕</button></div>
-  <div class="sb-u">
-   <div class="sb-av" id="sbAv">S</div>
-   <div class="sb-nm" id="sbNm">Sub Admin</div>
-   <span class="sb-role">SUB ADMIN</span>
-   <span class="sb-cat" id="sbCat">—</span>
-  </div>
-  <nav class="sb-nav">
-   <div class="sb-sec">My Panel</div>
-   <div class="sb-lnk on" onclick="sV('overview')"><span class="sb-ic">📊</span>Overview</div>
-   <div class="sb-lnk" onclick="sV('members')"><span class="sb-ic">👥</span>Category Members</div>
-   <div class="sb-lnk" onclick="sV('posts')"><span class="sb-ic">📝</span>Create Post</div>
-   <div class="sb-lnk" onclick="sV('messages')"><span class="sb-ic">📩</span>Send Message</div>
-   <div class="sb-lnk" onclick="sV('inbox')"><span class="sb-ic">📬</span>Messages from Admin</div>
-   <div class="sb-sec">More</div>
-   <div class="sb-lnk" onclick="doLogout()"><span class="sb-ic">🚪</span>Sign Out</div>
-  </nav>
- </div>
+  <!-- SIDEBAR OVERLAY -->
+  <div class="sb-ov" id="sbOv" onclick="cSB()"></div>
 
- <div class="main">
-
-  <!-- OVERVIEW -->
-  <div class="view on" id="overviewV">
-   <div class="wbar"><span class="wi">🛡️</span><div><div class="wh" id="wH">Sub Admin Panel</div><div class="ws" id="wS">Your assigned category control</div></div></div>
-   <div class="srow">
-    <div class="sbox"><div class="snum" id="ovMembers">—</div><div class="slbl">Members</div></div>
-    <div class="sbox"><div class="snum" id="ovPosts">—</div><div class="slbl">Posts</div></div>
-    <div class="sbox"><div class="snum" id="ovMsgs">—</div><div class="slbl">Messages Sent</div></div>
-   </div>
-   <div class="notice">🛡️ You are a Sub Admin for <strong id="noticeCategory">your assigned category</strong> in region <strong id="noticeRegion">your region</strong>. You can moderate posts, message members, and manage content in your category.</div>
-   <div class="sh">Quick Actions</div>
-   <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">
-    <div style="background:var(--gb);border:1px solid var(--gbr);padding:12px;cursor:pointer;text-align:center;" onclick="sV('posts')"><div style="font-size:1.4rem;margin-bottom:5px;">📝</div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;color:var(--ch);">Create Post</div></div>
-    <div style="background:var(--gb);border:1px solid var(--gbr);padding:12px;cursor:pointer;text-align:center;" onclick="sV('messages')"><div style="font-size:1.4rem;margin-bottom:5px;">📩</div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;color:var(--ch);">Send Message</div></div>
-    <div style="background:var(--gb);border:1px solid var(--gbr);padding:12px;cursor:pointer;text-align:center;" onclick="sV('members')"><div style="font-size:1.4rem;margin-bottom:5px;">👥</div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;color:var(--ch);">View Members</div></div>
-    <div style="background:var(--gb);border:1px solid var(--gbr);padding:12px;cursor:pointer;text-align:center;" onclick="sV('inbox')"><div style="font-size:1.4rem;margin-bottom:5px;">📬</div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;color:var(--ch);">Admin Messages</div></div>
-   </div>
-  </div>
-
-  <!-- CATEGORY MEMBERS -->
-  <div class="view" id="membersV">
-   <div class="notice">Showing all members who selected <strong id="membersCatLabel">your category</strong>.</div>
-   <input class="fi2" style="margin-bottom:10px;" type="text" id="mSrch" placeholder="Search members..." oninput="fM()"/>
-   <div class="dtwrap">
-    <table class="dt">
-     <thead><tr><th>Name</th><th>Country</th><th>Tier</th><th>Status</th></tr></thead>
-     <tbody id="mTbody"><tr><td colspan="4" style="text-align:center;padding:16px;"><div class="lring" style="margin:auto;"></div></td></tr></tbody>
-    </table>
-   </div>
-  </div>
-
-  <!-- CREATE POST -->
-  <div class="view" id="postsV">
-   <div class="notice">Posts you create will appear in the <strong id="postCatLabel">your category</strong> community feed, shown as "ICONIK".</div>
-   <div class="aform">
-    <div class="aform-t">📝 Create Category Post</div>
-    <div class="fg2"><label class="fl2">Title</label><input class="fi2" type="text" id="poTit" placeholder="Post headline"/></div>
-    <div class="fg2"><label class="fl2">Content <span style="color:var(--err);">*</span></label><input class="fi2" type="text" id="poCon" placeholder="Write your post content..."/></div>
-    <div class="fg2"><label class="fl2">Post Type</label>
-     <select class="fs" id="poTyp"><option value="update">📢 Update</option><option value="news">📰 News</option><option value="event">🎫 Event</option><option value="discussion">💬 Discussion</option></select>
+  <!-- SIDEBAR -->
+  <div class="sb" id="sb">
+    <div class="sb-h">
+      <span class="sb-logo">ICONIK SUB ADMIN</span>
+      <button class="sb-x" onclick="cSB()">✕</button>
     </div>
-    <button class="btn btn-g btn-sm" style="width:100%;margin-top:4px;padding:11px;" onclick="createPost()">Publish Post →</button>
-   </div>
-   <div class="sh">Recent Posts in My Category</div>
-   <div id="catPosts"><div class="ldr"><div class="lring"></div></div></div>
-  </div>
-
-  <!-- SEND MESSAGE -->
-  <div class="view" id="messagesV">
-   <div class="notice">Send messages to members in your category region. Messages appear in their inbox.</div>
-   <div class="aform">
-    <div class="aform-t">📩 Send Message to Members</div>
-    <div class="fg2"><label class="fl2">Send To</label>
-     <select class="fs" id="msgTo"><option value="all">📢 All Members</option><option value="verified">✅ Verified Members Only</option></select>
+    <div class="sb-u">
+      <div class="sb-av" id="sbAvatar">A</div>
+      <div>
+        <div class="sb-nm" id="sbName">Sub Admin</div>
+        <span class="sb-role" id="sbRole">Sub Admin</span>
+        <span class="sb-cat" id="sbCat">—</span>
+      </div>
     </div>
-    <div class="fg2"><label class="fl2">Subject <span style="color:var(--err);">*</span></label><input class="fi2" type="text" id="msgSubj" placeholder="Message subject"/></div>
-    <div class="fg2"><label class="fl2">Message <span style="color:var(--err);">*</span></label><textarea class="fi2" id="msgBody" rows="4" placeholder="Write your message..." style="resize:vertical;"></textarea></div>
-    <button class="btn btn-g btn-sm" style="width:100%;padding:11px;" onclick="sendMsg()">Send Message →</button>
-   </div>
-   <div class="sh">Sent Messages</div>
-   <div id="sentMsgs"><div class="ldr"><div class="lring"></div></div></div>
+    <div class="sb-nav">
+      <div class="sb-sec">Dashboard</div>
+      <div class="sb-lnk on" onclick="sV('overview')"><span class="sb-ic">📊</span>Overview</div>
+      <div class="sb-sec">Content</div>
+      <div class="sb-lnk" onclick="sV('celebs')"><span class="sb-ic">⭐</span>Celebrities</div>
+      <div class="sb-lnk" onclick="sV('posts')"><span class="sb-ic">📝</span>Publish Post</div>
+      <div class="sb-sec">Community</div>
+      <div class="sb-lnk" onclick="sV('members')"><span class="sb-ic">👥</span>Members</div>
+      <div class="sb-lnk" onclick="sV('communities')"><span class="sb-ic">🌍</span>Communities</div>
+      <div class="sb-sec">Revenue</div>
+      <div class="sb-lnk" onclick="sV('monetization')"><span class="sb-ic">💰</span>Monetization</div>
+      <div class="sb-lnk" onclick="sV('affiliates')"><span class="sb-ic">🤝</span>Affiliates</div>
+      <div class="sb-sec">Messages</div>
+      <div class="sb-lnk" onclick="sV('messages')"><span class="sb-ic">📩</span>Send Message</div>
+      <div class="sb-lnk" onclick="sV('inbox')"><span class="sb-ic">📥</span>Inbox</div>
+      <div class="sb-lnk sb-logout" onclick="doLogout()"><span class="sb-ic">🚪</span>Sign Out</div>
+    </div>
   </div>
 
-  <!-- INBOX -->
-  <div class="view" id="inboxV">
-   <div class="sh">Messages from Chief Admin</div>
-   <div id="inboxList"><div class="ldr"><div class="lring"></div></div></div>
+  <!-- TOP BAR -->
+  <div class="tbar">
+    <div style="display:flex;align-items:center;gap:6px;">
+      <span class="tbar-logo">ICONIK<span> ADMIN</span></span>
+      <span class="tbar-badge" id="tbarRole">Sub Admin</span>
+      <span class="tbar-cat" id="tbarCat">—</span>
+    </div>
+    <div class="tbar-right">
+      <span class="tbar-user" id="tbarName"></span>
+      <div class="tbar-av" id="tbarAv">A</div>
+      <button class="hbg" onclick="togSB()"><span></span><span></span><span></span></button>
+    </div>
   </div>
 
- </div>
-</div>
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- ── OVERVIEW ── -->
+    <div class="view on" id="overviewV">
+      <div class="wbar">
+        <span class="wi">🛡️</span>
+        <div>
+          <div class="wh" id="welcomeMsg">Welcome, Sub Admin</div>
+          <div class="ws" id="welcomeSub">Managing your assigned community</div>
+        </div>
+      </div>
+      <div class="srow">
+        <div class="sbox"><div class="snum" id="ovMembers">—</div><div class="slbl">Members</div></div>
+        <div class="sbox"><div class="snum" id="ovCelebs">—</div><div class="slbl">Celebrities</div></div>
+        <div class="sbox"><div class="snum" id="ovPosts">—</div><div class="slbl">Posts</div></div>
+      </div>
+      <div class="sh">Quick Actions</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
+        <button class="btn-g" onclick="sV('celebs')">⭐ Celebrities</button>
+        <button class="btn-pg2" onclick="sV('posts')">📝 Publish Post</button>
+        <button class="btn-g" onclick="sV('members')">👥 Members</button>
+        <button class="btn-pg2" onclick="sV('messages')">📩 Message</button>
+      </div>
+      <div class="sh">Recent Members</div>
+      <div id="recentMembers"><div class="loader"><div class="lring"></div></div></div>
+    </div>
+
+    <!-- ── CELEBRITIES ── -->
+    <div class="view" id="celebsV">
+      <div class="wbar"><span class="wi">⭐</span><div><div class="wh">Celebrity Profiles</div><div class="ws">View & manage icons in your community</div></div></div>
+
+      <div class="notice">📌 Celebrity photos load from Cloudinary. Make sure photos are uploaded via the Chief Admin panel first.</div>
+
+      <!-- Search & Filter -->
+      <input class="fi2" id="celebSearch" placeholder="Search celebrities..." oninput="filterCelebs()" style="margin-bottom:8px;"/>
+      <div class="comm-chips" id="celebCatFilter">
+        <div class="comm-chip on" data-cat="all" onclick="setCelebCat(this)">All</div>
+        <div class="comm-chip" data-cat="Music" onclick="setCelebCat(this)">🎵 Music</div>
+        <div class="comm-chip" data-cat="Film & TV" onclick="setCelebCat(this)">🎬 Film</div>
+        <div class="comm-chip" data-cat="Sports" onclick="setCelebCat(this)">⚽ Sports</div>
+        <div class="comm-chip" data-cat="Fashion" onclick="setCelebCat(this)">👗 Fashion</div>
+        <div class="comm-chip" data-cat="Fitness & Wellness" onclick="setCelebCat(this)">💪 Wellness</div>
+        <div class="comm-chip" data-cat="Tech & Innovation" onclick="setCelebCat(this)">💻 Tech</div>
+        <div class="comm-chip" data-cat="Beauty" onclick="setCelebCat(this)">💄 Beauty</div>
+        <div class="comm-chip" data-cat="Entertainment" onclick="setCelebCat(this)">🎭 Entertainment</div>
+        <div class="comm-chip" data-cat="Leadership" onclick="setCelebCat(this)">🎓 Leadership</div>
+        <div class="comm-chip" data-cat="Automotive" onclick="setCelebCat(this)">🚗 Auto</div>
+        <div class="comm-chip" data-cat="Food & Culinary" onclick="setCelebCat(this)">🍽️ Food</div>
+        <div class="comm-chip" data-cat="Literature" onclick="setCelebCat(this)">📚 Literature</div>
+        <div class="comm-chip" data-cat="Nature" onclick="setCelebCat(this)">🌿 Nature</div>
+      </div>
+
+      <div class="sh">Celebrities <span id="celebCount" style="font-family:'Inter',sans-serif;font-weight:400;font-size:0.58rem;color:var(--cd);margin-left:4px;"></span></div>
+      <div class="celeb-grid" id="celebGrid"><div class="loader" style="grid-column:span 2;"><div class="lring"></div></div></div>
+    </div>
+
+    <!-- ── POSTS ── -->
+    <div class="view" id="postsV">
+      <div class="wbar"><span class="wi">📝</span><div><div class="wh">Publish Post</div><div class="ws">Posts appear in your community feed</div></div></div>
+      <div class="aform">
+        <div class="aform-t">Create New Post</div>
+        <div class="fg2"><label class="fl2">Title</label><input class="fi2" id="poTit" placeholder="Post title (optional)"/></div>
+        <div class="fg2"><label class="fl2">Content *</label><textarea class="fi2" id="poCon" rows="4" placeholder="Write your post content..."></textarea></div>
+        <div class="fg2">
+          <label class="fl2">Post Type</label>
+          <select class="fs" id="poTyp">
+            <option value="update">Update</option>
+            <option value="announcement">Announcement</option>
+            <option value="news">News</option>
+            <option value="event">Event</option>
+            <option value="spotlight">Celebrity Spotlight</option>
+          </select>
+        </div>
+        <div class="fg2"><label class="fl2">Image URL (optional)</label><input class="fi2" id="poImg" placeholder="https://..."/></div>
+        <button class="btn-pg2" id="postBtn" onclick="createPost()">Publish Post →</button>
+      </div>
+      <div class="sh">Recent Posts</div>
+      <div id="catPosts"><div class="loader"><div class="lring"></div></div></div>
+    </div>
+
+    <!-- ── MEMBERS ── -->
+    <div class="view" id="membersV">
+      <div class="wbar"><span class="wi">👥</span><div><div class="wh">Community Members</div><div class="ws" id="membersSub">Members in your community</div></div></div>
+      <input class="fi2" id="mSrch" placeholder="Search by name or country..." oninput="fM()" style="margin-bottom:10px;"/>
+      <div class="sh">Members <span id="memberCount" style="font-family:'Inter',sans-serif;font-weight:400;font-size:0.58rem;color:var(--cd);margin-left:4px;"></span></div>
+      <div class="dtwrap">
+        <table class="dt">
+          <thead><tr><th>Name</th><th>Country</th><th>Tier</th><th>Status</th></tr></thead>
+          <tbody id="mTbody"><tr><td colspan="4" style="text-align:center;padding:16px;"><div class="lring" style="margin:auto;"></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── COMMUNITIES ── -->
+    <div class="view" id="communitiesV">
+      <div class="wbar"><span class="wi">🌍</span><div><div class="wh">All 13 Communities</div><div class="ws">ICONIK Global Fan Ecosystem</div></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="pcard" style="background:var(--gb);border:1px solid var(--gbr);padding:12px;">
+          <div style="font-size:1.4rem;margin-bottom:4px;">🎵</div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">Music</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:2px;">Membership tiers</div>
+        </div>
+        <div class="pcard" style="background:var(--gb);border:1px solid var(--gbr);padding:12px;">
+          <div style="font-size:1.4rem;margin-bottom:4px;">🎬</div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">Film & TV</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:2px;">Membership tiers</div>
+        </div>
+        <div class="pcard" style="background:var(--gb);border:1px solid var(--gbr);padding:12px;">
+          <div style="font-size:1.4rem;margin-bottom:4px;">⚽</div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">Sports</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:2px;">Membership + Sponsorships</div>
+        </div>
+        <div class="pcard" style="background:var(--gb);border:1px solid var(--gbr);padding:12px;">
+          <div style="font-size:1.4rem;margin-bottom:4px;">📚</div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">Literature</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:2px;">Affiliate (books/courses)</div>
+        </div>
+        <div class="pcard" style="background:var(--gb);border:1px solid var(--gbr);padding:12px;">
+          <div style="font-size:1.4rem;margin-bottom:4px;">🌿</div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">Nature & Exploration</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:2px;">Affiliate + Sponsorships</div>
+        </div>
+        <div class="pcard" style="background:var(--gb);border:1px solid var(--gbr);padding:12px;">
+          <div style="font-size:1.4rem;margin-bottom:4px;">👗</div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">Fashion</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:2px;">Affiliate + Brand deals</div>
+        </div>
+        <div class="pcard" style="background:var(--gb);border:1px solid var(--gbr);padding:12px;">
+          <div style="font-size:1.4rem;margin-bottom:4px;">🍽️</div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">Food & Culinary</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:2px;">Affiliate + Brand deals</div>
+        </div>
+        <div class="pcard" style="background:var(--gb);border:1px solid var(--gbr);padding:12px;">
+          <div style="font-size:1.4rem;margin-bottom:4px;">🚗</div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">Automotive</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:2px;">Affiliate + Sponsorships</div>
+        </div>
+        <div class="pcard" style="background:var(--gb);border:1px solid var(--gbr);padding:12px;">
+          <div style="font-size:1.4rem;margin-bottom:4px;">💻</div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">Tech & Innovation</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:2px;">Affiliate + Ads</div>
+        </div>
+        <div class="pcard" style="background:var(--gb);border:1px solid var(--gbr);padding:12px;">
+          <div style="font-size:1.4rem;margin-bottom:4px;">🎭</div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">Entertainment</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:2px;">Membership tiers</div>
+        </div>
+        <div class="pcard" style="background:var(--gb);border:1px solid var(--gbr);padding:12px;">
+          <div style="font-size:1.4rem;margin-bottom:4px;">🎓</div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">Thought Leadership</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:2px;">Membership + Events</div>
+        </div>
+        <div class="pcard" style="background:var(--gb);border:1px solid var(--gbr);padding:12px;">
+          <div style="font-size:1.4rem;margin-bottom:4px;">💄</div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">Beauty & Wellness</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:2px;">Affiliate + Ads</div>
+        </div>
+        <div class="pcard" style="background:var(--gb);border:1px solid var(--gbr);padding:12px;grid-column:span 2;border-color:rgba(255,184,0,0.3);">
+          <div style="font-size:1.4rem;margin-bottom:4px;">💪</div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--gold);">Fitness, Health & Wellness 🔥</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:2px;">Affiliate + Ads + Marketplace + Partners</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MONETIZATION ── -->
+    <div class="view" id="monetizationV">
+      <div class="wbar"><span class="wi">💰</span><div><div class="wh">Monetization Dashboard</div><div class="ws">Revenue streams & membership tiers</div></div></div>
+
+      <div class="sh">Membership Tiers Revenue</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
+        <div class="pcard" style="background:var(--gb);border:1px solid var(--gbr);padding:12px;text-align:center;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--cd);margin-bottom:2px;">Fan Member</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--ch);">FREE</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:4px;">Base community access</div>
+        </div>
+        <div class="pcard" style="background:var(--gb);border:1px solid var(--gbr);padding:12px;text-align:center;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--cd);margin-bottom:2px;">VIP Bronze</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#CD7F32;">$5<span style="font-size:0.8rem;">/mo</span></div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:4px;">Enhanced features</div>
+        </div>
+        <div class="pcard" style="background:rgba(192,192,192,0.08);border:1px solid rgba(192,192,192,0.3);padding:12px;text-align:center;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;color:#C0C0C0;margin-bottom:2px;">VIP Silver ⭐</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#C0C0C0;">$12<span style="font-size:0.8rem;">/mo</span></div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:4px;">VIP chat · Creator fund</div>
+        </div>
+        <div class="pcard" style="background:rgba(255,184,0,0.06);border:1px solid rgba(255,184,0,0.35);padding:12px;text-align:center;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--gold);margin-bottom:2px;">VIP Gold 👑</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--gold);">$25<span style="font-size:0.8rem;">/mo</span></div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);margin-top:4px;">10% commissions · $10 cashback</div>
+        </div>
+      </div>
+
+      <div class="sh">Revenue Streams</div>
+      <div class="pcard" style="background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:8px;">
+        <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);margin-bottom:8px;">💳 Membership Subscriptions</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);line-height:1.7;">Monthly recurring revenue from VIP Bronze ($5), VIP Silver ($12), and VIP Gold ($25) memberships across all 13 communities worldwide.</div>
+      </div>
+      <div class="pcard" style="background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:8px;">
+        <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);margin-bottom:8px;">🏅 ICONIK Verified Partner Badge</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);line-height:1.7;">Coaches, clinics, and brands pay for the "ICONIK Verified Partner" badge — a premium listing that generates recurring monthly income.</div>
+      </div>
+      <div class="pcard" style="background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:8px;">
+        <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);margin-bottom:8px;">🤝 Affiliate Commissions</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);line-height:1.7;">3–20% commissions from Amazon Associates, iHerb, MyProtein, Gymshark, Udemy, Coursera and more. Tracked per click and purchase.</div>
+      </div>
+      <div class="pcard" style="background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:8px;">
+        <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);margin-bottom:8px;">🎫 Events & Tickets</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);line-height:1.7;">Fan events, meet & greets, virtual concerts. Ticketing integration with fan communities per category.</div>
+      </div>
+      <div class="pcard" style="background:var(--gb);border:1px solid var(--gbr);padding:14px;margin-bottom:8px;">
+        <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);margin-bottom:8px;">🏪 Marketplace</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);line-height:1.7;">Fan merchandise, celebrity-endorsed products, wellness supplements. Listed products earn ICONIK a platform commission.</div>
+      </div>
+      <div class="pcard" style="background:rgba(255,184,0,0.05);border:1px solid rgba(255,184,0,0.25);padding:14px;margin-bottom:8px;">
+        <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--gold);margin-bottom:8px;">📢 Creator Fund & Sponsored Content</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--cd);line-height:1.7;">Top creators earn from the ICONIK Creator Fund. Brands pay to sponsor community posts, newsletters, and celebrity features.</div>
+      </div>
+
+      <div class="sh">Wellness Safeguards</div>
+      <div class="notice" style="border-left-color:var(--warn);background:rgba(245,158,11,0.06);">
+        ⚠️ <strong>ICONIK Credibility Shield:</strong> No wellness product goes live without Admin review. Medical professionals must show credentials for Verified badge. All health content carries disclaimer: "ICONIK does not provide medical advice. Consult your healthcare provider."
+      </div>
+    </div>
+
+    <!-- ── AFFILIATES ── -->
+    <div class="view" id="affiliatesV">
+      <div class="wbar"><span class="wi">🤝</span><div><div class="wh">Affiliate Programs</div><div class="ws">Active partnerships & commission rates</div></div></div>
+
+      <div class="notice">💡 All programs below are free to join and start earning from Day 1. Share affiliate links in your community posts to generate income.</div>
+
+      <div class="sh">Core Affiliates</div>
+      <div class="aff-grid">
+        <div class="aff-card">
+          <div class="aff-name">Amazon Associates</div>
+          <div class="aff-comm">3–10% Commission</div>
+          <div class="aff-desc">Fitness equipment, supplements, books, tech gadgets — covers all 13 ICONIK categories.</div>
+          <a class="aff-btn" href="https://affiliate-program.amazon.com" target="_blank" rel="noopener">Join →</a>
+        </div>
+        <div class="aff-card">
+          <div class="aff-name">iHerb Affiliate</div>
+          <div class="aff-comm">5–20% Commission</div>
+          <div class="aff-desc">Herbal, natural & wellness supplements. Perfect for Wellness & Beauty communities.</div>
+          <a class="aff-btn" href="https://iherb.com/info/affiliates" target="_blank" rel="noopener">Join →</a>
+        </div>
+        <div class="aff-card">
+          <div class="aff-name">MyProtein</div>
+          <div class="aff-comm">Up to 8%</div>
+          <div class="aff-desc">Sports nutrition, protein, fitness supplements. Ideal for Fitness & Sports communities.</div>
+          <a class="aff-btn" href="https://www.myprotein.com/affiliates.list" target="_blank" rel="noopener">Join →</a>
+        </div>
+        <div class="aff-card">
+          <div class="aff-name">Gymshark</div>
+          <div class="aff-comm">Up to 10%</div>
+          <div class="aff-desc">Premium fitness apparel. High conversion rate for Fitness & Fashion communities.</div>
+          <a class="aff-btn" href="https://gymshark.com/pages/affiliates" target="_blank" rel="noopener">Join →</a>
+        </div>
+        <div class="aff-card">
+          <div class="aff-name">Udemy</div>
+          <div class="aff-comm">Up to 15%</div>
+          <div class="aff-desc">Online courses for fitness, tech, music, leadership. Covers multiple ICONIK communities.</div>
+          <a class="aff-btn" href="https://www.udemy.com/affiliate" target="_blank" rel="noopener">Join →</a>
+        </div>
+        <div class="aff-card">
+          <div class="aff-name">Coursera</div>
+          <div class="aff-comm">Up to 45%</div>
+          <div class="aff-desc">University-backed courses in tech, leadership, wellness. Premium commissions on paid plans.</div>
+          <a class="aff-btn" href="https://www.coursera.org/affiliates" target="_blank" rel="noopener">Join →</a>
+        </div>
+        <div class="aff-card">
+          <div class="aff-name">Viome / Thorne</div>
+          <div class="aff-comm">Varies 8–15%</div>
+          <div class="aff-desc">Science-based supplements, gut health testing. Medical credibility for Wellness hub.</div>
+          <a class="aff-btn" href="https://www.thorne.com/affiliate" target="_blank" rel="noopener">Join →</a>
+        </div>
+        <div class="aff-card">
+          <div class="aff-name">Skillshare</div>
+          <div class="aff-comm">$7 per signup</div>
+          <div class="aff-desc">Creative classes in music, design, fashion, photography. Great for creative communities.</div>
+          <a class="aff-btn" href="https://www.skillshare.com/affiliates" target="_blank" rel="noopener">Join →</a>
+        </div>
+      </div>
+
+      <div class="sh">New High-Income Affiliates</div>
+      <div class="aff-grid">
+        <div class="aff-card" style="border-color:rgba(255,184,0,0.3);">
+          <div class="aff-name" style="color:var(--gold);">SHEIN / TEMU</div>
+          <div class="aff-comm">10–20%</div>
+          <div class="aff-desc">Fast fashion & lifestyle. Massive appeal for Fashion & Beauty communities globally.</div>
+          <a class="aff-btn" href="https://affiliate.shein.com" target="_blank" rel="noopener">Join →</a>
+        </div>
+        <div class="aff-card" style="border-color:rgba(255,184,0,0.3);">
+          <div class="aff-name" style="color:var(--gold);">NordVPN</div>
+          <div class="aff-comm">Up to 100% + 30%</div>
+          <div class="aff-desc">100% first sale + 30% recurring commissions. Tech & privacy-conscious community members.</div>
+          <a class="aff-btn" href="https://nordvpn.com/affiliate" target="_blank" rel="noopener">Join →</a>
+        </div>
+        <div class="aff-card" style="border-color:rgba(255,184,0,0.3);">
+          <div class="aff-name" style="color:var(--gold);">Booking.com</div>
+          <div class="aff-comm">25–40%</div>
+          <div class="aff-desc">Travel & hotel bookings. Perfect for Nature, Sports & Entertainment touring communities.</div>
+          <a class="aff-btn" href="https://www.booking.com/affiliateprogram" target="_blank" rel="noopener">Join →</a>
+        </div>
+        <div class="aff-card" style="border-color:rgba(255,184,0,0.3);">
+          <div class="aff-name" style="color:var(--gold);">Fiverr Affiliates</div>
+          <div class="aff-comm">$15–150 CPA</div>
+          <div class="aff-desc">Freelance services — music production, design, video editing. Creator & talent communities.</div>
+          <a class="aff-btn" href="https://www.fiverr.com/affiliates" target="_blank" rel="noopener">Join →</a>
+        </div>
+        <div class="aff-card" style="border-color:rgba(255,184,0,0.3);">
+          <div class="aff-name" style="color:var(--gold);">Shopify</div>
+          <div class="aff-comm">$150 per referral</div>
+          <div class="aff-desc">E-commerce platform for celebrity merchandise stores and fan shops. High flat-fee payouts.</div>
+          <a class="aff-btn" href="https://www.shopify.com/affiliates" target="_blank" rel="noopener">Join →</a>
+        </div>
+        <div class="aff-card" style="border-color:rgba(255,184,0,0.3);">
+          <div class="aff-name" style="color:var(--gold);">Audible / Kindle</div>
+          <div class="aff-comm">$5–$10 per signup</div>
+          <div class="aff-desc">Audiobooks & ebooks. Strong fit for Literature & Thought Leadership communities.</div>
+          <a class="aff-btn" href="https://www.amazon.com/gp/associates/join" target="_blank" rel="noopener">Join →</a>
+        </div>
+        <div class="aff-card" style="border-color:rgba(255,184,0,0.3);">
+          <div class="aff-name" style="color:var(--gold);">Fanatics</div>
+          <div class="aff-comm">5–10%</div>
+          <div class="aff-desc">Official sports merchandise & jerseys. Direct fit for Sports & Entertainment communities.</div>
+          <a class="aff-btn" href="https://www.fanatics.com/affiliates" target="_blank" rel="noopener">Join →</a>
+        </div>
+        <div class="aff-card" style="border-color:rgba(255,184,0,0.3);">
+          <div class="aff-name" style="color:var(--gold);">Headspace / Calm</div>
+          <div class="aff-comm">10–30%</div>
+          <div class="aff-desc">Meditation & mental wellness apps. Perfect for Wellness Hub & Mental Health sub-communities.</div>
+          <a class="aff-btn" href="https://www.calm.com/affiliate" target="_blank" rel="noopener">Join →</a>
+        </div>
+      </div>
+
+      <div class="notice" style="margin-top:4px;">
+        🔐 <strong>Wellness Disclaimer:</strong> All health-related affiliate products require Admin verification before promotion. No miracle cure language permitted. All health content must carry ICONIK's medical disclaimer.
+      </div>
+    </div>
+
+    <!-- ── MESSAGES ── -->
+    <div class="view" id="messagesV">
+      <div class="wbar"><span class="wi">📩</span><div><div class="wh">Send Message</div><div class="ws">Reach members in your community</div></div></div>
+      <div class="aform">
+        <div class="aform-t">Compose Message</div>
+        <div class="fg2">
+          <label class="fl2">Send To</label>
+          <select class="fs" id="msgTo">
+            <option value="all">All Members</option>
+            <option value="vip">VIP Members Only</option>
+            <option value="category">My Category Only</option>
+          </select>
+        </div>
+        <div class="fg2"><label class="fl2">Subject *</label><input class="fi2" id="msgSubj" placeholder="Message subject..."/></div>
+        <div class="fg2"><label class="fl2">Message *</label><textarea class="fi2" id="msgBody" rows="4" placeholder="Your message..."></textarea></div>
+        <button class="btn-pg2" id="msgBtn" onclick="sendMsg()">Send Message →</button>
+      </div>
+      <div class="sh">Sent Messages</div>
+      <div id="sentMsgs"><div class="loader"><div class="lring"></div></div></div>
+    </div>
+
+    <!-- ── INBOX ── -->
+    <div class="view" id="inboxV">
+      <div class="wbar"><span class="wi">📥</span><div><div class="wh">Inbox</div><div class="ws">Messages from Chief Admin</div></div></div>
+      <div id="inboxList"><div class="loader"><div class="lring"></div></div></div>
+    </div>
+
+  </div><!-- end .main -->
+
+  <!-- BOTTOM NAV -->
+  <div class="bnav">
+    <div class="bn on" onclick="sV('overview')"><div class="bn-ic">📊</div><div class="bn-lb">Overview</div></div>
+    <div class="bn" onclick="sV('celebs')"><div class="bn-ic">⭐</div><div class="bn-lb">Celebs</div></div>
+    <div class="bn" onclick="sV('posts')"><div class="bn-ic">📝</div><div class="bn-lb">Post</div></div>
+    <div class="bn" onclick="sV('members')"><div class="bn-ic">👥</div><div class="bn-lb">Members</div></div>
+    <div class="bn" onclick="sV('monetization')"><div class="bn-ic">💰</div><div class="bn-lb">Revenue</div></div>
+    <div class="bn" onclick="sV('affiliates')"><div class="bn-ic">🤝</div><div class="bn-lb">Affiliates</div></div>
+  </div>
+
+</div><!-- end #adminPg -->
 
 <div class="toast" id="toast"></div>
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import{getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import{getFirestore,collection,doc,getDoc,getDocs,addDoc,deleteDoc,query,orderBy,limit,where,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import{getAuth,signInWithEmailAndPassword,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import{getFirestore,collection,doc,getDoc,getDocs,addDoc,query,where,orderBy,limit,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const cfg={apiKey:"AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",authDomain:"iconik-global.firebaseapp.com",projectId:"iconik-global",storageBucket:"iconik-global.firebasestorage.app",messagingSenderId:"1040054516979",appId:"1:1040054516979:web:33cd5f07ae8fc146a30b86"};
-const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app);
-let cU=null,saData=null,allM=[];
+const app=initializeApp(cfg);
+const auth=getAuth(app);
+const db=getFirestore(app);
 
+let cU=null,saData=null,allM=[],allCelebs=[],celebCatFilter='all';
+
+// ── SAFE GET ──
+async function sg(ref){
+  try{return await getDocs(ref);}
+  catch(e){console.warn(e);return{empty:true,size:0,forEach:()=>{},docs:[]};}
+}
+
+function toastF(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast on'+(type?' '+type:'');
+  setTimeout(()=>t.className='toast',3500);
+}
+
+// ── LOGIN ──
+window.doLogin=async function(){
+  const email=document.getElementById('gEmail').value.trim();
+  const pass=document.getElementById('gPass').value;
+  const btn=document.getElementById('gBtn');
+  const msg=document.getElementById('gMsg');
+  msg.style.display='none';
+  if(!email||!pass){msg.textContent='Email and password required.';msg.style.display='block';return;}
+  btn.disabled=true;btn.textContent='Verifying...';
+  try{
+    await signInWithEmailAndPassword(auth,email,pass);
+  }catch(e){
+    msg.textContent='Invalid credentials. Try again.';msg.style.display='block';
+    btn.disabled=false;btn.textContent='Access Panel →';
+  }
+};
+
+// ── AUTH STATE ──
 onAuthStateChanged(auth,async u=>{
- if(u){
-  // Verify this user is actually a Sub Admin
-  const saQ=query(collection(db,'subadmins'),where('email','==',u.email));
-  const saSnap=await getDocs(saQ);
-  if(saSnap.empty){await signOut(auth);showGate();toastF('Access denied — Sub Admins only','error');return;}
-  cU=u;saData=saSnap.docs[0].data();
-  showPanel();
- }else{cU=null;saData=null;showGate();}
+  if(!u){
+    document.getElementById('gate').classList.add('on');
+    document.getElementById('adminPg').classList.remove('on');
+    return;
+  }
+  cU=u;
+  try{
+    const d=await getDoc(doc(db,'users',u.uid));
+    if(!d.exists()){await signOut(auth);return;}
+    const data=d.data();
+    const allowed=['Sub Admin','Moderator','Content Manager','admin'];
+    if(!allowed.includes(data.role)&&u.email!=='iconikglobal01@gmail.com'){
+      await signOut(auth);
+      document.getElementById('gMsg').textContent='Access denied. Sub Admin only.';
+      document.getElementById('gMsg').style.display='block';
+      return;
+    }
+    saData={...data,id:u.uid};
+    document.getElementById('gate').classList.remove('on');
+    document.getElementById('adminPg').classList.add('on');
+    initUI();
+    lOverview();
+    lCelebs();
+    lCatPosts();
+    lMembers();
+    lSentMsgs();
+    lInbox();
+  }catch(e){console.error(e);}
 });
 
-function showGate(){document.getElementById('gatePg').classList.add('on');document.getElementById('adminPg').classList.remove('on');}
-function showPanel(){
- document.getElementById('gatePg').classList.remove('on');document.getElementById('adminPg').classList.add('on');
- const nm=saData?.name||cU.displayName||'Sub Admin',cat=saData?.category||'—',reg=saData?.region||'—';
- const l=nm.charAt(0).toUpperCase();
- document.getElementById('tbarAv').textContent=l;document.getElementById('tbarCat').textContent=cat;
- document.getElementById('sbAv').textContent=l;document.getElementById('sbNm').textContent=nm;
- document.getElementById('sbCat').textContent=cat;
- document.getElementById('wH').textContent=`Welcome, ${nm.split(' ')[0]}!`;
- document.getElementById('wS').textContent=`${cat} · ${reg} Region`;
- document.getElementById('noticeCategory').textContent=cat;
- document.getElementById('noticeRegion').textContent=reg;
- document.getElementById('membersCatLabel').textContent=cat;
- document.getElementById('postCatLabel').textContent=cat;
- lOverview();
+// ── INIT UI ──
+function initUI(){
+  const nm=saData?.name||'Sub Admin';
+  const role=saData?.role||'Sub Admin';
+  const cat=saData?.category||'—';
+  // Topbar
+  document.getElementById('tbarName').textContent=nm;
+  document.getElementById('tbarRole').textContent=role;
+  document.getElementById('tbarCat').textContent=cat;
+  // Topbar avatar
+  const tav=document.getElementById('tbarAv');
+  tav.textContent=nm.charAt(0).toUpperCase();
+  if(saData?.profilePic&&saData.profilePic.startsWith('http')){
+    const img=document.createElement('img');
+    img.src=saData.profilePic;
+    img.onerror=()=>img.remove();
+    tav.appendChild(img);
+  }
+  // Sidebar
+  document.getElementById('sbName').textContent=nm;
+  document.getElementById('sbRole').textContent=role;
+  document.getElementById('sbCat').textContent=cat;
+  const sav=document.getElementById('sbAvatar');
+  sav.textContent=nm.charAt(0).toUpperCase();
+  if(saData?.profilePic&&saData.profilePic.startsWith('http')){
+    const img=document.createElement('img');
+    img.src=saData.profilePic;
+    img.onerror=()=>img.remove();
+    sav.appendChild(img);
+  }
+  // Welcome
+  document.getElementById('welcomeMsg').textContent=`Welcome, ${nm}`;
+  document.getElementById('welcomeSub').textContent=`Managing ${cat!=='—'?cat+' community':'your assigned community'}`;
+  document.getElementById('membersSub').textContent=cat!=='—'?`Members in ${cat} community`:'All community members';
 }
 
-window.doLogin=async function(){
- const e=document.getElementById('ge').value.trim(),p=document.getElementById('gp').value,m=document.getElementById('gm');
- if(!e||!p){m.textContent='Please fill all fields';m.style.display='block';return;}
- try{m.style.display='none';await signInWithEmailAndPassword(auth,e,p);}
- catch(er){const msgs={'auth/user-not-found':'No account found','auth/wrong-password':'Wrong password','auth/invalid-credential':'Invalid credentials','auth/too-many-requests':'Too many attempts'};m.textContent=msgs[er.code]||'Login failed';m.style.display='block';}
-};
-window.doLogout=async function(){await signOut(auth);cSB();};
-
+// ── OVERVIEW ──
 async function lOverview(){
- try{
-  const[ms,ps,msgs]=await Promise.all([getDocs(collection(db,'users')),getDocs(collection(db,'posts')),getDocs(query(collection(db,'messages'),where('fromId','==',cU.uid)))]);
-  // Filter members who chose this category
-  let catMembers=0;ms.forEach(d=>{if((d.data().categories||[]).includes(saData?.category))catMembers++;});
-  document.getElementById('ovMembers').textContent=catMembers;
-  document.getElementById('ovPosts').textContent=ps.size;
-  document.getElementById('ovMsgs').textContent=msgs.size;
- }catch(e){console.error(e);}
+  try{
+    const[ms,cs,ps]=await Promise.all([
+      sg(query(collection(db,'users'),limit(200))),
+      sg(query(collection(db,'celebrities'),limit(200))),
+      sg(query(collection(db,'posts'),limit(200)))
+    ]);
+    document.getElementById('ovMembers').textContent=ms.size||0;
+    document.getElementById('ovCelebs').textContent=cs.size||0;
+    document.getElementById('ovPosts').textContent=ps.size||0;
+    // Recent members
+    const recent=[];
+    ms.forEach(d=>recent.push({id:d.id,...d.data()}));
+    recent.sort((a,b)=>(b.joinedAt?.seconds||0)-(a.joinedAt?.seconds||0));
+    const el=document.getElementById('recentMembers');
+    el.innerHTML=recent.slice(0,5).map(m=>{
+      const nm=xe(m.name||'Member');
+      const photo=m.profilePic&&m.profilePic.startsWith('http')
+        ?`<img src="${xe(m.profilePic)}" onerror="this.style.display='none'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`:'';
+      return`<div style="background:var(--gb);border:1px solid var(--gbr);padding:11px;display:flex;align-items:center;gap:10px;margin-bottom:7px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gg));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--obs);position:relative;flex-shrink:0;overflow:hidden;">${photo}${nm.charAt(0)}</div>
+        <div>
+          <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);">${nm}</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);">${xe(m.country||'—')} · <span class="tag tg">${xe(m.tier||'Fan')}</span></div>
+        </div>
+      </div>`;
+    }).join('')||'<div style="color:var(--cd);font-size:0.72rem;padding:10px;">No members yet.</div>';
+  }catch(e){console.error(e);}
+}
+window.lOverview=lOverview;
+
+// ── CELEBRITIES ── (FIXED WITH REAL PHOTO DISPLAY)
+async function lCelebs(){
+  try{
+    const snap=await sg(query(collection(db,'celebrities'),limit(100)));
+    allCelebs=[];
+    snap.forEach(d=>allCelebs.push({id:d.id,...d.data()}));
+    renderCelebs();
+  }catch(e){console.error(e);}
 }
 
+function renderCelebs(){
+  const grid=document.getElementById('celebGrid');
+  let list=[...allCelebs];
+  // Category filter
+  if(celebCatFilter!=='all'){
+    list=list.filter(c=>c.category===celebCatFilter);
+  }
+  // Search filter
+  const q=document.getElementById('celebSearch')?.value?.toLowerCase()||'';
+  if(q)list=list.filter(c=>(c.name||'').toLowerCase().includes(q)||(c.category||'').toLowerCase().includes(q));
+  document.getElementById('celebCount').textContent=`(${list.length})`;
+  if(!list.length){
+    grid.innerHTML=`<div style="grid-column:span 2;text-align:center;color:var(--cd);padding:24px;font-size:0.72rem;">No celebrities found in this category yet.</div>`;
+    return;
+  }
+  grid.innerHTML=list.map(c=>{
+    // ── PHOTO DISPLAY LOGIC ──
+    const photoUrl=c.photo||c.photoUrl||c.imageUrl||'';
+    const hasPhoto=photoUrl&&photoUrl.startsWith('http');
+    const initials=(c.stageName||c.name||'?').charAt(0).toUpperCase();
+    const photoHTML=hasPhoto
+      ?`<img src="${xe(photoUrl)}" alt="${xe(c.name||'')}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:2;"/>
+        <div class="celeb-photo-fallback" style="display:none;">${initials}</div>`
+      :`<div class="celeb-photo-fallback">${initials}</div>`;
+    // Badge
+    const isVerified=c.status==='verified'||c.status==='Active'||c.status==='Legend';
+    return`<div class="celeb-card">
+      <div class="celeb-photo">${photoHTML}</div>
+      <div class="celeb-info">
+        <div class="celeb-name">${xe(c.stageName||c.name||'—')}${isVerified?`<span class="celeb-badge">✓</span>`:''}</div>
+        <div class="celeb-cat">${xe(c.category||'—')}</div>
+        <div class="celeb-meta">${xe(c.country||'—')} · ${xe(c.followers||'—')}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window.filterCelebs=function(){renderCelebs();};
+window.setCelebCat=function(el){
+  document.querySelectorAll('#celebCatFilter .comm-chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  celebCatFilter=el.dataset.cat||'all';
+  renderCelebs();
+};
+
+// ── MEMBERS ──
 async function lMembers(){
- try{
-  const s=await getDocs(collection(db,'users'));
-  allM=[];
-  s.forEach(d=>{const data=d.data();if((data.categories||[]).includes(saData?.category))allM.push({id:d.id,...data});});
-  rMT(allM);
- }catch{}
+  try{
+    const s=await sg(query(collection(db,'users'),limit(200)));
+    allM=[];
+    s.forEach(d=>allM.push({id:d.id,...d.data()}));
+    document.getElementById('memberCount').textContent=`(${allM.length})`;
+    rMT(allM);
+  }catch(e){console.error(e);}
 }
-function rMT(ms){
- const el=document.getElementById('mTbody');
- el.innerHTML=ms.length?ms.map(m=>{
-  const vs=m.verificationStatus||'pending',vc=vs==='verified'?'tok':vs==='rejected'?'terr':'twarn';
-  return`<tr><td><strong style="color:var(--ch);">${m.name||'—'}</strong></td><td>${m.country||'—'}</td><td><span class="tag tg">${m.tier||'Fan'}</span></td><td><span class="tag ${vc}">${vs}</span></td></tr>`;
- }).join(''):`<tr><td colspan="4" style="text-align:center;padding:16px;color:var(--cd);">No members in this category yet</td></tr>`;
-}
-window.fM=function(){const q=document.getElementById('mSrch').value.toLowerCase();rMT(allM.filter(m=>m.name?.toLowerCase().includes(q)||m.country?.toLowerCase().includes(q)));};
 
+function rMT(ms){
+  const el=document.getElementById('mTbody');
+  el.innerHTML=ms.length?ms.map(m=>{
+    const vs=m.verificationStatus||'pending';
+    const vc=vs==='verified'?'tok':vs==='rejected'?'terr':'twarn';
+    return`<tr>
+      <td><strong style="color:var(--ch);">${xe(m.name||'—')}</strong></td>
+      <td>${xe(m.country||'—')}</td>
+      <td><span class="tag tg">${xe(m.tier||'Fan')}</span></td>
+      <td><span class="tag ${vc}">${vs}</span></td>
+    </tr>`;
+  }).join(''):`<tr><td colspan="4" style="text-align:center;padding:16px;color:var(--cd);">No members yet</td></tr>`;
+}
+window.fM=function(){
+  const q=document.getElementById('mSrch').value.toLowerCase();
+  rMT(allM.filter(m=>m.name?.toLowerCase().includes(q)||m.country?.toLowerCase().includes(q)));
+};
+
+// ── POSTS ──
 window.createPost=async function(){
- const con=document.getElementById('poCon').value.trim();
- if(!con){toastF('Content required','error');return;}
- try{
-  await addDoc(collection(db,'posts'),{
-   title:document.getElementById('poTit').value.trim(),content:con,
-   category:saData?.category||'',postType:document.getElementById('poTyp').value,
-   authorName:'ICONIK',authorRole:'subadmin',authorId:cU.uid,
-   subAdminCategory:saData?.category,subAdminRegion:saData?.region,
-   likes:0,likedBy:[],commentCount:0,createdAt:serverTimestamp()
-  });
-  toastF('Post published! 📝','success');
-  document.getElementById('poTit').value='';document.getElementById('poCon').value='';
-  lCatPosts();
- }catch{toastF('Error posting','error');}
+  const con=document.getElementById('poCon').value.trim();
+  if(!con){toastF('Content required','error');return;}
+  const btn=document.getElementById('postBtn');
+  btn.disabled=true;btn.textContent='Publishing...';
+  try{
+    await addDoc(collection(db,'posts'),{
+      title:document.getElementById('poTit').value.trim(),
+      content:con,
+      imageUrl:document.getElementById('poImg').value.trim(),
+      category:saData?.category||'',
+      postType:document.getElementById('poTyp').value,
+      authorName:saData?.name||'Sub Admin',
+      authorRole:saData?.role||'Sub Admin',
+      authorId:cU.uid,
+      subAdminCategory:saData?.category,
+      likes:0,likedBy:[],commentCount:0,
+      createdAt:serverTimestamp()
+    });
+    toastF('Post published! 📝','success');
+    document.getElementById('poTit').value='';
+    document.getElementById('poCon').value='';
+    document.getElementById('poImg').value='';
+    lCatPosts();
+  }catch(e){toastF('Error posting','error');console.error(e);}
+  btn.disabled=false;btn.textContent='Publish Post →';
 };
 
 async function lCatPosts(){
- const el=document.getElementById('catPosts');
- try{
-  const q=query(collection(db,'posts'),orderBy('createdAt','desc'),limit(10));
-  const s=await getDocs(q);
-  if(s.empty){el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:12px;">No posts yet</p></div>`;return;}
-  el.innerHTML='';
-  s.forEach(d=>{
-   const p=d.data(),t=p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString():'—';
-   el.innerHTML+=`<div class="pcard"><div class="ph"><div class="pav">★</div><div><div class="pau">ICONIK ${p.category?`· ${p.category}`:''}</div><div class="pt">${t}</div></div></div>${p.title?`<div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);margin-bottom:4px;">${p.title}</div>`:''}<div class="pbody">${p.content}</div></div>`;
-  });
- }catch{}
+  const el=document.getElementById('catPosts');
+  try{
+    const s=await sg(query(collection(db,'posts'),orderBy('createdAt','desc'),limit(15)));
+    if(s.empty){el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:12px;">No posts yet</p></div>`;return;}
+    el.innerHTML='';
+    s.forEach(d=>{
+      const p=d.data(),t=p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString():'—';
+      el.innerHTML+=`<div class="pcard">
+        <div class="ph">
+          <div class="pav">★</div>
+          <div>
+            <div class="pau">ICONIK${p.category?` · ${xe(p.category)}`:''}</div>
+            <div class="pt">${t}${p.postType?` · ${xe(p.postType)}`:''}</div>
+          </div>
+        </div>
+        ${p.title?`<div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--ch);margin-bottom:4px;">${xe(p.title)}</div>`:''}
+        <div class="pbody">${xe(p.content||'').substring(0,200)}</div>
+        ${p.imageUrl&&p.imageUrl.startsWith('http')?`<img src="${xe(p.imageUrl)}" style="width:100%;max-height:140px;object-fit:cover;border-radius:4px;margin-top:8px;" onerror="this.style.display='none'" loading="lazy"/>` :''}
+      </div>`;
+    });
+  }catch(e){el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:12px;">Loading posts...</p></div>`;}
 }
 
+// ── MESSAGES ──
 window.sendMsg=async function(){
- const subj=document.getElementById('msgSubj').value.trim(),body=document.getElementById('msgBody').value.trim();
- if(!subj||!body){toastF('Subject and message required','error');return;}
- try{
-  await addDoc(collection(db,'messages'),{
-   to:document.getElementById('msgTo').value,subject:subj,content:body,
-   fromName:saData?.name||'Sub Admin',fromRole:`Sub Admin · ${saData?.category}`,
-   fromId:cU.uid,category:saData?.category,region:saData?.region,
-   createdAt:serverTimestamp()
-  });
-  toastF('Message sent! 📩','success');
-  document.getElementById('msgSubj').value='';document.getElementById('msgBody').value='';
-  lSentMsgs();
- }catch{toastF('Error sending','error');}
+  const subj=document.getElementById('msgSubj').value.trim();
+  const body=document.getElementById('msgBody').value.trim();
+  if(!subj||!body){toastF('Subject and message required','error');return;}
+  const btn=document.getElementById('msgBtn');
+  btn.disabled=true;btn.textContent='Sending...';
+  try{
+    await addDoc(collection(db,'messages'),{
+      to:document.getElementById('msgTo').value,
+      subject:subj,content:body,
+      fromName:saData?.name||'Sub Admin',
+      fromRole:`Sub Admin · ${saData?.category||''}`,
+      fromId:cU.uid,
+      category:saData?.category,
+      createdAt:serverTimestamp()
+    });
+    toastF('Message sent! 📩','success');
+    document.getElementById('msgSubj').value='';
+    document.getElementById('msgBody').value='';
+    lSentMsgs();
+  }catch(e){toastF('Error sending','error');}
+  btn.disabled=false;btn.textContent='Send Message →';
 };
 
 async function lSentMsgs(){
- const el=document.getElementById('sentMsgs');
- try{
-  const q=query(collection(db,'messages'),where('fromId','==',cU.uid),orderBy('createdAt','desc'),limit(10));
-  const s=await getDocs(q);
-  if(s.empty){el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:12px;">No messages sent yet</p></div>`;return;}
-  el.innerHTML='';
-  s.forEach(d=>{const m=d.data(),t=m.createdAt?.toDate?m.createdAt.toDate().toLocaleDateString():'—';el.innerHTML+=`<div class="msg-card"><div class="msg-from">${m.subject||'—'} <span style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);font-weight:400;">· ${t}</span></div><div class="msg-body">${m.content}</div></div>`;});
- }catch{}
+  const el=document.getElementById('sentMsgs');
+  try{
+    const s=await sg(query(collection(db,'messages'),where('fromId','==',cU?.uid||''),limit(10)));
+    if(s.empty){el.innerHTML=`<div class="msg-card"><div class="msg-body" style="text-align:center;padding:10px;">No messages sent yet.</div></div>`;return;}
+    el.innerHTML='';
+    s.forEach(d=>{
+      const m=d.data(),t=m.createdAt?.toDate?m.createdAt.toDate().toLocaleDateString():'—';
+      el.innerHTML+=`<div class="msg-card">
+        <div class="msg-from">${xe(m.subject||'Message')} <span style="font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--cd);font-weight:400;">· ${t}</span></div>
+        <div class="msg-body">${xe(m.content||'')}</div>
+      </div>`;
+    });
+  }catch(e){el.innerHTML=`<div class="msg-card"><div class="msg-body" style="text-align:center;">Error loading messages.</div></div>`;}
 }
 
 async function lInbox(){
- const el=document.getElementById('inboxList');
- try{
-  const q=query(collection(db,'messages'),orderBy('createdAt','desc'),limit(15));
-  const s=await getDocs(q);
-  // Filter messages from Chief Admin to sub admins
-  const adminMsgs=[];s.forEach(d=>{const m=d.data();if(m.fromRole==='Chief Admin'||m.to==='all')adminMsgs.push({id:d.id,...m});});
-  if(!adminMsgs.length){el.innerHTML=`<div class="pcard"><p style="text-align:center;color:var(--cd);padding:12px;">No messages from Admin yet</p></div>`;return;}
-  el.innerHTML='';
-  adminMsgs.forEach(m=>{const t=m.createdAt?.toDate?m.createdAt.toDate().toLocaleDateString():'—';el.innerHTML+=`<div class="msg-card"><div class="msg-from">From: ${m.fromName||'ICONIK Admin'} <span style="font-size:0.56rem;color:var(--cd);">· ${t}</span></div>${m.subject?`<div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);margin-bottom:3px;">${m.subject}</div>`:''}<div class="msg-body">${m.content}</div></div>`;});
- }catch{}
+  const el=document.getElementById('inboxList');
+  try{
+    const s=await sg(query(collection(db,'messages'),orderBy('createdAt','desc'),limit(15)));
+    const adminMsgs=[];
+    s.forEach(d=>{const m=d.data();if(m.fromRole?.includes('ADMIN')||m.fromRole?.includes('Chief')||m.to==='all')adminMsgs.push({id:d.id,...m});});
+    if(!adminMsgs.length){el.innerHTML=`<div class="msg-card"><div class="msg-body" style="text-align:center;padding:10px;">No messages from Admin yet.</div></div>`;return;}
+    el.innerHTML='';
+    adminMsgs.forEach(m=>{
+      const t=m.createdAt?.toDate?m.createdAt.toDate().toLocaleDateString():'—';
+      el.innerHTML+=`<div class="msg-card">
+        <div class="msg-from">From: ${xe(m.fromName||'ICONIK Admin')} <span style="font-size:0.56rem;color:var(--cd);">· ${t}</span></div>
+        ${m.subject?`<div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--ch);margin-bottom:3px;">${xe(m.subject)}</div>`:''}
+        <div class="msg-body">${xe(m.content||'')}</div>
+      </div>`;
+    });
+  }catch(e){el.innerHTML=`<div class="msg-card"><div class="msg-body" style="text-align:center;">Error loading inbox.</div></div>`;}
 }
 
+// ── NAVIGATION ──
 window.sV=function(nm){
- document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
- document.querySelectorAll('.sb-lnk').forEach(l=>l.classList.remove('on'));
- document.getElementById(nm+'V').classList.add('on');cSB();
- if(nm==='members')lMembers();
- if(nm==='posts')lCatPosts();
- if(nm==='messages')lSentMsgs();
- if(nm==='inbox')lInbox();
- if(nm==='overview')lOverview();
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  document.querySelectorAll('.sb-lnk').forEach(l=>l.classList.remove('on'));
+  document.querySelectorAll('.bn').forEach(b=>b.classList.remove('on'));
+  const view=document.getElementById(nm+'V');
+  if(view)view.classList.add('on');
+  cSB();
+  // Highlight bottom nav
+  const bnMap={overview:0,celebs:1,posts:2,members:3,monetization:4,affiliates:5};
+  const bns=document.querySelectorAll('.bn');
+  if(bnMap[nm]!==undefined)bns[bnMap[nm]]?.classList.add('on');
+  // Reload data
+  if(nm==='members')lMembers();
+  if(nm==='posts')lCatPosts();
+  if(nm==='messages')lSentMsgs();
+  if(nm==='inbox')lInbox();
+  if(nm==='overview')lOverview();
+  if(nm==='celebs')lCelebs();
 };
+
 window.togSB=function(){document.getElementById('sb').classList.toggle('on');document.getElementById('sbOv').classList.toggle('on');};
 window.cSB=function(){document.getElementById('sb').classList.remove('on');document.getElementById('sbOv').classList.remove('on');};
-function toastF(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='toast on '+type;setTimeout(()=>t.className='toast',3500);}
+
+window.doLogout=async function(){
+  await signOut(auth);
+  window.location.href='/app.html';
+};
+
+// ── UTILS ──
+function xe(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+window.toast=toastF;
+
+// Enter key on login
+document.getElementById('gPass')?.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 </script>
 </body>
 </html>
