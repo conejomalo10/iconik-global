@@ -76,7 +76,7 @@ select.fi option{background:var(--bg2);}
 /* MEMBER ROWS */
 .m-row{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:11px;display:flex;align-items:center;gap:10px;margin-bottom:7px;}
 .m-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--bg);overflow:hidden;flex-shrink:0;position:relative;}
-.m-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.m-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;border-radius:50%;z-index:2;}
 .m-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--text);}
 .m-meta{font-family:'Montserrat',sans-serif;font-size:0.6rem;color:var(--dim);}
 .m-actions{display:flex;gap:5px;margin-left:auto;flex-shrink:0;}
@@ -604,24 +604,39 @@ window.filterStatus=function(s){
   renderMembers(s==='all'?allMembers:allMembers.filter(m=>(m.verificationStatus||'pending')===s));
 };
 
-// ── CELEBRITIES ──
+// ── CELEBRITIES ── (FIXED: photos display correctly)
 window.load_celebrities=async function(){
   const el=document.getElementById('celebsList');
   const snap=await sg(query(collection(db,'celebrities'),limit(50)));
   const celebs=[];snap.forEach(d=>celebs.push({id:d.id,...d.data()}));
   if(!celebs.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No celebrities added yet.</div>';return;}
-  el.innerHTML=celebs.map(c=>`
-    <div class="m-row">
-      <div class="m-av" style="font-size:1.1rem;">
-        ${c.photo&&c.photo.startsWith('http')?`<img src="${esc(c.photo)}" onerror="this.remove()"/>`:''}
-        ${esc((c.name||'?').charAt(0))}
+  el.innerHTML=celebs.map(c=>{
+    // Check all possible photo fields
+    const photoUrl=c.photo||c.photoUrl||c.imageUrl||c.coverPhoto||'';
+    const hasPhoto=photoUrl&&photoUrl.startsWith('http');
+    const nm=esc(c.name||'?');
+    const initials=nm.charAt(0);
+    const photoHTML=hasPhoto
+      ?`<img
+           src="${esc(photoUrl)}"
+           alt="${nm}"
+           loading="lazy"
+           style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;border-radius:50%;"
+           onerror="this.style.display='none';"
+         />`
+      :'';
+    return`<div class="m-row">
+      <div class="m-av" style="position:relative;overflow:hidden;">
+        ${photoHTML}
+        <span style="position:relative;z-index:0;">${initials}</span>
       </div>
       <div style="flex:1;min-width:0;">
-        <div class="m-name">${esc(c.name||'')}</div>
+        <div class="m-name">${nm}</div>
         <div class="m-meta">${esc(c.category||'')} · ${esc(c.country||'')} · ${esc(c.followers||'')}</div>
       </div>
       <button class="m-btn m-btn-err" onclick="deleteCeleb('${c.id}','${esc(c.name||'')}')">🗑</button>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 };
 
 window.addCeleb=async function(){
