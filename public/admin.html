@@ -126,6 +126,7 @@ select.fi option{background:var(--bg2);}
     <div class="sb-section-label">Dashboard</div>
     <div class="sb-link" data-view="overview"><span class="sb-link-icon">📊</span>Overview</div>
     <div class="sb-section-label">Content</div>
+    <div class="sb-link" data-view="managecelebs"><span class="sb-link-icon">📋</span>Manage Celebrities</div>
     <div class="sb-link" data-view="celebrities"><span class="sb-link-icon">⭐</span>Add Celebrity</div>
     <div class="sb-link" data-view="posts"><span class="sb-link-icon">📝</span>Publish Post</div>
     <div class="sb-link" data-view="news"><span class="sb-link-icon">📰</span>Add News</div>
@@ -189,18 +190,50 @@ select.fi option{background:var(--bg2);}
   <div id="membersList"><div class="loader"><div class="loader-ring"></div></div></div>
 </div>
 
-<!-- CELEBRITIES -->
+<!-- MANAGE CELEBRITIES — photo status dashboard -->
+<div class="view" id="managecelebsV">
+  <div class="wbar">
+    <span style="font-size:1.4rem;">📋</span>
+    <div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Manage Celebrities</div>
+      <div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Edit profiles · Fix missing photos · Delete</div>
+    </div>
+  </div>
+  <div id="celebPhotoSummary" style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+    <div style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:6px;padding:8px 12px;font-family:'Montserrat',sans-serif;font-size:0.66rem;">
+      <span id="celebWithPhoto" style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--ok);">—</span>
+      <span style="color:var(--ok);margin-left:4px;">✓ With Photo</span>
+    </div>
+    <div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:6px;padding:8px 12px;font-family:'Montserrat',sans-serif;font-size:0.66rem;">
+      <span id="celebNoPhoto" style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--err);">—</span>
+      <span style="color:var(--err);margin-left:4px;">⚠ Missing Photo</span>
+    </div>
+  </div>
+  <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;" id="celebFilterBtns">
+    <button onclick="filterCelebMgmt('all',this)" style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;padding:5px 12px;background:var(--gold);color:var(--bg);border:none;cursor:pointer;border-radius:20px;">All</button>
+    <button onclick="filterCelebMgmt('nophoto',this)" style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;padding:5px 12px;background:rgba(239,68,68,0.15);color:var(--err);border:1px solid rgba(239,68,68,0.3);cursor:pointer;border-radius:20px;">⚠ No Photo</button>
+    <button onclick="filterCelebMgmt('photo',this)" style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;padding:5px 12px;background:rgba(34,197,94,0.1);color:var(--ok);border:1px solid rgba(34,197,94,0.3);cursor:pointer;border-radius:20px;">✓ Has Photo</button>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:12px;">
+    <input class="fi" id="celebMgmtSearch" placeholder="Search name or category..." oninput="searchCelebMgmt()" style="flex:1;"/>
+    <button onclick="goView('celebrities')" class="btn-gold" style="width:auto;padding:10px 14px;font-size:0.62rem;white-space:nowrap;border-radius:6px;">+ Add New</button>
+  </div>
+  <div id="manageCelebsList"><div class="loader"><div class="loader-ring"></div></div></div>
+</div>
+
+<!-- ADD / EDIT CELEBRITY -->
 <div class="view" id="celebritiesV">
   <div class="wbar"><span style="font-size:1.4rem;">⭐</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Add Icon / Celebrity</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Builds the celebrity fan hub</div></div></div>
+  <button onclick="goView('managecelebs')" style="width:100%;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.64rem;padding:9px 14px;background:rgba(255,184,0,0.08);border:1px solid rgba(255,184,0,0.3);color:var(--gold);cursor:pointer;border-radius:6px;margin-bottom:12px;">📋 View &amp; Manage Existing Celebrities →</button>
   <div class="card">
     <div class="fg"><label class="fl">Full Name *</label><input class="fi" id="cName" placeholder="e.g. Benito Antonio Martínez Ocasio"/></div>
     <div class="fg"><label class="fl">Stage Name / Known As</label><input class="fi" id="cStage" placeholder="e.g. Bad Bunny"/></div>
     <div class="fg"><label class="fl">Category *</label>
       <select class="fi" id="cCat">
         <option value="">Select category...</option>
-        <option>Music</option><option>Film & TV</option><option>Sports</option><option>Literature</option>
-        <option>Fashion</option><option>Fitness & Wellness</option><option>Food & Culinary</option>
-        <option>Nature</option><option>Automotive</option><option>Tech & Innovation</option>
+        <option>Music</option><option>Film &amp; TV</option><option>Sports</option><option>Literature</option>
+        <option>Fashion</option><option>Fitness &amp; Wellness</option><option>Food &amp; Culinary</option>
+        <option>Nature</option><option>Automotive</option><option>Tech &amp; Innovation</option>
         <option>Beauty</option><option>Entertainment</option><option>Leadership</option>
       </select>
     </div>
@@ -208,14 +241,18 @@ select.fi option{background:var(--bg2);}
     <div class="fg"><label class="fl">Total Followers (all platforms)</label><input class="fi" id="cFollowers" placeholder="e.g. 52-54 Million"/></div>
     <div class="fg"><label class="fl">Bio / Description</label><textarea class="fi" id="cBio" placeholder="Brief description..."></textarea></div>
     <div class="fg">
-      <label class="fl">Photo URL</label>
-      <input class="fi" id="cPhotoUrl" placeholder="https://... (paste direct image URL)"/>
+      <label class="fl">Photo URL — paste Cloudinary or any direct image link</label>
+      <input class="fi" id="cPhotoUrl" placeholder="https://res.cloudinary.com/..." oninput="previewPhotoUrl(this.value)"/>
+      <div id="cPhotoPreviewWrap" style="margin-top:8px;display:none;align-items:center;gap:10px;">
+        <img id="cPhotoLivePreview" style="width:72px;height:72px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);flex-shrink:0;"/>
+        <div style="font-family:'Montserrat',sans-serif;font-size:0.6rem;color:var(--ok);">✓ Photo preview — if you see the face, it will show on the site!</div>
+      </div>
     </div>
-    <div class="fg"><label class="fl">Or Upload Photo</label>
+    <div class="fg"><label class="fl">Or Upload Photo Directly</label>
       <div class="upload-area" onclick="document.getElementById('cPhotoFile').click()">
         <div class="upload-icon">📸</div>
-        <div class="upload-text">Tap to choose photo</div>
-        <input type="file" id="cPhotoFile" accept="image/*" style="display:none;" onchange="previewImg(this,'cPreview')"/>
+        <div class="upload-text" id="cUploadTxt">Tap to choose photo from device</div>
+        <input type="file" id="cPhotoFile" accept="image/*" style="display:none;" onchange="previewImg(this,'cPreview');document.getElementById('cUploadTxt').textContent=this.files[0]?this.files[0].name:'Tap to choose';"/>
       </div>
       <img id="cPreview" class="media-prev"/>
     </div>
@@ -224,10 +261,7 @@ select.fi option{background:var(--bg2);}
     </div>
     <button class="btn-gold" id="addCelebBtn" onclick="addCeleb()">Add Celebrity →</button>
   </div>
-  <div class="sec-head">All Celebrities</div>
-  <div id="celebsList"><div class="loader"><div class="loader-ring"></div></div></div>
 </div>
-
 <!-- POSTS -->
 <div class="view" id="postsV">
   <div class="wbar"><span style="font-size:1.4rem;">📝</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Publish as ICONIK</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Posts appear in member feed</div></div></div>
@@ -389,7 +423,7 @@ select.fi option{background:var(--bg2);}
 <div id="bottomnav">
   <div class="bn-item active" data-view="overview"><div class="bn-icon">📊</div><div class="bn-label">Overview</div></div>
   <div class="bn-item" data-view="members"><div class="bn-icon">👥</div><div class="bn-label">Members</div></div>
-  <div class="bn-item" data-view="celebrities"><div class="bn-icon">⭐</div><div class="bn-label">Celebs</div></div>
+  <div class="bn-item" data-view="managecelebs"><div class="bn-icon">📋</div><div class="bn-label">Celebs</div></div>
   <div class="bn-item" data-view="posts"><div class="bn-icon">📝</div><div class="bn-label">Post</div></div>
   <div class="bn-item" data-view="events"><div class="bn-icon">🎫</div><div class="bn-label">Events</div></div>
 </div>
@@ -517,7 +551,7 @@ onAuthStateChanged(auth,async u=>{
   // Load all sections
   load_overview();
   load_members();
-  load_celebrities();
+  load_managecelebs();
   load_posts();
   load_news();
   load_events();
@@ -626,37 +660,120 @@ window.filterStatus=function(s){
 };
 
 // ── CELEBRITIES ── (FULL EDIT/DELETE/PHOTO FIX)
+// ── ALL CELEBS CACHE ──
+let _allCelebsCache=[];
+
+// ── LOAD & CACHE CELEBRITIES ──
+async function fetchAllCelebs(){
+  const snap=await sg(query(collection(db,'celebrities'),limit(100)));
+  _allCelebsCache=[];
+  snap.forEach(d=>_allCelebsCache.push({id:d.id,...d.data()}));
+  return _allCelebsCache;
+}
+
+// ── MANAGE CELEBRITIES VIEW ──
 window.load_celebrities=async function(){
-  const el=document.getElementById('celebsList');
-  const snap=await sg(query(collection(db,'celebrities'),limit(50)));
-  const celebs=[];snap.forEach(d=>celebs.push({id:d.id,...d.data()}));
-  if(!celebs.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No celebrities added yet. Use the form above to add your first icon.</div>';return;}
+  await fetchAllCelebs();
+  renderManageCelebs(_allCelebsCache);
+};
+
+window.load_managecelebs=async function(){
+  await fetchAllCelebs();
+  renderManageCelebs(_allCelebsCache);
+};
+
+function renderManageCelebs(celebs){
+  const el=document.getElementById('manageCelebsList');
+  if(!el)return;
+  // Update photo status counters
+  const withPhoto=celebs.filter(c=>{const u=c.photo||c.photoUrl||c.imageUrl||c.profilePic||c.coverPhoto||'';return u&&u.startsWith('http');}).length;
+  const noPhoto=celebs.length-withPhoto;
+  const wp=document.getElementById('celebWithPhoto');
+  const np=document.getElementById('celebNoPhoto');
+  if(wp)wp.textContent=withPhoto;
+  if(np)np.textContent=noPhoto;
+
+  if(!celebs.length){
+    el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:14px;text-align:center;">No celebrities yet. <button onclick="goView(\'celebrities\')" style="color:var(--gold);background:none;border:none;cursor:pointer;font-weight:700;">Add your first icon →</button></div>';
+    return;
+  }
+
   el.innerHTML=celebs.map(c=>{
     const photoUrl=c.photo||c.photoUrl||c.imageUrl||c.profilePic||c.coverPhoto||'';
     const hasPhoto=photoUrl&&photoUrl.startsWith('http');
     const nm=esc(c.name||'?');
-    const initials=nm.charAt(0);
+    const stage=c.stageName?` <span style="font-size:0.56rem;color:var(--muted);font-style:italic;">"${esc(c.stageName)}"</span>`:'';
+
+    // Avatar with real photo or initial
     const photoHTML=hasPhoto
-      ?`<img src="${esc(photoUrl)}" alt="${nm}" loading="lazy"
+      ?`<img src="${esc(photoUrl)}" alt="${nm}" loading="lazy" crossorigin="anonymous"
            style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;border-radius:50%;"
            onerror="this.style.display='none';"/>`
       :'';
-    return`<div class="m-row" style="align-items:flex-start;flex-wrap:wrap;gap:8px;">
-      <div class="m-av" style="position:relative;overflow:hidden;flex-shrink:0;">
+
+    // Photo status indicator
+    const photoStatus=hasPhoto
+      ?`<div style="display:flex;align-items:center;gap:4px;margin-top:3px;">
+          <div style="width:7px;height:7px;border-radius:50%;background:var(--ok);flex-shrink:0;"></div>
+          <span style="font-family:'Montserrat',sans-serif;font-size:0.52rem;color:var(--ok);">Photo ✓</span>
+        </div>`
+      :`<div style="display:flex;align-items:center;gap:4px;margin-top:3px;">
+          <div style="width:7px;height:7px;border-radius:50%;background:var(--err);flex-shrink:0;"></div>
+          <span style="font-family:'Montserrat',sans-serif;font-size:0.52rem;color:var(--err);">⚠ No photo — tap ✏️ Edit to add</span>
+        </div>`;
+
+    return`<div class="m-row" style="align-items:center;flex-wrap:wrap;gap:8px;padding:12px;margin-bottom:8px;border-left:3px solid ${hasPhoto?'var(--ok)':'var(--err)'};">
+      <div class="m-av" style="position:relative;overflow:hidden;flex-shrink:0;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--bg);">
         ${photoHTML}
-        <span style="position:relative;z-index:0;">${initials}</span>
+        <span style="position:relative;z-index:0;">${nm.charAt(0)}</span>
       </div>
       <div style="flex:1;min-width:0;">
-        <div class="m-name">${nm}${c.stageName?` <span style="font-size:0.58rem;color:var(--muted);">"${esc(c.stageName)}"</span>`:''}</div>
-        <div class="m-meta">${esc(c.category||'')} · ${esc(c.country||'')} · ${esc(c.followers||'')}</div>
-        ${hasPhoto?`<div style="font-size:0.52rem;color:var(--ok);margin-top:2px;">✓ Photo linked</div>`:`<div style="font-size:0.52rem;color:var(--err);margin-top:2px;">⚠ No photo — paste URL in form to add</div>`}
+        <div class="m-name" style="font-size:0.74rem;">${nm}${stage}</div>
+        <div class="m-meta">${esc(c.category||'—')} · ${esc(c.country||'—')} · ${esc(c.followers||'—')}</div>
+        ${photoStatus}
       </div>
       <div style="display:flex;gap:5px;flex-shrink:0;">
         <button class="m-btn m-btn-warn" onclick="editCeleb('${c.id}')">✏️ Edit</button>
-        <button class="m-btn m-btn-err" onclick="deleteCeleb('${c.id}','${nm}')">🗑 Delete</button>
+        <button class="m-btn m-btn-err" onclick="deleteCeleb('${c.id}','${nm}')">🗑</button>
       </div>
     </div>`;
   }).join('');
+}
+
+// Filter by photo status
+window.filterCelebMgmt=function(filter,btn){
+  document.querySelectorAll('#celebFilterBtns button').forEach(b=>b.style.fontWeight='400');
+  if(btn)btn.style.fontWeight='800';
+  const q=(document.getElementById('celebMgmtSearch')||{}).value||'';
+  let list=_allCelebsCache;
+  if(q)list=list.filter(c=>(c.name||'').toLowerCase().includes(q.toLowerCase())||(c.category||'').toLowerCase().includes(q.toLowerCase()));
+  if(filter==='nophoto')list=list.filter(c=>{const u=c.photo||c.photoUrl||c.imageUrl||'';return!u||!u.startsWith('http');});
+  if(filter==='photo')list=list.filter(c=>{const u=c.photo||c.photoUrl||c.imageUrl||'';return u&&u.startsWith('http');});
+  renderManageCelebs(list);
+};
+
+window.searchCelebMgmt=function(){
+  const q=(document.getElementById('celebMgmtSearch')||{}).value||'';
+  const list=_allCelebsCache.filter(c=>
+    (c.name||'').toLowerCase().includes(q.toLowerCase())||
+    (c.category||'').toLowerCase().includes(q.toLowerCase())||
+    (c.stageName||'').toLowerCase().includes(q.toLowerCase())
+  );
+  renderManageCelebs(list);
+};
+
+// Live photo URL preview
+window.previewPhotoUrl=function(url){
+  const wrap=document.getElementById('cPhotoPreviewWrap');
+  const img=document.getElementById('cPhotoLivePreview');
+  if(!wrap||!img)return;
+  if(url&&url.startsWith('http')){
+    img.src=url;
+    img.onload=function(){wrap.style.display='flex';};
+    img.onerror=function(){wrap.style.display='none';};
+  } else {
+    wrap.style.display='none';
+  }
 };
 
 // ── EDIT CELEBRITY ──
@@ -665,29 +782,32 @@ window.editCeleb=async function(celebId){
     const d=await getDoc(doc(db,'celebrities',celebId));
     if(!d.exists()){toast('Celebrity not found','error');return;}
     const c={id:d.id,...d.data()};
-    // Fill form with existing data
-    document.getElementById('cName').value=c.name||'';
-    document.getElementById('cStage').value=c.stageName||'';
-    document.getElementById('cCat').value=c.category||'';
-    document.getElementById('cCountry').value=c.country||'';
-    document.getElementById('cFollowers').value=c.followers||'';
-    document.getElementById('cBio').value=c.bio||'';
-    document.getElementById('cPhotoUrl').value=c.photo||c.photoUrl||c.imageUrl||'';
-    document.getElementById('cStatus').value=c.status||'Active';
-    // Show photo preview
-    const photoUrl=c.photo||c.photoUrl||c.imageUrl||'';
-    if(photoUrl){
-      const prev=document.getElementById('cPreview');
-      if(prev){prev.src=photoUrl;prev.style.display='block';}
-    }
-    // Change button to Update mode
-    const btn=document.getElementById('addCelebBtn');
-    btn.textContent='Update Celebrity →';
-    btn.dataset.editId=celebId;
-    btn.onclick=function(){updateCeleb(celebId);};
-    // Scroll to form
-    document.getElementById('cName').scrollIntoView({behavior:'smooth',block:'start'});
-    toast('Editing '+c.name+' — update fields and tap Save ✏️','info');
+    // Navigate to add/edit form first
+    goView('celebrities');
+    setTimeout(async()=>{
+      document.getElementById('cName').value=c.name||'';
+      document.getElementById('cStage').value=c.stageName||'';
+      document.getElementById('cCat').value=c.category||'';
+      document.getElementById('cCountry').value=c.country||'';
+      document.getElementById('cFollowers').value=c.followers||'';
+      document.getElementById('cBio').value=c.bio||'';
+      const photoUrl=c.photo||c.photoUrl||c.imageUrl||'';
+      document.getElementById('cPhotoUrl').value=photoUrl;
+      document.getElementById('cStatus').value=c.status||'Active';
+      // Show live preview if photo exists
+      if(photoUrl){
+        previewPhotoUrl(photoUrl);
+        const prev=document.getElementById('cPreview');
+        if(prev){prev.src=photoUrl;prev.style.display='block';}
+      }
+      // Switch to Update mode
+      const btn=document.getElementById('addCelebBtn');
+      btn.textContent='💾 Save Changes →';
+      btn.style.background='linear-gradient(135deg,#22C55E,#16A34A)';
+      btn.onclick=function(){updateCeleb(celebId);};
+      toast('✏️ Editing '+c.name+' — update fields and tap Save','info');
+      document.getElementById('cName').scrollIntoView({behavior:'smooth',block:'start'});
+    },100);
   }catch(e){toast('Error loading celebrity','error');console.error(e);}
 };
 
@@ -701,24 +821,35 @@ window.updateCeleb=async function(celebId){
     let photo=document.getElementById('cPhotoUrl').value.trim();
     const file=document.getElementById('cPhotoFile').files[0];
     if(file&&!photo){photo=await uploadFile(file);}
+    // Save photo to ALL possible fields so dashboard always finds it
     await setDoc(doc(db,'celebrities',celebId),{
-      name,stageName:document.getElementById('cStage').value.trim(),
-      category:cat,country:document.getElementById('cCountry').value.trim(),
+      name,
+      stageName:document.getElementById('cStage').value.trim(),
+      category:cat,
+      country:document.getElementById('cCountry').value.trim(),
       followers:document.getElementById('cFollowers').value.trim(),
       bio:document.getElementById('cBio').value.trim(),
-      photo,photoUrl:photo,imageUrl:photo,
+      photo:photo,
+      photoUrl:photo,
+      imageUrl:photo,
+      profilePic:photo,
       status:document.getElementById('cStatus').value,
       updatedAt:serverTimestamp()
     },{merge:true});
-    toast(name+' updated! ✅');
+    toast(name+' updated! ✅ Photo saved to all fields.');
     // Reset form to Add mode
     ['cName','cStage','cCountry','cFollowers','cBio','cPhotoUrl'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('cCat').value='';
-    document.getElementById('cPreview').style.display='none';
+    const prev=document.getElementById('cPreview');
+    if(prev)prev.style.display='none';
+    const wrap=document.getElementById('cPhotoPreviewWrap');
+    if(wrap)wrap.style.display='none';
     btn.textContent='Add Celebrity →';
-    btn.dataset.editId='';
+    btn.style.background='';
     btn.onclick=function(){addCeleb();};
-    load_celebrities();
+    // Refresh manage view and go back to it
+    await fetchAllCelebs();
+    goView('managecelebs');
   }catch(e){toast(e.message||'Error updating','error');}
   btn.disabled=false;
 };
@@ -734,26 +865,39 @@ window.addCeleb=async function(){
     const file=document.getElementById('cPhotoFile').files[0];
     if(file&&!photo){photo=await uploadFile(file);}
     await addDoc(collection(db,'celebrities'),{
-      name,stageName:document.getElementById('cStage').value.trim(),
-      category:cat,country:document.getElementById('cCountry').value.trim(),
+      name,
+      stageName:document.getElementById('cStage').value.trim(),
+      category:cat,
+      country:document.getElementById('cCountry').value.trim(),
       followers:document.getElementById('cFollowers').value.trim(),
       bio:document.getElementById('cBio').value.trim(),
-      photo,status:document.getElementById('cStatus').value,
+      photo:photo,
+      photoUrl:photo,
+      imageUrl:photo,
+      profilePic:photo,
+      status:document.getElementById('cStatus').value,
       createdAt:serverTimestamp()
     });
     toast(name+' added! ⭐');
     ['cName','cStage','cCountry','cFollowers','cBio','cPhotoUrl'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('cCat').value='';
-    document.getElementById('cPreview').style.display='none';
-    load_celebrities();
+    const prev=document.getElementById('cPreview');
+    if(prev)prev.style.display='none';
+    const wrap=document.getElementById('cPhotoPreviewWrap');
+    if(wrap)wrap.style.display='none';
+    await fetchAllCelebs();
+    goView('managecelebs');
   }catch(e){toast(e.message||'Error adding celebrity','error');}
   btn.disabled=false;btn.textContent='Add Celebrity →';
 };
 
 window.deleteCeleb=async function(id,name){
-  if(!confirm('Delete '+name+'?'))return;
+  if(!confirm('Delete '+name+'? This cannot be undone.'))return;
   await deleteDoc(doc(db,'celebrities',id));
-  toast(name+' removed');load_celebrities();load_overview();
+  toast(name+' removed 🗑');
+  await fetchAllCelebs();
+  renderManageCelebs(_allCelebsCache);
+  load_overview();
 };
 
 // ── POSTS ── (with Edit + Delete for Chief Admin)
