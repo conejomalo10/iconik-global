@@ -25,7 +25,7 @@ body{background:var(--bg);color:var(--text);font-family:"Montserrat",sans-serif;
 .sb-usr{padding:14px 16px;border-bottom:1px solid var(--border);}
 .sb-unm{font-family:"Playfair Display",serif;font-weight:700;font-size:1rem;color:var(--text);margin-bottom:3px;}
 .sb-ti{font-family:"Bebas Neue",sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--bg);background:var(--gold);padding:2px 8px;display:inline-block;}
-.sb-lbl{font-family:"Bebas Neue",sans-serif;font-size:0.58rem;letter-spacing:0.22em;color:var(--dim);padding:8px 16px 3px;}
+.sb-lbl{font-family:"Bebas Neue",sans-serif;font-size:0.62rem;font-weight:900;letter-spacing:0.22em;color:rgba(255,184,0,0.7);padding:10px 16px 4px;border-top:1px solid rgba(255,255,255,0.05);margin-top:2px;}
 .sb-lnk{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;font-family:"Montserrat",sans-serif;font-size:0.76rem;font-weight:600;color:var(--muted);transition:all 0.18s;border-left:3px solid transparent;}
 .sb-lnk:hover,.sb-lnk.on{color:var(--gold);border-left-color:var(--gold);background:rgba(255,184,0,0.06);}
 .sb-out{color:var(--err)!important;}
@@ -108,27 +108,44 @@ select.fi option{background:var(--bg2);}
   <div class="sb-hd"><span class="sb-br">ICONIK</span><button id="sbX">&#x2715;</button></div>
   <div class="sb-usr"><div class="sb-unm" id="sbNm">Member</div><div class="sb-ti" id="sbTi">Fan</div></div>
   <div style="padding:8px 0;">
-    <div class="sb-lbl">Main</div>
-    <div class="sb-lnk" data-v="feed">&#127968; Feed</div>
-    <div class="sb-lnk" data-v="icons">&#11088; Icons &amp; Celebrities</div>
-    <div class="sb-lnk" data-v="news">&#128240; Celebrity News</div>
+    <div class="sb-lbl">MY ICONIK</div>
+    <div class="sb-lnk" data-v="profile">&#128100; My Profile</div>
+    <div class="sb-lnk" data-v="feed">&#127968; My Feed</div>
+    <div class="sb-lnk" data-v="notifs">&#128276; Notifications</div>
+    <div class="sb-lnk" data-v="msgs">&#128233; Messages</div>
+    <div class="sb-lnk" data-v="badges">&#127941; My Badges</div>
+    <div class="sb-lnk" data-v="membership">&#128081; Membership</div>
+    <div class="sb-lbl">COMMUNITY</div>
+    <div class="sb-lnk" data-v="explore">&#128269; Explore Icons</div>
+    <div class="sb-lnk" data-v="members">&#128101; Find Members</div>
     <div class="sb-lnk" data-v="coms">&#127758; Communities</div>
-    <div class="sb-lnk" data-v="chat">&#128172; Live Chat</div>
-    <div class="sb-lbl">Discover</div>
-    <div class="sb-lnk" data-v="events">&#127915; Events &amp; Tickets</div>
-    <div class="sb-lnk" data-v="radio">&#127925; ICONIK Radio</div>
-    <div class="sb-lnk" data-v="tv">&#128250; ICONIK TV</div>
-    <div class="sb-lnk" data-v="mag">&#128218; Magazine</div>
-    <div class="sb-lnk" data-v="well">&#128170; Wellness Hub</div>
-    <div class="sb-lbl">Community</div>
-    <div class="sb-lnk" data-v="members">&#128269; Find Members</div>
+    <div class="sb-lnk" data-v="icons">&#11088; Celebrity Pages</div>
+    <div class="sb-lnk" data-v="news">&#128240; Celebrity News</div>
+    <div class="sb-lnk" data-v="verified">&#9989; Verified Icons</div>
     <div class="sb-lnk" data-v="ranks">&#127942; Fan Rankings</div>
     <div class="sb-lnk" data-v="polls">&#128379; Fan Voting</div>
-    <div class="sb-lbl">My ICONIK</div>
-    <div class="sb-lnk" data-v="profile">&#128100; My Profile</div>
-    <div class="sb-lnk" data-v="msgs">&#128233; Messages</div>
-    <div class="sb-lnk" data-v="notifs">&#128276; Notifications</div>
-    <div class="sb-lnk" data-v="vip">&#128081; VIP Lounge</div>
+    <div class="sb-lnk" data-v="qa">&#127908; Celebrity Q&amp;A</div>
+    <div class="sb-lnk" data-v="challenges">&#9889; Fan Challenges</div>
+    <div class="sb-lbl">DISCOVER</div>
+    <div class="sb-lnk" data-v="events">&#127915; Events &amp; Tickets</div>
+    <div class="sb-lnk" data-v="tour">&#127923; Tour Buddy</div>
+    <div class="sb-lnk" data-v="streams">&#128308; Live Streams</div>
+    <div class="sb-lnk" data-v="chat">&#128172; Live Chat</div>
+    <div class="sb-lnk" data-v="radio">&#127925; ICONIK Radio</div>
+    <div class="sb-lnk" data-v="mag">&#128218; ICONIK Magazine</div>
+    <div class="sb-lnk" data-v="well">&#128170; Wellness Hub</div>
+    <div class="sb-lnk" data-v="search">&#128270; Advanced Search</div>
+    <div class="sb-lbl">EARN &amp; GROW</div>
+    <div class="sb-lnk" data-v="market">&#127978; Marketplace</div>
+    <div class="sb-lnk" data-v="shop">&#128717; Shop &amp; Earn</div>
+    <div class="sb-lnk" data-v="creator">&#128176; Creator Fund</div>
+    <div class="sb-lnk" data-v="vip">&#128081; VIP Exclusive</div>
+    <div class="sb-lnk" data-v="refer">&#127873; Refer &amp; Earn</div>
+    <div class="sb-lbl">EXCLUSIVE</div>
+    <div class="sb-lnk" data-v="dating" style="color:#FF6B9D!important;border-left:3px solid #FF6B9D;">&#128149; Dating &amp; Matchmaking</div>
+    <div class="sb-lnk" data-v="getapp">&#128241; Get the App</div>
+    <div class="sb-lbl">SETTINGS</div>
+    <div class="sb-lnk" data-v="settings">&#9881;&#65039; Settings</div>
     <div class="sb-lnk sb-out" id="logoutBtn">&#128682; Sign Out</div>
   </div>
 </div>
@@ -251,6 +268,366 @@ select.fi option{background:var(--bg2);}
     <div id="vipContent"><div class="loader"><div class="lring"></div></div></div>
   </div>
 </div>
+
+<!-- EXPLORE ICONS -->
+<div class="view" id="exploreV">
+  <div class="wbar"><span style="font-size:1.4rem;">🔍</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Explore Icons</div><div style="font-size:0.62rem;color:var(--muted);">Discover celebrities across all categories</div></div></div>
+  <div class="frow" id="exploreCatRow">
+    <div class="ftab on" data-cat="all">All</div>
+    <div class="ftab" data-cat="Music">🎵 Music</div>
+    <div class="ftab" data-cat="Sports">⚽ Sports</div>
+    <div class="ftab" data-cat="Film & TV">🎬 Film</div>
+    <div class="ftab" data-cat="Fashion">👗 Fashion</div>
+    <div class="ftab" data-cat="Fitness & Wellness">💪 Wellness</div>
+    <div class="ftab" data-cat="Beauty">💄 Beauty</div>
+    <div class="ftab" data-cat="Tech & Innovation">💻 Tech</div>
+    <div class="ftab" data-cat="Food & Culinary">🍽️ Food</div>
+    <div class="ftab" data-cat="Literature">📚 Lit</div>
+    <div class="ftab" data-cat="Nature">🌿 Nature</div>
+    <div class="ftab" data-cat="Automotive">🚗 Auto</div>
+    <div class="ftab" data-cat="Entertainment">🎭 Entertainment</div>
+    <div class="ftab" data-cat="Leadership">🎓 Leadership</div>
+  </div>
+  <input class="fi" id="exploreSrch" placeholder="Search icons by name..." style="margin-bottom:12px;" oninput="filterExplore()"/>
+  <div class="cgrid" id="exploreGrid"><div class="loader" style="grid-column:span 2;"><div class="lring"></div></div></div>
+</div>
+
+<!-- TOUR BUDDY -->
+<div class="view" id="tourV">
+  <div class="wbar"><span style="font-size:1.4rem;">🎫</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Tour Buddy</div><div style="font-size:0.62rem;color:var(--muted);">Find fans attending the same events</div></div></div>
+  <div class="card" style="background:linear-gradient(135deg,rgba(255,184,0,0.08),rgba(255,184,0,0.03));border-color:rgba(255,184,0,0.2);">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:8px;">🌟 Find Your Tour Buddy</div>
+    <div style="font-family:'Montserrat',sans-serif;font-size:0.74rem;color:var(--muted);line-height:1.65;margin-bottom:12px;">Going to a concert, match or fan event? Find fellow ICONIK members attending the same event and connect before the day!</div>
+    <div class="fg"><label class="fl">Which event are you attending?</label><input class="fi" id="tourEvent" placeholder="e.g. Afrobeats Festival Lagos 2025"/></div>
+    <div class="fg"><label class="fl">Event Date</label><input class="fi" type="date" id="tourDate"/></div>
+    <div class="fg"><label class="fl">Your City / Venue</label><input class="fi" id="tourCity" placeholder="e.g. Lagos, Nigeria"/></div>
+    <div class="fg"><label class="fl">Message to potential buddies</label><textarea class="fi" id="tourMsg" rows="2" placeholder="Hi! Looking for fans to meet at..."></textarea></div>
+    <button class="btn-g" onclick="postTourBuddy()">Find Tour Buddies 🎫</button>
+  </div>
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:0.68rem;letter-spacing:0.2em;color:var(--gold);margin:12px 0 8px;">Fans Looking for Buddies</div>
+  <div id="tourList"><div class="loader"><div class="lring"></div></div></div>
+</div>
+
+<!-- VERIFIED ICONS -->
+<div class="view" id="verifiedV">
+  <div class="wbar"><span style="font-size:1.4rem;">✅</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Verified Icons</div><div style="font-size:0.62rem;color:var(--muted);">Officially verified celebrities on ICONIK</div></div></div>
+  <div class="card" style="background:rgba(59,130,246,0.07);border-color:rgba(59,130,246,0.25);margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span style="font-size:1.2rem;">🔵</span>
+      <div style="font-family:'Montserrat',sans-serif;font-size:0.72rem;color:var(--muted);">The blue ✓ badge means this celebrity has been <strong style="color:var(--text);">officially verified</strong> by the ICONIK team as the real, authentic person.</div>
+    </div>
+  </div>
+  <input class="fi" id="verifiedSrch" placeholder="Search verified icons..." style="margin-bottom:12px;" oninput="filterVerified()"/>
+  <div class="cgrid" id="verifiedGrid"><div class="loader" style="grid-column:span 2;"><div class="lring"></div></div></div>
+</div>
+
+<!-- MARKETPLACE -->
+<div class="view" id="marketV">
+  <div class="wbar"><span style="font-size:1.4rem;">🏪</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Marketplace</div><div style="font-size:0.62rem;color:var(--muted);">Fan merch · Celebrity endorsed products</div></div></div>
+  <div class="frow">
+    <div class="ftab on">All</div><div class="ftab">Merch</div><div class="ftab">Music</div>
+    <div class="ftab">Sports</div><div class="ftab">Fashion</div><div class="ftab">Wellness</div>
+  </div>
+  <div class="card" style="background:linear-gradient(135deg,rgba(255,184,0,0.08),rgba(255,184,0,0.02));border-color:rgba(255,184,0,0.2);margin-bottom:12px;">
+    <div style="font-family:'Bebas Neue',sans-serif;letter-spacing:0.12em;color:var(--gold);font-size:0.72rem;margin-bottom:6px;">🚀 Marketplace Coming Soon</div>
+    <div style="font-family:'Montserrat',sans-serif;font-size:0.72rem;color:var(--muted);line-height:1.6;">Fan merchandise, celebrity-endorsed products and exclusive ICONIK collectibles. Be first to sell — list your product below.</div>
+  </div>
+  <div class="card">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:10px;">List Your Product</div>
+    <div class="fg"><label class="fl">Product Name</label><input class="fi" id="mktName" placeholder="e.g. Signed jersey, Fan art..."/></div>
+    <div class="fg"><label class="fl">Price (USD)</label><input class="fi" id="mktPrice" type="number" placeholder="e.g. 25"/></div>
+    <div class="fg"><label class="fl">Description</label><textarea class="fi" id="mktDesc" rows="2" placeholder="Describe your product..."></textarea></div>
+    <div class="fg"><label class="fl">Photo URL</label><input class="fi" id="mktImg" placeholder="https://..."/></div>
+    <button class="btn-g" onclick="listProduct()">List Product 🏪</button>
+  </div>
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:0.68rem;letter-spacing:0.2em;color:var(--gold);margin:12px 0 8px;">Listed Products</div>
+  <div id="marketList"><div class="loader"><div class="lring"></div></div></div>
+</div>
+
+<!-- CREATOR FUND -->
+<div class="view" id="creatorV">
+  <div class="wbar"><span style="font-size:1.4rem;">💰</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Creator Fund</div><div style="font-size:0.62rem;color:var(--muted);">Earn from your content & community</div></div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+    <div class="sbox"><div class="snum" id="cfEarnings">$0.00</div><div style="font-size:0.52rem;color:var(--muted);margin-top:3px;">Total Earned</div></div>
+    <div class="sbox"><div class="snum" id="cfPending">$0.00</div><div style="font-size:0.52rem;color:var(--muted);margin-top:3px;">Pending</div></div>
+    <div class="sbox"><div class="snum" id="cfPosts">0</div><div style="font-size:0.52rem;color:var(--muted);margin-top:3px;">Posts</div></div>
+    <div class="sbox"><div class="snum" id="cfFollowers">0</div><div style="font-size:0.52rem;color:var(--muted);margin-top:3px;">Followers</div></div>
+  </div>
+  <div class="card" style="background:linear-gradient(135deg,rgba(255,184,0,0.08),rgba(255,184,0,0.02));border-color:rgba(255,184,0,0.2);margin-bottom:10px;">
+    <div style="font-family:'Bebas Neue',sans-serif;letter-spacing:0.12em;color:var(--gold);font-size:0.72rem;margin-bottom:8px;">How to Earn 💰</div>
+    <div style="font-family:'Montserrat',sans-serif;font-size:0.7rem;color:var(--muted);line-height:1.7;">
+      ⭐ Post quality content regularly<br>
+      ❤️ Get likes, comments & reposts<br>
+      👥 Grow your followers<br>
+      🔗 Share affiliate links<br>
+      👑 Upgrade to VIP Gold — earn 10% commissions<br>
+      🎁 Refer new members — earn $10 per referral
+    </div>
+  </div>
+  <div class="card">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:10px;">Withdraw Earnings</div>
+    <div class="fg"><label class="fl">Bank / Payment Method</label><input class="fi" id="cfBank" placeholder="Bank name, account or PayPal..."/></div>
+    <div class="fg"><label class="fl">Amount (USD)</label><input class="fi" id="cfAmount" type="number" placeholder="Minimum $10"/></div>
+    <button class="btn-g" onclick="requestWithdrawal()">Request Withdrawal 💸</button>
+  </div>
+</div>
+
+<!-- REFER & EARN -->
+<div class="view" id="referV">
+  <div class="wbar"><span style="font-size:1.4rem;">🎁</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Refer & Earn</div><div style="font-size:0.62rem;color:var(--muted);">Invite friends · Earn $10 per referral</div></div></div>
+  <div class="card" style="background:linear-gradient(135deg,rgba(255,184,0,0.1),rgba(255,184,0,0.03));border-color:rgba(255,184,0,0.3);text-align:center;margin-bottom:12px;">
+    <div style="font-size:2rem;margin-bottom:6px;">🎁</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--gold);letter-spacing:0.1em;">Earn $10 Per Referral</div>
+    <div style="font-family:'Montserrat',sans-serif;font-size:0.72rem;color:var(--muted);margin-top:6px;line-height:1.6;">Share your unique link. When a friend joins ICONIK and upgrades to VIP, you earn $10 instantly!</div>
+  </div>
+  <div class="card" style="margin-bottom:10px;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:8px;">Your Referral Link</div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 13px;font-family:'Montserrat',sans-serif;font-size:0.68rem;color:var(--muted);word-break:break-all;" id="referLink">Loading your link...</div>
+    <button class="btn-g" style="margin-top:8px;" onclick="copyReferLink()">Copy Link 🔗</button>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
+    <div class="sbox"><div class="snum" id="refCount">0</div><div style="font-size:0.5rem;color:var(--muted);">Referrals</div></div>
+    <div class="sbox"><div class="snum" id="refEarned">$0</div><div style="font-size:0.5rem;color:var(--muted);">Earned</div></div>
+    <div class="sbox"><div class="snum" id="refPending">$0</div><div style="font-size:0.5rem;color:var(--muted);">Pending</div></div>
+  </div>
+  <button class="btn-g" style="margin-bottom:8px;" onclick="shareReferLink()">Share via WhatsApp / Social 📲</button>
+</div>
+
+<!-- GET THE APP -->
+<div class="view" id="getappV">
+  <div class="wbar"><span style="font-size:1.4rem;">📱</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Get the App</div><div style="font-size:0.62rem;color:var(--muted);">ICONIK on every device</div></div></div>
+  <div class="card" style="text-align:center;background:linear-gradient(135deg,rgba(255,184,0,0.08),rgba(255,184,0,0.02));border-color:rgba(255,184,0,0.2);margin-bottom:12px;">
+    <div style="font-size:3rem;margin-bottom:8px;">📱</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--gold);letter-spacing:0.1em;margin-bottom:6px;">ICONIK — Available Everywhere</div>
+    <div style="font-family:'Montserrat',sans-serif;font-size:0.72rem;color:var(--muted);line-height:1.6;">Android · iOS · Mac · Windows · Web</div>
+  </div>
+  <div style="display:grid;gap:10px;">
+    <div class="card" style="display:flex;align-items:center;gap:12px;">
+      <span style="font-size:1.8rem;">🤖</span>
+      <div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--text);">Android App</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Google Play Store</div></div>
+      <button class="btn-act" style="margin-left:auto;padding:7px 12px;font-size:0.58rem;" onclick="toast('Android app coming soon! 🤖')">Soon</button>
+    </div>
+    <div class="card" style="display:flex;align-items:center;gap:12px;">
+      <span style="font-size:1.8rem;">🍎</span>
+      <div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--text);">iOS App</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Apple App Store</div></div>
+      <button class="btn-act" style="margin-left:auto;padding:7px 12px;font-size:0.58rem;" onclick="toast('iOS app coming soon! 🍎')">Soon</button>
+    </div>
+    <div class="card" style="display:flex;align-items:center;gap:12px;">
+      <span style="font-size:1.8rem;">🌐</span>
+      <div><div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.76rem;color:var(--text);">Install as PWA</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Add to Home Screen — works like a native app</div></div>
+      <button class="btn-act" style="margin-left:auto;padding:7px 12px;font-size:0.58rem;" id="pwaBtn" onclick="installPWA()">Install</button>
+    </div>
+  </div>
+  <div class="card" style="margin-top:10px;text-align:center;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:6px;">Individual / Business Creator Account</div>
+    <div style="font-family:'Montserrat',sans-serif;font-size:0.68rem;color:var(--muted);line-height:1.6;margin-bottom:10px;">Create an official Creator profile for your brand, business or talent. Compatible with Android, iOS, Mac & Windows.</div>
+    <button class="btn-g" onclick="sV('settings')">Apply for Creator Account →</button>
+  </div>
+</div>
+
+<!-- SHOP & EARN -->
+<div class="view" id="shopV">
+  <div class="wbar"><span style="font-size:1.4rem;">🛍️</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Shop & Earn</div><div style="font-size:0.62rem;color:var(--muted);">Shop from partners · Earn cashback</div></div></div>
+  <div class="card" style="background:linear-gradient(135deg,rgba(255,184,0,0.08),rgba(255,184,0,0.02));border-color:rgba(255,184,0,0.2);margin-bottom:12px;">
+    <div style="font-family:'Bebas Neue',sans-serif;letter-spacing:0.12em;color:var(--gold);font-size:0.72rem;margin-bottom:6px;">💸 Shop & Get Rewarded</div>
+    <div style="font-family:'Montserrat',sans-serif;font-size:0.7rem;color:var(--muted);line-height:1.65;">Every purchase through ICONIK partner stores earns you cashback, ICONIK points and VIP Gold members get an extra 10% on top!</div>
+  </div>
+  <div style="display:grid;gap:8px;">
+    <div class="card" style="display:flex;align-items:center;gap:12px;"><span style="font-size:1.6rem;">🛒</span><div style="flex:1;"><div style="font-weight:700;font-size:0.74rem;">Amazon</div><div style="font-size:0.6rem;color:var(--muted);">3–10% cashback on all purchases</div></div><a href="https://affiliate-program.amazon.com" target="_blank" class="btn-act" style="padding:7px 12px;font-size:0.58rem;text-decoration:none;">Shop</a></div>
+    <div class="card" style="display:flex;align-items:center;gap:12px;"><span style="font-size:1.6rem;">💊</span><div style="flex:1;"><div style="font-weight:700;font-size:0.74rem;">iHerb</div><div style="font-size:0.6rem;color:var(--muted);">5–20% on wellness & supplements</div></div><a href="https://iherb.com" target="_blank" class="btn-act" style="padding:7px 12px;font-size:0.58rem;text-decoration:none;">Shop</a></div>
+    <div class="card" style="display:flex;align-items:center;gap:12px;"><span style="font-size:1.6rem;">💪</span><div style="flex:1;"><div style="font-weight:700;font-size:0.74rem;">MyProtein</div><div style="font-size:0.6rem;color:var(--muted);">Up to 8% on sports nutrition</div></div><a href="https://myprotein.com" target="_blank" class="btn-act" style="padding:7px 12px;font-size:0.58rem;text-decoration:none;">Shop</a></div>
+    <div class="card" style="display:flex;align-items:center;gap:12px;"><span style="font-size:1.6rem;">👟</span><div style="flex:1;"><div style="font-weight:700;font-size:0.74rem;">Gymshark</div><div style="font-size:0.6rem;color:var(--muted);">Up to 10% on fitness apparel</div></div><a href="https://gymshark.com" target="_blank" class="btn-act" style="padding:7px 12px;font-size:0.58rem;text-decoration:none;">Shop</a></div>
+    <div class="card" style="display:flex;align-items:center;gap:12px;"><span style="font-size:1.6rem;">✈️</span><div style="flex:1;"><div style="font-weight:700;font-size:0.74rem;">Booking.com</div><div style="font-size:0.6rem;color:var(--muted);">25–40% on travel & hotels</div></div><a href="https://booking.com" target="_blank" class="btn-act" style="padding:7px 12px;font-size:0.58rem;text-decoration:none;">Book</a></div>
+  </div>
+</div>
+
+<!-- ADVANCED SEARCH -->
+<div class="view" id="searchV">
+  <div class="wbar"><span style="font-size:1.4rem;">🔎</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Advanced Search</div><div style="font-size:0.62rem;color:var(--muted);">Find anything on ICONIK</div></div></div>
+  <input class="fi" id="advSrch" placeholder="Search members, celebrities, posts, events..." style="margin-bottom:10px;" oninput="runAdvSearch()"/>
+  <div class="frow" id="srchTypeRow">
+    <div class="ftab on" data-st="all">All</div>
+    <div class="ftab" data-st="celebs">⭐ Icons</div>
+    <div class="ftab" data-st="members">👥 Members</div>
+    <div class="ftab" data-st="posts">📝 Posts</div>
+    <div class="ftab" data-st="events">🎫 Events</div>
+  </div>
+  <div id="srchResults"><div style="text-align:center;padding:24px;color:var(--muted);font-size:0.76rem;">Type above to search ICONIK...</div></div>
+</div>
+
+<!-- MY BADGES -->
+<div class="view" id="badgesV">
+  <div class="wbar"><span style="font-size:1.4rem;">🏅</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">My Badges</div><div style="font-size:0.62rem;color:var(--muted);">Your achievements & recognition</div></div></div>
+  <div id="badgesGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;"></div>
+</div>
+
+<!-- LIVE STREAMS -->
+<div class="view" id="streamsV">
+  <div class="wbar"><span style="font-size:1.4rem;">🔴</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Live Streams</div><div style="font-size:0.62rem;color:var(--muted);">Watch & go live with your community</div></div></div>
+  <div class="card" style="background:rgba(239,68,68,0.07);border-color:rgba(239,68,68,0.25);margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span style="width:10px;height:10px;border-radius:50%;background:#EF4444;flex-shrink:0;animation:pulse 1s infinite;"></span>
+      <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.74rem;color:var(--text);">Live Now</div>
+    </div>
+  </div>
+  <div id="liveList"><div class="loader"><div class="lring"></div></div></div>
+  <div class="card" style="margin-top:12px;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:8px;">Go Live</div>
+    <div class="fg"><label class="fl">Stream Title</label><input class="fi" id="streamTitle" placeholder="e.g. Fan reaction — Osimhen vs PSG"/></div>
+    <div class="fg"><label class="fl">Stream URL (YouTube/Twitch live link)</label><input class="fi" id="streamUrl" placeholder="https://youtube.com/live/..."/></div>
+    <button class="btn-g" onclick="startStream()">Go Live 🔴</button>
+  </div>
+</div>
+
+<!-- FAN CHALLENGES -->
+<div class="view" id="challengesV">
+  <div class="wbar"><span style="font-size:1.4rem;">⚡</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Fan Challenges</div><div style="font-size:0.62rem;color:var(--muted);">Compete · Win prizes · Earn fame</div></div></div>
+  <div class="card" style="background:linear-gradient(135deg,rgba(255,184,0,0.1),rgba(255,184,0,0.02));border-color:rgba(255,184,0,0.3);margin-bottom:12px;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.12em;color:var(--gold);margin-bottom:6px;">⚡ This Week's Challenge</div>
+    <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.84rem;color:var(--text);margin-bottom:6px;" id="weekChallenge">Best Fan Costume Challenge 🎭</div>
+    <div style="font-family:'Montserrat',sans-serif;font-size:0.7rem;color:var(--muted);line-height:1.6;">Share your best celebrity-inspired costume. Top 3 winners get VIP Gold for 1 month FREE + featured on ICONIK homepage!</div>
+    <button class="btn-g" style="margin-top:10px;" onclick="joinChallenge()">Join Challenge ⚡</button>
+  </div>
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:0.68rem;letter-spacing:0.2em;color:var(--gold);margin-bottom:8px;">Active Challenges</div>
+  <div id="challengesList"><div class="loader"><div class="lring"></div></div></div>
+</div>
+
+<!-- CELEBRITY Q&A -->
+<div class="view" id="qaV">
+  <div class="wbar"><span style="font-size:1.4rem;">🎙️</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Celebrity Q&A</div><div style="font-size:0.62rem;color:var(--muted);">Ask your icon · Get answers</div></div></div>
+  <div class="card" style="margin-bottom:12px;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:8px;">Ask a Question</div>
+    <div class="fg"><label class="fl">Which Celebrity?</label><input class="fi" id="qaIcon" placeholder="e.g. Osimhen, Bruno Mars..."/></div>
+    <div class="fg"><label class="fl">Your Question</label><textarea class="fi" id="qaText" rows="3" placeholder="Ask anything..."></textarea></div>
+    <button class="btn-g" onclick="submitQA()">Submit Question 🎙️</button>
+  </div>
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:0.68rem;letter-spacing:0.2em;color:var(--gold);margin-bottom:8px;">Recent Q&As</div>
+  <div id="qaList"><div class="loader"><div class="lring"></div></div></div>
+</div>
+
+<!-- SETTINGS -->
+<div class="view" id="settingsV">
+  <div class="wbar"><span style="font-size:1.4rem;">⚙️</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Settings</div><div style="font-size:0.62rem;color:var(--muted);">Manage your account & preferences</div></div></div>
+  <div class="card" style="margin-bottom:10px;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:10px;">Account Settings</div>
+    <div class="fg"><label class="fl">Display Name</label><input class="fi" id="setName" placeholder="Your display name"/></div>
+    <div class="fg"><label class="fl">Bio</label><textarea class="fi" id="setBio" rows="2" placeholder="Tell your story..."></textarea></div>
+    <div class="fg"><label class="fl">Country</label><input class="fi" id="setCountry" placeholder="Your country"/></div>
+    <button class="btn-g" onclick="saveSettings()">Save Changes ✅</button>
+  </div>
+  <div class="card" style="margin-bottom:10px;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:10px;">Creator Account</div>
+    <div style="font-family:'Montserrat',sans-serif;font-size:0.72rem;color:var(--muted);line-height:1.65;margin-bottom:10px;">Apply for an Individual or Business Creator Account to unlock advanced posting, analytics and monetization tools.</div>
+    <div class="fg"><label class="fl">Creator Type</label>
+      <select class="fi" id="creatorType">
+        <option value="">Select type...</option>
+        <option>Individual Creator</option>
+        <option>Business / Brand</option>
+        <option>Artist / Musician</option>
+        <option>Athlete / Sports</option>
+        <option>Influencer</option>
+        <option>Media / Press</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Business/Creator Name</label><input class="fi" id="creatorName" placeholder="Your brand or business name"/></div>
+    <div class="fg"><label class="fl">Website or Social Link</label><input class="fi" id="creatorLink" placeholder="https://..."/></div>
+    <button class="btn-g" onclick="applyCreator()">Apply for Creator Account →</button>
+  </div>
+  <div class="card" style="background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.2);">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--err);margin-bottom:8px;">Danger Zone</div>
+    <button style="width:100%;padding:10px;background:transparent;border:1px solid rgba(239,68,68,0.4);border-radius:6px;color:var(--err);font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;cursor:pointer;" onclick="if(confirm('Sign out of ICONIK?'))doLogout()">Sign Out 🚪</button>
+  </div>
+</div>
+
+<!-- MEMBERSHIP -->
+<div class="view" id="membershipV">
+  <div class="wbar"><span style="font-size:1.4rem;">👑</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Membership</div><div style="font-size:0.62rem;color:var(--muted);">Your tier · Upgrade · Benefits</div></div></div>
+  <div class="card" style="background:linear-gradient(135deg,rgba(255,184,0,0.1),rgba(255,184,0,0.02));border-color:rgba(255,184,0,0.3);margin-bottom:12px;text-align:center;">
+    <div style="font-size:2rem;margin-bottom:4px;" id="memTierIcon">⭐</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--gold);letter-spacing:0.1em;" id="memTierName">Fan Member</div>
+    <div style="font-family:'Montserrat',sans-serif;font-size:0.68rem;color:var(--muted);margin-top:4px;" id="memTierDesc">Free • Basic access</div>
+  </div>
+  <div style="display:grid;gap:8px;margin-bottom:14px;">
+    <div class="card" style="border-color:rgba(205,127,50,0.4);">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div><div style="font-family:'Bebas Neue',sans-serif;color:#CD7F32;font-size:0.8rem;letter-spacing:0.08em;">VIP BRONZE</div><div style="font-size:0.62rem;color:var(--muted);">Enhanced features · Priority support</div></div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:#CD7F32;">$5<span style="font-size:0.6rem;">/mo</span></div>
+      </div>
+      <button class="btn-g" style="margin-top:8px;background:linear-gradient(135deg,#CD7F32,#A0522D);" onclick="upgradeVIP('Bronze','5')">Upgrade to Bronze →</button>
+    </div>
+    <div class="card" style="border-color:rgba(192,192,192,0.4);">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div><div style="font-family:'Bebas Neue',sans-serif;color:#C0C0C0;font-size:0.8rem;letter-spacing:0.08em;">VIP SILVER ⭐</div><div style="font-size:0.62rem;color:var(--muted);">VIP chat · Creator fund · Exclusive content</div></div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:#C0C0C0;">$12<span style="font-size:0.6rem;">/mo</span></div>
+      </div>
+      <button class="btn-g" style="margin-top:8px;background:linear-gradient(135deg,#C0C0C0,#808080);color:#000;" onclick="upgradeVIP('Silver','12')">Upgrade to Silver →</button>
+    </div>
+    <div class="card" style="border-color:rgba(255,184,0,0.5);">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div><div style="font-family:'Bebas Neue',sans-serif;color:var(--gold);font-size:0.8rem;letter-spacing:0.08em;">VIP GOLD 👑</div><div style="font-size:0.62rem;color:var(--muted);">10% commissions · $10 cashback · All access</div></div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--gold);">$25<span style="font-size:0.6rem;">/mo</span></div>
+      </div>
+      <button class="btn-g" style="margin-top:8px;" onclick="upgradeVIP('Gold','25')">Upgrade to Gold 👑 →</button>
+    </div>
+  </div>
+  <div class="card" style="background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.15);">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.15em;color:var(--err);margin-bottom:4px;">⚠️ BEWARE OF SCAMS</div>
+    <div style="font-family:'Montserrat',sans-serif;font-size:0.64rem;color:var(--muted);line-height:1.6;">Only subscribe directly on the official ICONIK website or app. Ignore anyone offering "cheap verification" outside the app — they are fake. ICONIK will <strong style="color:var(--text);">never</strong> ask for payment via WhatsApp or personal accounts.</div>
+  </div>
+</div>
+
+<!-- DATING & MATCHMAKING -->
+<div class="view" id="datingV">
+  <div class="wbar" style="background:linear-gradient(135deg,rgba(255,107,157,0.12),rgba(255,107,157,0.03));border-color:rgba(255,107,157,0.3);">
+    <span style="font-size:1.4rem;">💕</span>
+    <div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:#FF6B9D;">Dating & Matchmaking</div>
+      <div style="font-size:0.62rem;color:var(--muted);">Find your perfect fan match</div>
+    </div>
+  </div>
+  <!-- Scam warning -->
+  <div class="card" style="background:rgba(239,68,68,0.07);border-color:rgba(239,68,68,0.25);margin-bottom:12px;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.15em;color:var(--err);margin-bottom:4px;">⚠️ SAFETY FIRST</div>
+    <div style="font-family:'Montserrat',sans-serif;font-size:0.64rem;color:var(--muted);line-height:1.6;">All profiles are ID-verified by ICONIK. Never send money to matches. Report suspicious behaviour immediately. Your safety is our priority. 🛡️</div>
+  </div>
+  <!-- Coming soon / VIP gate -->
+  <div class="card" style="background:linear-gradient(135deg,rgba(255,107,157,0.1),rgba(255,107,157,0.02));border-color:rgba(255,107,157,0.35);text-align:center;margin-bottom:12px;">
+    <div style="font-size:2.5rem;margin-bottom:8px;">💕</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;color:#FF6B9D;letter-spacing:0.1em;margin-bottom:6px;">Fan Matchmaking Room</div>
+    <div style="font-family:'Montserrat',sans-serif;font-size:0.72rem;color:var(--muted);line-height:1.7;margin-bottom:12px;">
+      Match with fans who love the same celebrities & communities as you. 
+      Real connections. Verified profiles. Safe space.<br><br>
+      <strong style="color:#FF6B9D;">Exclusively for VIP Silver & Gold members.</strong>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+      <div style="background:rgba(255,107,157,0.08);border:1px solid rgba(255,107,157,0.2);border-radius:8px;padding:10px;"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;color:#FF6B9D;">Silver Match</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">5 matches/day · Chat · Like</div></div>
+      <div style="background:rgba(255,184,0,0.08);border:1px solid rgba(255,184,0,0.25);border-radius:8px;padding:10px;"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;color:var(--gold);">Gold Match 👑</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Unlimited · Video · Priority</div></div>
+    </div>
+    <button class="btn-g" style="background:linear-gradient(135deg,#FF6B9D,#E91E8C);" onclick="sV('membership')">Upgrade to Access 💕 →</button>
+  </div>
+  <!-- Profile setup teaser -->
+  <div class="card">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.15em;color:#FF6B9D;margin-bottom:10px;">Set Up Your Match Profile</div>
+    <div class="fg"><label class="fl">Your Favourite Celebrity / Community</label><input class="fi" id="dtFavCeleb" placeholder="e.g. Osimhen, Bad Bunny, BTS..."/></div>
+    <div class="fg"><label class="fl">Looking for</label>
+      <select class="fi" id="dtLookingFor">
+        <option>Fan Friends</option>
+        <option>Dating</option>
+        <option>Tour Buddies</option>
+        <option>Event Partners</option>
+        <option>Collaborators</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Age Range</label>
+      <select class="fi" id="dtAgeRange">
+        <option>18–25</option><option>26–35</option><option>36–45</option><option>46+</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Short Bio for Matching</label><textarea class="fi" id="dtBio" rows="2" placeholder="Tell potential matches about yourself..."></textarea></div>
+    <button class="btn-g" style="background:linear-gradient(135deg,#FF6B9D,#E91E8C);" onclick="saveDatingProfile()">Save Match Profile 💕</button>
+  </div>
+</div>
+
 <div id="bnav">
   <div class="bn on" data-v="feed"><div class="bn-ic">&#127968;</div><div class="bn-lb">Feed</div></div>
   <div class="bn" data-v="icons"><div class="bn-ic">&#11088;</div><div class="bn-lb">Icons</div></div>
@@ -280,6 +657,8 @@ select.fi option{background:var(--bg2);}
   document.getElementById("bellBtn").onclick=function(){window.sv("notifs");};
   document.getElementById("navAv").onclick=function(){window.sv("profile");};
   document.getElementById("logoutBtn").onclick=function(){if(window._so)window._so();else location.href="/app.html?signout=1";};
+  // sV alias so new views can call sV() too
+  window.sV=window.sv;
 })();
 </script>
 <script type="module">
@@ -1211,6 +1590,342 @@ async function loadVIP(){
 }
 
 window.toast=toast;
-</script>
+
+// ── NEW VIEWS JS ──
+
+// EXPLORE ICONS — category filter
+window.filterExplore=function(){
+  var q=document.getElementById("exploreSrch").value.toLowerCase();
+  var cat=document.querySelector("#exploreCatRow .ftab.on")?.dataset.cat||"all";
+  var list=allC.filter(function(c){
+    var mQ=!q||(c.name||"").toLowerCase().includes(q)||(c.stageName||"").toLowerCase().includes(q);
+    var mC=cat==="all"||(c.category||"")=== cat;
+    return mQ&&mC;
+  });
+  var grid=document.getElementById("exploreGrid");
+  if(!grid)return;
+  if(!list.length){grid.innerHTML="<div style='grid-column:span 2;text-align:center;padding:24px;color:var(--muted);'>No icons found in this category yet.</div>";return;}
+  grid.innerHTML=list.map(function(c){
+    var photo=c.photo||c.photoUrl||c.imageUrl||"";
+    var hasPhoto=photo&&photo.startsWith("http");
+    var init=xe((c.stageName||c.name||"?").charAt(0));
+    var imgTag=hasPhoto?"<img src=\""+xu(photo)+"\" style=\"position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:2;\" loading=\"lazy\" onerror=\"this.style.display='none';\"/>":"";
+    return "<div class=\"cc\" data-cid=\""+xe(c.id||"")+"\"><div class=\"cthumb\">"+imgTag+"<span class=\"cletter\" style=\"z-index:1;\">"+init+"</span></div><div class=\"cinfo\"><div class=\"cnm\">"+xe(c.stageName||c.name||"")+"</div><div class=\"ccat\">"+xe(c.category||"")+"</div><div class=\"cmeta\">"+xe(c.country||"")+"</div></div></div>";
+  }).join("");
+  document.querySelectorAll("#exploreGrid .cc[data-cid]").forEach(function(card){card.onclick=function(){openCeleb(this.dataset.cid);};});
+};
+document.querySelectorAll("#exploreCatRow .ftab").forEach(function(t){
+  t.onclick=function(){
+    document.querySelectorAll("#exploreCatRow .ftab").forEach(function(x){x.classList.remove("on");});
+    this.classList.add("on");
+    filterExplore();
+  };
+});
+
+// VERIFIED ICONS
+window.filterVerified=function(){
+  var q=(document.getElementById("verifiedSrch")?.value||"").toLowerCase();
+  var list=allC.filter(function(c){return c.status==="Active"||c.status==="Legend"||c.status==="verified";});
+  if(q)list=list.filter(function(c){return(c.name||"").toLowerCase().includes(q);});
+  var grid=document.getElementById("verifiedGrid");
+  if(!grid)return;
+  if(!list.length){grid.innerHTML="<div style='grid-column:span 2;text-align:center;padding:24px;color:var(--muted);'>No verified icons yet.</div>";return;}
+  grid.innerHTML=list.map(function(c){
+    var photo=c.photo||c.photoUrl||c.imageUrl||"";
+    var hasPhoto=photo&&photo.startsWith("http");
+    var init=xe((c.name||"?").charAt(0));
+    var imgTag=hasPhoto?"<img src=\""+xu(photo)+"\" style=\"position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:2;\" loading=\"lazy\" onerror=\"this.style.display='none';\"/>":"";
+    return "<div class=\"cc\" data-cid=\""+xe(c.id||"")+"\"><div class=\"cthumb\">"+imgTag+"<span class=\"cletter\">"+init+"</span></div><div class=\"cinfo\"><div class=\"cnm\">"+xe(c.name||"")+" <span style=\"width:14px;height:14px;background:#3B82F6;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.5rem;color:#fff;margin-left:3px;\">✓</span></div><div class=\"ccat\">"+xe(c.category||"")+"</div><div class=\"cmeta\">"+xe(c.status||"Verified")+"</div></div></div>";
+  }).join("");
+  document.querySelectorAll("#verifiedGrid .cc[data-cid]").forEach(function(card){card.onclick=function(){openCeleb(this.dataset.cid);};});
+};
+
+// TOUR BUDDY
+window.postTourBuddy=async function(){
+  if(!cU){toast("Sign in to post","error");return;}
+  var ev=document.getElementById("tourEvent").value.trim();
+  var city=document.getElementById("tourCity").value.trim();
+  if(!ev||!city){toast("Event and city required","error");return;}
+  try{
+    await addDoc(collection(db,"tourBuddies"),{
+      event:ev,city:city,
+      date:document.getElementById("tourDate").value,
+      message:document.getElementById("tourMsg").value.trim(),
+      userName:(cD&&cD.name)||"Member",
+      userPhoto:(cD&&cD.profilePic)||"",
+      userId:cU.uid,
+      createdAt:serverTimestamp()
+    });
+    toast("Tour buddy post published! 🎫");
+    loadTourBuddies();
+  }catch(e){toast("Error posting","error");}
+};
+async function loadTourBuddies(){
+  var el=document.getElementById("tourList");if(!el)return;
+  var snap=await sg(query(collection(db,"tourBuddies"),limit(20)));
+  var items=[];snap.forEach(function(d){items.push({id:d.id,...d.data()});});
+  el.innerHTML=items.length?items.map(function(t){
+    return "<div class=\"card\"><div style=\"font-weight:700;font-size:0.76rem;color:var(--text);margin-bottom:4px;\">🎫 "+xe(t.event||"")+"</div><div style=\"font-size:0.64rem;color:var(--muted);margin-bottom:4px;\">📍 "+xe(t.city||"")+(t.date?" · 📅 "+xe(t.date):"")+"</div><div style=\"font-size:0.7rem;color:var(--muted);line-height:1.5;\">"+xe(t.message||"")+"</div><div style=\"font-size:0.6rem;color:var(--dim);margin-top:6px;\">Posted by "+xe(t.userName||"Member")+"</div></div>";
+  }).join(""):"<div class=\"card\" style=\"text-align:center;color:var(--muted);\">No tour buddies posted yet. Be first! 🎫</div>";
+}
+
+// MARKETPLACE
+window.listProduct=async function(){
+  if(!cU){toast("Sign in to list","error");return;}
+  var nm=document.getElementById("mktName").value.trim();
+  var price=document.getElementById("mktPrice").value.trim();
+  if(!nm||!price){toast("Name and price required","error");return;}
+  try{
+    await addDoc(collection(db,"marketplace"),{
+      name:nm,price:price,
+      description:document.getElementById("mktDesc").value.trim(),
+      imageUrl:document.getElementById("mktImg").value.trim(),
+      sellerId:cU.uid,sellerName:(cD&&cD.name)||"Member",
+      status:"active",createdAt:serverTimestamp()
+    });
+    toast("Product listed! 🏪");loadMarket();
+  }catch(e){toast("Error listing","error");}
+};
+async function loadMarket(){
+  var el=document.getElementById("marketList");if(!el)return;
+  var snap=await sg(query(collection(db,"marketplace"),limit(20)));
+  var items=[];snap.forEach(function(d){items.push({id:d.id,...d.data()});});
+  el.innerHTML=items.length?items.map(function(p){
+    var img=p.imageUrl&&p.imageUrl.startsWith("http")?"<img src=\""+xu(p.imageUrl)+"\" style=\"width:100%;height:120px;object-fit:cover;border-radius:6px;margin-bottom:8px;\" onerror=\"this.remove()\"/>":"";
+    return "<div class=\"card\">"+img+"<div style=\"font-weight:700;font-size:0.76rem;color:var(--text);margin-bottom:2px;\">"+xe(p.name||"")+"</div><div style=\"font-family:'Bebas Neue',sans-serif;color:var(--gold);font-size:0.8rem;\">$"+xe(p.price||"0")+"</div><div style=\"font-size:0.66rem;color:var(--muted);margin-top:4px;\">"+xe(p.description||"")+"</div><div style=\"font-size:0.58rem;color:var(--dim);margin-top:6px;\">By "+xe(p.sellerName||"")+"</div></div>";
+  }).join(""):"<div class=\"card\" style=\"text-align:center;color:var(--muted);\">No products yet. List yours above! 🏪</div>";
+}
+
+// CREATOR FUND
+window.requestWithdrawal=async function(){
+  if(!cU){toast("Sign in first","error");return;}
+  var bank=document.getElementById("cfBank").value.trim();
+  var amount=document.getElementById("cfAmount").value.trim();
+  if(!bank||!amount){toast("All fields required","error");return;}
+  if(parseFloat(amount)<10){toast("Minimum withdrawal is $10","error");return;}
+  try{
+    await addDoc(collection(db,"withdrawals"),{
+      userId:cU.uid,userName:(cD&&cD.name)||"Member",
+      bank:bank,amount:amount,status:"pending",
+      createdAt:serverTimestamp()
+    });
+    toast("Withdrawal request submitted! Admin will process within 48hrs 💸");
+  }catch(e){toast("Error submitting","error");}
+};
+
+// REFER & EARN
+window.copyReferLink=function(){
+  var link="https://iconik-global.web.app/app.html?ref="+(cU&&cU.uid||"user");
+  if(navigator.clipboard)navigator.clipboard.writeText(link).then(function(){toast("Referral link copied! 🔗");});
+};
+window.shareReferLink=function(){
+  var link="https://iconik-global.web.app/app.html?ref="+(cU&&cU.uid||"user");
+  var msg="Join me on ICONIK — The Global Fan Community! Use my link to get started: "+link;
+  if(navigator.share)navigator.share({title:"Join ICONIK",text:msg,url:link});
+  else doShare("Join ICONIK",msg,link);
+};
+
+// LIVE STREAMS
+async function loadStreams(){
+  var el=document.getElementById("liveList");if(!el)return;
+  var snap=await sg(query(collection(db,"streams"),limit(15)));
+  var items=[];snap.forEach(function(d){items.push({id:d.id,...d.data()});});
+  el.innerHTML=items.length?items.map(function(s){
+    return "<div class=\"card\"><div style=\"display:flex;align-items:center;gap:8px;margin-bottom:6px;\"><span style=\"width:8px;height:8px;border-radius:50%;background:#EF4444;flex-shrink:0;\"></span><div style=\"font-weight:700;font-size:0.76rem;color:var(--text);\">"+xe(s.title||"Live Stream")+"</div></div><div style=\"font-size:0.62rem;color:var(--muted);\">By "+xe(s.userName||"Member")+"</div>"+(s.url?"<a href=\""+xu(s.url)+"\" target=\"_blank\" rel=\"noopener\" style=\"display:block;margin-top:8px;padding:8px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:6px;color:#EF4444;font-size:0.66rem;font-weight:700;text-align:center;text-decoration:none;\">🔴 Watch Live</a>":"")+"</div>";
+  }).join(""):"<div class=\"card\" style=\"text-align:center;color:var(--muted);\">No live streams right now. Go live above! 🔴</div>";
+}
+window.startStream=async function(){
+  if(!cU){toast("Sign in first","error");return;}
+  var title=document.getElementById("streamTitle").value.trim();
+  var url=document.getElementById("streamUrl").value.trim();
+  if(!title){toast("Stream title required","error");return;}
+  try{
+    await addDoc(collection(db,"streams"),{
+      title:title,url:url,
+      userId:cU.uid,userName:(cD&&cD.name)||"Member",
+      isLive:true,createdAt:serverTimestamp()
+    });
+    toast("You're live! 🔴");loadStreams();
+  }catch(e){toast("Error starting stream","error");}
+};
+
+// FAN CHALLENGES
+async function loadChallenges(){
+  var el=document.getElementById("challengesList");if(!el)return;
+  var snap=await sg(query(collection(db,"challenges"),limit(10)));
+  var items=[];snap.forEach(function(d){items.push({id:d.id,...d.data()});});
+  el.innerHTML=items.length?items.map(function(c){
+    return "<div class=\"card\"><div style=\"font-weight:700;font-size:0.8rem;color:var(--gold);margin-bottom:4px;\">⚡ "+xe(c.title||"")+"</div><div style=\"font-size:0.7rem;color:var(--muted);line-height:1.6;\">"+xe(c.description||"")+"</div><button class=\"btn-act\" style=\"margin-top:10px;width:100%;\" onclick=\"joinChallenge()\">Join ⚡</button></div>";
+  }).join(""):"<div class=\"card\" style=\"text-align:center;color:var(--muted);\">New challenges coming soon! ⚡</div>";
+}
+window.joinChallenge=function(){toast("Challenge submission coming soon! ⚡","info");};
+
+// CELEBRITY Q&A
+async function loadQA(){
+  var el=document.getElementById("qaList");if(!el)return;
+  var snap=await sg(query(collection(db,"qa"),limit(15)));
+  var items=[];snap.forEach(function(d){items.push({id:d.id,...d.data()});});
+  el.innerHTML=items.length?items.map(function(q){
+    return "<div class=\"card\"><div style=\"font-size:0.58rem;color:var(--gold);font-family:'Bebas Neue',sans-serif;letter-spacing:0.1em;margin-bottom:4px;\">Q to "+xe(q.icon||"Celebrity")+"</div><div style=\"font-weight:700;font-size:0.76rem;color:var(--text);margin-bottom:6px;\">"+xe(q.question||"")+"</div>"+(q.answer?"<div style=\"background:rgba(255,184,0,0.07);border:1px solid rgba(255,184,0,0.2);border-radius:6px;padding:10px;font-size:0.7rem;color:var(--muted);\">💬 "+xe(q.answer)+"</div>":"<div style=\"font-size:0.62rem;color:var(--dim);\">Awaiting response...</div>")+"</div>";
+  }).join(""):"<div class=\"card\" style=\"text-align:center;color:var(--muted);\">No Q&As yet. Ask your icon above! 🎙️</div>";
+}
+window.submitQA=async function(){
+  if(!cU){toast("Sign in first","error");return;}
+  var icon=document.getElementById("qaIcon").value.trim();
+  var text=document.getElementById("qaText").value.trim();
+  if(!icon||!text){toast("Icon and question required","error");return;}
+  try{
+    await addDoc(collection(db,"qa"),{
+      icon:icon,question:text,
+      userId:cU.uid,userName:(cD&&cD.name)||"Member",
+      answer:"",createdAt:serverTimestamp()
+    });
+    toast("Question submitted! 🎙️");
+    document.getElementById("qaText").value="";
+    loadQA();
+  }catch(e){toast("Error submitting","error");}
+};
+
+// ADVANCED SEARCH
+window.runAdvSearch=async function(){
+  var q=(document.getElementById("advSrch")||{}).value||"";
+  var el=document.getElementById("srchResults");if(!el||q.length<2)return;
+  el.innerHTML="<div class=\"loader\"><div class=\"lring\"></div></div>";
+  var ql=q.toLowerCase();
+  var results=[];
+  // Search celebs
+  var celebHits=allC.filter(function(c){return(c.name||"").toLowerCase().includes(ql)||(c.stageName||"").toLowerCase().includes(ql);});
+  celebHits.forEach(function(c){results.push({type:"⭐ Icon",label:c.stageName||c.name,sub:c.category,id:c.id,action:function(){openCeleb(c.id);}});});
+  // Search members
+  var memHits=allM.filter(function(m){return(m.name||"").toLowerCase().includes(ql)||(m.country||"").toLowerCase().includes(ql);});
+  memHits.slice(0,5).forEach(function(m){results.push({type:"👥 Member",label:m.name,sub:m.country,id:m.id,action:function(){openMember(m);}});});
+  el.innerHTML=results.length?results.map(function(r,i){
+    return "<div class=\"card\" style=\"cursor:pointer;\" onclick=\"srchAction("+i+")\"><div style=\"font-size:0.52rem;color:var(--gold);font-family:'Bebas Neue',sans-serif;letter-spacing:0.1em;margin-bottom:2px;\">"+r.type+"</div><div style=\"font-weight:700;font-size:0.76rem;color:var(--text);\">"+xe(r.label||"")+"</div><div style=\"font-size:0.62rem;color:var(--muted);\">"+xe(r.sub||"")+"</div></div>";
+  }).join(""):"<div style=\"text-align:center;padding:20px;color:var(--muted);font-size:0.76rem;\">No results for \""+xe(q)+"\"</div>";
+  window._srchActions=results.map(function(r){return r.action;});
+};
+window.srchAction=function(i){if(window._srchActions&&window._srchActions[i])window._srchActions[i]();};
+
+// MY BADGES
+function loadBadges(){
+  var el=document.getElementById("badgesGrid");if(!el)return;
+  var tier=(cD&&cD.tier)||"Fan";
+  var all=[
+    {icon:"🌟",name:"Early Adopter",desc:"Joined ICONIK early",earned:true},
+    {icon:"🔥",name:"First Post",desc:"Published your first post",earned:true},
+    {icon:"💬",name:"Conversationalist",desc:"Left 10+ comments",earned:false},
+    {icon:"❤️",name:"Fan Favourite",desc:"Received 50+ likes",earned:false},
+    {icon:"👑",name:"VIP Member",desc:"Upgraded to VIP",earned:tier.includes("VIP")},
+    {icon:"🎯",name:"Profile Complete",desc:"Completed your profile",earned:!!(cD&&cD.bio)},
+    {icon:"🔗",name:"Connector",desc:"Referred a friend",earned:false},
+    {icon:"⭐",name:"Icon Follower",desc:"Followed 5+ celebrities",earned:false},
+    {icon:"🏆",name:"Top Fan",desc:"Ranked in top 100",earned:false},
+  ];
+  el.innerHTML=all.map(function(b){
+    return "<div style=\"background:"+(b.earned?"rgba(255,184,0,0.08)":"rgba(255,255,255,0.03)")+";border:1px solid "+(b.earned?"rgba(255,184,0,0.3)":"var(--border)")+";border-radius:10px;padding:12px;text-align:center;\">"
+      +"<div style=\"font-size:1.8rem;margin-bottom:4px;"+(b.earned?"":"filter:grayscale(1);opacity:0.3;")+")\">"+b.icon+"</div>"
+      +"<div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.1em;color:"+(b.earned?"var(--gold)":"var(--dim)")+";margin-bottom:2px;\">"+xe(b.name)+"</div>"
+      +"<div style=\"font-size:0.52rem;color:var(--dim);line-height:1.4;\">"+xe(b.desc)+"</div>"
+      +(b.earned?"<div style=\"font-size:0.5rem;color:var(--ok);margin-top:4px;\">✓ Earned</div>":"<div style=\"font-size:0.5rem;color:var(--dim);margin-top:4px;\">Locked</div>")
+      +"</div>";
+  }).join("");
+}
+
+// SETTINGS
+window.saveSettings=async function(){
+  if(!cU){return;}
+  var name=document.getElementById("setName").value.trim();
+  var bio=document.getElementById("setBio").value.trim();
+  var country=document.getElementById("setCountry").value.trim();
+  if(!name){toast("Display name required","error");return;}
+  try{
+    var{updateDoc:uD,doc:dc}=await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+    await uD(dc(db,"users",cU.uid),{name:name,bio:bio,country:country});
+    if(cD){cD.name=name;cD.bio=bio;cD.country=country;}
+    toast("Settings saved! ✅");
+  }catch(e){toast("Error saving","error");}
+};
+window.applyCreator=async function(){
+  if(!cU){return;}
+  var type=document.getElementById("creatorType").value;
+  var name=document.getElementById("creatorName").value.trim();
+  if(!type||!name){toast("Type and name required","error");return;}
+  try{
+    await addDoc(collection(db,"creatorApplications"),{
+      userId:cU.uid,userName:(cD&&cD.name)||"Member",
+      creatorType:type,creatorName:name,
+      link:document.getElementById("creatorLink").value.trim(),
+      status:"pending",createdAt:serverTimestamp()
+    });
+    toast("Creator application submitted! We'll review within 48hrs 🌟");
+  }catch(e){toast("Error submitting","error");}
+};
+window.installPWA=function(){
+  if(window._pwaPrompt){window._pwaPrompt.prompt();}
+  else{toast("To install: tap browser menu → Add to Home Screen 📱","info");}
+};
+window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();window._pwaPrompt=e;});
+
+// MEMBERSHIP
+window.upgradeVIP=function(tier,price){
+  toast("Redirecting to VIP upgrade for "+tier+" ($"+price+"/mo)... Payment system coming in Phase 9! 👑","info");
+  setTimeout(function(){sv("vip");},1500);
+};
+
+// DATING & MATCHMAKING
+window.saveDatingProfile=async function(){
+  if(!cU){toast("Sign in first","error");return;}
+  var celeb=document.getElementById("dtFavCeleb").value.trim();
+  var looking=document.getElementById("dtLookingFor").value;
+  var bio=document.getElementById("dtBio").value.trim();
+  var tier=(cD&&cD.tier)||"Fan";
+  if(!tier.includes("Silver")&&!tier.includes("Gold")){
+    toast("Dating & Matchmaking requires VIP Silver or Gold 💕","error");
+    setTimeout(function(){sv("membership");},1500);
+    return;
+  }
+  try{
+    var{setDoc:sd,doc:dc}=await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+    await sd(dc(db,"datingProfiles",cU.uid),{
+      userId:cU.uid,userName:(cD&&cD.name)||"Member",
+      userPhoto:(cD&&cD.profilePic)||"",
+      favCeleb:celeb,lookingFor:looking,
+      ageRange:document.getElementById("dtAgeRange").value,
+      bio:bio,tier:tier,
+      createdAt:serverTimestamp()
+    });
+    toast("Match profile saved! 💕 We'll notify you of matches soon!");
+  }catch(e){toast("Error saving profile","error");}
+};
+
+// REFER LINK init
+function initReferLink(){
+  var el=document.getElementById("referLink");
+  if(el&&cU)el.textContent="https://iconik-global.web.app/app.html?ref="+cU.uid;
+}
+
+// SETTINGS prefill
+function initSettings(){
+  if(!cD)return;
+  var n=document.getElementById("setName");var b=document.getElementById("setBio");var c=document.getElementById("setCountry");
+  if(n)n.value=cD.name||"";if(b)b.value=cD.bio||"";if(c)c.value=cD.country||"";
+}
+
+// Load new views on demand
+var _origSv=window.sv;
+window.sv=function(name){
+  _origSv(name);
+  if(name==="explore")filterExplore();
+  if(name==="verified")filterVerified();
+  if(name==="tour")loadTourBuddies();
+  if(name==="market")loadMarket();
+  if(name==="streams")loadStreams();
+  if(name==="challenges")loadChallenges();
+  if(name==="qa")loadQA();
+  if(name==="badges")loadBadges();
+  if(name==="refer")initReferLink();
+  if(name==="settings")initSettings();
+};
+window.sV=window.sv;
 </body>
 </html>
