@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>ICONIK — My Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
 
@@ -13,14 +13,14 @@
    Deep blacks, warm ivory, refined gold
    ════════════════════════════════════ */
 :root{
-  --bg:#0A0A0F;
-  --bg2:#111118;
-  --bg3:#18181F;
-  --bg4:#1E1E27;
-  --accent:#C9A84C;
-  --accent2:#A07830;
-  --accent-soft:rgba(201,168,76,0.12);
-  --accent-glow:rgba(201,168,76,0.25);
+  --bg:#060A12;
+  --bg2:#0C1018;
+  --bg3:#101520;
+  --bg4:#141A24;
+  --accent:#0A84FF;
+  --accent2:#0060CC;
+  --accent-soft:rgba(10,132,255,0.10);
+  --accent-glow:rgba(10,132,255,0.25);
   --text:#F0EDE6;
   --text2:#C8C2B8;
   --text3:#8A8480;
@@ -43,20 +43,20 @@
 
 /* ════════════════════════════════════
    LIGHT MODE — ICONIK IVORY
-   Clean white, deep charcoal green, warm green
+   Clean white, deep charcoal, warm gold
    ════════════════════════════════════ */
 body.light{
-  --bg:#FAFAF8;
+  --bg:#F6F8FC;
   --bg2:#FFFFFF;
-  --bg3:#F2F0EB;
-  --bg4:#E8E4DC;
-  --accent:#B8922A;
-  --accent2:#8A6A18;
-  --accent-soft:rgba(184,146,42,0.10);
-  --accent-glow:rgba(184,146,42,0.20);
-  --text:#1A1814;
-  --text2:#4A4540;
-  --text3:#9A9490;
+  --bg3:#EEF2F8;
+  --bg4:#E2E8F4;
+  --accent:#0A84FF;
+  --accent2:#0060CC;
+  --accent-soft:rgba(10,132,255,0.08);
+  --accent-glow:rgba(10,132,255,0.20);
+  --text:#0D1117;
+  --text2:#3A4555;
+  --text3:#7A8899;
   --border:rgba(0,0,0,0.08);
   --border2:rgba(0,0,0,0.16);
   --card:#FFFFFF;
@@ -88,19 +88,19 @@ body{
 }
 body.light #topnav{background:rgba(250,250,248,0.95);}
 .nav-logo{
-  font-family:"Fraunces",serif;
+  font-family:"Sora",sans-serif;
   font-weight:900;
-  font-size:1.45rem;
-  letter-spacing:-0.02em;
+  font-size:1.3rem;
+  letter-spacing:0.12em;
   color:var(--accent);
-  font-style:italic;
+  font-style:normal;
 }
 #navAv{
   width:34px;height:34px;border-radius:50%;
   background:linear-gradient(135deg,var(--accent),var(--accent2));
   display:flex;align-items:center;justify-content:center;
-  font-family:"Fraunces",serif;font-weight:700;font-size:0.9rem;
-  color:#0A0A0F;cursor:pointer;overflow:hidden;
+  font-family:"Sora",sans-serif;font-weight:800;font-size:0.9rem;
+  color:#FFFFFF;cursor:pointer;overflow:hidden;
   border:2px solid var(--accent-glow);
   position:relative;flex-shrink:0;
   box-shadow:0 0 0 1px var(--accent-glow);
@@ -143,8 +143,8 @@ body.light #sb{background:#FFFFFF;}
   padding:20px 18px;border-bottom:1px solid var(--border);
 }
 .sb-br{
-  font-family:"Fraunces",serif;font-weight:900;font-style:italic;
-  font-size:1.2rem;color:var(--accent);letter-spacing:-0.01em;
+  font-family:"Sora",sans-serif;font-weight:900;font-style:normal;
+  font-size:1.1rem;color:var(--accent);letter-spacing:0.12em;
 }
 #sbX{
   background:var(--card2);border:1px solid var(--border);
@@ -253,8 +253,8 @@ body.light .cc{background:#FFFFFF;box-shadow:var(--shadow-sm);}
 .cthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:2;}
 .cletter{
   position:relative;z-index:1;
-  font-family:"Fraunces",serif;font-weight:900;font-size:2.4rem;
-  color:rgba(255,255,255,0.25);font-style:italic;
+  font-family:"Sora",sans-serif;font-weight:900;font-size:2.4rem;
+  color:rgba(255,255,255,0.18);font-style:normal;
 }
 .cinfo{padding:11px 12px;}
 .cnm{
@@ -322,7 +322,7 @@ body.light .cc{background:#FFFFFF;box-shadow:var(--shadow-sm);}
   border:1px solid var(--accent-glow);
 }
 /* Gold tier has a subtle shimmer */
-.tier-gold::before{content:"◆";font-size:0.5rem;opacity:0.8;}
+.tier-gold::before{content:"◈";font-size:0.5rem;opacity:0.9;}
 
 /* ── MEMBERS ── */
 .mcard{
@@ -337,8 +337,8 @@ body.light .mcard{background:#FFFFFF;box-shadow:var(--shadow-sm);}
   width:44px;height:44px;border-radius:50%;
   background:linear-gradient(135deg,var(--accent),var(--accent2));
   display:flex;align-items:center;justify-content:center;
-  font-family:"Fraunces",serif;font-weight:700;font-size:1rem;
-  color:#0A0A0F;flex-shrink:0;overflow:hidden;position:relative;
+  font-family:"Sora",sans-serif;font-weight:800;font-size:1rem;
+  color:#FFFFFF;flex-shrink:0;overflow:hidden;position:relative;
 }
 .mav img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;}
 
@@ -361,7 +361,7 @@ body.light .ncard{background:#FFFFFF;box-shadow:var(--shadow-sm);}
   transition:all 0.15s;flex-shrink:0;
 }
 .ftab.on{
-  background:var(--accent);color:#0A0A0F;
+  background:var(--accent);color:#FFFFFF;
   border-color:var(--accent);font-weight:700;
 }
 .frow{display:flex;gap:7px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;scrollbar-width:none;}
@@ -384,11 +384,11 @@ select.fi option{background:var(--bg3);}
   font-family:"Sora",sans-serif;font-weight:700;font-size:0.82rem;
   letter-spacing:0.01em;
   padding:13px 20px;
-  background:var(--accent);color:#0A0A0F;
+  background:var(--accent);color:#FFFFFF;
   border:none;border-radius:var(--radius-sm);
   cursor:pointer;width:100%;
   transition:all 0.2s;
-  box-shadow:0 2px 8px var(--accent-glow);
+  box-shadow:0 2px 10px var(--accent-glow);
 }
 .btn-g:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 4px 14px var(--accent-glow);}
 .btn-g:active{transform:translateY(0);box-shadow:0 2px 4px var(--accent-glow);}
@@ -404,7 +404,7 @@ select.fi option{background:var(--bg3);}
   font-family:"Sora",sans-serif;font-weight:700;font-size:0.78rem;
   letter-spacing:0.02em;
   padding:10px 16px;
-  background:var(--accent);color:#0A0A0F;
+  background:var(--accent);color:#FFFFFF;
   border:none;border-radius:var(--radius-sm);cursor:pointer;
   transition:all 0.15s;
 }
@@ -425,8 +425,8 @@ select.fi option{background:var(--bg3);}
 }
 body.light .sbox{background:#FFFFFF;box-shadow:var(--shadow-sm);}
 .snum{
-  font-family:"Fraunces",serif;font-weight:700;font-size:1.4rem;
-  color:var(--text);letter-spacing:-0.02em;
+  font-family:"Sora",sans-serif;font-weight:800;font-size:1.4rem;
+  color:var(--text);letter-spacing:-0.03em;
 }
 .slbl{
   font-family:"Sora",sans-serif;font-size:0.58rem;font-weight:600;
@@ -535,9 +535,9 @@ body.light .rcard{background:#FFFFFF;box-shadow:var(--shadow-sm);}
   width:42px;height:42px;border-radius:50%;flex-shrink:0;
   background:var(--accent);border:none;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
-  font-size:1rem;color:#0A0A0F;
+  font-size:1rem;color:#FFFFFF;
   transition:transform 0.15s,box-shadow 0.15s;
-  box-shadow:0 2px 8px var(--accent-glow);
+  box-shadow:0 2px 10px var(--accent-glow);
 }
 .rplay:hover{transform:scale(1.08);box-shadow:0 4px 14px var(--accent-glow);}
 
@@ -550,8 +550,8 @@ body.light .rcard{background:#FFFFFF;box-shadow:var(--shadow-sm);}
 }
 .sec-head::after{content:'';flex:1;height:1px;background:var(--border);}
 #topnav{position:fixed;top:0;left:0;right:0;height:60px;z-index:600;background:rgba(7,7,13,0.96);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;}
-.nav-logo{font-family:"Bebas Neue",sans-serif;font-size:1.35rem;letter-spacing:0.08em;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-#navAv{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:0.95rem;color:var(--bg);cursor:pointer;overflow:hidden;border:2px solid var(--border2);position:relative;flex-shrink:0;}
+.nav-logo{font-family:"Bebas Neue",sans-serif;font-size:1.35rem;letter-spacing:0.08em;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+#navAv{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:0.95rem;color:var(--bg);cursor:pointer;overflow:hidden;border:2px solid var(--border2);position:relative;flex-shrink:0;}
 #navAv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;}
 #hbg{width:40px;height:40px;background:none;border:1px solid var(--border2);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;padding:0;flex-shrink:0;}
 #hbg span{display:block;width:18px;height:2px;background:var(--text);border-radius:2px;}
@@ -560,14 +560,14 @@ body.light .rcard{background:#FFFFFF;box-shadow:var(--shadow-sm);}
 #sb{position:fixed;top:0;left:-300px;width:290px;height:100vh;background:var(--bg3);border-right:1px solid var(--border);z-index:900;transition:left 0.28s ease;overflow-y:auto;}
 #sb.open{left:0;}
 .sb-hd{display:flex;align-items:center;justify-content:space-between;padding:18px 16px;border-bottom:1px solid var(--border);}
-.sb-br{font-family:"Bebas Neue",sans-serif;font-size:1.1rem;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sb-br{font-family:"Bebas Neue",sans-serif;font-size:1.1rem;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 #sbX{background:none;border:1px solid var(--border);border-radius:6px;width:30px;height:30px;color:var(--muted);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;}
 .sb-usr{padding:14px 16px;border-bottom:1px solid var(--border);}
 .sb-unm{font-family:"Playfair Display",serif;font-weight:700;font-size:1rem;color:var(--text);margin-bottom:3px;}
-.sb-ti{font-family:"Bebas Neue",sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--bg);background:var(--gold);padding:2px 8px;display:inline-block;}
-.sb-lbl{font-family:"Bebas Neue",sans-serif;font-size:0.65rem;font-weight:900;letter-spacing:0.24em;color:var(--gold);padding:12px 16px 4px;border-top:1px solid var(--border);margin-top:4px;opacity:0.9;}
+.sb-ti{font-family:"Bebas Neue",sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--bg);background:var(--accent);padding:2px 8px;display:inline-block;}
+.sb-lbl{font-family:"Bebas Neue",sans-serif;font-size:0.65rem;font-weight:900;letter-spacing:0.24em;color:var(--accent);padding:12px 16px 4px;border-top:1px solid var(--border);margin-top:4px;opacity:0.9;}
 .sb-lnk{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;font-family:"Montserrat",sans-serif;font-size:0.76rem;font-weight:600;color:var(--muted);transition:all 0.18s;border-left:3px solid transparent;}
-.sb-lnk:hover,.sb-lnk.on{color:var(--gold);border-left-color:var(--gold);background:rgba(255,184,0,0.06);}
+.sb-lnk:hover,.sb-lnk.on{color:var(--accent);border-left-color:var(--accent);background:rgba(255,184,0,0.06);}
 .sb-out{color:var(--err)!important;}
 .sb-out:hover{background:rgba(239,68,68,0.08)!important;border-left-color:var(--err)!important;}
 #main{padding:70px 14px 76px;min-height:100vh;}
@@ -577,11 +577,11 @@ body.light .rcard{background:#FFFFFF;box-shadow:var(--shadow-sm);}
 .bn.on{background:rgba(255,184,0,0.09);}
 .bn-ic{font-size:1.15rem;line-height:1;}
 .bn-lb{font-family:"Bebas Neue",sans-serif;font-size:0.5rem;letter-spacing:0.12em;color:var(--muted);}
-.bn.on .bn-lb{color:var(--gold);}
+.bn.on .bn-lb{color:var(--accent);}
 .wbar{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--border);border-radius:8px;padding:14px;display:flex;gap:12px;align-items:center;margin-bottom:14px;}
 .card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:13px;margin-bottom:10px;}
 .loader{display:flex;align-items:center;justify-content:center;padding:32px;}
-.lring{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;}
+.lring{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
 .cc{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:all 0.25s;}
@@ -591,31 +591,31 @@ body.light .rcard{background:#FFFFFF;box-shadow:var(--shadow-sm);}
 .cletter{position:relative;z-index:1;}
 .cinfo{padding:9px;}
 .cnm{font-weight:700;font-size:0.7rem;color:var(--text);margin-bottom:2px;}
-.ccat{font-family:"Bebas Neue",sans-serif;font-size:0.54rem;letter-spacing:0.12em;color:var(--gold);}
+.ccat{font-family:"Bebas Neue",sans-serif;font-size:0.54rem;letter-spacing:0.12em;color:var(--accent);}
 .cmeta{font-size:0.56rem;color:var(--dim);margin-top:1px;}
 .mcard{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:11px;display:flex;align-items:center;gap:10px;margin-bottom:8px;cursor:pointer;transition:border-color 0.2s;}
 .mcard:hover{border-color:var(--border2);}
-.mav{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:1rem;color:var(--bg);flex-shrink:0;overflow:hidden;position:relative;}
+.mav{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:1rem;color:var(--bg);flex-shrink:0;overflow:hidden;position:relative;}
 .mav img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;}
 .ncard{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;display:flex;gap:11px;margin-bottom:8px;cursor:pointer;}
 .ncard:hover{border-color:var(--border2);}
 .nic{width:40px;height:40px;border-radius:6px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
 .ftab{font-family:"Bebas Neue",sans-serif;font-size:0.62rem;letter-spacing:0.12em;padding:6px 13px;border:1px solid var(--border);border-radius:20px;cursor:pointer;color:var(--muted);white-space:nowrap;transition:all 0.2s;flex-shrink:0;}
-.ftab.on{background:var(--gold);color:var(--bg);border-color:var(--gold);}
+.ftab.on{background:var(--accent);color:var(--bg);border-color:var(--accent);}
 .frow{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;scrollbar-width:none;}
 .frow::-webkit-scrollbar{display:none;}
 .fi{width:100%;padding:11px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:"Montserrat",sans-serif;font-size:0.76rem;outline:none;transition:border-color 0.2s;}
-.fi:focus{border-color:var(--gold);}
+.fi:focus{border-color:var(--accent);}
 .fi::placeholder{color:var(--dim);}
 textarea.fi{resize:vertical;}
 select.fi option{background:var(--bg2);}
-.btn-g{font-family:"Montserrat",sans-serif;font-weight:800;font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;padding:11px 18px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--bg);border:none;border-radius:6px;cursor:pointer;width:100%;}
+.btn-g{font-family:"Montserrat",sans-serif;font-weight:800;font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;padding:11px 18px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--bg);border:none;border-radius:6px;cursor:pointer;width:100%;}
 .btn-g:disabled{opacity:0.5;cursor:not-allowed;}
 .btn-gh{font-family:"Montserrat",sans-serif;font-weight:700;font-size:0.62rem;padding:9px 12px;background:transparent;color:var(--text);border:1px solid var(--border2);border-radius:6px;cursor:pointer;}
-.btn-act{font-family:"Montserrat",sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:9px 14px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--bg);border:none;border-radius:6px;cursor:pointer;}
+.btn-act{font-family:"Montserrat",sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:9px 14px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--bg);border:none;border-radius:6px;cursor:pointer;}
 .fg{margin-bottom:12px;}
 .fl{font-family:"Bebas Neue",sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:var(--muted);margin-bottom:5px;display:block;}
-.sh2{font-family:"Bebas Neue",sans-serif;font-size:0.68rem;letter-spacing:0.2em;color:var(--gold);margin-bottom:10px;margin-top:4px;}
+.sh2{font-family:"Bebas Neue",sans-serif;font-size:0.68rem;letter-spacing:0.2em;color:var(--accent);margin-bottom:10px;margin-top:4px;}
 .sbox{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center;}
 .snum{font-family:"Bebas Neue",sans-serif;font-size:1.2rem;color:var(--text);}
 .slbl{font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);}
@@ -631,10 +631,10 @@ select.fi option{background:var(--bg2);}
 .mb.me .mbub{background:rgba(255,184,0,0.12);border-color:rgba(255,184,0,0.25);}
 .chat-ft{display:flex;gap:8px;padding:10px 0;border-top:1px solid var(--border);}
 .chat-inp{flex:1;padding:10px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;color:var(--text);font-family:"Montserrat",sans-serif;font-size:0.74rem;outline:none;}
-.chat-inp:focus{border-color:var(--gold);}
-.chat-snd{width:38px;height:38px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;font-size:1rem;flex-shrink:0;}
+.chat-inp:focus{border-color:var(--accent);}
+.chat-snd{width:38px;height:38px;border-radius:50%;background:var(--accent);border:none;cursor:pointer;font-size:1rem;flex-shrink:0;}
 .upbox{border:1px dashed var(--border2);border-radius:8px;padding:14px;text-align:center;cursor:pointer;margin-bottom:8px;}
-.upbox:hover{border-color:var(--gold);}
+.upbox:hover{border-color:var(--accent);}
 .ov{position:fixed;inset:0;background:var(--bg);z-index:9000;overflow-y:auto;}
 .ov-nav{position:sticky;top:0;background:rgba(7,7,13,0.97);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;gap:12px;z-index:10;}
 .back-btn{background:none;border:1px solid var(--border2);border-radius:8px;width:36px;height:36px;color:var(--text);font-size:1.1rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
@@ -807,16 +807,16 @@ select.fi option{background:var(--bg2);}
 <!-- ── NEW TABS — STUB VIEWS ── -->
 <div class="view" id="creatorV"><div class="wbar"><span style="font-size:1.4rem;">💰</span><div><div style="class="wbar-title" style="">Creator Fund</div><div class="wbar-sub">Earn from your content</div></div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">💰</div><div style="font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;">Creator Fund</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;">Top creators earn from the ICONIK Creator Fund. Post quality content, grow your followers and unlock earning potential. VIP Gold members earn 10% commissions.</div></div></div>
 <div class="view" id="marketV"><div class="wbar"><span style="font-size:1.4rem;">🏪</span><div><div style="class="wbar-title" style="">Marketplace</div><div class="wbar-sub">Fan merch · Celebrity products</div></div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">🏪</div><div style="font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;">Marketplace — Coming Soon</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;">Fan merchandise, celebrity-endorsed products and exclusive ICONIK collectibles. Launching soon!</div></div></div>
-<div class="view" id="shopV"><div class="wbar"><span style="font-size:1.4rem;">🛍️</span><div><div style="class="wbar-title" style="">Shop &amp; Earn</div><div class="wbar-sub">Shop from partners · Earn cashback</div></div></div><div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:12px;"><span style="font-size:1.6rem;">🛒</span><div style="flex:1;"><div style="font-weight:700;font-size:0.74rem;">Amazon Associates</div><div style="font-size:0.6rem;color:var(--muted);">3–10% cashback on all purchases</div></div><a href="https://amazon.com" target="_blank" style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;padding:7px 12px;background:var(--gold);color:var(--bg);border:none;cursor:pointer;text-decoration:none;border-radius:4px;">Shop</a></div><div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:12px;"><span style="font-size:1.6rem;">💊</span><div style="flex:1;"><div style="font-weight:700;font-size:0.74rem;">iHerb</div><div style="font-size:0.6rem;color:var(--muted);">5–20% on wellness &amp; supplements</div></div><a href="https://iherb.com" target="_blank" style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;padding:7px 12px;background:var(--gold);color:var(--bg);border:none;cursor:pointer;text-decoration:none;border-radius:4px;">Shop</a></div><div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:12px;"><span style="font-size:1.6rem;">✈️</span><div style="flex:1;"><div style="font-weight:700;font-size:0.74rem;">Booking.com</div><div style="font-size:0.6rem;color:var(--muted);">25–40% on travel &amp; hotels</div></div><a href="https://booking.com" target="_blank" style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;padding:7px 12px;background:var(--gold);color:var(--bg);border:none;cursor:pointer;text-decoration:none;border-radius:4px;">Book</a></div></div>
+<div class="view" id="shopV"><div class="wbar"><span style="font-size:1.4rem;">🛍️</span><div><div style="class="wbar-title" style="">Shop &amp; Earn</div><div class="wbar-sub">Shop from partners · Earn cashback</div></div></div><div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:12px;"><span style="font-size:1.6rem;">🛒</span><div style="flex:1;"><div style="font-weight:700;font-size:0.74rem;">Amazon Associates</div><div style="font-size:0.6rem;color:var(--muted);">3–10% cashback on all purchases</div></div><a href="https://amazon.com" target="_blank" style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;padding:7px 12px;background:var(--accent);color:var(--bg);border:none;cursor:pointer;text-decoration:none;border-radius:4px;">Shop</a></div><div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:12px;"><span style="font-size:1.6rem;">💊</span><div style="flex:1;"><div style="font-weight:700;font-size:0.74rem;">iHerb</div><div style="font-size:0.6rem;color:var(--muted);">5–20% on wellness &amp; supplements</div></div><a href="https://iherb.com" target="_blank" style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;padding:7px 12px;background:var(--accent);color:var(--bg);border:none;cursor:pointer;text-decoration:none;border-radius:4px;">Shop</a></div><div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:12px;"><span style="font-size:1.6rem;">✈️</span><div style="flex:1;"><div style="font-weight:700;font-size:0.74rem;">Booking.com</div><div style="font-size:0.6rem;color:var(--muted);">25–40% on travel &amp; hotels</div></div><a href="https://booking.com" target="_blank" style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;padding:7px 12px;background:var(--accent);color:var(--bg);border:none;cursor:pointer;text-decoration:none;border-radius:4px;">Book</a></div></div>
 <div class="view" id="referV"><div class="wbar"><span style="font-size:1.4rem;">🎁</span><div><div style="class="wbar-title" style="">Refer &amp; Earn</div><div class="wbar-sub">Invite friends · Earn $10 per referral</div></div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">🎁</div><div style="font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;">Earn $10 Per Referral</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;margin-bottom:14px;">Share your unique link. When a friend joins ICONIK and upgrades to VIP, you earn $10 instantly!</div><button class="btn-g" onclick="var l='https://iconik-global.web.app?ref='+((typeof cU!=='undefined'&&cU)?cU.uid:'user');if(navigator.share)navigator.share({title:'Join ICONIK',text:'Join me on ICONIK!',url:l});else if(navigator.clipboard)navigator.clipboard.writeText(l).then(function(){toast('Referral link copied! 🔗');});">Share Your Referral Link 🔗</button></div></div>
 <div class="view" id="datingV"><div class="wbar" style="background:linear-gradient(135deg,rgba(255,107,157,0.12),rgba(255,107,157,0.03));border-color:rgba(255,107,157,0.3);"><span style="font-size:1.4rem;">💕</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:#FF6B9D;">Dating &amp; Matchmaking</div><div class="wbar-sub">Find your perfect fan match</div></div></div><div class="card" style="background:rgba(239,68,68,0.07);border-color:rgba(239,68,68,0.25);margin-bottom:12px;"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.15em;color:var(--err);margin-bottom:4px;">⚠️ SAFETY FIRST</div><div style="font-size:0.64rem;color:var(--muted);line-height:1.6;">All profiles are ID-verified. Never send money to matches. Report suspicious behaviour immediately. 🛡️</div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">💕</div><div style="font-weight:700;font-size:0.9rem;color:#FF6B9D;margin-bottom:6px;">Fan Matchmaking Room</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;margin-bottom:10px;">Match with fans who love the same celebrities. VIP Silver &amp; Gold exclusive.</div><button class="btn-g" style="background:linear-gradient(135deg,#FF6B9D,#E91E8C);" onclick="window.sv('vip')">Upgrade to Access 💕</button></div></div>
 <div class="view" id="tourV"><div class="wbar"><span style="font-size:1.4rem;">🎫</span><div><div style="class="wbar-title" style="">Tour Buddy</div><div class="wbar-sub">Find fans at the same events</div></div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">🎫</div><div style="font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;">Tour Buddy — Coming Soon</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;">Going to a concert or match? Find fellow ICONIK fans attending the same event. Launching soon!</div></div></div>
 <div class="view" id="streamsV"><div class="wbar"><span style="font-size:1.4rem;">🔴</span><div><div style="class="wbar-title" style="">Live Streams</div><div class="wbar-sub">Watch &amp; go live</div></div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">🔴</div><div style="font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;">Live Streams — Coming Soon</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;">Go live with your community. Watch celebrity fans stream reactions, events and more. Launching soon!</div></div></div>
-<div class="view" id="challengesV"><div class="wbar"><span style="font-size:1.4rem;">⚡</span><div><div style="class="wbar-title" style="">Fan Challenges</div><div class="wbar-sub">Compete · Win prizes</div></div></div><div class="card" style="background:linear-gradient(135deg,rgba(255,184,0,0.1),rgba(255,184,0,0.02));border-color:rgba(255,184,0,0.3);"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.12em;color:var(--gold);margin-bottom:6px;">⚡ This Week's Challenge</div><div style="font-weight:700;font-size:0.84rem;color:var(--text);margin-bottom:6px;">Best Fan Costume Challenge 🎭</div><div style="font-size:0.7rem;color:var(--muted);line-height:1.6;">Share your best celebrity-inspired costume. Top 3 winners get VIP Gold for 1 month FREE + featured on ICONIK homepage!</div><button class="btn-g" style="margin-top:10px;" onclick="toast('Challenge submission coming soon! ⚡','info')">Join Challenge ⚡</button></div></div>
+<div class="view" id="challengesV"><div class="wbar"><span style="font-size:1.4rem;">⚡</span><div><div style="class="wbar-title" style="">Fan Challenges</div><div class="wbar-sub">Compete · Win prizes</div></div></div><div class="card" style="background:linear-gradient(135deg,rgba(255,184,0,0.1),rgba(255,184,0,0.02));border-color:rgba(255,184,0,0.3);"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.12em;color:var(--accent);margin-bottom:6px;">⚡ This Week's Challenge</div><div style="font-weight:700;font-size:0.84rem;color:var(--text);margin-bottom:6px;">Best Fan Costume Challenge 🎭</div><div style="font-size:0.7rem;color:var(--muted);line-height:1.6;">Share your best celebrity-inspired costume. Top 3 winners get VIP Gold for 1 month FREE + featured on ICONIK homepage!</div><button class="btn-g" style="margin-top:10px;" onclick="toast('Challenge submission coming soon! ⚡','info')">Join Challenge ⚡</button></div></div>
 <div class="view" id="qaV"><div class="wbar"><span style="font-size:1.4rem;">🎙️</span><div><div style="class="wbar-title" style="">Celebrity Q&amp;A</div><div class="wbar-sub">Ask your icon · Get answers</div></div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">🎙️</div><div style="font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;">Celebrity Q&amp;A — Coming Soon</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;">Submit questions to your favourite icons. Top questions get answered by celebrities and their teams!</div></div></div>
-<div class="view" id="badgesV"><div class="wbar"><span style="font-size:1.4rem;">🏅</span><div><div style="class="wbar-title" style="">My Badges</div><div class="wbar-sub">Your achievements</div></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;"><div class="card" style="text-align:center;padding:12px;"><div style="font-size:1.8rem;margin-bottom:4px;">🌟</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--gold);">Early Adopter</div><div style="font-size:0.52rem;color:var(--muted);margin-top:2px;">✓ Earned</div></div><div class="card" style="text-align:center;padding:12px;opacity:0.4;"><div style="font-size:1.8rem;margin-bottom:4px;">🔥</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--dim);">First Post</div><div style="font-size:0.52rem;color:var(--dim);margin-top:2px;">Locked</div></div><div class="card" style="text-align:center;padding:12px;opacity:0.4;"><div style="font-size:1.8rem;margin-bottom:4px;">👑</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--dim);">VIP Member</div><div style="font-size:0.52rem;color:var(--dim);margin-top:2px;">Locked</div></div><div class="card" style="text-align:center;padding:12px;opacity:0.4;"><div style="font-size:1.8rem;margin-bottom:4px;">❤️</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--dim);">Fan Favourite</div><div style="font-size:0.52rem;color:var(--dim);margin-top:2px;">Locked</div></div><div class="card" style="text-align:center;padding:12px;opacity:0.4;"><div style="font-size:1.8rem;margin-bottom:4px;">🔗</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--dim);">Connector</div><div style="font-size:0.52rem;color:var(--dim);margin-top:2px;">Locked</div></div><div class="card" style="text-align:center;padding:12px;opacity:0.4;"><div style="font-size:1.8rem;margin-bottom:4px;">🏆</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--dim);">Top Fan</div><div style="font-size:0.52rem;color:var(--dim);margin-top:2px;">Locked</div></div></div></div>
+<div class="view" id="badgesV"><div class="wbar"><span style="font-size:1.4rem;">🏅</span><div><div style="class="wbar-title" style="">My Badges</div><div class="wbar-sub">Your achievements</div></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;"><div class="card" style="text-align:center;padding:12px;"><div style="font-size:1.8rem;margin-bottom:4px;">🌟</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--accent);">Early Adopter</div><div style="font-size:0.52rem;color:var(--muted);margin-top:2px;">✓ Earned</div></div><div class="card" style="text-align:center;padding:12px;opacity:0.4;"><div style="font-size:1.8rem;margin-bottom:4px;">🔥</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--dim);">First Post</div><div style="font-size:0.52rem;color:var(--dim);margin-top:2px;">Locked</div></div><div class="card" style="text-align:center;padding:12px;opacity:0.4;"><div style="font-size:1.8rem;margin-bottom:4px;">👑</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--dim);">VIP Member</div><div style="font-size:0.52rem;color:var(--dim);margin-top:2px;">Locked</div></div><div class="card" style="text-align:center;padding:12px;opacity:0.4;"><div style="font-size:1.8rem;margin-bottom:4px;">❤️</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--dim);">Fan Favourite</div><div style="font-size:0.52rem;color:var(--dim);margin-top:2px;">Locked</div></div><div class="card" style="text-align:center;padding:12px;opacity:0.4;"><div style="font-size:1.8rem;margin-bottom:4px;">🔗</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--dim);">Connector</div><div style="font-size:0.52rem;color:var(--dim);margin-top:2px;">Locked</div></div><div class="card" style="text-align:center;padding:12px;opacity:0.4;"><div style="font-size:1.8rem;margin-bottom:4px;">🏆</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--dim);">Top Fan</div><div style="font-size:0.52rem;color:var(--dim);margin-top:2px;">Locked</div></div></div></div>
 <div class="view" id="getappV"><div class="wbar"><span style="font-size:1.4rem;">📱</span><div><div style="class="wbar-title" style="">Get the App</div><div class="wbar-sub">ICONIK on every device</div></div></div><div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:12px;"><span style="font-size:1.8rem;">🤖</span><div style="flex:1;"><div style="font-weight:700;font-size:0.76rem;">Android App</div><div class="wbar-sub">Google Play Store — Coming Soon</div></div><button class="btn-g" style="width:auto;padding:8px 14px;font-size:0.58rem;" onclick="toast('Android app coming soon! 🤖')">Soon</button></div><div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:12px;"><span style="font-size:1.8rem;">🍎</span><div style="flex:1;"><div style="font-weight:700;font-size:0.76rem;">iOS App</div><div class="wbar-sub">Apple App Store — Coming Soon</div></div><button class="btn-g" style="width:auto;padding:8px 14px;font-size:0.58rem;" onclick="toast('iOS app coming soon! 🍎')">Soon</button></div><div class="card" style="display:flex;align-items:center;gap:12px;"><span style="font-size:1.8rem;">🌐</span><div style="flex:1;"><div style="font-weight:700;font-size:0.76rem;">Install as PWA</div><div class="wbar-sub">Add to Home Screen — works like a native app</div></div><button class="btn-g" style="width:auto;padding:8px 14px;font-size:0.58rem;" onclick="if(window._pwaPrompt){window._pwaPrompt.prompt();}else{toast('Tap browser menu → Add to Home Screen 📱','info');}">Install</button></div></div>
-<div class="view" id="settingsV"><div class="wbar"><span style="font-size:1.4rem;">⚙️</span><div><div style="class="wbar-title" style="">Settings</div><div class="wbar-sub">Account &amp; preferences</div></div></div><div class="card" style="margin-bottom:10px;"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:10px;">Display</div><div style="display:flex;align-items:center;justify-content:space-between;"><div style="font-size:0.76rem;color:var(--text);">Light / Dark Mode</div><button class="btn-g" style="width:auto;padding:8px 16px;" onclick="toggleMode()">Toggle 🌙☀️</button></div></div><div class="card" style="background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.2);"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--err);margin-bottom:8px;">Account</div><button style="width:100%;padding:11px;background:transparent;border:1px solid rgba(239,68,68,0.4);border-radius:6px;color:var(--err);font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;cursor:pointer;" onclick="if(confirm('Sign out of ICONIK?'))document.getElementById('logoutBtn').click()">Sign Out 🚪</button></div></div>
+<div class="view" id="settingsV"><div class="wbar"><span style="font-size:1.4rem;">⚙️</span><div><div style="class="wbar-title" style="">Settings</div><div class="wbar-sub">Account &amp; preferences</div></div></div><div class="card" style="margin-bottom:10px;"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--accent);margin-bottom:10px;">Display</div><div style="display:flex;align-items:center;justify-content:space-between;"><div style="font-size:0.76rem;color:var(--text);">Light / Dark Mode</div><button class="btn-g" style="width:auto;padding:8px 16px;" onclick="toggleMode()">Toggle 🌙☀️</button></div></div><div class="card" style="background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.2);"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--err);margin-bottom:8px;">Account</div><button style="width:100%;padding:11px;background:transparent;border:1px solid rgba(239,68,68,0.4);border-radius:6px;color:var(--err);font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;cursor:pointer;" onclick="if(confirm('Sign out of ICONIK?'))document.getElementById('logoutBtn').click()">Sign Out 🚪</button></div></div>
   <div class="bn on" data-v="feed"><div class="bn-ic">&#127968;</div><div class="bn-lb">Feed</div></div>
   <div class="bn" data-v="icons"><div class="bn-ic">&#11088;</div><div class="bn-lb">Icons</div></div>
   <div class="bn" data-v="news"><div class="bn-ic">&#128240;</div><div class="bn-lb">News</div></div>
@@ -930,7 +930,7 @@ async function loadFeed(){
     h+="<div class=\"card\">";
     h+="<div style=\"display:flex;align-items:center;gap:9px;margin-bottom:9px;\">";
     h+="<div class=\"mav\" style=\"width:34px;height:34px;font-size:0.85rem;\">"+nm.charAt(0)+"</div>";
-    h+="<div><div style=\"font-weight:700;font-size:0.74rem;color:var(--text);\">"+nm+(p.isAdmin?" <span style=\"font-size:0.48rem;background:var(--gold);color:var(--bg);padding:1px 5px;\">ICONIK</span>":"")+"</div>";
+    h+="<div><div style=\"font-weight:700;font-size:0.74rem;color:var(--text);\">"+nm+(p.isAdmin?" <span style=\"font-size:0.48rem;background:var(--accent);color:var(--bg);padding:1px 5px;\">ICONIK</span>":"")+"</div>";
     h+="<div style=\"font-size:0.58rem;color:var(--dim);\">"+xe(p.category||"")+(dt?" · "+dt:"")+"</div></div></div>";
     if(p.title)h+="<div style=\"font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;\">"+xe(p.title)+"</div>";
     h+="<div style=\"font-size:0.72rem;color:var(--muted);line-height:1.6;\">"+xe(p.content||"")+"</div>";
@@ -1032,7 +1032,7 @@ function openCeleb(id){
   if(hp)h+="<img src=\""+xu(ph2)+"\" style=\"position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:2;\" onerror=\"this.style.display='none'\"/>";
   h+="<div style=\"position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,13,0.95) 0%,transparent 60%);\"></div>";
   h+="<div style=\"position:absolute;bottom:16px;left:16px;right:16px;\">";
-  h+="<div style=\"font-size:0.62rem;letter-spacing:0.18em;color:var(--gold);margin-bottom:4px;\">"+xe(c.category||"")+"</div>";
+  h+="<div style=\"font-size:0.62rem;letter-spacing:0.18em;color:var(--accent);margin-bottom:4px;\">"+xe(c.category||"")+"</div>";
   h+="<div style=\"font-weight:700;font-size:1.4rem;color:#F5F0E8;\">"+xe(c.name||"")+"</div>";
   if(c.stageName)h+="<div style=\"font-size:0.72rem;color:var(--muted);\">"+xe(c.stageName)+"</div>";
   h+="</div></div><div style=\"padding:16px;\">";
@@ -1040,11 +1040,11 @@ function openCeleb(id){
   h+="<div class=\"sbox\"><div class=\"snum\" style=\"font-size:0.8rem;\">"+xe(c.followers||"—")+"</div><div class=\"slbl\">Followers</div></div>";
   h+="<div class=\"sbox\"><div class=\"snum\" style=\"font-size:0.8rem;\">"+xe(c.country||"—")+"</div><div class=\"slbl\">Origin</div></div>";
   h+="<div class=\"sbox\"><div class=\"snum\" style=\"font-size:0.8rem;\">"+xe(c.status||"Active")+"</div><div class=\"slbl\">Status</div></div></div>";
-  if(c.bio){h+="<div style=\"font-size:0.62rem;letter-spacing:0.18em;color:var(--gold);margin-bottom:8px;\">About</div>";h+="<div class=\"card\"><div style=\"font-size:0.74rem;color:var(--muted);line-height:1.7;\">"+xe(c.bio)+"</div></div>";}
+  if(c.bio){h+="<div style=\"font-size:0.62rem;letter-spacing:0.18em;color:var(--accent);margin-bottom:8px;\">About</div>";h+="<div class=\"card\"><div style=\"font-size:0.74rem;color:var(--muted);line-height:1.7;\">"+xe(c.bio)+"</div></div>";}
   h+="<div style=\"display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;\">";
   h+="<button class=\"btn-act\" id=\"fCBtn\">&#11088; Follow</button>";
   h+="<button class=\"btn-gh\" id=\"sCBtn\">&#128279; Share</button></div>";
-  h+="<div style=\"font-size:0.62rem;letter-spacing:0.18em;color:var(--gold);margin-bottom:10px;\">Latest Posts</div>";
+  h+="<div style=\"font-size:0.62rem;letter-spacing:0.18em;color:var(--accent);margin-bottom:10px;\">Latest Posts</div>";
   h+="<div id=\"cPosts\"><div class=\"loader\"><div class=\"lring\"></div></div></div></div>";
   ov.innerHTML=h;
   attachBack(ov);
@@ -1097,7 +1097,7 @@ function renderNews(list){
     h+="<div class=\"ncard\" data-ni=\""+i+"\">";
     h+="<div class=\"nic\">"+(n.icon||"&#128240;")+"</div>";
     h+="<div style=\"flex:1;\">";
-    h+="<div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.14em;color:var(--gold);margin-bottom:3px;\">"+xe(n.category||"NEWS")+"</div>";
+    h+="<div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.14em;color:var(--accent);margin-bottom:3px;\">"+xe(n.category||"NEWS")+"</div>";
     h+="<div style=\"font-weight:700;font-size:0.82rem;color:var(--text);line-height:1.3;\">"+xe(n.title||"")+"</div>";
     h+="<div style=\"font-size:0.58rem;color:var(--dim);margin-top:3px;\">"+xe(n.time||"")+"</div></div>";
     h+="<div style=\"color:var(--dim);font-size:0.9rem;flex-shrink:0;\">&#8250;</div></div>";
@@ -1110,7 +1110,7 @@ function renderNews(list){
       var h=navRow(xe(n.category||"News"));
       h+="<div style=\"padding:20px;\">";
       h+="<div style=\"text-align:center;font-size:2.5rem;margin-bottom:12px;\">"+(n.icon||"&#128240;")+"</div>";
-      h+="<div style=\"font-size:0.6rem;letter-spacing:0.16em;color:var(--gold);margin-bottom:8px;\">"+xe(n.category||"")+" · "+xe(n.time||"")+"</div>";
+      h+="<div style=\"font-size:0.6rem;letter-spacing:0.16em;color:var(--accent);margin-bottom:8px;\">"+xe(n.category||"")+" · "+xe(n.time||"")+"</div>";
       h+="<div style=\"font-weight:700;font-size:1.1rem;color:var(--text);line-height:1.3;margin-bottom:14px;\">"+xe(n.title||"")+"</div>";
       h+="<div style=\"font-size:0.76rem;color:var(--muted);line-height:1.8;\">"+xe(n.summary||n.content||"Full article coming soon.")+"</div></div>";
       ov.innerHTML=h;attachBack(ov);
@@ -1186,7 +1186,7 @@ async function loadEvents(){
 }
 function evCard(ev){
   var d=new Date(ev.eventDate||"");var mo=isNaN(d)?"TBD":d.toLocaleString("en",{month:"short"}).toUpperCase();var dy=isNaN(d)?"":d.getDate();
-  return "<div class=\"card\" style=\"display:flex;gap:12px;align-items:center;\"><div style=\"text-align:center;min-width:38px;\"><div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.1em;color:var(--gold);\">"+mo+"</div><div style=\"font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--text);line-height:1;\">"+dy+"</div></div><div style=\"flex:1;\"><div style=\"font-weight:700;font-size:0.76rem;color:var(--text);margin-bottom:3px;\">"+xe(ev.name||"")+"</div><div style=\"font-size:0.62rem;color:var(--muted);\">&#128205; "+xe(ev.venue||"")+"</div><div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.7rem;color:var(--gold);margin-top:3px;\">"+xe(ev.price||"")+"</div></div><span style=\"font-size:1.3rem;\">"+(ev.icon||"&#127915;")+"</span></div>";
+  return "<div class=\"card\" style=\"display:flex;gap:12px;align-items:center;\"><div style=\"text-align:center;min-width:38px;\"><div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.1em;color:var(--accent);\">"+mo+"</div><div style=\"font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--text);line-height:1;\">"+dy+"</div></div><div style=\"flex:1;\"><div style=\"font-weight:700;font-size:0.76rem;color:var(--text);margin-bottom:3px;\">"+xe(ev.name||"")+"</div><div style=\"font-size:0.62rem;color:var(--muted);\">&#128205; "+xe(ev.venue||"")+"</div><div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.7rem;color:var(--accent);margin-top:3px;\">"+xe(ev.price||"")+"</div></div><span style=\"font-size:1.3rem;\">"+(ev.icon||"&#127915;")+"</span></div>";
 }
 
 // RADIO — Fixed with real streams + premium design
@@ -1268,7 +1268,7 @@ async function loadMag(){
   el.innerHTML=[{title:"The Rise of Global Fan Culture",category:"Culture",icon:"&#127758;"},{title:"Inside Bad Bunnys Creative Process",category:"Music",icon:"&#127925;"},{title:"Fashion Forward: Icons Shaping Tomorrow",category:"Fashion",icon:"&#128247;"}].map(magCard).join("");
 }
 function magCard(a){
-  return "<div class=\"card\" style=\"display:flex;gap:10px;\"><div style=\"width:60px;height:60px;border-radius:6px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;\">"+(a.icon||"&#128218;")+"</div><div><div style=\"font-weight:700;font-size:0.72rem;color:var(--text);line-height:1.3;margin-bottom:4px;\">"+xe(a.title||"")+"</div><div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.1em;color:var(--gold);\">"+xe(a.category||"")+"</div></div></div>";
+  return "<div class=\"card\" style=\"display:flex;gap:10px;\"><div style=\"width:60px;height:60px;border-radius:6px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;\">"+(a.icon||"&#128218;")+"</div><div><div style=\"font-weight:700;font-size:0.72rem;color:var(--text);line-height:1.3;margin-bottom:4px;\">"+xe(a.title||"")+"</div><div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.52rem;letter-spacing:0.1em;color:var(--accent);\">"+xe(a.category||"")+"</div></div></div>";
 }
 
 // WELLNESS
@@ -1292,8 +1292,8 @@ function renderMembers(list){
     else h+=xe((m.name||"?").charAt(0).toUpperCase());
     h+="</div><div style=\"flex:1;min-width:0;\">";
     h+="<div style=\"font-weight:700;font-size:0.74rem;color:var(--text);\">"+xe(m.name||"Member")+(m.verificationStatus==="verified"?"<span class=\"badge-verified\"></span>":"")+"</div>";
-    h+="<div style=\"font-size:0.6rem;color:var(--dim);\">"+(m.city?xe(m.city)+", ":"")+xe(m.country||"—")+" · <span style=\"color:var(--gold);\">"+xe(m.tier||"Fan")+"</span></div>";
-    var cats=m.categories||[];if(cats.length){h+="<div style=\"display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;\">";cats.slice(0,3).forEach(function(c){h+="<span style=\"font-size:0.48rem;color:var(--bg);background:var(--gold);padding:1px 5px;\">"+xe(c)+"</span>";});h+="</div>";}
+    h+="<div style=\"font-size:0.6rem;color:var(--dim);\">"+(m.city?xe(m.city)+", ":"")+xe(m.country||"—")+" · <span style=\"color:var(--accent);\">"+xe(m.tier||"Fan")+"</span></div>";
+    var cats=m.categories||[];if(cats.length){h+="<div style=\"display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;\">";cats.slice(0,3).forEach(function(c){h+="<span style=\"font-size:0.48rem;color:var(--bg);background:var(--accent);padding:1px 5px;\">"+xe(c)+"</span>";});h+="</div>";}
     h+="</div><div style=\"color:var(--dim);font-size:0.9rem;\">&#8250;</div></div>";
   });
   el.innerHTML=h;
@@ -1315,7 +1315,7 @@ function openMember(m){
   if(m.coverPhoto&&m.coverPhoto.startsWith("http"))h+="<img src=\""+xu(m.coverPhoto)+"\" style=\"width:100%;height:100%;object-fit:cover;\" onerror=\"this.remove()\"/>";
   h+="</div>";
   h+="<div style=\"padding:0 16px;display:flex;align-items:flex-end;justify-content:space-between;min-height:50px;margin-bottom:10px;\">";
-  h+="<div style=\"width:82px;height:82px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--bg);border:4px solid var(--bg);overflow:hidden;flex-shrink:0;margin-top:-50px;position:relative;z-index:5;\">";
+  h+="<div style=\"width:82px;height:82px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--bg);border:4px solid var(--bg);overflow:hidden;flex-shrink:0;margin-top:-50px;position:relative;z-index:5;\">";
   if(m.profilePic&&m.profilePic.startsWith("http"))h+="<img src=\""+xu(m.profilePic)+"\" style=\"width:100%;height:100%;object-fit:cover;border-radius:50%;\" onerror=\"this.remove()\"/>";
   else h+=xe((m.name||"?").charAt(0).toUpperCase());
   h+="</div>";
@@ -1332,7 +1332,7 @@ function openMember(m){
   h+="<div class=\"sbox\"><div class=\"snum\">"+(m.followingCount||0)+"</div><div class=\"slbl\">Following</div></div>";
   h+="<div class=\"sbox\"><div class=\"snum\">"+(m.postCount||0)+"</div><div class=\"slbl\">Posts</div></div>";
   h+="<div class=\"sbox\"><div class=\"snum\">"+(m.points||0)+"</div><div class=\"slbl\">Points</div></div></div>";
-  h+="<div style=\"font-size:0.62rem;letter-spacing:0.18em;color:var(--gold);margin-bottom:10px;\">Communities</div>";
+  h+="<div style=\"font-size:0.62rem;letter-spacing:0.18em;color:var(--accent);margin-bottom:10px;\">Communities</div>";
   h+="<div style=\"display:flex;gap:6px;flex-wrap:wrap;\">";
   var cats=m.categories||[];
   if(cats.length){cats.forEach(function(c){h+="<div style=\"background:var(--card);border:1px solid var(--border);padding:7px 11px;border-radius:6px;font-size:0.64rem;color:var(--text);\">"+(ci[c]||"&#127775;")+" "+xe(c)+"</div>";});}
@@ -1364,7 +1364,7 @@ async function loadRanks(){
     h+="<div style=\"font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--dim);width:22px;text-align:center;\">"+(i<3?md[i]:i+1)+"</div>";
     h+="<div class=\"mav\" style=\"width:36px;height:36px;font-size:0.9rem;\">"+xe((u.name||"?").charAt(0))+"</div>";
     h+="<div style=\"flex:1;\"><div style=\"font-weight:700;font-size:0.72rem;color:var(--text);\">"+xe(u.name||"Member")+"</div><div style=\"font-size:0.6rem;color:var(--dim);\">"+xe(u.country||"—")+"</div></div>";
-    h+="<div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.8rem;color:var(--gold);\">"+(u.points||0)+" pts</div></div>";
+    h+="<div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.8rem;color:var(--accent);\">"+(u.points||0)+" pts</div></div>";
   });
   el.innerHTML=h||"<div class=\"card\" style=\"text-align:center;color:var(--muted);padding:12px;\">Earn points by posting and engaging!</div>";
 }
@@ -1406,12 +1406,12 @@ function loadProfile(){
   h+="</div>";
   h+="<div style=\"display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px;margin-top:-54px;padding:0 4px;\">";
   h+="<div style=\"position:relative;cursor:pointer;\" onclick=\"document.getElementById('picF').click()\">";
-  h+="<div style=\"width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:2.2rem;color:var(--bg);border:4px solid var(--bg);overflow:hidden;flex-shrink:0;position:relative;z-index:5;box-shadow:0 4px 16px rgba(0,0,0,0.4);\">";
+  h+="<div style=\"width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:2.2rem;color:var(--bg);border:4px solid var(--bg);overflow:hidden;flex-shrink:0;position:relative;z-index:5;box-shadow:0 4px 16px rgba(0,0,0,0.4);\">";
   if(cD.profilePic&&cD.profilePic.startsWith("http"))h+="<img src=\""+xu(cD.profilePic)+"\" style=\"position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;\" onerror=\"this.style.display='none'\"/>";
   h+=(cD.name||"M").charAt(0).toUpperCase();
-  h+="</div><div style=\"position:absolute;bottom:2px;right:2px;width:26px;height:26px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:0.7rem;border:2px solid var(--bg);z-index:6;\">📷</div></div>";
+  h+="</div><div style=\"position:absolute;bottom:2px;right:2px;width:26px;height:26px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:0.7rem;border:2px solid var(--bg);z-index:6;\">📷</div></div>";
   h+="</div>";
-  h+="<div style=\"padding-bottom:4px;\"><span style=\"font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--bg);background:var(--gold);padding:3px 10px;\">"+xe(cD.tier||"Fan")+"</span></div></div>";
+  h+="<div style=\"padding-bottom:4px;\"><span style=\"font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--bg);background:var(--accent);padding:3px 10px;\">"+xe(cD.tier||"Fan")+"</span></div></div>";
   h+="<div style=\"font-weight:700;font-size:1.1rem;color:var(--text);margin-bottom:4px;\">"+nm+(cD.verificationStatus==="verified"?"<span class=\"badge-verified\"></span>":"")+"</div>";
   if(cD.bio)h+="<div style=\"font-size:0.72rem;color:var(--muted);line-height:1.6;margin-bottom:12px;\">"+xe(cD.bio)+"</div>";
   h+="<div style=\"display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:16px;\">";
@@ -1465,7 +1465,7 @@ async function loadMsgs(){
   ms.forEach(function(m){
     h+="<div class=\"card\"><div style=\"display:flex;align-items:center;gap:8px;margin-bottom:6px;\">";
     h+="<span style=\"font-weight:700;font-size:0.74rem;color:var(--text);\">"+xe(m.fromName||"ICONIK Admin")+"</span>";
-    h+="<span style=\"font-family:'Bebas Neue',sans-serif;font-size:0.5rem;color:var(--bg);background:var(--gold);padding:1px 6px;\">"+xe(m.fromRole||"ADMIN")+"</span>";
+    h+="<span style=\"font-family:'Bebas Neue',sans-serif;font-size:0.5rem;color:var(--bg);background:var(--accent);padding:1px 6px;\">"+xe(m.fromRole||"ADMIN")+"</span>";
     h+="<span style=\"font-size:0.56rem;color:var(--dim);margin-left:auto;\">"+(m.createdAt&&m.createdAt.toDate?m.createdAt.toDate().toLocaleDateString():"")+"</span></div>";
     if(m.subject)h+="<div style=\"font-weight:700;font-size:0.74rem;color:var(--text);margin-bottom:5px;\">"+xe(m.subject)+"</div>";
     h+="<div style=\"font-size:0.72rem;color:var(--muted);line-height:1.6;\">"+xe(m.content||"")+"</div></div>";
@@ -1495,7 +1495,7 @@ async function loadNotifs(){
 async function loadVIP(){
   var el=document.getElementById("vipContent");
   var isVIP=cD&&cD.tier&&cD.tier.includes("VIP");
-  if(!isVIP){el.innerHTML="<div style=\"background:rgba(7,7,13,0.8);border:1px solid rgba(255,184,0,0.3);border-radius:8px;padding:24px;text-align:center;\"><div style=\"font-size:2rem;margin-bottom:10px;\">&#128274;</div><div style=\"font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;color:var(--gold);margin-bottom:8px;\">Upgrade to VIP</div><div style=\"font-size:0.72rem;color:var(--muted);line-height:1.6;margin-bottom:16px;\">VIP Silver $9.99/month or VIP Gold $19.99/month unlocks exclusive content, VIP chat, creator fund and more.</div><button class=\"btn-g\" id=\"vipUpBtn\">Upgrade to VIP &#8594;</button></div>";document.getElementById("vipUpBtn").onclick=function(){toast("Upgrade coming soon!","info");};return;}
+  if(!isVIP){el.innerHTML="<div style=\"background:rgba(7,7,13,0.8);border:1px solid rgba(255,184,0,0.3);border-radius:8px;padding:24px;text-align:center;\"><div style=\"font-size:2rem;margin-bottom:10px;\">&#128274;</div><div style=\"font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;color:var(--accent);margin-bottom:8px;\">Upgrade to VIP</div><div style=\"font-size:0.72rem;color:var(--muted);line-height:1.6;margin-bottom:16px;\">VIP Silver $9.99/month or VIP Gold $19.99/month unlocks exclusive content, VIP chat, creator fund and more.</div><button class=\"btn-g\" id=\"vipUpBtn\">Upgrade to VIP &#8594;</button></div>";document.getElementById("vipUpBtn").onclick=function(){toast("Upgrade coming soon!","info");};return;}
   try{var snap=await sg(query(collection(db,"vipContent"),limit(10)));var items=[];snap.forEach(function(d){items.push({id:d.id,...d.data()});});el.innerHTML=items.length?items.map(function(c){return "<div class=\"card\"><div style=\"font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;\">"+xe(c.title||"")+"</div><div style=\"font-size:0.72rem;color:var(--muted);line-height:1.6;\">"+xe(c.content||"")+"</div></div>";}).join(""):"<div class=\"card\" style=\"text-align:center;color:var(--muted);padding:12px;\">VIP content coming soon! &#128081;</div>";}catch{el.innerHTML="<div class=\"card\" style=\"text-align:center;color:var(--muted);padding:12px;\">Loading VIP content...</div>";}
 }
 
