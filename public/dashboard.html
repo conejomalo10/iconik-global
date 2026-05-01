@@ -7,7 +7,40 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Bebas+Neue&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-:root{--bg:#07070D;--bg2:#0E0E1A;--bg3:#141420;--gold:#FFB800;--gold2:#CC9400;--text:#F5F0E8;--muted:#BDB5A6;--dim:rgba(189,181,166,0.4);--border:rgba(255,255,255,0.09);--border2:rgba(255,255,255,0.16);--card:rgba(255,255,255,0.045);--ok:#22C55E;--err:#EF4444;}
+
+/* ── DARK MODE (default) ── */
+:root{
+  --bg:#07070D;--bg2:#0E0E1A;--bg3:#141420;
+  --gold:#FFB800;--gold2:#CC9400;
+  --text:#F5F0E8;--muted:#BDB5A6;--dim:rgba(189,181,166,0.45);
+  --border:rgba(255,255,255,0.09);--border2:rgba(255,255,255,0.18);
+  --card:rgba(255,255,255,0.05);--ok:#22C55E;--err:#EF4444;
+  --mode-icon:"🌙";
+  --shadow:0 2px 12px rgba(0,0,0,0.4);
+  --input-bg:#0E0E1A;
+}
+
+/* ── LIGHT MODE ── */
+body.light{
+  --bg:#F5F3EF;--bg2:#FFFFFF;--bg3:#EDE9E1;
+  --text:#1A1A2E;--muted:#5A5A7A;--dim:rgba(90,90,122,0.5);
+  --border:rgba(0,0,0,0.1);--border2:rgba(0,0,0,0.18);
+  --card:rgba(255,255,255,0.9);--ok:#16A34A;--err:#DC2626;
+  --mode-icon:"☀️";
+  --shadow:0 2px 12px rgba(0,0,0,0.1);
+  --input-bg:#FFFFFF;
+}
+body.light #topnav{background:rgba(245,243,239,0.97);box-shadow:0 1px 8px rgba(0,0,0,0.08);}
+body.light #bnav{background:rgba(245,243,239,0.97);box-shadow:0 -1px 8px rgba(0,0,0,0.06);}
+body.light #sb{background:#EDE9E1;box-shadow:4px 0 20px rgba(0,0,0,0.1);}
+body.light .ov{background:var(--bg);}
+body.light .ov-nav{background:rgba(245,243,239,0.97);}
+body.light .wbar{background:linear-gradient(135deg,#FFFFFF,#F0EDE6);box-shadow:var(--shadow);}
+body.light .card{box-shadow:var(--shadow);}
+body.light .fi{background:var(--input-bg);color:var(--text);}
+body.light select.fi option{background:#FFFFFF;color:#1A1A2E;}
+body.light .mbub{background:#F0EDE6;}
+body.light .chat-inp{background:#FFFFFF;color:var(--text);}
 body{background:var(--bg);color:var(--text);font-family:"Montserrat",sans-serif;min-height:100vh;overflow-x:hidden;}
 #topnav{position:fixed;top:0;left:0;right:0;height:60px;z-index:600;background:rgba(7,7,13,0.96);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;}
 .nav-logo{font-family:"Bebas Neue",sans-serif;font-size:1.35rem;letter-spacing:0.08em;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
@@ -25,8 +58,8 @@ body{background:var(--bg);color:var(--text);font-family:"Montserrat",sans-serif;
 .sb-usr{padding:14px 16px;border-bottom:1px solid var(--border);}
 .sb-unm{font-family:"Playfair Display",serif;font-weight:700;font-size:1rem;color:var(--text);margin-bottom:3px;}
 .sb-ti{font-family:"Bebas Neue",sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--bg);background:var(--gold);padding:2px 8px;display:inline-block;}
-.sb-lbl{font-family:"Bebas Neue",sans-serif;font-size:0.62rem;font-weight:900;letter-spacing:0.22em;color:rgba(255,184,0,0.7);padding:10px 16px 4px;border-top:1px solid rgba(255,255,255,0.05);margin-top:2px;}
-.sb-lnk{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;font-family:"Montserrat",sans-serif;font-size:0.76rem;font-weight:600;color:var(--muted);transition:all 0.18s;border-left:3px solid transparent;}
+.sb-lbl{font-family:"Bebas Neue",sans-serif;font-size:0.68rem;font-weight:900;letter-spacing:0.24em;color:var(--gold);padding:12px 16px 5px;border-top:1px solid var(--border);margin-top:4px;opacity:0.85;}
+.sb-lnk{display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;font-family:"Montserrat",sans-serif;font-size:0.82rem;font-weight:600;color:var(--muted);transition:all 0.18s;border-left:3px solid transparent;}
 .sb-lnk:hover,.sb-lnk.on{color:var(--gold);border-left-color:var(--gold);background:rgba(255,184,0,0.06);}
 .sb-out{color:var(--err)!important;}
 .sb-out:hover{background:rgba(239,68,68,0.08)!important;border-left-color:var(--err)!important;}
@@ -38,47 +71,47 @@ body{background:var(--bg);color:var(--text);font-family:"Montserrat",sans-serif;
 .bn-ic{font-size:1.15rem;line-height:1;}
 .bn-lb{font-family:"Bebas Neue",sans-serif;font-size:0.5rem;letter-spacing:0.12em;color:var(--muted);}
 .bn.on .bn-lb{color:var(--gold);}
-.wbar{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--border);border-radius:8px;padding:14px;display:flex;gap:12px;align-items:center;margin-bottom:14px;}
-.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:13px;margin-bottom:10px;}
+.wbar{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;gap:14px;align-items:center;margin-bottom:16px;box-shadow:var(--shadow);}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:var(--shadow);}
 .loader{display:flex;align-items:center;justify-content:center;padding:32px;}
 .lring{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
 .cc{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:all 0.25s;}
 .cc:hover{border-color:rgba(255,184,0,0.5);transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,184,0,0.1);}
-.cthumb{height:120px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative;overflow:hidden;}
+.cthumb{height:140px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative;overflow:hidden;}
 .cthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:2;}
 .cletter{position:relative;z-index:1;}
 .cinfo{padding:10px;}
-.cnm{font-family:"Montserrat",sans-serif;font-weight:700;font-size:0.76rem;color:var(--text);margin-bottom:3px;line-height:1.3;}
-.ccat{font-family:"Bebas Neue",sans-serif;font-size:0.58rem;letter-spacing:0.14em;color:var(--gold);margin-bottom:2px;}
-.cmeta{font-family:"Montserrat",sans-serif;font-size:0.58rem;color:var(--dim);margin-top:1px;}
+.cnm{font-family:"Montserrat",sans-serif;font-weight:800;font-size:0.82rem;color:var(--text);margin-bottom:4px;line-height:1.3;}
+.ccat{font-family:"Bebas Neue",sans-serif;font-size:0.65rem;letter-spacing:0.14em;color:var(--gold);margin-bottom:3px;}
+.cmeta{font-family:"Montserrat",sans-serif;font-size:0.65rem;color:var(--muted);margin-top:2px;}
 .mcard{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:11px;display:flex;align-items:center;gap:10px;margin-bottom:8px;cursor:pointer;transition:border-color 0.2s;}
 .mcard:hover{border-color:var(--border2);}
-.mav{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:1rem;color:var(--bg);flex-shrink:0;overflow:hidden;position:relative;}
+.mav{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:1.1rem;color:var(--bg);flex-shrink:0;overflow:hidden;position:relative;border:2px solid var(--border2);}
 .mav img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;}
 .ncard{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;display:flex;gap:11px;margin-bottom:8px;cursor:pointer;}
 .ncard:hover{border-color:var(--border2);}
 .nic{width:40px;height:40px;border-radius:6px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
-.ftab{font-family:"Bebas Neue",sans-serif;font-size:0.62rem;letter-spacing:0.12em;padding:6px 13px;border:1px solid var(--border);border-radius:20px;cursor:pointer;color:var(--muted);white-space:nowrap;transition:all 0.2s;flex-shrink:0;}
+.ftab{font-family:"Montserrat",sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.04em;padding:7px 16px;border:1px solid var(--border);border-radius:20px;cursor:pointer;color:var(--muted);white-space:nowrap;transition:all 0.2s;flex-shrink:0;}
 .ftab.on{background:var(--gold);color:var(--bg);border-color:var(--gold);}
 .frow{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;scrollbar-width:none;}
 .frow::-webkit-scrollbar{display:none;}
-.fi{width:100%;padding:11px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:"Montserrat",sans-serif;font-size:0.76rem;outline:none;transition:border-color 0.2s;}
+.fi{width:100%;padding:13px 15px;background:var(--input-bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:"Montserrat",sans-serif;font-size:0.84rem;outline:none;transition:all 0.2s;box-shadow:inset 0 1px 3px rgba(0,0,0,0.08);}
 .fi:focus{border-color:var(--gold);}
 .fi::placeholder{color:var(--dim);}
 textarea.fi{resize:vertical;}
 select.fi option{background:var(--bg2);}
-.btn-g{font-family:"Montserrat",sans-serif;font-weight:800;font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;padding:11px 18px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--bg);border:none;border-radius:6px;cursor:pointer;width:100%;}
+.btn-g{font-family:"Montserrat",sans-serif;font-weight:800;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;padding:14px 20px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#07070D;border:none;border-radius:10px;cursor:pointer;width:100%;box-shadow:0 4px 14px rgba(255,184,0,0.35);transition:all 0.2s;}
 .btn-g:disabled{opacity:0.5;cursor:not-allowed;}
 .btn-gh{font-family:"Montserrat",sans-serif;font-weight:700;font-size:0.62rem;padding:9px 12px;background:transparent;color:var(--text);border:1px solid var(--border2);border-radius:6px;cursor:pointer;}
 .btn-act{font-family:"Montserrat",sans-serif;font-weight:800;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:9px 14px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--bg);border:none;border-radius:6px;cursor:pointer;}
 .fg{margin-bottom:12px;}
-.fl{font-family:"Bebas Neue",sans-serif;font-size:0.6rem;letter-spacing:0.16em;color:var(--muted);margin-bottom:5px;display:block;}
+.fl{font-family:"Montserrat",sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;color:var(--muted);margin-bottom:6px;display:block;text-transform:uppercase;}
 .sh2{font-family:"Bebas Neue",sans-serif;font-size:0.68rem;letter-spacing:0.2em;color:var(--gold);margin-bottom:10px;margin-top:4px;}
 .sbox{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center;}
 .snum{font-family:"Bebas Neue",sans-serif;font-size:1.2rem;color:var(--text);}
-.slbl{font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);}
+.slbl{font-family:"Montserrat",sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-top:4px;}
 .cgrd2{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
 .comcard{border-radius:8px;overflow:hidden;cursor:pointer;border:1px solid var(--border);transition:all 0.3s;}
 .comcard:hover{border-color:rgba(255,184,0,0.35);transform:translateY(-2px);}
@@ -98,7 +131,7 @@ select.fi option{background:var(--bg2);}
 .ov{position:fixed;inset:0;background:var(--bg);z-index:9000;overflow-y:auto;}
 .ov-nav{position:sticky;top:0;background:rgba(7,7,13,0.97);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;gap:12px;z-index:10;}
 .back-btn{background:none;border:1px solid var(--border2);border-radius:8px;width:36px;height:36px;color:var(--text);font-size:1.1rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
-#toast{position:fixed;bottom:78px;right:12px;background:var(--bg3);border:1px solid var(--border);padding:10px 14px;border-radius:20px;font-size:0.7rem;color:var(--text);opacity:0;transform:translateY(10px);transition:all 0.3s ease;pointer-events:none;max-width:260px;z-index:9999;}
+#toast{position:fixed;bottom:80px;right:12px;background:var(--bg3);border:1px solid var(--border);padding:11px 16px;border-radius:24px;font-size:0.76rem;font-weight:600;color:var(--text);opacity:0;transform:translateY(10px);transition:all 0.3s ease;pointer-events:none;max-width:280px;z-index:9999;box-shadow:var(--shadow);}
 #toast.on{opacity:1;transform:translateY(0);}
 </style>
 </head>
@@ -151,8 +184,9 @@ select.fi option{background:var(--bg2);}
 </div>
 <div id="topnav">
   <span class="nav-logo">ICONIK</span>
-  <div style="display:flex;align-items:center;gap:10px;">
-    <span style="font-size:1.1rem;cursor:pointer;" id="bellBtn">&#128276;</span>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <button id="modeBtn" title="Toggle light/dark mode" style="background:none;border:1px solid var(--border2);border-radius:8px;width:36px;height:36px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;" onclick="toggleMode()">🌙</button>
+    <span style="font-size:1.2rem;cursor:pointer;" id="bellBtn">🔔</span>
     <div id="navAv">M</div>
     <button id="hbg"><span></span><span></span><span></span></button>
   </div>
@@ -236,7 +270,22 @@ select.fi option{background:var(--bg2);}
     <div class="wbar"><span style="font-size:1.4rem;">&#128269;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Find Members</div><div style="font-size:0.62rem;color:var(--muted);">Discover fans worldwide</div></div></div>
     <div style="display:flex;gap:8px;margin-bottom:12px;">
       <input class="fi" style="flex:1;" id="mSrch" placeholder="Search by name..."/>
-      <select class="fi" style="width:110px;" id="mFilt"><option value="">All</option><option>Music</option><option>Sports</option><option>Fashion</option><option>Tech &amp; Innovation</option></select>
+      <select class="fi" style="width:120px;" id="mFilt">
+<option value="">All</option>
+<option>Music</option>
+<option>Sports</option>
+<option>Film &amp; TV</option>
+<option>Fashion</option>
+<option>Fitness &amp; Wellness</option>
+<option>Food &amp; Culinary</option>
+<option>Nature</option>
+<option>Automotive</option>
+<option>Tech &amp; Innovation</option>
+<option>Beauty</option>
+<option>Entertainment</option>
+<option>Leadership</option>
+<option>Literature</option>
+</select>
     </div>
     <div id="memberList"><div class="loader"><div class="lring"></div></div></div>
   </div>
@@ -249,8 +298,89 @@ select.fi option{background:var(--bg2);}
     <div id="pollList"><div class="loader"><div class="lring"></div></div></div>
   </div>
   <div class="view" id="profileV">
-    <div class="wbar"><span style="font-size:1.4rem;">&#128100;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">My Profile</div><div style="font-size:0.62rem;color:var(--muted);">Your ICONIK identity</div></div></div>
-    <div id="profileContent"><div class="loader"><div class="lring"></div></div></div>
+    <!-- COVER PHOTO -->
+    <div id="coverPhotoWrap" style="height:180px;background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);position:relative;overflow:hidden;margin:-0px;border-radius:0 0 16px 16px;margin-bottom:0;cursor:pointer;" onclick="document.getElementById('coverInput').click()">
+      <img id="coverImg" style="width:100%;height:100%;object-fit:cover;display:none;" onerror="this.style.display='none'"/>
+      <div id="coverOverlay" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.25);">
+        <div style="text-align:center;">
+          <div style="font-size:1.6rem;margin-bottom:4px;">📸</div>
+          <div style="font-family:'Montserrat',sans-serif;font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.8);">Tap to set cover photo</div>
+        </div>
+      </div>
+      <input type="file" id="coverInput" accept="image/*" style="display:none;" onchange="uploadCover(this)"/>
+    </div>
+
+    <!-- PROFILE PICTURE + INFO -->
+    <div style="padding:0 16px;position:relative;margin-top:-50px;margin-bottom:16px;">
+      <!-- Avatar -->
+      <div style="position:relative;display:inline-block;margin-bottom:12px;">
+        <div id="profileAv" style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#07070D;border:4px solid var(--bg2);overflow:hidden;position:relative;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.3);" onclick="document.getElementById('avatarInput').click()">
+          <img id="profileAvImg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;display:none;" onerror="this.style.display='none'"/>
+          <span id="profileAvLetter">M</span>
+        </div>
+        <div style="position:absolute;bottom:4px;right:4px;width:26px;height:26px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:0.75rem;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.3);" onclick="document.getElementById('avatarInput').click()">📷</div>
+        <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="uploadAvatar(this)"/>
+      </div>
+      <!-- Name & bio -->
+      <div id="profileInfo" style="margin-bottom:16px;">
+        <div id="profileName" style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.3rem;color:var(--text);margin-bottom:4px;">Loading...</div>
+        <div id="profileHandle" style="font-family:'Montserrat',sans-serif;font-size:0.78rem;color:var(--gold);margin-bottom:6px;font-weight:600;"></div>
+        <div id="profileBio" style="font-family:'Montserrat',sans-serif;font-size:0.82rem;color:var(--muted);line-height:1.6;margin-bottom:10px;"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <div id="profileTier" style="font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.12em;color:#07070D;background:var(--gold);padding:4px 12px;border-radius:20px;">Fan</div>
+          <div id="profileCountry" style="font-family:'Montserrat',sans-serif;font-size:0.72rem;color:var(--muted);padding:4px 0;"></div>
+        </div>
+      </div>
+      <!-- Stats -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;" id="profileStats">
+        <div style="text-align:center;"><div id="statPosts" style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--text);">0</div><div style="font-family:'Montserrat',sans-serif;font-size:0.65rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;">Posts</div></div>
+        <div style="text-align:center;"><div id="statFollowers" style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--text);">0</div><div style="font-family:'Montserrat',sans-serif;font-size:0.65rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;">Followers</div></div>
+        <div style="text-align:center;"><div id="statFollowing" style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--text);">0</div><div style="font-family:'Montserrat',sans-serif;font-size:0.65rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;">Following</div></div>
+      </div>
+    </div>
+
+    <!-- STATUS / MOMENTS SHARE -->
+    <div style="padding:0 16px;margin-bottom:16px;">
+      <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:10px;">Share a Moment ✨</div>
+      <div class="card" style="margin-bottom:0;">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <div class="mav" id="momentAv" style="width:40px;height:40px;font-size:0.9rem;flex-shrink:0;overflow:hidden;position:relative;">M</div>
+          <div style="flex:1;">
+            <textarea id="momentText" placeholder="What's happening? Share your moment... 🌟" style="width:100%;background:none;border:none;outline:none;color:var(--text);font-family:'Montserrat',sans-serif;font-size:0.84rem;resize:none;min-height:70px;line-height:1.6;"></textarea>
+            <div id="momentImgPreview" style="display:none;margin-bottom:8px;position:relative;">
+              <img id="momentImg" style="width:100%;max-height:200px;object-fit:cover;border-radius:10px;"/>
+              <button onclick="clearMomentImg()" style="position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,0.6);border:none;color:#fff;cursor:pointer;font-size:0.8rem;">✕</button>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">
+              <button onclick="document.getElementById('momentImgInput').click()" style="background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--muted);" title="Add photo">📷</button>
+              <button onclick="document.getElementById('momentImgInput').click()" style="background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--muted);" title="Add video">🎬</button>
+              <button onclick="addMomentEmoji()" style="background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--muted);" title="Feeling">😊</button>
+              <button onclick="addMomentLocation()" style="background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--muted);" title="Location">📍</button>
+              <input type="file" id="momentImgInput" accept="image/*,video/*" style="display:none;" onchange="previewMomentMedia(this)"/>
+              <button class="btn-act" style="margin-left:auto;padding:8px 20px;font-size:0.72rem;border-radius:20px;" onclick="postMoment()">Share ✨</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT PROFILE -->
+    <div style="padding:0 16px;margin-bottom:16px;">
+      <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:10px;">Edit Profile ✏️</div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="fg"><label class="fl">Display Name</label><input class="fi" id="pName" placeholder="Your name"/></div>
+        <div class="fg"><label class="fl">Bio</label><textarea class="fi" id="pBio" rows="3" placeholder="Tell your story..."></textarea></div>
+        <div class="fg"><label class="fl">Country</label><input class="fi" id="pCountry" placeholder="Where are you from?"/></div>
+        <div class="fg"><label class="fl">Favourite Celebrity</label><input class="fi" id="pFavIcon" placeholder="Who is your icon?"/></div>
+        <button class="btn-g" onclick="saveProfile()">Save Profile ✅</button>
+      </div>
+    </div>
+
+    <!-- MY POSTS -->
+    <div style="padding:0 16px;">
+      <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:10px;">My Posts 📝</div>
+      <div id="myPostsList"><div class="loader"><div class="lring"></div></div></div>
+    </div>
   </div>
   <div class="view" id="msgsV">
     <div class="wbar"><span style="font-size:1.4rem;">&#128233;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Messages</div><div style="font-size:0.62rem;color:var(--muted);">From Admin &amp; Sub Admins</div></div></div>
@@ -700,7 +830,7 @@ function boot(){
   document.getElementById("chatInp").addEventListener("keydown",function(ev){if(ev.key==="Enter")sendChat();});
   var osv=window.sv;
   window.sv=function(nm2){if(cTick){clearInterval(cTick);cTick=null;}osv(nm2);if(nm2==="chat"){loadChat();cTick=setInterval(loadChat,8000);}};
-  loadFeed();loadCelebs();loadNews();loadComs();loadEvents();loadRadio();loadTV();loadMag();loadWell("fitness");loadMembers();loadRanks();loadPolls();loadProfile();loadMsgs();loadNotifs();loadVIP();
+  loadFeed();loadCelebs();loadNews();if(window._attachNewViewLoaders)window._attachNewViewLoaders();loadProfile();loadComs();loadEvents();loadRadio();loadTV();loadMag();loadWell("fitness");loadMembers();loadRanks();loadPolls();loadProfile();loadMsgs();loadNotifs();loadVIP();
 }
 function attachBack(ov){var btn=document.getElementById("ovBack");if(btn)btn.onclick=function(){ov.remove();};}
 
@@ -1591,6 +1721,196 @@ async function loadVIP(){
 
 window.toast=toast;
 
+// ── LIGHT / DARK MODE TOGGLE ──
+window.toggleMode=function(){
+  var b=document.body;
+  var btn=document.getElementById("modeBtn");
+  if(b.classList.contains("light")){
+    b.classList.remove("light");
+    if(btn)btn.textContent="🌙";
+    localStorage.setItem("iconikMode","dark");
+  }else{
+    b.classList.add("light");
+    if(btn)btn.textContent="☀️";
+    localStorage.setItem("iconikMode","light");
+  }
+};
+// Apply saved mode
+(function(){
+  var saved=localStorage.getItem("iconikMode");
+  if(saved==="light"){
+    document.body.classList.add("light");
+    var btn=document.getElementById("modeBtn");
+    if(btn)btn.textContent="☀️";
+  }
+})();
+
+// ── COVER PHOTO UPLOAD ──
+window.uploadCover=async function(input){
+  var file=input.files[0];if(!file)return;
+  toast("Uploading cover photo...","info");
+  try{
+    var url=await upload(file);
+    var img=document.getElementById("coverImg");
+    var ov=document.getElementById("coverOverlay");
+    if(img){img.src=url;img.style.display="block";}
+    if(ov)ov.style.background="rgba(0,0,0,0.1)";
+    // Save to Firestore
+    if(cU){
+      var{updateDoc:uD,doc:dc}=await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+      await uD(dc(db,"users",cU.uid),{coverPhoto:url});
+    }
+    toast("Cover photo updated! 📸");
+  }catch(e){toast("Upload failed — try a smaller image","error");}
+};
+
+// ── AVATAR UPLOAD ──
+window.uploadAvatar=async function(input){
+  var file=input.files[0];if(!file)return;
+  toast("Uploading profile photo...","info");
+  try{
+    var url=await upload(file);
+    var img=document.getElementById("profileAvImg");
+    var letter=document.getElementById("profileAvLetter");
+    if(img){img.src=url;img.style.display="block";}
+    if(letter)letter.style.display="none";
+    // Update topnav avatar
+    var navAv=document.getElementById("navAv");
+    if(navAv){
+      var existing=navAv.querySelector("img");
+      if(existing){existing.src=url;}
+      else{var ni=document.createElement("img");ni.src=url;ni.style.cssText="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;";navAv.appendChild(ni);}
+    }
+    if(cU){
+      var{updateDoc:uD2,doc:dc2}=await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+      await uD2(dc2(db,"users",cU.uid),{profilePic:url});
+      if(cD)cD.profilePic=url;
+    }
+    toast("Profile photo updated! 📸");
+  }catch(e){toast("Upload failed","error");}
+};
+
+// ── MOMENTS / STATUS ──
+window.previewMomentMedia=function(input){
+  var file=input.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var img=document.getElementById("momentImg");
+    var wrap=document.getElementById("momentImgPreview");
+    if(img){img.src=e.target.result;}
+    if(wrap)wrap.style.display="block";
+  };
+  reader.readAsDataURL(file);
+};
+window.clearMomentImg=function(){
+  var wrap=document.getElementById("momentImgPreview");
+  var input=document.getElementById("momentImgInput");
+  if(wrap)wrap.style.display="none";
+  if(input)input.value="";
+};
+window.addMomentEmoji=function(){
+  var t=document.getElementById("momentText");
+  if(t){var emojis=["😊","🔥","❤️","🎉","😂","🌟","💪","🙏","😍","🎶"];t.value+=emojis[Math.floor(Math.random()*emojis.length)];}
+};
+window.addMomentLocation=function(){
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(function(p){
+      var t=document.getElementById("momentText");
+      if(t)t.value+=" 📍 My location";
+    },function(){toast("Location access denied","error");});
+  }
+};
+window.postMoment=async function(){
+  if(!cU){toast("Sign in first","error");return;}
+  var text=document.getElementById("momentText").value.trim();
+  var imgFile=document.getElementById("momentImgInput").files[0];
+  if(!text&&!imgFile){toast("Write something or add a photo!","error");return;}
+  var btn=document.querySelector("[onclick='postMoment()']");
+  if(btn){btn.disabled=true;btn.textContent="Sharing...";}
+  try{
+    var imgUrl="";
+    if(imgFile)imgUrl=await upload(imgFile);
+    await addDoc(collection(db,"posts"),{
+      content:text,title:"",imageUrl:imgUrl,videoUrl:"",
+      category:(cD&&cD.categories&&cD.categories[0])||"",
+      userId:cU.uid,userName:(cD&&cD.name)||"Member",
+      userPhoto:(cD&&cD.profilePic)||"",
+      isAdmin:false,isRepost:false,
+      likeCount:0,commentCount:0,
+      createdAt:serverTimestamp()
+    });
+    document.getElementById("momentText").value="";
+    clearMomentImg();
+    toast("Moment shared! ✨");
+    loadMyPosts();
+  }catch(e){toast("Error sharing","error");}
+  if(btn){btn.disabled=false;btn.textContent="Share ✨";}
+};
+
+// ── LOAD PROFILE ──
+async function loadProfile(){
+  if(!cD)return;
+  // Cover photo
+  if(cD.coverPhoto){
+    var ci=document.getElementById("coverImg");
+    var co=document.getElementById("coverOverlay");
+    if(ci){ci.src=cD.coverPhoto;ci.style.display="block";}
+    if(co)co.style.background="rgba(0,0,0,0.1)";
+  }
+  // Avatar
+  var letter=document.getElementById("profileAvLetter");
+  var img=document.getElementById("profileAvImg");
+  if(letter)letter.textContent=(cD.name||"M").charAt(0).toUpperCase();
+  if(img&&cD.profilePic&&cD.profilePic.startsWith("http")){
+    img.src=cD.profilePic;
+    img.style.display="block";
+    if(letter)letter.style.display="none";
+  }
+  // Moment avatar
+  var mav=document.getElementById("momentAv");
+  if(mav){
+    mav.textContent=(cD.name||"M").charAt(0);
+    if(cD.profilePic&&cD.profilePic.startsWith("http")){
+      mav.innerHTML="<img src='"+cD.profilePic+"' style='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;' onerror='this.remove()'/>";
+    }
+  }
+  // Info
+  var nm=document.getElementById("profileName");
+  var hd=document.getElementById("profileHandle");
+  var bio=document.getElementById("profileBio");
+  var tr=document.getElementById("profileTier");
+  var ct=document.getElementById("profileCountry");
+  if(nm)nm.textContent=cD.name||"ICONIK Member";
+  if(hd)hd.textContent="@"+(cD.name||"member").toLowerCase().replace(/\s+/g,"_");
+  if(bio)bio.textContent=cD.bio||"No bio yet — tap Edit Profile to add yours!";
+  if(tr)tr.textContent=cD.tier||"Fan";
+  if(ct)ct.textContent=(cD.country?"📍 "+cD.country:"");
+  // Prefill edit form
+  var pn=document.getElementById("pName");var pb=document.getElementById("pBio");
+  var pc=document.getElementById("pCountry");var pf=document.getElementById("pFavIcon");
+  if(pn)pn.value=cD.name||"";if(pb)pb.value=cD.bio||"";
+  if(pc)pc.value=cD.country||"";if(pf)pf.value=cD.favIcon||"";
+  loadMyPosts();
+}
+
+async function loadMyPosts(){
+  var el=document.getElementById("myPostsList");if(!el||!cU)return;
+  var snap=await sg(query(collection(db,"posts"),limit(20)));
+  var posts=[];snap.forEach(function(d){var p=d.data();if(p.userId===cU.uid)posts.push({id:d.id,...p});});
+  posts.sort(function(a,b){return(b.createdAt&&b.createdAt.seconds||0)-(a.createdAt&&a.createdAt.seconds||0);});
+  // Update post count
+  var sp=document.getElementById("statPosts");if(sp)sp.textContent=posts.length;
+  el.innerHTML=posts.length?posts.map(function(p){
+    var dt=p.createdAt&&p.createdAt.toDate?p.createdAt.toDate().toLocaleDateString("en",{month:"short",day:"numeric",year:"numeric"}):"";
+    var img=p.imageUrl&&p.imageUrl.startsWith("http")?"<img src='"+p.imageUrl+"' style='width:100%;max-height:200px;object-fit:cover;border-radius:8px;margin-top:8px;' loading='lazy' onerror='this.remove()'/>":"";
+    return "<div class='card'><div style='display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;'><div style='font-family:"Montserrat",sans-serif;font-size:0.72rem;font-weight:700;color:var(--gold);'>"+dt+"</div></div>"+
+      (p.title?"<div style='font-family:"Playfair Display",serif;font-weight:700;font-size:0.92rem;color:var(--text);margin-bottom:4px;'>"+xe(p.title)+"</div>":"")+
+      "<div style='font-family:"Montserrat",sans-serif;font-size:0.8rem;color:var(--muted);line-height:1.65;'>"+xe(p.content||"")+"</div>"+img+
+      "<div style='display:flex;gap:12px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:0.7rem;color:var(--muted);'>"+
+      "<span>♥ "+(p.likeCount||0)+"</span><span>💬 "+(p.commentCount||0)+"</span></div></div>";
+  }).join(""):"<div class='card' style='text-align:center;color:var(--muted);padding:20px;'>No posts yet. Share your first moment above! ✨</div>";
+}
+
 // ── NEW VIEWS JS ──
 
 // EXPLORE ICONS — category filter
@@ -1911,21 +2231,39 @@ function initSettings(){
   if(n)n.value=cD.name||"";if(b)b.value=cD.bio||"";if(c)c.value=cD.country||"";
 }
 
-// Load new views on demand
-var _origSv=window.sv;
-window.sv=function(name){
-  _origSv(name);
-  if(name==="explore")filterExplore();
-  if(name==="verified")filterVerified();
-  if(name==="tour")loadTourBuddies();
-  if(name==="market")loadMarket();
-  if(name==="streams")loadStreams();
-  if(name==="challenges")loadChallenges();
-  if(name==="qa")loadQA();
-  if(name==="badges")loadBadges();
-  if(name==="refer")initReferLink();
-  if(name==="settings")initSettings();
-};
-window.sV=window.sv;
+// Safe view loader — hooks into existing sv() without overriding it
+// Attach lazy loaders to new views via the existing navigation click handlers
+function attachNewViewLoaders(){
+  var loaderMap={
+    profile:function(){loadProfile();},
+    explore:function(){if(allC.length)filterExplore();},
+    verified:function(){if(allC.length)filterVerified();},
+    tour:loadTourBuddies,
+    market:loadMarket,
+    streams:loadStreams,
+    challenges:loadChallenges,
+    qa:loadQA,
+    badges:loadBadges,
+    refer:initReferLink,
+    settings:initSettings
+  };
+  // Patch sidebar links for new views
+  document.querySelectorAll(".sb-lnk[data-v]").forEach(function(l){
+    var v=l.dataset.v;
+    if(loaderMap[v]){
+      var orig=l.onclick;
+      l.onclick=function(){
+        if(orig)orig.call(this);
+        else if(window.sv)window.sv(v);
+        setTimeout(function(){
+          if(loaderMap[v])loaderMap[v]();
+        },80);
+      };
+    }
+  });
+}
+// Run after Firebase auth loads data
+window._attachNewViewLoaders=attachNewViewLoaders;
+window.sV=function(name){if(window.sv)window.sv(name);};
 </body>
 </html>
