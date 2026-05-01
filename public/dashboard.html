@@ -820,7 +820,7 @@ import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasej
 import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,query,limit,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 const cfg={apiKey:"AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",authDomain:"iconik-global.firebaseapp.com",projectId:"iconik-global",storageBucket:"iconik-global.firebasestorage.app",messagingSenderId:"1040054516979",appId:"1:1040054516979:web:33cd5f07ae8fc146a30b86"};
 const fb=initializeApp(cfg),auth=getAuth(fb),db=getFirestore(fb);
-async function sg(r){try{return await Promise.race([getDocs(r),new Promise((_,j)=>setTimeout(()=>j(new Error("t")),5000))]);}catch(e){return{empty:true,forEach:()=>{},docs:[],size:0};}}
+async function sg(r){try{return await getDocs(r);}catch(e){console.warn("Firestore read error:",e);return{empty:true,forEach:function(){},docs:[],size:0};}}
 function xe(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function xu(s){return String(s||"").replace(/"/g,"'");}
 function toast(msg,t){var el=document.getElementById("toast");el.textContent=msg;el.style.background=t==="error"?"rgba(127,29,29,0.97)":t==="info"?"rgba(30,58,95,0.97)":"rgba(20,83,45,0.97)";el.classList.add("on");clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove("on");},3000);}
@@ -832,8 +832,13 @@ window._so=async function(){await signOut(auth);location.replace("/app.html?sign
 onAuthStateChanged(auth,async function(u){
   if(!u){location.replace("/app.html");return;}
   cU=u;
-  try{var d=await getDoc(doc(db,"users",u.uid));if(d.exists())cD={id:d.id,...d.data()};}catch{}
+  try{
+    var d=await getDoc(doc(db,"users",u.uid));
+    if(d.exists())cD={id:d.id,...d.data()};
+  }catch(e){console.warn("User data error:",e);}
   boot();
+  // Load profile immediately after we have cD
+  loadProfile();
 });
 function boot(){
   var nm=cD&&cD.name?cD.name:"Member";
@@ -862,7 +867,7 @@ function boot(){
   setTimeout(function(){loadEvents();loadMembers();},200);
   setTimeout(function(){loadRanks();loadPolls();loadMsgs();loadNotifs();},400);
   setTimeout(function(){loadRadio();loadTV();loadMag();loadWell("fitness");loadVIP();},600);
-  setTimeout(function(){loadProfile();if(window._attachNewViewLoaders)window._attachNewViewLoaders();},800);
+  setTimeout(function(){if(window._attachNewViewLoaders)window._attachNewViewLoaders();},800);
 }
 function attachBack(ov){var btn=document.getElementById("ovBack");if(btn)btn.onclick=function(){ov.remove();};}
 
@@ -876,11 +881,17 @@ function attachBack(ov){var btn=document.getElementById("ovBack");if(btn)btn.onc
 // ══════════════════════════════════════════
 async function loadFeed(){
   var el=document.getElementById("feedList");
-  var snap=await sg(query(collection(db,"posts"),limit(30)));
-  var posts=[];snap.forEach(function(d){posts.push({id:d.id,...d.data()});});
-  posts.sort(function(a,b){return(b.createdAt&&b.createdAt.seconds||0)-(a.createdAt&&a.createdAt.seconds||0);});
-  if(!posts.length){el.innerHTML="<div class=\"card\" style=\"text-align:center;padding:14px;color:var(--muted);\">No posts yet. Be the first to share! 🌟</div>";return;}
-  el.innerHTML=posts.map(function(p){return buildPostCard(p);}).join("");
+  if(!el)return;
+  try{
+    var snap=await sg(query(collection(db,"posts"),limit(30)));
+    var posts=[];snap.forEach(function(d){posts.push({id:d.id,...d.data()});});
+    posts.sort(function(a,b){return(b.createdAt&&b.createdAt.seconds||0)-(a.createdAt&&a.createdAt.seconds||0);});
+    if(!posts.length){el.innerHTML="<div class=\"card\" style=\"text-align:center;padding:20px;color:var(--muted);\">No posts yet. Be the first to share! 🌟</div>";return;}
+    el.innerHTML=posts.map(function(p){return buildPostCard(p);}).join("");
+  }catch(e){
+    el.innerHTML="<div class=\"card\" style=\"text-align:center;padding:20px;color:var(--muted);\">Feed loading... pull to refresh 🔄</div>";
+    console.error("Feed error:",e);return;
+  }
   // Attach all interactions via event delegation
   el.onclick=null;
   el.addEventListener("click",async function(ev){
@@ -1230,9 +1241,11 @@ function doShare(title,text,url){
 }
 
 async function loadCelebs(){
-  var snap=await sg(query(collection(db,"celebrities"),limit(100)));
-  allC=[];snap.forEach(function(d){allC.push({id:d.id,...d.data()});});
-  renderCelebs(allC);
+  try{
+    var snap=await sg(query(collection(db,"celebrities"),limit(100)));
+    allC=[];snap.forEach(function(d){allC.push({id:d.id,...d.data()});});
+    renderCelebs(allC);
+  }catch(e){console.warn("Celebs error:",e);renderCelebs([]);}
 }
 
 function renderCelebs(list){
@@ -1532,9 +1545,11 @@ function loadWell(tab){var w=WELL[tab]||WELL.fitness;document.getElementById("we
 
 // FIND MEMBERS
 async function loadMembers(){
-  var snap=await sg(query(collection(db,"users"),limit(50)));
-  allM=[];snap.forEach(function(d){if(d.id!==cU.uid)allM.push({id:d.id,...d.data()});});
-  renderMembers(allM);
+  try{
+    var snap=await sg(query(collection(db,"users"),limit(50)));
+    allM=[];snap.forEach(function(d){if(d.id!==cU.uid)allM.push({id:d.id,...d.data()});});
+    renderMembers(allM);
+  }catch(e){console.warn("Members error:",e);renderMembers([]);}
 }
 function renderMembers(list){
   var el=document.getElementById("memberList");
@@ -1875,6 +1890,25 @@ function loadProfile(){
   if(pn)pn.value=cD.name||"";if(pb)pb.value=cD.bio||"";
   if(pc)pc.value=cD.country||"";if(pfi)pfi.value=cD.favIcon||"";
   loadMyPosts();
+}
+
+async function saveProfile(){
+  if(!cU)return;
+  var btn=document.querySelector("[onclick="saveProfile()"]");
+  if(btn){btn.disabled=true;btn.textContent="Saving...";}
+  try{
+    var name=(document.getElementById("pName")||{value:""}).value.trim()||(cD&&cD.name)||"";
+    var bio=(document.getElementById("pBio")||{value:""}).value.trim();
+    var country=(document.getElementById("pCountry")||{value:""}).value.trim();
+    var favIcon=(document.getElementById("pFavIcon")||{value:""}).value.trim();
+    await setDoc(doc(db,"users",cU.uid),{
+      name:name||cD.name,bio:bio,country:country,favIcon:favIcon
+    },{merge:true});
+    if(cD){cD.name=name||cD.name;cD.bio=bio;cD.country=country;cD.favIcon=favIcon;}
+    toast("Profile saved! ✅");
+    loadProfile();
+  }catch(e){toast("Error saving","error");console.error(e);}
+  if(btn){btn.disabled=false;btn.textContent="Save Profile ✅";}
 }
 
 async function loadMyPosts(){
