@@ -878,7 +878,7 @@ select.fi option{background:var(--bg2);}
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,query,limit,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,updateDoc,deleteDoc,query,limit,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 const cfg={apiKey:"AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",authDomain:"iconik-global.firebaseapp.com",projectId:"iconik-global",storageBucket:"iconik-global.firebasestorage.app",messagingSenderId:"1040054516979",appId:"1:1040054516979:web:33cd5f07ae8fc146a30b86"};
 const fb=initializeApp(cfg),auth=getAuth(fb),db=getFirestore(fb);
 async function sg(r){try{return await getDocs(r);}catch(e){console.warn("Firestore:",e.message);return{empty:true,forEach:()=>{},docs:[],size:0};}}
@@ -1005,19 +1005,55 @@ function openEditPost(pid,oldTitle,oldContent){
   var ov=mkOv();
   var h=navRow("Edit Post");
   h+="<div style='padding:16px;'>";
-  h+="<div class='fg'><label class='fl'>Title (optional)</label><input class='fi' id='epTitle' value='"+xu(oldTitle)+"' placeholder='Post title...'/></div>";
-  h+="<div class='fg'><label class='fl'>Content *</label><textarea class='fi' id='epContent' rows='6' style='resize:vertical;'>"+xu(oldContent)+"</textarea></div>";
-  h+="<button class='btn-g' id='epSave'>Save Changes ✅</button></div>";
+  h+="<div class='fg'><label class='fl'>Title (optional)</label>"
+    +"<input class='fi' id='epTitle' value='"+xu(oldTitle)+"' placeholder='Post title...'/></div>";
+  h+="<div class='fg'><label class='fl'>Content *</label>"
+    +"<textarea class='fi' id='epContent' rows='5' style='resize:vertical;'>"+xu(oldContent)+"</textarea></div>";
+  // Media section
+  h+="<div class='fg'>"
+    +"<label class='fl'>Replace Photo (optional)</label>"
+    +"<div class='upbox' id='epUpBox'>"
+    +"<div style='font-size:1.4rem;margin-bottom:4px;'>📷</div>"
+    +"<div id='epFnm' style='font-family:Sora,sans-serif;font-size:0.72rem;color:var(--text3);'>Tap to choose new photo or video</div>"
+    +"<input type='file' id='epFile' accept='image/*,video/*' style='display:none;'/>"
+    +"</div>"
+    +"<input class='fi' id='epMediaUrl' placeholder='Or paste photo/video URL directly...' style='margin-top:8px;'/>"
+    +"</div>";
+  h+="<div class='fg'>"
+    +"<label class='fl'>Remove existing media?</label>"
+    +"<div style='display:flex;align-items:center;gap:8px;'>"
+    +"<input type='checkbox' id='epRemoveMedia' style='width:18px;height:18px;cursor:pointer;accent-color:var(--err);'/>"
+    +"<span style='font-family:Sora,sans-serif;font-size:0.8rem;color:var(--text2);'>Yes, remove current photo/video</span>"
+    +"</div></div>";
+  h+="<button class='btn-g' id='epSave'>Save Changes ✅</button>";
+  h+="</div>";
   ov.innerHTML=h;attachBack(ov);
+  document.getElementById("epUpBox").onclick=function(){document.getElementById("epFile").click();};
+  document.getElementById("epFile").onchange=function(){
+    if(this.files[0])document.getElementById("epFnm").textContent="Selected: "+this.files[0].name;
+  };
   document.getElementById("epSave").onclick=async function(){
     var nc=document.getElementById("epContent").value.trim();
     var nt=document.getElementById("epTitle").value.trim();
     if(!nc){toast("Content cannot be empty","error");return;}
     this.disabled=true;this.textContent="Saving...";
     try{
-      await updateDoc(doc(db,"posts",pid),{title:nt,content:nc});
+      var updates={title:nt,content:nc};
+      // Handle media
+      var removeMedia=document.getElementById("epRemoveMedia").checked;
+      if(removeMedia){updates.imageUrl="";updates.videoUrl="";}
+      else{
+        var urlInput=document.getElementById("epMediaUrl").value.trim();
+        var file=document.getElementById("epFile").files[0];
+        if(file){
+          try{var up=await upload(file);updates.imageUrl=up;}catch(e){toast("Upload failed — using URL if provided","error");}
+        }else if(urlInput&&urlInput.startsWith("http")){
+          updates.imageUrl=urlInput;
+        }
+      }
+      await updateDoc(doc(db,"posts",pid),updates);
       toast("Post updated! ✅");ov.remove();loadFeed();
-    }catch(e){toast("Error saving","error");}
+    }catch(e){toast("Error saving — try again","error");console.error(e);}
     this.disabled=false;this.textContent="Save Changes ✅";
   };
 }
@@ -1122,7 +1158,7 @@ function openCeleb(id){
   document.getElementById("fCBtn").onclick=async function(){
     if(!cU)return;
     try{await setDoc(doc(db,"follows",cU.uid+"_celeb_"+c.id),{userId:cU.uid,celebId:c.id,celebName:c.name||"",createdAt:serverTimestamp()});}catch{}
-    this.textContent="&#10003; Following";this.style.background="rgba(255,255,255,0.08)";this.style.color="var(--gold)";
+    this.textContent="✓ Following";this.style.background="var(--accent-soft)";this.style.color="var(--accent)";this.style.border="1.5px solid var(--accent-glow)";
     toast("Following "+c.name+"!");
   };
   document.getElementById("sCBtn").onclick=function(){
@@ -1390,14 +1426,19 @@ function openMember(m){
   if(m.profilePic&&m.profilePic.startsWith("http"))h+="<img src=\""+xu(m.profilePic)+"\" style=\"width:100%;height:100%;object-fit:cover;border-radius:50%;\" onerror=\"this.remove()\"/>";
   else h+=xe((m.name||"?").charAt(0).toUpperCase());
   h+="</div>";
-  h+="<div style=\"display:flex;gap:7px;padding-bottom:4px;flex-wrap:wrap;\">";
-  h+="<button class=\"btn-act\" id=\"fMBtn\" style=\"flex:1;\">+ Follow</button>";
-  h+="<button class=\"btn-gh\" id=\"sMBtn\" style=\"flex:1;\">🔗 Share</button>";
-  h+="<button id=\"blockMBtn\" style=\"flex:1;background:rgba(255,59,48,0.07);border:1.5px solid rgba(255,59,48,0.25);border-radius:var(--radius-sm);padding:10px;cursor:pointer;font-family:'Sora',sans-serif;font-size:0.78rem;font-weight:700;color:var(--err);\">🚫 Block</button></div></div>";
+  // ── ACTION BUTTONS — compact row ──
+  h+="<div style=\"display:flex;gap:6px;padding-bottom:4px;\">";
+  h+="<button class=\"btn-act\" id=\"fMBtn\" style=\"flex:1;padding:9px 6px;font-size:0.78rem;\">+ Follow</button>";
+  h+="<button class=\"btn-gh\" id=\"sMBtn\" style=\"flex:1;padding:9px 6px;font-size:0.78rem;\">🔗 Share</button>";
+  h+="<button id=\"blockMBtn\" style=\"flex:1;padding:9px 6px;background:rgba(255,59,48,0.07);border:1.5px solid rgba(255,59,48,0.25);border-radius:var(--radius-sm);cursor:pointer;font-family:'Sora',sans-serif;font-size:0.78rem;font-weight:700;color:var(--err);transition:all 0.2s;\">🚫 Block</button>";
+  h+="</div></div>";
   h+="<div style=\"padding:0 16px 24px;\">";
-  h+="<div style=\"font-weight:700;font-size:1.1rem;color:var(--text);margin-bottom:3px;\">"+xe(m.name||"Member")+(m.verificationStatus==="verified"?"<span class=\"badge-verified\"></span>":"")+"</div>";
-  h+="<div style=\"class=\"tier-gold\" style=\"display:inline-flex;\"display:inline-block;margin-bottom:10px;\">"+xe(m.tier||"Fan")+"</div>";
-  h+="<div style=\"font-size:0.7rem;color:var(--muted);margin-bottom:12px;\">&#128205; "+(m.city?xe(m.city)+", ":"")+xe(m.country||"—")+"</div>";
+  // Name + verified badge
+  h+="<div style=\"font-family:'Sora',sans-serif;font-weight:800;font-size:1.15rem;color:var(--text);margin-bottom:5px;letter-spacing:-0.02em;\">"+xe(m.name||"Member")+(m.verificationStatus==="verified"?"<span class=\"badge-verified\"></span>":"")+"</div>";
+  // Tier badge — fixed HTML
+  var mt=m.tier||"Fan";var mtc=mt.toLowerCase().includes("gold")?"tier-gold":mt.toLowerCase().includes("silver")?"tier-silver":mt.toLowerCase().includes("bronze")?"tier-bronze":"tier-fan";
+  h+="<div class=\""+mtc+"\" style=\"margin-bottom:10px;\">"+xe(mt)+"</div>";
+  h+="<div style=\"font-family:'Sora',sans-serif;font-size:0.78rem;color:var(--text3);margin-bottom:14px;\">&#128205; "+(m.city?xe(m.city)+", ":"")+xe(m.country||"—")+"</div>";
   if(m.bio)h+="<div style=\"font-size:0.74rem;color:var(--muted);line-height:1.7;margin-bottom:14px;\">"+xe(m.bio)+"</div>";
   h+="<div style=\"display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:16px;\">";
   h+="<div class=\"sbox\"><div class=\"snum\">"+(m.followersCount||0)+"</div><div class=\"slbl\">Followers</div></div>";
@@ -1447,7 +1488,7 @@ function openMember(m){
   document.getElementById("fMBtn").onclick=async function(){
     if(!cU)return;
     try{await setDoc(doc(db,"follows",cU.uid+"_"+m.id),{followerId:cU.uid,followingId:m.id,createdAt:serverTimestamp()});}catch{}
-    this.textContent="&#10003; Following";this.style.background="rgba(255,255,255,0.08)";this.style.color="var(--gold)";
+    this.textContent="✓ Following";this.style.background="var(--accent-soft)";this.style.color="var(--accent)";this.style.border="1.5px solid var(--accent-glow)";
     toast("Following "+xe(m.name||"Member")+"!");
   };
   document.getElementById("sMBtn").onclick=function(){
