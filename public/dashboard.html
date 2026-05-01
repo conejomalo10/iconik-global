@@ -789,6 +789,29 @@ select.fi option{background:var(--bg2);}
   document.getElementById("logoutBtn").onclick=function(){if(window._so)window._so();else location.href="/app.html?signout=1";};
   // sV alias so new views can call sV() too
   window.sV=window.sv;
+
+  // ── LIGHT/DARK MODE — must be in inline script, not module ──
+  window.toggleMode=function(){
+    var b=document.body;
+    var btn=document.getElementById("modeBtn");
+    if(b.classList.contains("light")){
+      b.classList.remove("light");
+      if(btn)btn.textContent="🌙";
+      try{localStorage.setItem("iconikMode","dark");}catch(e){}
+    }else{
+      b.classList.add("light");
+      if(btn)btn.textContent="☀️";
+      try{localStorage.setItem("iconikMode","light");}catch(e){}
+    }
+  };
+  // Apply saved preference immediately
+  try{
+    if(localStorage.getItem("iconikMode")==="light"){
+      document.body.classList.add("light");
+      var mb=document.getElementById("modeBtn");
+      if(mb)mb.textContent="☀️";
+    }
+  }catch(e){}
 })();
 </script>
 <script type="module">
@@ -830,7 +853,16 @@ function boot(){
   document.getElementById("chatInp").addEventListener("keydown",function(ev){if(ev.key==="Enter")sendChat();});
   var osv=window.sv;
   window.sv=function(nm2){if(cTick){clearInterval(cTick);cTick=null;}osv(nm2);if(nm2==="chat"){loadChat();cTick=setInterval(loadChat,8000);}};
-  loadFeed();loadCelebs();loadNews();if(window._attachNewViewLoaders)window._attachNewViewLoaders();loadProfile();loadComs();loadEvents();loadRadio();loadTV();loadMag();loadWell("fitness");loadMembers();loadRanks();loadPolls();loadProfile();loadMsgs();loadNotifs();loadVIP();
+  // Load critical views first, others lazily
+  loadFeed();
+  loadCelebs();
+  loadNews();
+  loadComs();
+  // Load secondary views with small delays to prevent race conditions
+  setTimeout(function(){loadEvents();loadMembers();},200);
+  setTimeout(function(){loadRanks();loadPolls();loadMsgs();loadNotifs();},400);
+  setTimeout(function(){loadRadio();loadTV();loadMag();loadWell("fitness");loadVIP();},600);
+  setTimeout(function(){loadProfile();if(window._attachNewViewLoaders)window._attachNewViewLoaders();},800);
 }
 function attachBack(ov){var btn=document.getElementById("ovBack");if(btn)btn.onclick=function(){ov.remove();};}
 
@@ -1618,61 +1650,7 @@ function renderPolls(polls){
   });
 }
 
-// PROFILE
-function loadProfile(){
-  if(!cD)return;
-  var nm=xe(cD.name||"Member");
-  var h="";
-  h+="<div style=\"height:160px;background:linear-gradient(135deg,#1a0e00,#2d1a08,#0a0a18);position:relative;overflow:hidden;border-radius:8px;margin-bottom:14px;\">";
-  if(cD.coverPhoto&&cD.coverPhoto.startsWith("http"))h+="<img src=\""+xu(cD.coverPhoto)+"\" style=\"width:100%;height:100%;object-fit:cover;\" onerror=\"this.remove()\"/>";
-  h+="</div>";
-  h+="<div style=\"display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px;margin-top:-54px;padding:0 4px;\">";
-  h+="<div style=\"width:82px;height:82px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--bg);border:4px solid var(--bg);overflow:hidden;flex-shrink:0;position:relative;z-index:5;\">";
-  if(cD.profilePic&&cD.profilePic.startsWith("http"))h+="<img src=\""+xu(cD.profilePic)+"\" style=\"width:100%;height:100%;object-fit:cover;border-radius:50%;\" onerror=\"this.remove()\"/>";
-  else h+=(cD.name||"M").charAt(0).toUpperCase();
-  h+="</div>";
-  h+="<div style=\"padding-bottom:4px;\"><span style=\"font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--bg);background:var(--gold);padding:3px 10px;\">"+xe(cD.tier||"Fan")+"</span></div></div>";
-  h+="<div style=\"font-weight:700;font-size:1.1rem;color:var(--text);margin-bottom:4px;\">"+nm+(cD.verificationStatus==="verified"?" &#9989;":"")+"</div>";
-  if(cD.bio)h+="<div style=\"font-size:0.72rem;color:var(--muted);line-height:1.6;margin-bottom:12px;\">"+xe(cD.bio)+"</div>";
-  h+="<div style=\"display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:16px;\">";
-  h+="<div class=\"sbox\"><div class=\"snum\">"+(cD.followersCount||0)+"</div><div class=\"slbl\">Followers</div></div>";
-  h+="<div class=\"sbox\"><div class=\"snum\">"+(cD.followingCount||0)+"</div><div class=\"slbl\">Following</div></div>";
-  h+="<div class=\"sbox\"><div class=\"snum\">"+(cD.postCount||0)+"</div><div class=\"slbl\">Posts</div></div>";
-  h+="<div class=\"sbox\"><div class=\"snum\">"+(cD.points||0)+"</div><div class=\"slbl\">Points</div></div></div>";
-  h+="<div class=\"sh2\">Edit Profile</div><div class=\"card\">";
-  h+="<div class=\"fg\"><label class=\"fl\">Bio</label><textarea class=\"fi\" id=\"eBio\" rows=\"3\" placeholder=\"Tell the community about yourself...\">"+xe(cD.bio||"")+"</textarea></div>";
-  h+="<div class=\"fg\"><label class=\"fl\">Profile Picture</label><div class=\"upbox\" id=\"picBox\"><div style=\"font-size:1.3rem;margin-bottom:4px;\">&#128247;</div><div id=\"picFnm\" style=\"font-size:0.64rem;color:var(--muted);\">Tap to upload profile picture</div><input type=\"file\" id=\"picF\" accept=\"image/*\" style=\"display:none;\"/></div><input class=\"fi\" id=\"ePic\" placeholder=\"Or paste URL: https://...\" value=\""+xu(cD.profilePic||"")+"\"/></div>";
-  h+="<div class=\"fg\"><label class=\"fl\">Cover Photo</label><div class=\"upbox\" id=\"covBox\"><div style=\"font-size:1.3rem;margin-bottom:4px;\">&#128444;</div><div id=\"covFnm\" style=\"font-size:0.64rem;color:var(--muted);\">Tap to upload cover photo</div><input type=\"file\" id=\"covF\" accept=\"image/*\" style=\"display:none;\"/></div><input class=\"fi\" id=\"eCov\" placeholder=\"Or paste URL: https://...\" value=\""+xu(cD.coverPhoto||"")+"\"/></div>";
-  h+="<button class=\"btn-g\" id=\"saveBtn\">Save Profile &#8594;</button></div>";
-  h+="<div class=\"sh2\">My Communities</div><div style=\"display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;\">";
-  (cD.categories||[]).forEach(function(c){h+="<div style=\"background:var(--card);border:1px solid var(--border);padding:7px 11px;border-radius:6px;font-size:0.64rem;color:var(--text);\">"+xe(c)+"</div>";});
-  h+="</div>";
-  document.getElementById("profileContent").innerHTML=h;
-  document.getElementById("picBox").onclick=function(){document.getElementById("picF").click();};
-  document.getElementById("covBox").onclick=function(){document.getElementById("covF").click();};
-  document.getElementById("picF").onchange=function(){document.getElementById("picFnm").textContent=this.files[0]?this.files[0].name:"File selected";};
-  document.getElementById("covF").onchange=function(){document.getElementById("covFnm").textContent=this.files[0]?this.files[0].name:"File selected";};
-  document.getElementById("saveBtn").onclick=saveProfile;
-}
-async function saveProfile(){
-  if(!cU)return;
-  var btn=document.getElementById("saveBtn");btn.disabled=true;btn.textContent="Saving...";
-  try{
-    var bio=document.getElementById("eBio").value.trim();
-    var pic=document.getElementById("ePic").value.trim()||(cD&&cD.profilePic)||"";
-    var cov=document.getElementById("eCov").value.trim()||(cD&&cD.coverPhoto)||"";
-    var pf=document.getElementById("picF").files[0];
-    var cf=document.getElementById("covF").files[0];
-    if(pf)try{pic=await upload(pf);}catch{}
-    if(cf)try{cov=await upload(cf);}catch{}
-    await setDoc(doc(db,"users",cU.uid),{bio:bio,profilePic:pic,coverPhoto:cov},{merge:true});
-    if(cD){cD.bio=bio;cD.profilePic=pic;cD.coverPhoto=cov;}
-    var av=document.getElementById("navAv");av.textContent=(cD.name||"M").charAt(0).toUpperCase();
-    if(pic){var img=document.createElement("img");img.src=pic;img.onerror=function(){this.remove();};av.appendChild(img);}
-    toast("Profile saved!");loadProfile();
-  }catch{toast("Error saving","error");}
-  btn.disabled=false;btn.textContent="Save Profile &#8594;";
-}
+// Profile handled by new loadProfile below
 
 // MESSAGES
 async function loadMsgs(){
@@ -1721,29 +1699,7 @@ async function loadVIP(){
 
 window.toast=toast;
 
-// ── LIGHT / DARK MODE TOGGLE ──
-window.toggleMode=function(){
-  var b=document.body;
-  var btn=document.getElementById("modeBtn");
-  if(b.classList.contains("light")){
-    b.classList.remove("light");
-    if(btn)btn.textContent="🌙";
-    localStorage.setItem("iconikMode","dark");
-  }else{
-    b.classList.add("light");
-    if(btn)btn.textContent="☀️";
-    localStorage.setItem("iconikMode","light");
-  }
-};
-// Apply saved mode
-(function(){
-  var saved=localStorage.getItem("iconikMode");
-  if(saved==="light"){
-    document.body.classList.add("light");
-    var btn=document.getElementById("modeBtn");
-    if(btn)btn.textContent="☀️";
-  }
-})();
+// Mode toggle handled in inline script above
 
 // ── COVER PHOTO UPLOAD ──
 window.uploadCover=async function(input){
@@ -1847,34 +1803,56 @@ window.postMoment=async function(){
   if(btn){btn.disabled=false;btn.textContent="Share ✨";}
 };
 
-// ── LOAD PROFILE ──
-async function loadProfile(){
+// ── LOAD PROFILE (unified — works with new profile HTML) ──
+function loadProfile(){
   if(!cD)return;
+
+  // ── TOPNAV AVATAR (always update) ──
+  var nav=document.getElementById("navAv");
+  if(nav){
+    nav.textContent=(cD.name||"M").charAt(0).toUpperCase();
+    if(cD.profilePic&&cD.profilePic.startsWith("http")){
+      var ni=nav.querySelector("img");
+      if(!ni){ni=document.createElement("img");ni.style.cssText="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;";nav.appendChild(ni);}
+      ni.src=cD.profilePic;ni.onerror=function(){this.remove();};
+    }
+  }
+
+  // ── SIDEBAR name/tier ──
+  var snm=document.getElementById("sbNm");var sti=document.getElementById("sbTi");
+  if(snm)snm.textContent=cD.name||"Member";
+  if(sti)sti.textContent=cD.tier||"Fan";
+
+  // ── NEW PROFILE HTML elements ──
   // Cover photo
-  if(cD.coverPhoto){
+  if(cD.coverPhoto&&cD.coverPhoto.startsWith("http")){
     var ci=document.getElementById("coverImg");
     var co=document.getElementById("coverOverlay");
-    if(ci){ci.src=cD.coverPhoto;ci.style.display="block";}
-    if(co)co.style.background="rgba(0,0,0,0.1)";
+    if(ci){ci.src=cD.coverPhoto;ci.style.display="block";ci.onerror=function(){this.style.display="none";};}
+    if(co)co.style.background="rgba(0,0,0,0.12)";
   }
   // Avatar
-  var letter=document.getElementById("profileAvLetter");
-  var img=document.getElementById("profileAvImg");
-  if(letter)letter.textContent=(cD.name||"M").charAt(0).toUpperCase();
-  if(img&&cD.profilePic&&cD.profilePic.startsWith("http")){
-    img.src=cD.profilePic;
-    img.style.display="block";
-    if(letter)letter.style.display="none";
+  var avLetter=document.getElementById("profileAvLetter");
+  var avImg=document.getElementById("profileAvImg");
+  if(avLetter)avLetter.textContent=(cD.name||"M").charAt(0).toUpperCase();
+  if(avImg){
+    if(cD.profilePic&&cD.profilePic.startsWith("http")){
+      avImg.src=cD.profilePic;
+      avImg.style.display="block";
+      avImg.onerror=function(){this.style.display="none";};
+      if(avLetter)avLetter.style.display="none";
+    }
   }
   // Moment avatar
   var mav=document.getElementById("momentAv");
   if(mav){
-    mav.textContent=(cD.name||"M").charAt(0);
     if(cD.profilePic&&cD.profilePic.startsWith("http")){
-      mav.innerHTML="<img src='"+cD.profilePic+"' style='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;' onerror='this.remove()'/>";
+      mav.innerHTML='<img src="'+cD.profilePic+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.remove()"/>';
+    } else {
+      mav.textContent=(cD.name||"M").charAt(0).toUpperCase();
     }
   }
-  // Info
+  // Text fields
   var nm=document.getElementById("profileName");
   var hd=document.getElementById("profileHandle");
   var bio=document.getElementById("profileBio");
@@ -1882,14 +1860,20 @@ async function loadProfile(){
   var ct=document.getElementById("profileCountry");
   if(nm)nm.textContent=cD.name||"ICONIK Member";
   if(hd)hd.textContent="@"+(cD.name||"member").toLowerCase().replace(/\s+/g,"_");
-  if(bio)bio.textContent=cD.bio||"No bio yet — tap Edit Profile to add yours!";
+  if(bio)bio.textContent=cD.bio||"Tap Edit Profile below to add your bio! ✏️";
   if(tr)tr.textContent=cD.tier||"Fan";
-  if(ct)ct.textContent=(cD.country?"📍 "+cD.country:"");
-  // Prefill edit form
+  if(ct&&cD.country)ct.textContent="📍 "+cD.country;
+  // Stats
+  var sp=document.getElementById("statPosts");
+  var sf=document.getElementById("statFollowers");
+  var sg2=document.getElementById("statFollowing");
+  if(sf)sf.textContent=cD.followersCount||0;
+  if(sg2)sg2.textContent=cD.followingCount||0;
+  // Prefill edit
   var pn=document.getElementById("pName");var pb=document.getElementById("pBio");
-  var pc=document.getElementById("pCountry");var pf=document.getElementById("pFavIcon");
+  var pc=document.getElementById("pCountry");var pfi=document.getElementById("pFavIcon");
   if(pn)pn.value=cD.name||"";if(pb)pb.value=cD.bio||"";
-  if(pc)pc.value=cD.country||"";if(pf)pf.value=cD.favIcon||"";
+  if(pc)pc.value=cD.country||"";if(pfi)pfi.value=cD.favIcon||"";
   loadMyPosts();
 }
 
