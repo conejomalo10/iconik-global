@@ -4,15 +4,551 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>ICONIK — My Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Bebas+Neue&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-:root{--bg:#07070D;--bg2:#0E0E1A;--bg3:#141420;--gold:#FFB800;--gold2:#CC9400;--text:#F5F0E8;--muted:#BDB5A6;--dim:rgba(189,181,166,0.4);--border:rgba(255,255,255,0.09);--border2:rgba(255,255,255,0.16);--card:rgba(255,255,255,0.045);--ok:#22C55E;--err:#EF4444;}
-body{background:var(--bg);color:var(--text);font-family:"Montserrat",sans-serif;min-height:100vh;overflow-x:hidden;}
-body.light{--bg:#F5F3EF;--bg2:#FFFFFF;--bg3:#EDE9E1;--text:#1A1A2E;--muted:#5A5A7A;--dim:rgba(90,90,122,0.5);--border:rgba(0,0,0,0.1);--border2:rgba(0,0,0,0.18);--card:rgba(255,255,255,0.9);}
-body.light #topnav{background:rgba(245,243,239,0.97);}
-body.light #bnav{background:rgba(245,243,239,0.97);}
-body.light #sb{background:#EDE9E1;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+
+/* ════════════════════════════════════
+   DARK MODE — ICONIK OBSIDIAN
+   Deep blacks, warm ivory, refined gold
+   ════════════════════════════════════ */
+:root{
+  --bg:#0A0A0F;
+  --bg2:#111118;
+  --bg3:#18181F;
+  --bg4:#1E1E27;
+  --accent:#C9A84C;
+  --accent2:#A07830;
+  --accent-soft:rgba(201,168,76,0.12);
+  --accent-glow:rgba(201,168,76,0.25);
+  --text:#F0EDE6;
+  --text2:#C8C2B8;
+  --text3:#8A8480;
+  --border:rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.14);
+  --card:rgba(255,255,255,0.038);
+  --card2:rgba(255,255,255,0.065);
+  --ok:#34C759;
+  --err:#FF3B30;
+  --info:#007AFF;
+  --shadow:0 1px 3px rgba(0,0,0,0.5),0 8px 24px rgba(0,0,0,0.35);
+  --shadow-sm:0 1px 2px rgba(0,0,0,0.4);
+  --radius:14px;
+  --radius-sm:10px;
+  --radius-xs:7px;
+  /* Legacy compat */
+  --gold:var(--accent);--gold2:var(--accent2);
+  --muted:var(--text2);--dim:var(--text3);
+}
+
+/* ════════════════════════════════════
+   LIGHT MODE — ICONIK IVORY
+   Clean white, deep charcoal, warm gold
+   ════════════════════════════════════ */
+body.light{
+  --bg:#FAFAF8;
+  --bg2:#FFFFFF;
+  --bg3:#F2F0EB;
+  --bg4:#E8E4DC;
+  --accent:#B8922A;
+  --accent2:#8A6A18;
+  --accent-soft:rgba(184,146,42,0.10);
+  --accent-glow:rgba(184,146,42,0.20);
+  --text:#1A1814;
+  --text2:#4A4540;
+  --text3:#9A9490;
+  --border:rgba(0,0,0,0.08);
+  --border2:rgba(0,0,0,0.16);
+  --card:#FFFFFF;
+  --card2:#F7F5F0;
+  --shadow:0 1px 3px rgba(0,0,0,0.08),0 8px 24px rgba(0,0,0,0.06);
+  --shadow-sm:0 1px 2px rgba(0,0,0,0.06);
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Sora",system-ui,sans-serif;
+  font-size:15px;
+  line-height:1.5;
+  min-height:100vh;
+  overflow-x:hidden;
+  transition:background 0.25s,color 0.25s;
+}
+
+/* ── TOP NAV ── */
+#topnav{
+  position:fixed;top:0;left:0;right:0;height:58px;z-index:600;
+  background:var(--bg);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+}
+body.light #topnav{background:rgba(250,250,248,0.95);}
+.nav-logo{
+  font-family:"Fraunces",serif;
+  font-weight:900;
+  font-size:1.45rem;
+  letter-spacing:-0.02em;
+  color:var(--accent);
+  font-style:italic;
+}
+#navAv{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex;align-items:center;justify-content:center;
+  font-family:"Fraunces",serif;font-weight:700;font-size:0.9rem;
+  color:#0A0A0F;cursor:pointer;overflow:hidden;
+  border:2px solid var(--accent-glow);
+  position:relative;flex-shrink:0;
+  box-shadow:0 0 0 1px var(--accent-glow);
+}
+#navAv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;}
+#modeBtn{
+  background:var(--card2);
+  border:1px solid var(--border2);
+  border-radius:var(--radius-xs);
+  width:34px;height:34px;
+  cursor:pointer;font-size:0.95rem;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  transition:background 0.2s,transform 0.15s;
+}
+#modeBtn:active{transform:scale(0.92);}
+#hbg{
+  width:34px;height:34px;background:var(--card2);
+  border:1px solid var(--border2);
+  border-radius:var(--radius-xs);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4.5px;cursor:pointer;padding:0;flex-shrink:0;
+  transition:background 0.2s;
+}
+#hbg span{display:block;width:16px;height:1.5px;background:var(--text);border-radius:2px;}
+
+/* ── SIDEBAR ── */
+#sbOv{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:800;display:none;backdrop-filter:blur(3px);}
+#sbOv.open{display:block;}
+#sb{
+  position:fixed;top:0;left:-300px;width:288px;height:100vh;
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  z-index:900;transition:left 0.28s cubic-bezier(.4,0,.2,1);overflow-y:auto;
+}
+body.light #sb{background:#FFFFFF;}
+#sb.open{left:0;}
+.sb-hd{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 18px;border-bottom:1px solid var(--border);
+}
+.sb-br{
+  font-family:"Fraunces",serif;font-weight:900;font-style:italic;
+  font-size:1.2rem;color:var(--accent);letter-spacing:-0.01em;
+}
+#sbX{
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:var(--radius-xs);width:30px;height:30px;
+  color:var(--text3);cursor:pointer;font-size:1rem;
+  display:flex;align-items:center;justify-content:center;
+}
+.sb-usr{padding:16px 18px;border-bottom:1px solid var(--border);}
+.sb-unm{
+  font-family:"Sora",sans-serif;font-weight:700;font-size:1.05rem;
+  color:var(--text);margin-bottom:6px;letter-spacing:-0.02em;
+}
+/* Premium tier badge — replaces cheap colored box */
+.sb-ti{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:"Sora",sans-serif;font-size:0.62rem;font-weight:600;
+  letter-spacing:0.04em;text-transform:uppercase;
+  padding:3px 10px;border-radius:20px;
+}
+.sb-ti.fan{background:var(--card2);color:var(--text3);border:1px solid var(--border2);}
+.sb-ti.bronze{background:rgba(180,120,60,0.15);color:#CD7F32;border:1px solid rgba(205,127,50,0.3);}
+.sb-ti.silver{background:rgba(160,160,180,0.15);color:#A0A0B4;border:1px solid rgba(160,160,180,0.3);}
+.sb-ti.gold{background:rgba(201,168,76,0.15);color:var(--accent);border:1px solid var(--accent-glow);}
+.sb-lbl{
+  font-family:"Sora",sans-serif;font-size:0.62rem;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--text3);
+  padding:14px 18px 5px;
+}
+.sb-lnk{
+  display:flex;align-items:center;gap:11px;
+  padding:10px 18px;cursor:pointer;
+  font-family:"Sora",sans-serif;font-size:0.88rem;font-weight:500;
+  color:var(--text2);
+  transition:all 0.15s;
+  border-left:2px solid transparent;
+}
+.sb-lnk:hover{color:var(--text);background:var(--accent-soft);}
+.sb-lnk.on{color:var(--accent);border-left-color:var(--accent);background:var(--accent-soft);font-weight:600;}
+.sb-out{color:var(--err)!important;}
+.sb-out:hover{background:rgba(255,59,48,0.07)!important;border-left-color:var(--err)!important;}
+
+/* ── MAIN ── */
+#main{padding:68px 15px 78px;min-height:100vh;}
+.view{display:none;}.view.on{display:block;}
+
+/* ── BOTTOM NAV ── */
+#bnav{
+  position:fixed;bottom:0;left:0;right:0;height:62px;z-index:600;
+  background:var(--bg2);
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-around;
+}
+body.light #bnav{background:rgba(255,255,255,0.97);}
+.bn{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;padding:6px 10px;border-radius:10px;min-width:52px;
+  transition:background 0.15s;
+}
+.bn.on{background:var(--accent-soft);}
+.bn-ic{font-size:1.2rem;line-height:1;}
+.bn-lb{
+  font-family:"Sora",sans-serif;font-size:0.52rem;font-weight:600;
+  letter-spacing:0.04em;color:var(--text3);text-transform:uppercase;
+}
+.bn.on .bn-lb{color:var(--accent);}
+
+/* ── CARDS & CONTAINERS ── */
+.wbar{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:15px 16px;
+  display:flex;gap:13px;align-items:center;margin-bottom:14px;
+}
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:15px;margin-bottom:10px;
+}
+body.light .card{background:#FFFFFF;box-shadow:var(--shadow-sm);}
+body.light .wbar{background:#FFFFFF;box-shadow:var(--shadow-sm);}
+
+/* ── LOADER ── */
+.loader{display:flex;align-items:center;justify-content:center;padding:36px;}
+.lring{
+  width:28px;height:28px;
+  border:2.5px solid var(--border2);
+  border-top-color:var(--accent);
+  border-radius:50%;animation:spin 0.75s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── CELEBRITY GRID ── */
+.cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.cc{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;cursor:pointer;
+  transition:transform 0.2s,border-color 0.2s,box-shadow 0.2s;
+}
+.cc:active{transform:scale(0.97);}
+.cc:hover{border-color:var(--border2);box-shadow:var(--shadow);}
+body.light .cc{background:#FFFFFF;box-shadow:var(--shadow-sm);}
+.cthumb{
+  height:130px;background:var(--bg4);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.cthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:2;}
+.cletter{
+  position:relative;z-index:1;
+  font-family:"Fraunces",serif;font-weight:900;font-size:2.4rem;
+  color:rgba(255,255,255,0.25);font-style:italic;
+}
+.cinfo{padding:11px 12px;}
+.cnm{
+  font-family:"Sora",sans-serif;font-weight:700;font-size:0.82rem;
+  color:var(--text);margin-bottom:3px;letter-spacing:-0.01em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.ccat{
+  font-family:"Sora",sans-serif;font-size:0.65rem;font-weight:600;
+  letter-spacing:0.06em;text-transform:uppercase;color:var(--accent);
+  margin-bottom:2px;
+}
+.cmeta{font-size:0.7rem;color:var(--text3);margin-top:1px;}
+
+/* ── VERIFIED BADGE — Premium SVG-style ── */
+.badge-verified{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:16px;height:16px;border-radius:50%;
+  background:linear-gradient(135deg,#1D9BF0,#0070CC);
+  flex-shrink:0;vertical-align:middle;margin-left:4px;
+  box-shadow:0 1px 4px rgba(29,155,240,0.4);
+  position:relative;
+}
+.badge-verified::after{
+  content:'';
+  position:absolute;
+  width:8px;height:5px;
+  border-left:2px solid #fff;
+  border-bottom:2px solid #fff;
+  transform:rotate(-45deg) translate(1px,-1px);
+  border-radius:0 0 0 1px;
+}
+
+/* ── VIP TIER BADGES — Premium pill style ── */
+.tier-fan{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:"Sora",sans-serif;font-size:0.6rem;font-weight:600;
+  letter-spacing:0.05em;text-transform:uppercase;
+  padding:3px 10px;border-radius:20px;
+  background:var(--card2);color:var(--text3);
+  border:1px solid var(--border2);
+}
+.tier-bronze{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:"Sora",sans-serif;font-size:0.6rem;font-weight:600;
+  letter-spacing:0.05em;text-transform:uppercase;
+  padding:3px 10px;border-radius:20px;
+  background:rgba(205,127,50,0.12);color:#CD7F32;
+  border:1px solid rgba(205,127,50,0.3);
+}
+.tier-silver{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:"Sora",sans-serif;font-size:0.6rem;font-weight:600;
+  letter-spacing:0.05em;text-transform:uppercase;
+  padding:3px 10px;border-radius:20px;
+  background:rgba(180,180,200,0.15);color:#B4B4C8;
+  border:1px solid rgba(180,180,200,0.3);
+}
+.tier-gold{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:"Sora",sans-serif;font-size:0.6rem;font-weight:600;
+  letter-spacing:0.05em;text-transform:uppercase;
+  padding:3px 10px;border-radius:20px;
+  background:rgba(201,168,76,0.15);color:var(--accent);
+  border:1px solid var(--accent-glow);
+}
+/* Gold tier has a subtle shimmer */
+.tier-gold::before{content:"◆";font-size:0.5rem;opacity:0.8;}
+
+/* ── MEMBERS ── */
+.mcard{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:12px 14px;
+  display:flex;align-items:center;gap:12px;margin-bottom:8px;
+  cursor:pointer;transition:all 0.15s;
+}
+body.light .mcard{background:#FFFFFF;box-shadow:var(--shadow-sm);}
+.mcard:active{transform:scale(0.98);}
+.mav{
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex;align-items:center;justify-content:center;
+  font-family:"Fraunces",serif;font-weight:700;font-size:1rem;
+  color:#0A0A0F;flex-shrink:0;overflow:hidden;position:relative;
+}
+.mav img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;}
+
+/* ── NEWS ── */
+.ncard{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:13px;
+  display:flex;gap:12px;margin-bottom:8px;cursor:pointer;
+  transition:all 0.15s;
+}
+body.light .ncard{background:#FFFFFF;box-shadow:var(--shadow-sm);}
+.ncard:active{transform:scale(0.98);}
+.nic{width:44px;height:44px;border-radius:var(--radius-sm);background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+
+/* ── FILTER TABS ── */
+.ftab{
+  font-family:"Sora",sans-serif;font-size:0.72rem;font-weight:600;
+  padding:7px 15px;border:1px solid var(--border2);border-radius:20px;
+  cursor:pointer;color:var(--text2);white-space:nowrap;
+  transition:all 0.15s;flex-shrink:0;
+}
+.ftab.on{
+  background:var(--accent);color:#0A0A0F;
+  border-color:var(--accent);font-weight:700;
+}
+.frow{display:flex;gap:7px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;scrollbar-width:none;}
+.frow::-webkit-scrollbar{display:none;}
+
+/* ── FORMS ── */
+.fi{
+  width:100%;padding:12px 14px;
+  background:var(--bg3);border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);
+  color:var(--text);font-family:"Sora",sans-serif;font-size:0.9rem;
+  outline:none;transition:border-color 0.2s,box-shadow 0.2s;
+}
+body.light .fi{background:#F5F3EF;}
+.fi:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+.fi::placeholder{color:var(--text3);}
+textarea.fi{resize:vertical;}
+select.fi option{background:var(--bg3);}
+.btn-g{
+  font-family:"Sora",sans-serif;font-weight:700;font-size:0.82rem;
+  letter-spacing:0.01em;
+  padding:13px 20px;
+  background:var(--accent);color:#0A0A0F;
+  border:none;border-radius:var(--radius-sm);
+  cursor:pointer;width:100%;
+  transition:all 0.2s;
+  box-shadow:0 2px 8px var(--accent-glow);
+}
+.btn-g:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 4px 14px var(--accent-glow);}
+.btn-g:active{transform:translateY(0);box-shadow:0 2px 4px var(--accent-glow);}
+.btn-g:disabled{opacity:0.45;cursor:not-allowed;transform:none;}
+.btn-gh{
+  font-family:"Sora",sans-serif;font-weight:600;font-size:0.8rem;
+  padding:10px 14px;background:var(--card2);color:var(--text);
+  border:1.5px solid var(--border2);border-radius:var(--radius-sm);cursor:pointer;
+  transition:all 0.15s;
+}
+.btn-gh:hover{border-color:var(--accent);color:var(--accent);}
+.btn-act{
+  font-family:"Sora",sans-serif;font-weight:700;font-size:0.78rem;
+  letter-spacing:0.02em;
+  padding:10px 16px;
+  background:var(--accent);color:#0A0A0F;
+  border:none;border-radius:var(--radius-sm);cursor:pointer;
+  transition:all 0.15s;
+}
+.fg{margin-bottom:14px;}
+.fl{
+  font-family:"Sora",sans-serif;font-size:0.72rem;font-weight:600;
+  letter-spacing:0.03em;color:var(--text2);
+  margin-bottom:6px;display:block;
+}
+.sh2{
+  font-family:"Sora",sans-serif;font-size:0.72rem;font-weight:700;
+  letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:10px;margin-top:4px;
+}
+.sbox{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:12px;text-align:center;
+}
+body.light .sbox{background:#FFFFFF;box-shadow:var(--shadow-sm);}
+.snum{
+  font-family:"Fraunces",serif;font-weight:700;font-size:1.4rem;
+  color:var(--text);letter-spacing:-0.02em;
+}
+.slbl{
+  font-family:"Sora",sans-serif;font-size:0.58rem;font-weight:600;
+  letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);
+  margin-top:3px;
+}
+.cgrd2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+
+/* ── COMMUNITIES ── */
+.comcard{
+  border-radius:var(--radius);overflow:hidden;cursor:pointer;
+  border:1px solid var(--border);transition:all 0.2s;
+}
+body.light .comcard{box-shadow:var(--shadow-sm);}
+.comcard:active{transform:scale(0.97);}
+.combg{height:84px;background-size:cover;background-position:center;filter:brightness(0.55);}
+.combd{padding:9px 11px;background:var(--bg2);}
+
+/* ── CHAT ── */
+.chat-area{height:calc(100vh - 290px);overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;}
+.mb{display:flex;gap:9px;align-items:flex-start;}
+.mb.me{flex-direction:row-reverse;}
+.mbub{
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:14px;padding:9px 13px;
+  font-size:0.85rem;font-family:"Sora",sans-serif;
+  color:var(--text);max-width:75%;line-height:1.5;
+}
+.mb.me .mbub{background:var(--accent-soft);border-color:var(--accent-glow);}
+.chat-ft{display:flex;gap:9px;padding:11px 0;border-top:1px solid var(--border);}
+.chat-inp{
+  flex:1;padding:11px 15px;background:var(--bg3);
+  border:1.5px solid var(--border);border-radius:22px;
+  color:var(--text);font-family:"Sora",sans-serif;font-size:0.85rem;outline:none;
+}
+body.light .chat-inp{background:#F5F3EF;}
+.chat-inp:focus{border-color:var(--accent);}
+.chat-snd{width:40px;height:40px;border-radius:50%;background:var(--accent);border:none;cursor:pointer;font-size:1rem;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+
+/* ── UPLOAD BOX ── */
+.upbox{
+  border:1.5px dashed var(--border2);border-radius:var(--radius);
+  padding:16px;text-align:center;cursor:pointer;margin-bottom:10px;
+  transition:border-color 0.2s,background 0.2s;
+}
+.upbox:hover{border-color:var(--accent);background:var(--accent-soft);}
+
+/* ── OVERLAYS ── */
+.ov{position:fixed;inset:0;background:var(--bg);z-index:9000;overflow-y:auto;}
+.ov-nav{
+  position:sticky;top:0;
+  background:var(--bg);
+  border-bottom:1px solid var(--border);
+  padding:15px 16px;display:flex;align-items:center;gap:12px;z-index:10;
+  backdrop-filter:blur(20px);
+}
+body.light .ov-nav{background:rgba(250,250,248,0.97);}
+.back-btn{
+  background:var(--card2);border:1.5px solid var(--border2);
+  border-radius:var(--radius-sm);width:38px;height:38px;
+  color:var(--text);font-size:1.1rem;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;transition:all 0.15s;
+}
+.back-btn:hover{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);}
+
+/* ── TOAST ── */
+#toast{
+  position:fixed;bottom:76px;right:14px;
+  background:var(--bg2);border:1px solid var(--border2);
+  padding:11px 16px;border-radius:24px;
+  font-family:"Sora",sans-serif;font-size:0.82rem;font-weight:500;
+  color:var(--text);
+  opacity:0;transform:translateY(12px);
+  transition:all 0.28s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;max-width:280px;z-index:9999;
+  box-shadow:var(--shadow);
+}
+#toast.on{opacity:1;transform:translateY(0);}
+
+/* ── WBAR TITLE TYPOGRAPHY ── */
+.wbar-title{
+  font-family:"Sora",sans-serif;font-weight:700;font-size:0.95rem;
+  color:var(--text);letter-spacing:-0.01em;
+}
+.wbar-sub{font-family:"Sora",sans-serif;font-size:0.72rem;color:var(--text3);}
+
+/* ── POST COMPOSER ── */
+#composerBar{
+  background:var(--card2);border:1.5px solid var(--border);
+  border-radius:24px;flex:1;padding:10px 15px;
+  font-family:"Sora",sans-serif;font-size:0.88rem;
+  color:var(--text3);cursor:text;
+}
+/* ── RADIO STATION CARDS ── */
+.rcard{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:var(--radius);padding:14px 16px;
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:10px;cursor:pointer;transition:all 0.15s;
+}
+body.light .rcard{background:#FFFFFF;box-shadow:var(--shadow-sm);}
+.rcard:active{transform:scale(0.98);}
+.rcard.playing{border-color:var(--accent);background:var(--accent-soft);}
+.rplay{
+  width:42px;height:42px;border-radius:50%;flex-shrink:0;
+  background:var(--accent);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;color:#0A0A0F;
+  transition:transform 0.15s,box-shadow 0.15s;
+  box-shadow:0 2px 8px var(--accent-glow);
+}
+.rplay:hover{transform:scale(1.08);box-shadow:0 4px 14px var(--accent-glow);}
+
+/* ── WBAR SECTION HEADERS ── */
+.sec-head{
+  font-family:"Sora",sans-serif;font-weight:700;font-size:0.8rem;
+  letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--text3);margin:16px 0 10px;
+  display:flex;align-items:center;gap:8px;
+}
+.sec-head::after{content:'';flex:1;height:1px;background:var(--border);}
 #topnav{position:fixed;top:0;left:0;right:0;height:60px;z-index:600;background:rgba(7,7,13,0.96);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;}
 .nav-logo{font-family:"Bebas Neue",sans-serif;font-size:1.35rem;letter-spacing:0.08em;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 #navAv{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:0.95rem;color:var(--bg);cursor:pointer;overflow:hidden;border:2px solid var(--border2);position:relative;flex-shrink:0;}
@@ -160,7 +696,7 @@ select.fi option{background:var(--bg2);}
 </div>
 <div id="main">
   <div class="view on" id="feedV">
-    <div class="wbar"><span style="font-size:1.4rem;">&#127968;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Fan Feed</div><div style="font-size:0.62rem;color:var(--muted);">Latest from your communities</div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#127968;</span><div><div style="class="wbar-title" style="">Fan Feed</div><div class="wbar-sub">Latest from your communities</div></div></div>
     <div class="card" style="margin-bottom:14px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
         <div class="mav" id="postAv" style="width:34px;height:34px;font-size:0.85rem;">M</div>
@@ -175,12 +711,12 @@ select.fi option{background:var(--bg2);}
     <div id="feedList"><div class="loader"><div class="lring"></div></div></div>
   </div>
   <div class="view" id="iconsV">
-    <div class="wbar"><span style="font-size:1.4rem;">&#11088;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">All Icons &amp; Celebrities</div><div style="font-size:0.62rem;color:var(--muted);">Dedicated fan hubs for every icon</div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#11088;</span><div><div style="class="wbar-title" style="">All Icons &amp; Celebrities</div><div class="wbar-sub">Dedicated fan hubs for every icon</div></div></div>
     <input class="fi" style="margin-bottom:12px;" id="celebSrch" placeholder="Search by name or category..."/>
     <div class="cgrid" id="celebGrid"><div class="loader" style="grid-column:span 2;"><div class="lring"></div></div></div>
   </div>
   <div class="view" id="newsV">
-    <div class="wbar"><span style="font-size:1.4rem;">&#128240;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Celebrity News</div><div style="font-size:0.62rem;color:var(--muted);">Latest from the world of icons</div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#128240;</span><div><div style="class="wbar-title" style="">Celebrity News</div><div class="wbar-sub">Latest from the world of icons</div></div></div>
     <div class="frow" id="newsFrow">
       <div class="ftab on" data-cat="All">All</div>
       <div class="ftab" data-cat="Music">Music</div>
@@ -191,11 +727,11 @@ select.fi option{background:var(--bg2);}
     <div id="newsList"><div class="loader"><div class="lring"></div></div></div>
   </div>
   <div class="view" id="comsV">
-    <div class="wbar"><span style="font-size:1.4rem;">&#127758;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">13 Communities</div><div style="font-size:0.62rem;color:var(--muted);">Find your circle</div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#127758;</span><div><div style="class="wbar-title" style="">13 Communities</div><div class="wbar-sub">Find your circle</div></div></div>
     <div class="cgrd2" id="comGrid"></div>
   </div>
   <div class="view" id="chatV">
-    <div class="wbar"><span style="font-size:1.4rem;">&#128172;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Live Community Chat</div><div style="font-size:0.62rem;color:var(--muted);">Real-time fan conversations</div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#128172;</span><div><div style="class="wbar-title" style="">Live Community Chat</div><div class="wbar-sub">Real-time fan conversations</div></div></div>
     <div class="frow" id="chatRooms">
       <div class="ftab on" data-room="general">Global</div>
       <div class="ftab" data-room="music">Music</div>
@@ -207,23 +743,23 @@ select.fi option{background:var(--bg2);}
     <div class="chat-ft"><input class="chat-inp" id="chatInp" placeholder="Say something..."/><button class="chat-snd" id="chatSnd">&#10148;</button></div>
   </div>
   <div class="view" id="eventsV">
-    <div class="wbar"><span style="font-size:1.4rem;">&#127915;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Events &amp; Tickets</div><div style="font-size:0.62rem;color:var(--muted);">Concerts &middot; Tours &middot; Fan Meets</div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#127915;</span><div><div style="class="wbar-title" style="">Events &amp; Tickets</div><div class="wbar-sub">Concerts &middot; Tours &middot; Fan Meets</div></div></div>
     <div id="evList"><div class="loader"><div class="lring"></div></div></div>
   </div>
   <div class="view" id="radioV">
-    <div class="wbar"><span style="font-size:1.4rem;">&#127925;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">ICONIK Radio</div><div style="font-size:0.62rem;color:var(--muted);">Music &middot; Podcasts &middot; Fan Mixes</div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#127925;</span><div><div style="class="wbar-title" style="">ICONIK Radio</div><div class="wbar-sub">Music &middot; Podcasts &middot; Fan Mixes</div></div></div>
     <div id="radioList"></div>
   </div>
   <div class="view" id="tvV">
-    <div class="wbar"><span style="font-size:1.4rem;">&#128250;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">ICONIK TV</div><div style="font-size:0.62rem;color:var(--muted);">Watch &middot; Discover &middot; React</div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#128250;</span><div><div style="class="wbar-title" style="">ICONIK TV</div><div class="wbar-sub">Watch &middot; Discover &middot; React</div></div></div>
     <div id="tvList"><div class="loader"><div class="lring"></div></div></div>
   </div>
   <div class="view" id="magV">
-    <div class="wbar"><span style="font-size:1.4rem;">&#128218;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">ICONIK Magazine</div><div style="font-size:0.62rem;color:var(--muted);">Stories &middot; Interviews &middot; Exclusives</div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#128218;</span><div><div style="class="wbar-title" style="">ICONIK Magazine</div><div class="wbar-sub">Stories &middot; Interviews &middot; Exclusives</div></div></div>
     <div id="magList"><div class="loader"><div class="lring"></div></div></div>
   </div>
   <div class="view" id="wellV">
-    <div class="wbar"><span style="font-size:1.4rem;">&#128170;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Wellness Hub</div><div style="font-size:0.62rem;color:var(--muted);">Health &middot; Fitness &middot; Nutrition</div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#128170;</span><div><div style="class="wbar-title" style="">Wellness Hub</div><div class="wbar-sub">Health &middot; Fitness &middot; Nutrition</div></div></div>
     <div class="frow" id="wellFrow">
       <div class="ftab on" data-w="fitness">Fitness</div>
       <div class="ftab" data-w="nutrition">Nutrition</div>
@@ -234,7 +770,7 @@ select.fi option{background:var(--bg2);}
     <div id="wellContent"></div>
   </div>
   <div class="view" id="membersV">
-    <div class="wbar"><span style="font-size:1.4rem;">&#128269;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Find Members</div><div style="font-size:0.62rem;color:var(--muted);">Discover fans worldwide</div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#128269;</span><div><div style="class="wbar-title" style="">Find Members</div><div class="wbar-sub">Discover fans worldwide</div></div></div>
     <div style="display:flex;gap:8px;margin-bottom:12px;">
       <input class="fi" style="flex:1;" id="mSrch" placeholder="Search by name..."/>
       <select class="fi" style="width:130px;" id="mFilt"><option value="">All Categories</option><option>Music</option><option>Sports</option><option>Film &amp; TV</option><option>Fashion</option><option>Fitness &amp; Wellness</option><option>Food &amp; Culinary</option><option>Nature</option><option>Automotive</option><option>Tech &amp; Innovation</option><option>Beauty</option><option>Entertainment</option><option>Leadership</option><option>Literature</option></select>
@@ -242,23 +778,23 @@ select.fi option{background:var(--bg2);}
     <div id="memberList"><div class="loader"><div class="lring"></div></div></div>
   </div>
   <div class="view" id="ranksV">
-    <div class="wbar"><span style="font-size:1.4rem;">&#127942;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Fan Rankings</div><div style="font-size:0.62rem;color:var(--muted);">Top fans across ICONIK</div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#127942;</span><div><div style="class="wbar-title" style="">Fan Rankings</div><div class="wbar-sub">Top fans across ICONIK</div></div></div>
     <div id="rankList"><div class="loader"><div class="lring"></div></div></div>
   </div>
   <div class="view" id="pollsV">
-    <div class="wbar"><span style="font-size:1.4rem;">&#128379;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Fan Voting</div><div style="font-size:0.62rem;color:var(--muted);">Your vote shapes the community</div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#128379;</span><div><div style="class="wbar-title" style="">Fan Voting</div><div class="wbar-sub">Your vote shapes the community</div></div></div>
     <div id="pollList"><div class="loader"><div class="lring"></div></div></div>
   </div>
   <div class="view" id="profileV">
-    <div class="wbar"><span style="font-size:1.4rem;">&#128100;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">My Profile</div><div style="font-size:0.62rem;color:var(--muted);">Your ICONIK identity</div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#128100;</span><div><div style="class="wbar-title" style="">My Profile</div><div class="wbar-sub">Your ICONIK identity</div></div></div>
     <div id="profileContent"><div class="loader"><div class="lring"></div></div></div>
   </div>
   <div class="view" id="msgsV">
-    <div class="wbar"><span style="font-size:1.4rem;">&#128233;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Messages</div><div style="font-size:0.62rem;color:var(--muted);">From Admin &amp; Sub Admins</div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#128233;</span><div><div style="class="wbar-title" style="">Messages</div><div class="wbar-sub">From Admin &amp; Sub Admins</div></div></div>
     <div id="msgList"><div class="loader"><div class="lring"></div></div></div>
   </div>
   <div class="view" id="notifsV">
-    <div class="wbar"><span style="font-size:1.4rem;">&#128276;</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Notifications</div><div style="font-size:0.62rem;color:var(--muted);">Your latest alerts</div></div></div>
+    <div class="wbar"><span style="font-size:1.4rem;">&#128276;</span><div><div style="class="wbar-title" style="">Notifications</div><div class="wbar-sub">Your latest alerts</div></div></div>
     <div id="notifList"><div class="loader"><div class="lring"></div></div></div>
   </div>
   <div class="view" id="vipV">
@@ -269,18 +805,18 @@ select.fi option{background:var(--bg2);}
     <div id="vipContent"><div class="loader"><div class="lring"></div></div></div>
   </div>
 <!-- ── NEW TABS — STUB VIEWS ── -->
-<div class="view" id="creatorV"><div class="wbar"><span style="font-size:1.4rem;">💰</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Creator Fund</div><div style="font-size:0.62rem;color:var(--muted);">Earn from your content</div></div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">💰</div><div style="font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;">Creator Fund</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;">Top creators earn from the ICONIK Creator Fund. Post quality content, grow your followers and unlock earning potential. VIP Gold members earn 10% commissions.</div></div></div>
-<div class="view" id="marketV"><div class="wbar"><span style="font-size:1.4rem;">🏪</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Marketplace</div><div style="font-size:0.62rem;color:var(--muted);">Fan merch · Celebrity products</div></div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">🏪</div><div style="font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;">Marketplace — Coming Soon</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;">Fan merchandise, celebrity-endorsed products and exclusive ICONIK collectibles. Launching soon!</div></div></div>
-<div class="view" id="shopV"><div class="wbar"><span style="font-size:1.4rem;">🛍️</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Shop &amp; Earn</div><div style="font-size:0.62rem;color:var(--muted);">Shop from partners · Earn cashback</div></div></div><div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:12px;"><span style="font-size:1.6rem;">🛒</span><div style="flex:1;"><div style="font-weight:700;font-size:0.74rem;">Amazon Associates</div><div style="font-size:0.6rem;color:var(--muted);">3–10% cashback on all purchases</div></div><a href="https://amazon.com" target="_blank" style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;padding:7px 12px;background:var(--gold);color:var(--bg);border:none;cursor:pointer;text-decoration:none;border-radius:4px;">Shop</a></div><div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:12px;"><span style="font-size:1.6rem;">💊</span><div style="flex:1;"><div style="font-weight:700;font-size:0.74rem;">iHerb</div><div style="font-size:0.6rem;color:var(--muted);">5–20% on wellness &amp; supplements</div></div><a href="https://iherb.com" target="_blank" style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;padding:7px 12px;background:var(--gold);color:var(--bg);border:none;cursor:pointer;text-decoration:none;border-radius:4px;">Shop</a></div><div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:12px;"><span style="font-size:1.6rem;">✈️</span><div style="flex:1;"><div style="font-weight:700;font-size:0.74rem;">Booking.com</div><div style="font-size:0.6rem;color:var(--muted);">25–40% on travel &amp; hotels</div></div><a href="https://booking.com" target="_blank" style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;padding:7px 12px;background:var(--gold);color:var(--bg);border:none;cursor:pointer;text-decoration:none;border-radius:4px;">Book</a></div></div>
-<div class="view" id="referV"><div class="wbar"><span style="font-size:1.4rem;">🎁</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Refer &amp; Earn</div><div style="font-size:0.62rem;color:var(--muted);">Invite friends · Earn $10 per referral</div></div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">🎁</div><div style="font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;">Earn $10 Per Referral</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;margin-bottom:14px;">Share your unique link. When a friend joins ICONIK and upgrades to VIP, you earn $10 instantly!</div><button class="btn-g" onclick="var l='https://iconik-global.web.app?ref='+((typeof cU!=='undefined'&&cU)?cU.uid:'user');if(navigator.share)navigator.share({title:'Join ICONIK',text:'Join me on ICONIK!',url:l});else if(navigator.clipboard)navigator.clipboard.writeText(l).then(function(){toast('Referral link copied! 🔗');});">Share Your Referral Link 🔗</button></div></div>
-<div class="view" id="datingV"><div class="wbar" style="background:linear-gradient(135deg,rgba(255,107,157,0.12),rgba(255,107,157,0.03));border-color:rgba(255,107,157,0.3);"><span style="font-size:1.4rem;">💕</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:#FF6B9D;">Dating &amp; Matchmaking</div><div style="font-size:0.62rem;color:var(--muted);">Find your perfect fan match</div></div></div><div class="card" style="background:rgba(239,68,68,0.07);border-color:rgba(239,68,68,0.25);margin-bottom:12px;"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.15em;color:var(--err);margin-bottom:4px;">⚠️ SAFETY FIRST</div><div style="font-size:0.64rem;color:var(--muted);line-height:1.6;">All profiles are ID-verified. Never send money to matches. Report suspicious behaviour immediately. 🛡️</div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">💕</div><div style="font-weight:700;font-size:0.9rem;color:#FF6B9D;margin-bottom:6px;">Fan Matchmaking Room</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;margin-bottom:10px;">Match with fans who love the same celebrities. VIP Silver &amp; Gold exclusive.</div><button class="btn-g" style="background:linear-gradient(135deg,#FF6B9D,#E91E8C);" onclick="window.sv('vip')">Upgrade to Access 💕</button></div></div>
-<div class="view" id="tourV"><div class="wbar"><span style="font-size:1.4rem;">🎫</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Tour Buddy</div><div style="font-size:0.62rem;color:var(--muted);">Find fans at the same events</div></div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">🎫</div><div style="font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;">Tour Buddy — Coming Soon</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;">Going to a concert or match? Find fellow ICONIK fans attending the same event. Launching soon!</div></div></div>
-<div class="view" id="streamsV"><div class="wbar"><span style="font-size:1.4rem;">🔴</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Live Streams</div><div style="font-size:0.62rem;color:var(--muted);">Watch &amp; go live</div></div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">🔴</div><div style="font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;">Live Streams — Coming Soon</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;">Go live with your community. Watch celebrity fans stream reactions, events and more. Launching soon!</div></div></div>
-<div class="view" id="challengesV"><div class="wbar"><span style="font-size:1.4rem;">⚡</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Fan Challenges</div><div style="font-size:0.62rem;color:var(--muted);">Compete · Win prizes</div></div></div><div class="card" style="background:linear-gradient(135deg,rgba(255,184,0,0.1),rgba(255,184,0,0.02));border-color:rgba(255,184,0,0.3);"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.12em;color:var(--gold);margin-bottom:6px;">⚡ This Week's Challenge</div><div style="font-weight:700;font-size:0.84rem;color:var(--text);margin-bottom:6px;">Best Fan Costume Challenge 🎭</div><div style="font-size:0.7rem;color:var(--muted);line-height:1.6;">Share your best celebrity-inspired costume. Top 3 winners get VIP Gold for 1 month FREE + featured on ICONIK homepage!</div><button class="btn-g" style="margin-top:10px;" onclick="toast('Challenge submission coming soon! ⚡','info')">Join Challenge ⚡</button></div></div>
-<div class="view" id="qaV"><div class="wbar"><span style="font-size:1.4rem;">🎙️</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Celebrity Q&amp;A</div><div style="font-size:0.62rem;color:var(--muted);">Ask your icon · Get answers</div></div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">🎙️</div><div style="font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;">Celebrity Q&amp;A — Coming Soon</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;">Submit questions to your favourite icons. Top questions get answered by celebrities and their teams!</div></div></div>
-<div class="view" id="badgesV"><div class="wbar"><span style="font-size:1.4rem;">🏅</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">My Badges</div><div style="font-size:0.62rem;color:var(--muted);">Your achievements</div></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;"><div class="card" style="text-align:center;padding:12px;"><div style="font-size:1.8rem;margin-bottom:4px;">🌟</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--gold);">Early Adopter</div><div style="font-size:0.52rem;color:var(--muted);margin-top:2px;">✓ Earned</div></div><div class="card" style="text-align:center;padding:12px;opacity:0.4;"><div style="font-size:1.8rem;margin-bottom:4px;">🔥</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--dim);">First Post</div><div style="font-size:0.52rem;color:var(--dim);margin-top:2px;">Locked</div></div><div class="card" style="text-align:center;padding:12px;opacity:0.4;"><div style="font-size:1.8rem;margin-bottom:4px;">👑</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--dim);">VIP Member</div><div style="font-size:0.52rem;color:var(--dim);margin-top:2px;">Locked</div></div><div class="card" style="text-align:center;padding:12px;opacity:0.4;"><div style="font-size:1.8rem;margin-bottom:4px;">❤️</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--dim);">Fan Favourite</div><div style="font-size:0.52rem;color:var(--dim);margin-top:2px;">Locked</div></div><div class="card" style="text-align:center;padding:12px;opacity:0.4;"><div style="font-size:1.8rem;margin-bottom:4px;">🔗</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--dim);">Connector</div><div style="font-size:0.52rem;color:var(--dim);margin-top:2px;">Locked</div></div><div class="card" style="text-align:center;padding:12px;opacity:0.4;"><div style="font-size:1.8rem;margin-bottom:4px;">🏆</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--dim);">Top Fan</div><div style="font-size:0.52rem;color:var(--dim);margin-top:2px;">Locked</div></div></div></div>
-<div class="view" id="getappV"><div class="wbar"><span style="font-size:1.4rem;">📱</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Get the App</div><div style="font-size:0.62rem;color:var(--muted);">ICONIK on every device</div></div></div><div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:12px;"><span style="font-size:1.8rem;">🤖</span><div style="flex:1;"><div style="font-weight:700;font-size:0.76rem;">Android App</div><div style="font-size:0.62rem;color:var(--muted);">Google Play Store — Coming Soon</div></div><button class="btn-g" style="width:auto;padding:8px 14px;font-size:0.58rem;" onclick="toast('Android app coming soon! 🤖')">Soon</button></div><div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:12px;"><span style="font-size:1.8rem;">🍎</span><div style="flex:1;"><div style="font-weight:700;font-size:0.76rem;">iOS App</div><div style="font-size:0.62rem;color:var(--muted);">Apple App Store — Coming Soon</div></div><button class="btn-g" style="width:auto;padding:8px 14px;font-size:0.58rem;" onclick="toast('iOS app coming soon! 🍎')">Soon</button></div><div class="card" style="display:flex;align-items:center;gap:12px;"><span style="font-size:1.8rem;">🌐</span><div style="flex:1;"><div style="font-weight:700;font-size:0.76rem;">Install as PWA</div><div style="font-size:0.62rem;color:var(--muted);">Add to Home Screen — works like a native app</div></div><button class="btn-g" style="width:auto;padding:8px 14px;font-size:0.58rem;" onclick="if(window._pwaPrompt){window._pwaPrompt.prompt();}else{toast('Tap browser menu → Add to Home Screen 📱','info');}">Install</button></div></div>
-<div class="view" id="settingsV"><div class="wbar"><span style="font-size:1.4rem;">⚙️</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Settings</div><div style="font-size:0.62rem;color:var(--muted);">Account &amp; preferences</div></div></div><div class="card" style="margin-bottom:10px;"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:10px;">Display</div><div style="display:flex;align-items:center;justify-content:space-between;"><div style="font-size:0.76rem;color:var(--text);">Light / Dark Mode</div><button class="btn-g" style="width:auto;padding:8px 16px;" onclick="toggleMode()">Toggle 🌙☀️</button></div></div><div class="card" style="background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.2);"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--err);margin-bottom:8px;">Account</div><button style="width:100%;padding:11px;background:transparent;border:1px solid rgba(239,68,68,0.4);border-radius:6px;color:var(--err);font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;cursor:pointer;" onclick="if(confirm('Sign out of ICONIK?'))document.getElementById('logoutBtn').click()">Sign Out 🚪</button></div></div>
+<div class="view" id="creatorV"><div class="wbar"><span style="font-size:1.4rem;">💰</span><div><div style="class="wbar-title" style="">Creator Fund</div><div class="wbar-sub">Earn from your content</div></div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">💰</div><div style="font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;">Creator Fund</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;">Top creators earn from the ICONIK Creator Fund. Post quality content, grow your followers and unlock earning potential. VIP Gold members earn 10% commissions.</div></div></div>
+<div class="view" id="marketV"><div class="wbar"><span style="font-size:1.4rem;">🏪</span><div><div style="class="wbar-title" style="">Marketplace</div><div class="wbar-sub">Fan merch · Celebrity products</div></div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">🏪</div><div style="font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;">Marketplace — Coming Soon</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;">Fan merchandise, celebrity-endorsed products and exclusive ICONIK collectibles. Launching soon!</div></div></div>
+<div class="view" id="shopV"><div class="wbar"><span style="font-size:1.4rem;">🛍️</span><div><div style="class="wbar-title" style="">Shop &amp; Earn</div><div class="wbar-sub">Shop from partners · Earn cashback</div></div></div><div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:12px;"><span style="font-size:1.6rem;">🛒</span><div style="flex:1;"><div style="font-weight:700;font-size:0.74rem;">Amazon Associates</div><div style="font-size:0.6rem;color:var(--muted);">3–10% cashback on all purchases</div></div><a href="https://amazon.com" target="_blank" style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;padding:7px 12px;background:var(--gold);color:var(--bg);border:none;cursor:pointer;text-decoration:none;border-radius:4px;">Shop</a></div><div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:12px;"><span style="font-size:1.6rem;">💊</span><div style="flex:1;"><div style="font-weight:700;font-size:0.74rem;">iHerb</div><div style="font-size:0.6rem;color:var(--muted);">5–20% on wellness &amp; supplements</div></div><a href="https://iherb.com" target="_blank" style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;padding:7px 12px;background:var(--gold);color:var(--bg);border:none;cursor:pointer;text-decoration:none;border-radius:4px;">Shop</a></div><div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:12px;"><span style="font-size:1.6rem;">✈️</span><div style="flex:1;"><div style="font-weight:700;font-size:0.74rem;">Booking.com</div><div style="font-size:0.6rem;color:var(--muted);">25–40% on travel &amp; hotels</div></div><a href="https://booking.com" target="_blank" style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.1em;padding:7px 12px;background:var(--gold);color:var(--bg);border:none;cursor:pointer;text-decoration:none;border-radius:4px;">Book</a></div></div>
+<div class="view" id="referV"><div class="wbar"><span style="font-size:1.4rem;">🎁</span><div><div style="class="wbar-title" style="">Refer &amp; Earn</div><div class="wbar-sub">Invite friends · Earn $10 per referral</div></div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">🎁</div><div style="font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;">Earn $10 Per Referral</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;margin-bottom:14px;">Share your unique link. When a friend joins ICONIK and upgrades to VIP, you earn $10 instantly!</div><button class="btn-g" onclick="var l='https://iconik-global.web.app?ref='+((typeof cU!=='undefined'&&cU)?cU.uid:'user');if(navigator.share)navigator.share({title:'Join ICONIK',text:'Join me on ICONIK!',url:l});else if(navigator.clipboard)navigator.clipboard.writeText(l).then(function(){toast('Referral link copied! 🔗');});">Share Your Referral Link 🔗</button></div></div>
+<div class="view" id="datingV"><div class="wbar" style="background:linear-gradient(135deg,rgba(255,107,157,0.12),rgba(255,107,157,0.03));border-color:rgba(255,107,157,0.3);"><span style="font-size:1.4rem;">💕</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:#FF6B9D;">Dating &amp; Matchmaking</div><div class="wbar-sub">Find your perfect fan match</div></div></div><div class="card" style="background:rgba(239,68,68,0.07);border-color:rgba(239,68,68,0.25);margin-bottom:12px;"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.15em;color:var(--err);margin-bottom:4px;">⚠️ SAFETY FIRST</div><div style="font-size:0.64rem;color:var(--muted);line-height:1.6;">All profiles are ID-verified. Never send money to matches. Report suspicious behaviour immediately. 🛡️</div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">💕</div><div style="font-weight:700;font-size:0.9rem;color:#FF6B9D;margin-bottom:6px;">Fan Matchmaking Room</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;margin-bottom:10px;">Match with fans who love the same celebrities. VIP Silver &amp; Gold exclusive.</div><button class="btn-g" style="background:linear-gradient(135deg,#FF6B9D,#E91E8C);" onclick="window.sv('vip')">Upgrade to Access 💕</button></div></div>
+<div class="view" id="tourV"><div class="wbar"><span style="font-size:1.4rem;">🎫</span><div><div style="class="wbar-title" style="">Tour Buddy</div><div class="wbar-sub">Find fans at the same events</div></div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">🎫</div><div style="font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;">Tour Buddy — Coming Soon</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;">Going to a concert or match? Find fellow ICONIK fans attending the same event. Launching soon!</div></div></div>
+<div class="view" id="streamsV"><div class="wbar"><span style="font-size:1.4rem;">🔴</span><div><div style="class="wbar-title" style="">Live Streams</div><div class="wbar-sub">Watch &amp; go live</div></div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">🔴</div><div style="font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;">Live Streams — Coming Soon</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;">Go live with your community. Watch celebrity fans stream reactions, events and more. Launching soon!</div></div></div>
+<div class="view" id="challengesV"><div class="wbar"><span style="font-size:1.4rem;">⚡</span><div><div style="class="wbar-title" style="">Fan Challenges</div><div class="wbar-sub">Compete · Win prizes</div></div></div><div class="card" style="background:linear-gradient(135deg,rgba(255,184,0,0.1),rgba(255,184,0,0.02));border-color:rgba(255,184,0,0.3);"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.12em;color:var(--gold);margin-bottom:6px;">⚡ This Week's Challenge</div><div style="font-weight:700;font-size:0.84rem;color:var(--text);margin-bottom:6px;">Best Fan Costume Challenge 🎭</div><div style="font-size:0.7rem;color:var(--muted);line-height:1.6;">Share your best celebrity-inspired costume. Top 3 winners get VIP Gold for 1 month FREE + featured on ICONIK homepage!</div><button class="btn-g" style="margin-top:10px;" onclick="toast('Challenge submission coming soon! ⚡','info')">Join Challenge ⚡</button></div></div>
+<div class="view" id="qaV"><div class="wbar"><span style="font-size:1.4rem;">🎙️</span><div><div style="class="wbar-title" style="">Celebrity Q&amp;A</div><div class="wbar-sub">Ask your icon · Get answers</div></div></div><div class="card" style="text-align:center;padding:20px;"><div style="font-size:2rem;margin-bottom:8px;">🎙️</div><div style="font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:6px;">Celebrity Q&amp;A — Coming Soon</div><div style="font-size:0.72rem;color:var(--muted);line-height:1.6;">Submit questions to your favourite icons. Top questions get answered by celebrities and their teams!</div></div></div>
+<div class="view" id="badgesV"><div class="wbar"><span style="font-size:1.4rem;">🏅</span><div><div style="class="wbar-title" style="">My Badges</div><div class="wbar-sub">Your achievements</div></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;"><div class="card" style="text-align:center;padding:12px;"><div style="font-size:1.8rem;margin-bottom:4px;">🌟</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--gold);">Early Adopter</div><div style="font-size:0.52rem;color:var(--muted);margin-top:2px;">✓ Earned</div></div><div class="card" style="text-align:center;padding:12px;opacity:0.4;"><div style="font-size:1.8rem;margin-bottom:4px;">🔥</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--dim);">First Post</div><div style="font-size:0.52rem;color:var(--dim);margin-top:2px;">Locked</div></div><div class="card" style="text-align:center;padding:12px;opacity:0.4;"><div style="font-size:1.8rem;margin-bottom:4px;">👑</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--dim);">VIP Member</div><div style="font-size:0.52rem;color:var(--dim);margin-top:2px;">Locked</div></div><div class="card" style="text-align:center;padding:12px;opacity:0.4;"><div style="font-size:1.8rem;margin-bottom:4px;">❤️</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--dim);">Fan Favourite</div><div style="font-size:0.52rem;color:var(--dim);margin-top:2px;">Locked</div></div><div class="card" style="text-align:center;padding:12px;opacity:0.4;"><div style="font-size:1.8rem;margin-bottom:4px;">🔗</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--dim);">Connector</div><div style="font-size:0.52rem;color:var(--dim);margin-top:2px;">Locked</div></div><div class="card" style="text-align:center;padding:12px;opacity:0.4;"><div style="font-size:1.8rem;margin-bottom:4px;">🏆</div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.1em;color:var(--dim);">Top Fan</div><div style="font-size:0.52rem;color:var(--dim);margin-top:2px;">Locked</div></div></div></div>
+<div class="view" id="getappV"><div class="wbar"><span style="font-size:1.4rem;">📱</span><div><div style="class="wbar-title" style="">Get the App</div><div class="wbar-sub">ICONIK on every device</div></div></div><div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:12px;"><span style="font-size:1.8rem;">🤖</span><div style="flex:1;"><div style="font-weight:700;font-size:0.76rem;">Android App</div><div class="wbar-sub">Google Play Store — Coming Soon</div></div><button class="btn-g" style="width:auto;padding:8px 14px;font-size:0.58rem;" onclick="toast('Android app coming soon! 🤖')">Soon</button></div><div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:12px;"><span style="font-size:1.8rem;">🍎</span><div style="flex:1;"><div style="font-weight:700;font-size:0.76rem;">iOS App</div><div class="wbar-sub">Apple App Store — Coming Soon</div></div><button class="btn-g" style="width:auto;padding:8px 14px;font-size:0.58rem;" onclick="toast('iOS app coming soon! 🍎')">Soon</button></div><div class="card" style="display:flex;align-items:center;gap:12px;"><span style="font-size:1.8rem;">🌐</span><div style="flex:1;"><div style="font-weight:700;font-size:0.76rem;">Install as PWA</div><div class="wbar-sub">Add to Home Screen — works like a native app</div></div><button class="btn-g" style="width:auto;padding:8px 14px;font-size:0.58rem;" onclick="if(window._pwaPrompt){window._pwaPrompt.prompt();}else{toast('Tap browser menu → Add to Home Screen 📱','info');}">Install</button></div></div>
+<div class="view" id="settingsV"><div class="wbar"><span style="font-size:1.4rem;">⚙️</span><div><div style="class="wbar-title" style="">Settings</div><div class="wbar-sub">Account &amp; preferences</div></div></div><div class="card" style="margin-bottom:10px;"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--gold);margin-bottom:10px;">Display</div><div style="display:flex;align-items:center;justify-content:space-between;"><div style="font-size:0.76rem;color:var(--text);">Light / Dark Mode</div><button class="btn-g" style="width:auto;padding:8px 16px;" onclick="toggleMode()">Toggle 🌙☀️</button></div></div><div class="card" style="background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.2);"><div style="font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--err);margin-bottom:8px;">Account</div><button style="width:100%;padding:11px;background:transparent;border:1px solid rgba(239,68,68,0.4);border-radius:6px;color:var(--err);font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;cursor:pointer;" onclick="if(confirm('Sign out of ICONIK?'))document.getElementById('logoutBtn').click()">Sign Out 🚪</button></div></div>
   <div class="bn on" data-v="feed"><div class="bn-ic">&#127968;</div><div class="bn-lb">Feed</div></div>
   <div class="bn" data-v="icons"><div class="bn-ic">&#11088;</div><div class="bn-lb">Icons</div></div>
   <div class="bn" data-v="news"><div class="bn-ic">&#128240;</div><div class="bn-lb">News</div></div>
@@ -360,7 +896,10 @@ function boot(){
   var av=document.getElementById("navAv");av.textContent=nm.charAt(0).toUpperCase();
   if(cD&&cD.profilePic&&cD.profilePic.startsWith("http")){var img=document.createElement("img");img.src=cD.profilePic;img.onerror=function(){this.remove();};av.appendChild(img);}
   document.getElementById("sbNm").textContent=nm;
-  document.getElementById("sbTi").textContent=(cD&&cD.tier)||"Fan";
+  var t2=(cD&&cD.tier)||"Fan";
+  var tc=t2.toLowerCase().includes("gold")?"tier-gold":t2.toLowerCase().includes("silver")?"tier-silver":t2.toLowerCase().includes("bronze")?"tier-bronze":"tier-fan";
+  var sTi=document.getElementById("sbTi");
+  if(sTi){sTi.className="sb-ti "+tc;sTi.textContent=t2;}
   document.getElementById("postAv").textContent=nm.charAt(0).toUpperCase();
   ["composerBar","pbtn1","pbtn2","pbtn3"].forEach(function(id){var el=document.getElementById(id);if(el)el.onclick=openComposer;});
   document.getElementById("celebSrch").addEventListener("input",filterCelebs);
@@ -471,7 +1010,7 @@ function renderCelebs(list){
     }
     h+="<span class=\"cletter\" style=\"position:relative;z-index:1;font-size:2rem;\">"+initials+"</span></div>";
     h+="<div class=\"cinfo\">";
-    h+="<div class=\"cnm\">"+xe(displayName)+(isVerified?" <span style=\"width:13px;height:13px;background:#3B82F6;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.45rem;color:#fff;vertical-align:middle;\">✓</span>":"")+"</div>";
+    h+="<div class=\"cnm\">"+xe(displayName)+(isVerified?"<span class=\"badge-verified\"></span>":"")+"</div>";
     h+="<div class=\"ccat\">"+xe(c.category||"")+"</div>";
     h+="<div class=\"cmeta\">"+xe(c.country||"")+(c.followers?" · "+xe(c.followers):"")+"</div>";
     h+="</div></div>";
@@ -650,12 +1189,66 @@ function evCard(ev){
   return "<div class=\"card\" style=\"display:flex;gap:12px;align-items:center;\"><div style=\"text-align:center;min-width:38px;\"><div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.1em;color:var(--gold);\">"+mo+"</div><div style=\"font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--text);line-height:1;\">"+dy+"</div></div><div style=\"flex:1;\"><div style=\"font-weight:700;font-size:0.76rem;color:var(--text);margin-bottom:3px;\">"+xe(ev.name||"")+"</div><div style=\"font-size:0.62rem;color:var(--muted);\">&#128205; "+xe(ev.venue||"")+"</div><div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.7rem;color:var(--gold);margin-top:3px;\">"+xe(ev.price||"")+"</div></div><span style=\"font-size:1.3rem;\">"+(ev.icon||"&#127915;")+"</span></div>";
 }
 
-// RADIO
+// RADIO — Fixed with real streams + premium design
 function loadRadio(){
-  var sts=[{n:"ICONIK Gold",g:"Top Hits · Global",ic:"&#127942;"},{n:"Latin Vibes",g:"Latin · Reggaeton · Urban",ic:"&#127928;"},{n:"Afro Beats FM",g:"Afrobeats · Dancehall",ic:"&#129345;"},{n:"Hip-Hop Central",g:"Hip-Hop · R&B · Trap",ic:"&#127908;"},{n:"ICONIK Chill",g:"Lo-fi · Ambient · Relax",ic:"&#127769;"},{n:"Sports Anthems",g:"Rock · EDM · Motivation",ic:"&#9917;"}];
-  var h="";sts.forEach(function(s){h+="<div class=\"card\" style=\"display:flex;align-items:center;gap:12px;\"><div style=\"width:42px;height:42px;border-radius:8px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;\">"+s.ic+"</div><div style=\"flex:1;\"><div style=\"font-weight:700;font-size:0.74rem;color:var(--text);\">"+xe(s.n)+"</div><div style=\"font-size:0.6rem;color:var(--dim);\">"+xe(s.g)+"</div></div><button data-sn=\""+xe(s.n)+"\" style=\"width:32px;height:32px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;font-size:0.8rem;\">&#9654;</button></div>";});
-  document.getElementById("radioList").innerHTML=h;
-  document.getElementById("radioList").addEventListener("click",function(ev){var btn=ev.target.closest("[data-sn]");if(btn)toast("Now playing: "+btn.dataset.sn);});
+  var sts=[
+    {n:"ICONIK Gold",g:"Top Hits · Global",ic:"🏆",url:"https://stream.zeno.fm/0r0xa792kwzuv"},
+    {n:"Afro Beats FM",g:"Afrobeats · Naija · Dancehall",ic:"🥁",url:"https://stream.zeno.fm/muiym1xbhh8uv"},
+    {n:"Latin Vibes",g:"Latin · Reggaeton · Urban",ic:"🎸",url:"https://stream.zeno.fm/f3wvbbqmdg8uv"},
+    {n:"Hip-Hop Central",g:"Hip-Hop · R&B · Trap",ic:"🎤",url:"https://stream.zeno.fm/yn65fujiuwzuv"},
+    {n:"ICONIK Chill",g:"Lo-fi · Ambient · Relaxing",ic:"🌙",url:"https://stream.zeno.fm/uu2jsftmjk8uv"},
+    {n:"Sports Anthems",g:"Rock · EDM · Motivation",ic:"⚽",url:"https://stream.zeno.fm/4d23zvrl7k8uv"},
+    {n:"Gospel & Praise",g:"Gospel · Worship · Praise",ic:"🙏",url:"https://stream.zeno.fm/29eyb3wmjk8uv"},
+    {n:"Afropop Paradise",g:"Naija · Highlife · Afropop",ic:"🌍",url:"https://stream.zeno.fm/pn3gvv8jnk8uv"},
+  ];
+  var h="";
+  sts.forEach(function(s,i){
+    h+="<div class=\"rcard\" id=\"rcard"+i+"\">";
+    h+="<div style=\"width:44px;height:44px;border-radius:12px;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;\">"+s.ic+"</div>";
+    h+="<div style=\"flex:1;min-width:0;\">";
+    h+="<div style=\"font-family:'Sora',sans-serif;font-weight:700;font-size:0.88rem;color:var(--text);margin-bottom:2px;\">"+xe(s.n)+"</div>";
+    h+="<div style=\"font-size:0.7rem;color:var(--text3);\">"+xe(s.g)+"</div></div>";
+    h+="<button class=\"rplay\" data-idx=\""+i+"\" data-url=\""+s.url+"\" data-name=\""+xe(s.n)+"\" title=\"Play\">▶</button>";
+    h+="</div>";
+  });
+  var el=document.getElementById("radioList");
+  el.innerHTML=h;
+  // Audio player
+  var audio=document.getElementById("radioAudio")||document.createElement("audio");
+  audio.id="radioAudio";audio.preload="none";
+  if(!document.getElementById("radioAudio"))document.body.appendChild(audio);
+  var curIdx=-1;
+  el.addEventListener("click",function(ev){
+    var btn=ev.target.closest(".rplay");
+    if(!btn)return;
+    var idx=parseInt(btn.dataset.idx);
+    var url=btn.dataset.url;
+    var name=btn.dataset.name;
+    if(curIdx===idx&&!audio.paused){
+      // Pause
+      audio.pause();
+      btn.textContent="▶";
+      btn.closest(".rcard").classList.remove("playing");
+      curIdx=-1;
+      toast("Paused: "+name);
+      return;
+    }
+    // Stop previous
+    el.querySelectorAll(".rcard").forEach(function(c){c.classList.remove("playing");});
+    el.querySelectorAll(".rplay").forEach(function(b){b.textContent="▶";});
+    // Play new
+    audio.src=url;
+    audio.load();
+    audio.play().then(function(){
+      btn.textContent="⏸";
+      btn.closest(".rcard").classList.add("playing");
+      curIdx=idx;
+      toast("Now playing: "+name+" 🎵");
+    }).catch(function(e){
+      toast("Stream unavailable — try another station","error");
+      console.warn("Radio error:",e);
+    });
+  });
 }
 
 // TV
@@ -698,7 +1291,7 @@ function renderMembers(list){
     if(m.profilePic&&m.profilePic.startsWith("http"))h+="<img src=\""+xu(m.profilePic)+"\" onerror=\"this.remove()\"/>";
     else h+=xe((m.name||"?").charAt(0).toUpperCase());
     h+="</div><div style=\"flex:1;min-width:0;\">";
-    h+="<div style=\"font-weight:700;font-size:0.74rem;color:var(--text);\">"+xe(m.name||"Member")+(m.verificationStatus==="verified"?" &#9989;":"")+"</div>";
+    h+="<div style=\"font-weight:700;font-size:0.74rem;color:var(--text);\">"+xe(m.name||"Member")+(m.verificationStatus==="verified"?"<span class=\"badge-verified\"></span>":"")+"</div>";
     h+="<div style=\"font-size:0.6rem;color:var(--dim);\">"+(m.city?xe(m.city)+", ":"")+xe(m.country||"—")+" · <span style=\"color:var(--gold);\">"+xe(m.tier||"Fan")+"</span></div>";
     var cats=m.categories||[];if(cats.length){h+="<div style=\"display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;\">";cats.slice(0,3).forEach(function(c){h+="<span style=\"font-size:0.48rem;color:var(--bg);background:var(--gold);padding:1px 5px;\">"+xe(c)+"</span>";});h+="</div>";}
     h+="</div><div style=\"color:var(--dim);font-size:0.9rem;\">&#8250;</div></div>";
@@ -730,8 +1323,8 @@ function openMember(m){
   h+="<button class=\"btn-act\" id=\"fMBtn\">+ Follow</button>";
   h+="<button class=\"btn-gh\" id=\"sMBtn\">&#128279;</button></div></div>";
   h+="<div style=\"padding:0 16px 24px;\">";
-  h+="<div style=\"font-weight:700;font-size:1.1rem;color:var(--text);margin-bottom:3px;\">"+xe(m.name||"Member")+(m.verificationStatus==="verified"?" &#9989;":"")+"</div>";
-  h+="<div style=\"font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--bg);background:var(--gold);padding:2px 8px;display:inline-block;margin-bottom:10px;\">"+xe(m.tier||"Fan")+"</div>";
+  h+="<div style=\"font-weight:700;font-size:1.1rem;color:var(--text);margin-bottom:3px;\">"+xe(m.name||"Member")+(m.verificationStatus==="verified"?"<span class=\"badge-verified\"></span>":"")+"</div>";
+  h+="<div style=\"class=\"tier-gold\" style=\"display:inline-flex;\"display:inline-block;margin-bottom:10px;\">"+xe(m.tier||"Fan")+"</div>";
   h+="<div style=\"font-size:0.7rem;color:var(--muted);margin-bottom:12px;\">&#128205; "+(m.city?xe(m.city)+", ":"")+xe(m.country||"—")+"</div>";
   if(m.bio)h+="<div style=\"font-size:0.74rem;color:var(--muted);line-height:1.7;margin-bottom:14px;\">"+xe(m.bio)+"</div>";
   h+="<div style=\"display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:16px;\">";
@@ -819,7 +1412,7 @@ function loadProfile(){
   h+="</div><div style=\"position:absolute;bottom:2px;right:2px;width:26px;height:26px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:0.7rem;border:2px solid var(--bg);z-index:6;\">📷</div></div>";
   h+="</div>";
   h+="<div style=\"padding-bottom:4px;\"><span style=\"font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--bg);background:var(--gold);padding:3px 10px;\">"+xe(cD.tier||"Fan")+"</span></div></div>";
-  h+="<div style=\"font-weight:700;font-size:1.1rem;color:var(--text);margin-bottom:4px;\">"+nm+(cD.verificationStatus==="verified"?" &#9989;":"")+"</div>";
+  h+="<div style=\"font-weight:700;font-size:1.1rem;color:var(--text);margin-bottom:4px;\">"+nm+(cD.verificationStatus==="verified"?"<span class=\"badge-verified\"></span>":"")+"</div>";
   if(cD.bio)h+="<div style=\"font-size:0.72rem;color:var(--muted);line-height:1.6;margin-bottom:12px;\">"+xe(cD.bio)+"</div>";
   h+="<div style=\"display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:16px;\">";
   h+="<div class=\"sbox\"><div class=\"snum\">"+(cD.followersCount||0)+"</div><div class=\"slbl\">Followers</div></div>";
