@@ -88,23 +88,12 @@ body{
 }
 body.light #topnav{background:rgba(250,250,248,0.95);}
 .nav-logo{
-  display:inline-flex;align-items:center;
+  display:inline-flex;align-items:center;gap:0;
   font-family:"Sora",sans-serif;font-weight:900;font-size:1.3rem;
-  letter-spacing:0.06em;color:#0A84FF;
+  letter-spacing:0.06em;
   font-style:normal;cursor:pointer;line-height:1;
 }
-.logo-i{
-  position:relative;display:inline-block;
-  color:#0A84FF;
-}
-.logo-i::before{
-  content:'';
-  position:absolute;
-  top:0;left:0;
-  width:3px;height:46%;
-  background:#FF3B30;
-  border-radius:0 0 1px 0;
-}
+/* The "I" — two overlapping spans with diagonal clip-path */
 .logo-rest{color:#0A84FF;}
 #navAv{
   width:34px;height:34px;border-radius:50%;
@@ -158,8 +147,7 @@ body.light #sb{background:#FFFFFF;}
   font-size:1.1rem;color:#0A84FF;letter-spacing:0.06em;
   display:inline-flex;align-items:center;font-style:normal;
 }
-.sb-br .logo-i{position:relative;display:inline-block;color:#0A84FF;}
-.sb-br .logo-i::before{content:'';position:absolute;top:0;left:0;width:3px;height:46%;background:#FF3B30;border-radius:0 0 1px 0;}
+
 #sbX{
   background:var(--card2);border:1px solid var(--border);
   border-radius:var(--radius-xs);width:30px;height:30px;
@@ -662,7 +650,7 @@ select.fi option{background:var(--bg2);}
 <body>
 <div id="sbOv"></div>
 <div id="sb">
-  <div class="sb-hd"><span class="sb-br"><span class="logo-i">I</span><span class="logo-rest">CONIK</span></span><button id="sbX">&#x2715;</button></div>
+  <div class="sb-hd"><span class="sb-br" style="display:inline-flex;align-items:center;gap:0;font-family:'Sora',sans-serif;font-weight:900;font-size:1.1rem;letter-spacing:0.06em;color:#0A84FF;line-height:1;"><svg width="3" height="1em" viewBox="0 0 4 14" preserveAspectRatio="none" style="display:inline-block;margin-right:-1px;" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 4,0 4,6 0,9" fill="#FF3B30"/><polygon points="4,6 4,14 0,14 0,9" fill="#0A84FF"/></svg><span style="color:#0A84FF;">CONIK</span></span></span><button id="sbX">&#x2715;</button></div>
   <div class="sb-usr"><div class="sb-unm" id="sbNm">Member</div><div class="sb-ti" id="sbTi">Fan</div></div>
   <div style="padding:8px 0;">
     <div class="sb-lbl">MY ICONIK</div>
@@ -706,7 +694,7 @@ select.fi option{background:var(--bg2);}
   </div>
 </div>
 <div id="topnav">
-  <span class="nav-logo" onclick="location.href='/index.html';" title="Back to Home"><span class="logo-i">I</span><span class="logo-rest">CONIK</span></span>
+  <span class="nav-logo" onclick="location.href='/index.html';" title="Back to Home"><svg viewBox="0 0 240 60" height="22" style="display:inline-block;vertical-align:middle;" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="iDiag"><polygon points="0,0 8,0 8,25 0,55"/></clipPath></defs><rect x="0" y="5" width="8" height="50" fill="#0A84FF"/><rect x="0" y="5" width="8" height="50" fill="#FF3B30" clip-path="url(#iDiag)"/><text x="13" y="46" font-family="Sora,Arial,sans-serif" font-weight="900" font-size="52" fill="#0A84FF" letter-spacing="1">CONIK</text></svg></span></span></span>
   <div style="display:flex;align-items:center;gap:10px;">
     <button id="modeBtn" onclick="toggleMode()" title="Toggle light/dark" style="background:none;border:1px solid rgba(255,255,255,0.16);border-radius:8px;width:36px;height:36px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">🌙</button><span style="font-size:0.95rem;cursor:pointer;opacity:0.85;transition:opacity 0.15s;" id="bellBtn" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.85'">&#128276;</span>
     <div id="navAv">M</div>
@@ -718,7 +706,7 @@ select.fi option{background:var(--bg2);}
     <div class="wbar"><span style="font-size:1.4rem;">🏠</span><div><div style="font-family:'Sora',sans-serif;font-weight:700;font-size:0.95rem;color:var(--text);">My Feed</div><div class="wbar-sub">Latest from your communities</div></div></div>
     <!-- STORIES BAR — WhatsApp/Instagram style -->
     <div style="display:flex;gap:12px;overflow-x:auto;padding:4px 0 14px;scrollbar-width:none;-webkit-overflow-scrolling:touch;" id="storiesBar">
-      <div onclick="openAddStory()" style="display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0;cursor:pointer;">
+      <div onclick="if(window.openAddStory)window.openAddStory();else setTimeout(function(){window.openAddStory&&window.openAddStory();},1000)" style="display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0;cursor:pointer;">
         <div style="width:58px;height:58px;border-radius:50%;background:var(--bg3);border:2.5px dashed var(--accent);display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--accent);">+</div>
         <div style="font-family:'Sora',sans-serif;font-size:0.62rem;font-weight:600;color:var(--text3);white-space:nowrap;">Your Story</div>
       </div>
@@ -941,7 +929,7 @@ function attachBack(ov){var btn=document.getElementById("ovBack");if(btn)btn.onc
 
 // FEED
 // ── STORIES / MOMENTS ──
-function renderStoriesBar(){
+window.renderStoriesBar=function renderStoriesBar(){
   var sb=document.getElementById("storiesBar");if(!sb)return;
   // Load stories from Firestore — if empty show placeholder
   sg(query(collection(db,"stories"),limit(20))).then(function(snap){
@@ -951,7 +939,7 @@ function renderStoriesBar(){
     stories=stories.filter(function(s){return s.createdAt&&(now-(s.createdAt.seconds*1000))<86400000;});
     var h="";
     // Add story button — your own
-    h+="<div onclick='openAddStory()' style='display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0;cursor:pointer;'>"
+    h+="<div onclick='if(window.openAddStory)window.openAddStory();' style='display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0;cursor:pointer;'>"
       +"<div style='width:58px;height:58px;border-radius:50%;background:var(--bg3);border:2.5px dashed var(--accent);display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--accent);'>+</div>"
       +"<div style='font-family:Sora,sans-serif;font-size:0.62rem;font-weight:600;color:var(--text3);white-space:nowrap;'>Your Story</div></div>";
     stories.slice(0,15).forEach(function(s){
@@ -967,7 +955,7 @@ function renderStoriesBar(){
   }).catch(function(){});
 }
 
-function openAddStory(){
+window.openAddStory=function openAddStory(){
   if(!cU){toast("Sign in to add a story","error");return;}
   var ov=mkOv();
   var h=navRow("Add Your Story");
@@ -1037,7 +1025,7 @@ function openAddStory(){
   };
 }
 
-function openStory(storyId){
+window.openStory=function openStory(storyId){
   sg(query(collection(db,"stories"),limit(20))).then(function(snap){
     var stories=[];snap.forEach(function(d){stories.push({id:d.id,...d.data()});});
     var s=stories.find(function(x){return x.id===storyId;});
