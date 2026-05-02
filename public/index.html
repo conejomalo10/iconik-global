@@ -24,7 +24,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   background:
     radial-gradient(circle at 50% 20%, rgba(103,232,249,0.07) 0%, transparent 50%),
     radial-gradient(circle at 80% 70%, rgba(168,85,247,0.08) 0%, transparent 55%),
-    radial-gradient(circle at 20% 65%, rgba(249,168,212,0.06) 0%, transparent 50%),
+    radial-gradient(circle at 20% 65%, rgba(10,132,255,0.45) 0%, transparent 50%),
     radial-gradient(circle at 60% 90%, rgba(139,92,246,0.05) 0%, transparent 45%);}
 
 /* NAV */
@@ -37,9 +37,10 @@ nav.topnav{position:fixed;top:0;left:0;right:0;z-index:100;
 .nav-logo-tw{
   font-family:'Inter',sans-serif;font-weight:900;font-size:1.6rem;
   letter-spacing:-0.05em;text-decoration:none;
-  background:linear-gradient(130deg,#f9a8d4 0%,#e879f9 40%,#a78bfa 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  filter:drop-shadow(0 0 18px rgba(249,168,212,0.45));}
+  color:#0A84FF;
+  -webkit-text-fill-color:unset;
+  filter:none;
+  display:inline-flex;align-items:center;cursor:pointer;}
 .nav-right{display:flex;align-items:center;gap:10px;}
 .nav-join-tw{
   background:rgba(255,255,255,0.08);
@@ -90,13 +91,12 @@ nav.topnav{position:fixed;top:0;left:0;right:0;z-index:100;
 
 .hero-logo-tw{
   font-family:'Inter',sans-serif;font-weight:900;
-  font-size:clamp(5.5rem,24vw,12rem);
-  line-height:0.88;letter-spacing:-0.04em;
-  margin-bottom:24px;
-  /* Original rose-gold metallic — exactly matching Image 2 */
-  background:linear-gradient(145deg,#d4956a 0%,#e8b090 20%,#f5c9a8 40%,#e8a07a 60%,#c97850 80%,#b86840 100%);
+  font-size:clamp(4.5rem,20vw,10rem);
+  line-height:0.9;letter-spacing:-0.04em;
+  margin-bottom:20px;
+  background:linear-gradient(135deg,#FF1A1A 0%,#CC0033 20%,#0A84FF 45%,#003FCC 65%,#FF3B30 85%,#0060CC 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  filter:drop-shadow(0 0 35px rgba(212,149,106,0.45)) drop-shadow(0 0 70px rgba(212,149,106,0.2));
+  filter:drop-shadow(0 0 40px rgba(255,30,30,0.5)) drop-shadow(0 0 60px rgba(10,132,255,0.5));
   opacity:0;animation:fadeUpTw 0.8s ease 0.35s forwards;}
 
 .hero-subtitle-tw{
@@ -154,28 +154,28 @@ nav.topnav{position:fixed;top:0;left:0;right:0;z-index:100;
   letter-spacing:0.25em;text-transform:uppercase;
   color:#fff;
   padding:18px 52px;
-  background:linear-gradient(135deg,#06b6d4 0%,#8b5cf6 50%,#ec4899 100%);
+  background:linear-gradient(135deg,#FF3B30 0%,#0A84FF 50%,#0060CC 100%);
   border:none;cursor:pointer;
   clip-path:polygon(16px 0%,100% 0%,calc(100% - 16px) 100%,0% 100%);
   transition:all 0.3s;
-  box-shadow:0 0 40px rgba(139,92,246,0.35),0 0 80px rgba(6,182,212,0.15);
+  box-shadow:0 0 40px rgba(10,132,255,0.4),0 0 80px rgba(255,59,48,0.2);
   opacity:0;animation:fadeUpTw 0.8s ease 1s forwards;}
 .hero-cta-tw:hover{
-  box-shadow:0 0 60px rgba(139,92,246,0.55),0 0 100px rgba(6,182,212,0.25);
+  box-shadow:0 0 60px rgba(10,132,255,0.6),0 0 100px rgba(255,59,48,0.3);
   transform:scale(1.03);}
 
 /* ─── KEEP ALL EXISTING SECTION STYLES BELOW ─── */
 :root{
   --obsidian:#07070D;--obsidian-2:#0F0F1A;--obsidian-3:#141420;
-  --gold:#FFB800;--gold-dim:#CC9400;--gold-glow:#FF9500;--gold-light:#FFD060;
+  --#0A84FF:#0A84FF;--#0A84FF-dim:#0060CC;--#0A84FF-glow:#FF9500;--#0A84FF-light:#FFD060;
   --champagne:#F5F0E8;--champagne-dim:#BDB5A6;
-  --glass:rgba(255,184,0,0.04);--glass-border:rgba(255,184,0,0.15);
-  --glass-border-bright:rgba(255,184,0,0.4);--white-glass:rgba(255,255,255,0.03);}
+  --glass:rgba(10,132,255,0.04);--glass-border:rgba(10,132,255,0.15);
+  --glass-border-bright:rgba(10,132,255,0.4);--white-glass:rgba(255,255,255,0.03);}
 
 /* ─── MARQUEE STRIP ─── */
 .marquee-section {
   padding:20px 0;
-  background:linear-gradient(90deg, var(--obsidian), rgba(255,184,0,0.05), var(--obsidian));
+  background:linear-gradient(90deg, var(--obsidian), rgba(10,132,255,0.05), var(--obsidian));
   border-top:1px solid var(--glass-border);
   border-bottom:1px solid var(--glass-border);
   overflow:hidden;
@@ -195,7 +195,7 @@ nav.topnav{position:fixed;top:0;left:0;right:0;z-index:100;
 }
 .marquee-item::after {
   content:'✦';
-  color:var(--gold);
+  color:#0A84FF;
   font-size:0.6rem;
 }
 @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
@@ -224,24 +224,24 @@ nav.topnav{position:fixed;top:0;left:0;right:0;z-index:100;
 .category-card::before {
   content:'';
   position:absolute; inset:0;
-  background:linear-gradient(135deg, rgba(255,184,0,0.06), transparent);
+  background:linear-gradient(135deg, rgba(10,132,255,0.06), transparent);
   opacity:0; transition:opacity 0.4s;
 }
 .category-card::after {
   content:'';
   position:absolute; bottom:0; left:0; right:0;
   height:2px;
-  background:linear-gradient(90deg, transparent, var(--gold), transparent);
+  background:linear-gradient(90deg, transparent, #0A84FF, transparent);
   transform:scaleX(0); transition:transform 0.4s;
 }
-.category-card:hover { border-color:var(--glass-border-bright); transform:translateY(-4px); box-shadow:0 20px 60px rgba(0,0,0,0.4), 0 0 30px rgba(255,184,0,0.08); }
+.category-card:hover { border-color:var(--glass-border-bright); transform:translateY(-4px); box-shadow:0 20px 60px rgba(0,0,0,0.4), 0 0 30px rgba(10,132,255,0.08); }
 .category-card:hover::before { opacity:1; }
 .category-card:hover::after { transform:scaleX(1); }
 
 .card-icon {
   font-size:2.4rem; margin-bottom:20px;
   display:block;
-  filter:drop-shadow(0 0 10px rgba(255,184,0,0.3));
+  filter:drop-shadow(0 0 10px rgba(10,132,255,0.3));
   transition:transform 0.4s;
 }
 .category-card:hover .card-icon { transform:scale(1.1); }
@@ -250,7 +250,7 @@ nav.topnav{position:fixed;top:0;left:0;right:0;z-index:100;
   position:absolute; top:20px; right:24px;
   font-family:'Bebas Neue', sans-serif;
   font-size:0.7rem; letter-spacing:0.2em;
-  color:rgba(255,184,0,0.2);
+  color:rgba(10,132,255,0.2);
 }
 
 .card-title {
@@ -269,11 +269,11 @@ nav.topnav{position:fixed;top:0;left:0;right:0;z-index:100;
   margin-top:20px;
   font-family:'Bebas Neue', sans-serif;
   font-size:0.7rem; letter-spacing:0.2em;
-  color:var(--gold); opacity:0.7;
+  color:#0A84FF; opacity:0.7;
 }
 .card-arrow {
   position:absolute; bottom:24px; right:24px;
-  color:var(--gold); font-size:1rem;
+  color:#0A84FF; font-size:1rem;
   opacity:0; transform:translateX(-8px);
   transition:all 0.3s;
 }
@@ -300,7 +300,7 @@ nav.topnav{position:fixed;top:0;left:0;right:0;z-index:100;
   font-family:'Playfair Display', serif;
   font-style:italic; font-weight:700;
   font-size:4rem; line-height:1;
-  color:rgba(255,184,0,0.12);
+  color:rgba(10,132,255,0.12);
   margin-bottom:24px;
   display:block;
 }
@@ -330,23 +330,23 @@ nav.topnav{position:fixed;top:0;left:0;right:0;z-index:100;
   transition:all 0.4s; overflow:hidden;
 }
 .tier-card.featured {
-  border-color:var(--gold);
-  background:linear-gradient(135deg, rgba(255,184,0,0.08), rgba(255,149,0,0.04));
-  box-shadow:0 0 60px rgba(255,184,0,0.1);
+  border-color:#0A84FF;
+  background:linear-gradient(135deg, rgba(10,132,255,0.08), rgba(255,149,0,0.04));
+  box-shadow:0 0 60px rgba(10,132,255,0.1);
 }
 .tier-badge {
   position:absolute; top:0; right:32px;
   font-family:'Bebas Neue', sans-serif;
   font-size:0.65rem; letter-spacing:0.2em;
   color:var(--obsidian);
-  background:var(--gold);
+  background:#0A84FF;
   padding:4px 16px;
   clip-path:polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%);
 }
 .tier-name {
   font-family:'Bebas Neue', sans-serif;
   font-size:0.75rem; letter-spacing:0.3em;
-  color:var(--gold); margin-bottom:16px;
+  color:#0A84FF; margin-bottom:16px;
 }
 .tier-price {
   font-family:'Playfair Display', serif;
@@ -372,7 +372,7 @@ nav.topnav{position:fixed;top:0;left:0;right:0;z-index:100;
   border-bottom:1px solid rgba(255,255,255,0.04);
   display:flex; align-items:center; gap:10px;
 }
-.tier-features li::before { content:'✦'; color:var(--gold); font-size:0.5rem; flex-shrink:0; }
+.tier-features li::before { content:'✦'; color:#0A84FF; font-size:0.5rem; flex-shrink:0; }
 .tier-btn {
   width:100%;
   font-family:'Montserrat', sans-serif;
@@ -387,13 +387,13 @@ nav.topnav{position:fixed;top:0;left:0;right:0;z-index:100;
   border:1px solid var(--glass-border-bright) !important;
   color:var(--champagne);
 }
-.tier-btn-outline:hover { border-color:var(--gold) !important; color:var(--gold); }
-.tier-btn-gold {
-  background:linear-gradient(135deg, var(--gold), var(--gold-glow));
+.tier-btn-outline:hover { border-color:#0A84FF !important; color:#0A84FF; }
+.tier-btn-#0A84FF {
+  background:linear-gradient(135deg, #0A84FF, var(--#0A84FF-glow));
   color:var(--obsidian);
-  box-shadow:0 0 30px rgba(255,184,0,0.3);
+  box-shadow:0 0 30px rgba(10,132,255,0.3);
 }
-.tier-btn-gold:hover { box-shadow:0 0 50px rgba(255,184,0,0.5); transform:translateY(-2px); }
+.tier-btn-#0A84FF:hover { box-shadow:0 0 50px rgba(10,132,255,0.5); transform:translateY(-2px); }
 
 /* ─── GLOBAL REACH ─── */
 .global-section {
@@ -416,16 +416,16 @@ nav.topnav{position:fixed;top:0;left:0;right:0;z-index:100;
   position:absolute; inset:-1px;
   border-radius:50%;
   border:1px solid transparent;
-  background:linear-gradient(135deg, var(--gold), transparent, var(--gold-glow), transparent) border-box;
+  background:linear-gradient(135deg, #0A84FF, transparent, var(--#0A84FF-glow), transparent) border-box;
   -webkit-mask:linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite:destination-out;
   mask-composite:exclude;
 }
 .globe-inner {
   font-size:5rem;
-  filter:drop-shadow(0 0 20px rgba(255,184,0,0.4));
+  filter:drop-shadow(0 0 20px rgba(10,132,255,0.4));
 }
-@keyframes globeSpin { from{border-color:rgba(255,184,0,0.1)} to{border-color:rgba(255,184,0,0.5)} }
+@keyframes globeSpin { from{border-color:rgba(10,132,255,0.1)} to{border-color:rgba(10,132,255,0.5)} }
 
 .continents-strip {
   display:flex; flex-wrap:wrap; gap:12px;
@@ -440,7 +440,7 @@ nav.topnav{position:fixed;top:0;left:0;right:0;z-index:100;
   padding:8px 20px;
   transition:all 0.3s;
 }
-.continent-tag:hover { border-color:var(--gold); color:var(--gold); }
+.continent-tag:hover { border-color:#0A84FF; color:#0A84FF; }
 
 /* ─── FOOTER ─── */
 footer {
@@ -457,8 +457,8 @@ footer {
 .footer-brand .logo {
   font-family:'Bebas Neue', sans-serif;
   font-size:2.5rem; letter-spacing:0.15em;
-  color:var(--gold);
-  text-shadow:0 0 30px rgba(255,184,0,0.3);
+  color:#0A84FF;
+  text-shadow:0 0 30px rgba(10,132,255,0.3);
   display:block; margin-bottom:16px;
 }
 .footer-brand p {
@@ -470,7 +470,7 @@ footer {
   font-family:'Montserrat', sans-serif;
   font-weight:700; font-size:0.7rem;
   letter-spacing:0.25em; text-transform:uppercase;
-  color:var(--gold); margin-bottom:20px;
+  color:#0A84FF; margin-bottom:20px;
 }
 .footer-col ul { list-style:none; }
 .footer-col ul li { margin-bottom:10px; }
@@ -479,7 +479,7 @@ footer {
   font-size:0.82rem; color:var(--champagne-dim);
   text-decoration:none; transition:color 0.3s;
 }
-.footer-col ul li a:hover { color:var(--gold); }
+.footer-col ul li a:hover { color:#0A84FF; }
 .footer-bottom {
   display:flex; align-items:center; justify-content:space-between;
   padding-top:32px;
@@ -498,7 +498,7 @@ footer {
   font-size:0.9rem; color:var(--champagne-dim);
   text-decoration:none; transition:all 0.3s;
 }
-.footer-social:hover { border-color:var(--gold); color:var(--gold); }
+.footer-social:hover { border-color:#0A84FF; color:#0A84FF; }
 
 /* ─── MODAL ─── */
 .modal-overlay {
@@ -514,7 +514,7 @@ footer {
   max-width:480px; width:100%;
   padding:48px 40px;
   position:relative;
-  box-shadow:0 40px 120px rgba(0,0,0,0.6), 0 0 60px rgba(255,184,0,0.08);
+  box-shadow:0 40px 120px rgba(0,0,0,0.6), 0 0 60px rgba(10,132,255,0.08);
   animation:modalIn 0.4s ease;
 }
 @keyframes modalIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
@@ -524,11 +524,11 @@ footer {
   color:var(--champagne-dim); font-size:1.2rem;
   cursor:pointer; transition:color 0.3s;
 }
-.modal-close:hover { color:var(--gold); }
+.modal-close:hover { color:#0A84FF; }
 .modal-eyebrow {
   font-family:'Cormorant Garamond', serif;
   font-style:italic; font-size:0.95rem;
-  color:var(--gold); margin-bottom:12px;
+  color:#0A84FF; margin-bottom:12px;
 }
 .modal-title {
   font-family:'Playfair Display', serif;
@@ -544,7 +544,7 @@ footer {
   background:var(--glass-border);
   transition:background 0.3s;
 }
-.modal-step-dot.active { background:var(--gold); }
+.modal-step-dot.active { background:#0A84FF; }
 
 .form-group { margin-bottom:20px; }
 .form-label {
@@ -562,7 +562,7 @@ footer {
   font-family:'Inter', sans-serif; font-size:0.9rem;
   outline:none; transition:all 0.3s;
 }
-.form-input:focus { border-color:var(--gold); box-shadow:0 0 20px rgba(255,184,0,0.08); }
+.form-input:focus { border-color:#0A84FF; box-shadow:0 0 20px rgba(10,132,255,0.08); }
 .form-input::placeholder { color:rgba(189,181,166,0.3); }
 
 .category-pick-grid {
@@ -576,8 +576,8 @@ footer {
   background:transparent;
 }
 .cat-pick:hover, .cat-pick.selected {
-  border-color:var(--gold);
-  background:rgba(255,184,0,0.08);
+  border-color:#0A84FF;
+  background:rgba(10,132,255,0.08);
 }
 .cat-pick-icon { font-size:1.4rem; display:block; margin-bottom:4px; }
 .cat-pick-name {
@@ -628,7 +628,7 @@ footer {
 
 <!-- NAV -->
 <nav class="topnav">
-  <a class="nav-logo-tw" href="#">ICONIK</a>
+  <a class="nav-logo-tw" href="/index.html" title="Home"><svg viewBox="0 0 240 60" height="26" style="display:inline-block;vertical-align:middle;" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="iDiagHome"><polygon points="0,0 20,0 20,30 0,50"/></clipPath></defs><rect x="0" y="2" width="8" height="56" fill="#0A84FF"/><rect x="0" y="2" width="8" height="56" fill="#FF3B30" clip-path="url(#iDiagHome)"/><text x="13" y="46" font-family="Inter,Arial,sans-serif" font-weight="900" font-size="52" fill="#0A84FF" letter-spacing="1">CONIK</text></svg></a>
   <div class="nav-right">
     <button class="nav-join-tw" onclick="goToApp()">JOIN FREE</button>
     <button class="nav-menu-tw" onclick="goToApp()"><span></span><span></span><span></span></button>
@@ -982,7 +982,7 @@ footer {
           <li>Silver verified badge</li>
           <li>PayPal & Crypto accepted</li>
         </ul>
-        <button class="tier-btn tier-btn-gold" onclick="goToApp()">Go Silver</button>
+        <button class="tier-btn tier-btn-#0A84FF" onclick="goToApp()">Go Silver</button>
       </div>
       <!-- VIP Gold -->
       <div class="tier-card reveal">
@@ -1009,7 +1009,7 @@ footer {
   <div class="reveal">
     <p class="section-label">Global Ecosystem</p>
     <h2 class="section-title">Icons on Every <em>Continent</em></h2>
-    <p class="section-sub" style="margin:16px auto 0; max-width:600px;">From the stadiums of <em style="color:var(--gold);font-style:normal;">North America</em> to the stages of <em style="color:var(--gold);font-style:normal;">Europe</em>. The arenas of <em style="color:var(--gold);font-style:normal;">Asia</em> to the fields of <em style="color:var(--gold);font-style:normal;">South America</em>. The rising talents of <em style="color:var(--gold);font-style:normal;">Africa & the Middle East</em> to the icons of <em style="color:var(--gold);font-style:normal;">Oceania</em>. Every champion, every star, every icon — represented.</p>
+    <p class="section-sub" style="margin:16px auto 0; max-width:600px;">From the stadiums of <em style="color:#0A84FF;font-style:normal;">North America</em> to the stages of <em style="color:#0A84FF;font-style:normal;">Europe</em>. The arenas of <em style="color:#0A84FF;font-style:normal;">Asia</em> to the fields of <em style="color:#0A84FF;font-style:normal;">South America</em>. The rising talents of <em style="color:#0A84FF;font-style:normal;">Africa & the Middle East</em> to the icons of <em style="color:#0A84FF;font-style:normal;">Oceania</em>. Every champion, every star, every icon — represented.</p>
   </div>
   <div class="globe-visual reveal">
     <div class="globe-inner">🌍</div>
@@ -1057,21 +1057,21 @@ footer {
 
     <!-- ALL 13 COMMUNITIES HORIZONTAL -->
     <div style="margin-bottom:48px;">
-      <h4 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;">All Communities</h4>
+      <h4 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:#0A84FF;margin-bottom:20px;">All Communities</h4>
       <div style="display:flex;flex-wrap:wrap;gap:10px;">
-        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🎵 Music</a>
-        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🎬 Film & TV</a>
-        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">⚽ Sports</a>
-        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">📚 Literature</a>
-        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">💪 Fitness & Wellness</a>
-        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🌿 Nature & Exploration</a>
-        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">👗 Fashion</a>
-        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🍽️ Food & Culinary</a>
-        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🚗 Automotive</a>
-        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">💻 Tech & Innovation</a>
-        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">💄 Beauty & Aesthetics</a>
-        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🎭 Entertainment & Talent</a>
-        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🎓 Thought Leadership</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='#0A84FF';this.style.borderColor='#0A84FF'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🎵 Music</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='#0A84FF';this.style.borderColor='#0A84FF'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🎬 Film & TV</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='#0A84FF';this.style.borderColor='#0A84FF'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">⚽ Sports</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='#0A84FF';this.style.borderColor='#0A84FF'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">📚 Literature</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='#0A84FF';this.style.borderColor='#0A84FF'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">💪 Fitness & Wellness</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='#0A84FF';this.style.borderColor='#0A84FF'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🌿 Nature & Exploration</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='#0A84FF';this.style.borderColor='#0A84FF'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">👗 Fashion</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='#0A84FF';this.style.borderColor='#0A84FF'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🍽️ Food & Culinary</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='#0A84FF';this.style.borderColor='#0A84FF'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🚗 Automotive</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='#0A84FF';this.style.borderColor='#0A84FF'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">💻 Tech & Innovation</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='#0A84FF';this.style.borderColor='#0A84FF'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">💄 Beauty & Aesthetics</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='#0A84FF';this.style.borderColor='#0A84FF'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🎭 Entertainment & Talent</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.75rem;color:var(--champagne-dim);text-decoration:none;border:1px solid var(--glass-border);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.color='#0A84FF';this.style.borderColor='#0A84FF'" onmouseout="this.style.color='var(--champagne-dim)';this.style.borderColor='var(--glass-border)'">🎓 Thought Leadership</a>
       </div>
     </div>
 
@@ -1177,21 +1177,21 @@ footer {
       <div id="step3" style="display:none;">
         <p style="font-family:'Inter',sans-serif;font-size:0.82rem;color:var(--champagne-dim);margin-bottom:24px;">You're almost in! Choose your membership to unlock your communities:</p>
         <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
-          <div style="padding:14px 16px;border:1px solid var(--glass-border);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all 0.3s;" onmouseenter="this.style.borderColor='var(--gold)'" onmouseleave="this.style.borderColor='var(--glass-border)'">
+          <div style="padding:14px 16px;border:1px solid var(--glass-border);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all 0.3s;" onmouseenter="this.style.borderColor='#0A84FF'" onmouseleave="this.style.borderColor='var(--glass-border)'">
             <span style="font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:600;color:var(--champagne);">Fan Member — Free</span>
-            <span style="color:var(--gold);font-size:0.8rem;">$0</span>
+            <span style="color:#0A84FF;font-size:0.8rem;">$0</span>
           </div>
-          <div style="padding:14px 16px;border:1px solid var(--glass-border);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all 0.3s;" onmouseenter="this.style.borderColor='var(--gold)'" onmouseleave="this.style.borderColor='var(--glass-border)'">
+          <div style="padding:14px 16px;border:1px solid var(--glass-border);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all 0.3s;" onmouseenter="this.style.borderColor='#0A84FF'" onmouseleave="this.style.borderColor='var(--glass-border)'">
             <span style="font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:600;color:var(--champagne);">VIP Bronze</span>
-            <span style="color:var(--gold);font-size:0.8rem;">$5/mo</span>
+            <span style="color:#0A84FF;font-size:0.8rem;">$5/mo</span>
           </div>
-          <div style="padding:14px 16px;border:1px solid var(--gold);cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:rgba(255,184,0,0.06);">
-            <span style="font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:700;color:var(--gold);">VIP Silver ⭐ Most Popular</span>
-            <span style="color:var(--gold);font-size:0.8rem;">$12/mo</span>
+          <div style="padding:14px 16px;border:1px solid #0A84FF;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:rgba(10,132,255,0.06);">
+            <span style="font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:700;color:#0A84FF;">VIP Silver ⭐ Most Popular</span>
+            <span style="color:#0A84FF;font-size:0.8rem;">$12/mo</span>
           </div>
-          <div style="padding:14px 16px;border:1px solid var(--glass-border);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all 0.3s;" onmouseenter="this.style.borderColor='var(--gold)'" onmouseleave="this.style.borderColor='var(--glass-border)'">
+          <div style="padding:14px 16px;border:1px solid var(--glass-border);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all 0.3s;" onmouseenter="this.style.borderColor='#0A84FF'" onmouseleave="this.style.borderColor='var(--glass-border)'">
             <span style="font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:600;color:var(--champagne);">VIP Gold 👑</span>
-            <span style="color:var(--gold);font-size:0.8rem;">$25/mo</span>
+            <span style="color:#0A84FF;font-size:0.8rem;">$25/mo</span>
           </div>
         </div>
         <button class="btn-primary" style="width:100%;display:block;text-align:center;" onclick="completeJoin()">Enter ICONIK 🚀</button>
@@ -1225,7 +1225,7 @@ function completeJoin() {
   document.getElementById('joinModal').innerHTML = `
     <div style="text-align:center;padding:20px 0;">
       <div style="font-size:3rem;margin-bottom:20px;">🌟</div>
-      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold);font-size:1.1rem;margin-bottom:12px;">Welcome to ICONIK</p>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;color:#0A84FF;font-size:1.1rem;margin-bottom:12px;">Welcome to ICONIK</p>
       <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--champagne);margin-bottom:16px;">You're In!</h2>
       <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:var(--champagne-dim);line-height:1.6;">Your communities are being set up. The world's icons are waiting for you.</p>
       <button class="btn-primary" style="margin-top:32px;" onclick="closeModal()">Enter My Dashboard →</button>
@@ -1245,10 +1245,10 @@ window.addEventListener('scroll', () => {
   const nav = document.querySelector('nav');
   if(window.scrollY > 60) {
     nav.style.background = 'rgba(7,7,13,0.95)';
-    nav.style.borderBottomColor = 'rgba(255,184,0,0.2)';
+    nav.style.borderBottomColor = 'rgba(10,132,255,0.2)';
   } else {
     nav.style.background = 'rgba(7,7,13,0.7)';
-    nav.style.borderBottomColor = 'rgba(255,184,0,0.15)';
+    nav.style.borderBottomColor = 'rgba(10,132,255,0.15)';
   }
 });
 
