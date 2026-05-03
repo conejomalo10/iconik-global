@@ -887,7 +887,7 @@ window.addCeleb=async function(){
     if(wrap)wrap.style.display='none';
     await fetchAllCelebs();
     goView('managecelebs');
-  }catch(e){toast(e.message||'Error adding celebrity','error');}
+  }catch(e){console.error('Add celeb error:',e);toast('Error: '+(e.message||'Check Firestore rules in Firebase Console'),'error');}
   btn.disabled=false;btn.textContent='Add Celebrity →';
 };
 
