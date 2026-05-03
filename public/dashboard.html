@@ -904,21 +904,9 @@ onAuthStateChanged(auth,async function(u){
     if(d.exists()){
       cD={id:d.id,...d.data()};
     } else {
-      // Auto-create user profile in Firestore on first login
-      var newProfile={
-        name:u.displayName||u.email.split("@")[0]||"Member",
-        email:u.email||"",
-        profilePic:u.photoURL||"",
-        bio:"",
-        tier:"Fan",
-        followers:0,
-        following:0,
-        posts:0,
-        joinedAt:serverTimestamp(),
-        uid:u.uid
-      };
-      await setDoc(doc(db,"users",u.uid),newProfile);
-      cD={id:u.uid,...newProfile};
+      // Auto-create user profile on first login (only if not exists)
+      var np={name:u.displayName||u.email.split("@")[0]||"Member",email:u.email||"",profilePic:u.photoURL||"",bio:"",tier:"Fan",followers:0,following:0,posts:0,joinedAt:serverTimestamp(),uid:u.uid};
+      try{await setDoc(doc(db,"users",u.uid),np);cD={id:u.uid,...np};}catch(se){console.log("Profile create error:",se.message);}
     }
   }catch(e){console.log("Auth error:",e);}
   boot();
@@ -1238,10 +1226,10 @@ function openComposer(){
       var imgUrl=document.getElementById("pcPh").value.trim();
       var vidUrl=document.getElementById("pcVid").value.trim();
       var f=document.getElementById("pcF").files[0];
-      if(f&&!imgUrl&&!vidUrl){try{var url=await upload(f);if(f.type.startsWith("video"))vidUrl=url;else imgUrl=url;}catch{}}
+      if(f&&!imgUrl&&!vidUrl){try{var url=await upload(f);if(f.type.startsWith("video"))vidUrl=url;else imgUrl=url;}catch(ue){console.error("Upload error:",ue);var er=document.getElementById("pcErr");er.textContent="Image upload failed: "+(ue.message||"Check Cloudinary settings");er.style.display="block";this.disabled=false;this.textContent="Share Post &#8594;";return;}}
       await addDoc(collection(db,"posts"),{content:txt,title:"",category:document.getElementById("pcCat").value||(cD&&cD.categories&&cD.categories[0])||"",userId:cU.uid,userName:(cD&&cD.name)||"Member",userPhoto:(cD&&cD.profilePic)||"",imageUrl:imgUrl||"",videoUrl:vidUrl||"",isAdmin:false,likeCount:0,commentCount:0,createdAt:serverTimestamp()});
       ov.remove();toast("Post shared!");loadFeed();
-    }catch{var er=document.getElementById("pcErr");er.textContent="Error. Try again.";er.style.display="block";this.disabled=false;this.textContent="Share Post &#8594;";}
+    }catch(e){var er=document.getElementById("pcErr");er.textContent="Error: "+(e.message||"Try again. Check your connection.");er.style.display="block";this.disabled=false;this.textContent="Share Post &#8594;";console.error("Post error:",e);}
   };
 }
 
