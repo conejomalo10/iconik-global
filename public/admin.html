@@ -9,7 +9,7 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
   --bg:#07070D;--bg2:#0E0E1A;--bg3:#141420;
-  --gold:#FFB800;--gold2:#CC9400;
+  --gold:#0A84FF;--gold2:#0060CC;
   --text:#F5F0E8;--muted:#BDB5A6;--dim:rgba(189,181,166,0.4);
   --border:rgba(255,255,255,0.09);--border2:rgba(255,255,255,0.16);
   --card:rgba(255,255,255,0.045);
@@ -20,7 +20,7 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
 /* TOP NAV */
 #topnav{position:fixed;top:0;left:0;right:0;height:60px;z-index:600;background:rgba(7,7,13,0.96);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;backdrop-filter:blur(16px);}
 .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.08em;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.nav-badge{font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--bg);background:var(--gold);padding:3px 10px;}
+.nav-badge{font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:#fff;background:#0A84FF;padding:3px 10px;}
 #hamburger{width:40px;height:40px;background:none;border:1px solid var(--border2);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;padding:0;flex-shrink:0;}
 #hamburger span{display:block;width:18px;height:2px;background:var(--text);border-radius:2px;}
 
@@ -33,7 +33,7 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
 .sb-brand{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.08em;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 #sbClose{background:none;border:1px solid var(--border);border-radius:6px;width:30px;height:44px;color:var(--muted);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;}
 .sb-link{display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:0.76rem;font-weight:600;color:var(--muted);transition:all 0.18s;border-left:3px solid transparent;}
-.sb-link:hover,.sb-link.active{color:var(--gold);border-left-color:var(--gold);background:rgba(255,184,0,0.06);}
+.sb-link:hover,.sb-link.active{color:var(--gold);border-left-color:var(--gold);background:rgba(10,132,255,0.06);}
 .sb-link-icon{width:22px;text-align:center;font-size:1rem;}
 .sb-logout{color:var(--err)!important;}
 .sb-logout:hover{background:rgba(239,68,68,0.08)!important;border-left-color:var(--err)!important;}
@@ -62,7 +62,7 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
 .fi::placeholder{color:var(--dim);}
 textarea.fi{resize:vertical;min-height:80px;}
 select.fi option{background:var(--bg2);}
-.btn-gold{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;padding:11px 18px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--bg);border:none;border-radius:6px;cursor:pointer;transition:opacity 0.2s;width:100%;}
+.btn-gold{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;padding:11px 18px;background:linear-gradient(135deg,#0A84FF,#0060CC);color:#fff;border:none;border-radius:6px;cursor:pointer;transition:opacity 0.2s;width:100%;}
 .btn-gold:disabled{opacity:0.5;cursor:not-allowed;}
 .btn-gold:hover{opacity:0.88;}
 .btn-danger{background:var(--err)!important;color:#fff!important;}
@@ -89,7 +89,7 @@ select.fi option{background:var(--bg2);}
 /* BADGES */
 .badge{font-family:'Bebas Neue',sans-serif;font-size:0.5rem;letter-spacing:0.1em;padding:2px 6px;border-radius:3px;display:inline-block;}
 .badge-ok{background:rgba(34,197,94,0.2);color:var(--ok);}
-.badge-warn{background:rgba(255,184,0,0.2);color:var(--gold);}
+.badge-warn{background:rgba(10,132,255,0.2);color:var(--gold);}
 .badge-err{background:rgba(239,68,68,0.2);color:var(--err);}
 
 /* MEDIA PREVIEW */
@@ -97,7 +97,7 @@ select.fi option{background:var(--bg2);}
 
 /* LOADER */
 .loader{display:flex;align-items:center;justify-content:center;padding:28px;}
-.loader-ring{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;}
+.loader-ring{width:28px;height:28px;border:3px solid var(--border);border-top-color:#0A84FF;border-radius:50%;animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* TOAST */
@@ -224,7 +224,7 @@ select.fi option{background:var(--bg2);}
 <!-- ADD / EDIT CELEBRITY -->
 <div class="view" id="celebritiesV">
   <div class="wbar"><span style="font-size:1.4rem;">⭐</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Add Icon / Celebrity</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Builds the celebrity fan hub</div></div></div>
-  <button onclick="goView('managecelebs')" style="width:100%;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.64rem;padding:9px 14px;background:rgba(255,184,0,0.08);border:1px solid rgba(255,184,0,0.3);color:var(--gold);cursor:pointer;border-radius:6px;margin-bottom:12px;">📋 View &amp; Manage Existing Celebrities →</button>
+  <button onclick="goView('managecelebs')" style="width:100%;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.64rem;padding:9px 14px;background:rgba(10,132,255,0.08);border:1px solid rgba(10,132,255,0.3);color:var(--gold);cursor:pointer;border-radius:6px;margin-bottom:12px;">📋 View &amp; Manage Existing Celebrities →</button>
   <div class="card">
     <div class="fg"><label class="fl">Full Name *</label><input class="fi" id="cName" placeholder="e.g. Benito Antonio Martínez Ocasio"/></div>
     <div class="fg"><label class="fl">Stage Name / Known As</label><input class="fi" id="cStage" placeholder="e.g. Bad Bunny"/></div>
