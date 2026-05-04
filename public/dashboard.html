@@ -1651,7 +1651,7 @@ function filterMembers(){
   if(cat)r=r.filter(function(m){return(m.categories||[]).some(function(c){return c.toLowerCase().includes(cat.toLowerCase());});});
   renderMembers(r);
 }
-function openMember(m){
+async function openMember(m){
   var ci={"Music":"&#127925;","Film & TV":"&#127909;","Sports":"&#9917;","Literature":"&#128218;","Fitness & Wellness":"&#128170;","Nature":"&#127807;","Fashion":"&#128247;","Food & Culinary":"&#127869;","Automotive":"&#128663;","Tech & Innovation":"&#128187;","Beauty":"&#128132;","Leadership":"&#127891;","Entertainment":"&#127917;"};
   var ov=mkOv();
   var h=navRow("Member Profile");
@@ -1664,17 +1664,20 @@ function openMember(m){
   else h+=xe((m.name||"?").charAt(0).toUpperCase());
   h+="</div>";
   // ── ACTION BUTTONS — compact row ──
-  h+="<div style=\"display:flex;gap:6px;padding-bottom:4px;\">";
+  // Check friend status
+  var isFr=false;
+  try{var frSnap=await getDoc(doc(db,"friends",cU.uid+"_"+m.id));isFr=frSnap.exists();}catch(e){}
+  h+="<div style=\"display:flex;gap:6px;padding-bottom:4px;flex-wrap:wrap;\">";
   h+="<button class=\"btn-act\" id=\"fMBtn\" style=\"flex:1;padding:9px 6px;font-size:0.78rem;\">+ Follow</button>";
+  h+=(isFr
+    ?"<button class=\"btn-gh\" id=\"frBtn\" style=\"flex:1;padding:9px 6px;font-size:0.78rem;background:rgba(10,132,255,0.12);border:1px solid #0A84FF;color:#0A84FF;\">✓ Friends</button>"
+    :"<button class=\"btn-gh\" id=\"frBtn\" style=\"flex:1;padding:9px 6px;font-size:0.78rem;\">+ Friend</button>");
   h+="<button class=\"btn-gh\" id=\"sMBtn\" style=\"flex:1;padding:9px 6px;font-size:0.78rem;\">🔗 Share</button>";
   h+="<button id=\"blockMBtn\" style=\"flex:1;padding:9px 6px;background:rgba(255,59,48,0.07);border:1.5px solid rgba(255,59,48,0.25);border-radius:var(--radius-sm);cursor:pointer;font-family:'Sora',sans-serif;font-size:0.78rem;font-weight:700;color:var(--err);transition:all 0.2s;\">🚫 Block</button>";
   h+="</div></div>";
   h+="<div style=\"padding:0 16px 24px;\">";
-  // Name + verified badge
-  h+="<div style=\"font-family:'Sora',sans-serif;font-weight:800;font-size:1.15rem;color:var(--text);margin-bottom:5px;letter-spacing:-0.02em;\">"+xe(m.name||"Member")+(m.verificationStatus==="verified"?"<span class=\"badge-verified\"></span>":"")+"</div>";
-  // Tier badge — fixed HTML
-  var mt=m.tier||"Fan";var mtc=mt.toLowerCase().includes("gold")?"tier-gold":mt.toLowerCase().includes("silver")?"tier-silver":mt.toLowerCase().includes("bronze")?"tier-bronze":"tier-fan";
-  h+="<div class=\""+mtc+"\" style=\"margin-bottom:10px;\">"+xe(mt)+"</div>";
+  // Name + verified badge + VIP medal — side by side
+  h+="<div style=\"font-family:'Sora',sans-serif;font-weight:800;font-size:1.15rem;color:var(--text);margin-bottom:6px;letter-spacing:-0.02em;display:flex;align-items:center;gap:6px;flex-wrap:wrap;\">"+xe(m.name||"Member")+(m.verificationStatus==="verified"?"<span class=\"badge-verified\"></span>":"")+getTierBadge(m.tier)+"</div>";
   h+="<div style=\"font-family:'Sora',sans-serif;font-size:0.78rem;color:var(--text3);margin-bottom:14px;\">&#128205; "+(m.city?xe(m.city)+", ":"")+xe(m.country||"—")+"</div>";
   if(m.bio)h+="<div style=\"font-size:0.74rem;color:var(--muted);line-height:1.7;margin-bottom:14px;\">"+xe(m.bio)+"</div>";
   h+="<div style=\"display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:16px;\">";
@@ -1732,6 +1735,31 @@ function openMember(m){
     if(navigator.share)navigator.share({title:xe(m.name||"Member")+" on ICONIK",url:location.href});
     else if(navigator.clipboard)navigator.clipboard.writeText(location.href).then(function(){toast("Link copied!");});
   };
+  // Friend button handler
+  var frBtn=document.getElementById("frBtn");
+  if(frBtn){
+    frBtn.onclick=async function(){
+      var btn=this;
+      var alreadyFriend=btn.textContent.includes("✓");
+      if(alreadyFriend){
+        try{
+          await deleteDoc(doc(db,"friends",cU.uid+"_"+m.id));
+          await deleteDoc(doc(db,"friends",m.id+"_"+cU.uid));
+          btn.textContent="+ Friend";
+          btn.style.background="";btn.style.color="";btn.style.borderColor="";
+          toast("Friend removed");
+        }catch(e){toast("Error: "+e.message,"error");}
+      }else{
+        try{
+          await setDoc(doc(db,"friends",cU.uid+"_"+m.id),{uid1:cU.uid,uid2:m.id,name2:xe(m.name||"Member"),createdAt:serverTimestamp()});
+          await setDoc(doc(db,"friends",m.id+"_"+cU.uid),{uid1:m.id,uid2:cU.uid,name2:xe((cD&&cD.name)||"Member"),createdAt:serverTimestamp()});
+          btn.textContent="✓ Friends";
+          btn.style.background="rgba(10,132,255,0.12)";btn.style.color="#0A84FF";btn.style.borderColor="#0A84FF";
+          toast("Friend added! 🤝","success");
+        }catch(e){toast("Error: "+e.message,"error");}
+      }
+    };
+  }
 }
 
 // RANKINGS
@@ -1794,7 +1822,7 @@ function loadProfile(){
   h+=(cD.name||"M").charAt(0).toUpperCase();
   h+="</div><div style=\"position:absolute;bottom:2px;right:2px;width:26px;height:26px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:0.7rem;border:2px solid var(--bg);z-index:6;\">📷</div></div>";
   h+="</div>";
-  h+="<div style=\"padding-bottom:4px;\"><span style=\"font-family:'Bebas Neue',sans-serif;font-size:0.56rem;letter-spacing:0.12em;color:var(--bg);background:var(--accent);padding:3px 10px;\">"+xe(cD.tier||"Fan")+"</span></div></div>";
+  h+="<div style=\"padding-bottom:4px;\">"+getTierBadge(cD.tier)+"</div></div>";
   h+="<div style=\"font-weight:700;font-size:1.1rem;color:var(--text);margin-bottom:4px;\">"+nm+(cD.verificationStatus==="verified"?"<span class=\"badge-verified\"></span>":"")+"</div>";
   if(cD.bio)h+="<div style=\"font-size:0.72rem;color:var(--muted);line-height:1.6;margin-bottom:12px;\">"+xe(cD.bio)+"</div>";
   h+="<div style=\"display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:16px;\">";
