@@ -167,9 +167,9 @@ body.light #sb{background:#FFFFFF;}
   padding:3px 10px;border-radius:20px;
 }
 .sb-ti.fan{background:var(--card2);color:var(--text3);border:1px solid var(--border2);}
-.sb-ti.bronze{background:rgba(180,120,60,0.15);color:#CD7F32;border:1px solid rgba(205,127,50,0.3);}
-.sb-ti.silver{background:rgba(160,160,180,0.15);color:#A0A0B4;border:1px solid rgba(160,160,180,0.3);}
-.sb-ti.gold{background:rgba(10,132,255,0.15);color:var(--accent);border:1px solid var(--accent-glow);}
+.sb-ti.bronze{background:linear-gradient(135deg,rgba(205,127,50,0.25),rgba(180,100,30,0.15));color:#CD7F32;border:1px solid rgba(205,127,50,0.5);box-shadow:0 2px 8px rgba(205,127,50,0.2);}
+.sb-ti.silver{background:linear-gradient(135deg,rgba(192,192,192,0.25),rgba(160,160,180,0.15));color:#C0C0C0;border:1px solid rgba(192,192,192,0.5);box-shadow:0 2px 8px rgba(192,192,192,0.2);}
+.sb-ti.gold{background:linear-gradient(135deg,rgba(255,215,0,0.25),rgba(255,180,0,0.15));color:#FFD700;border:1px solid rgba(255,215,0,0.5);box-shadow:0 2px 8px rgba(255,215,0,0.25);}
 .sb-lbl{
   font-family:"Sora",sans-serif;font-size:0.62rem;font-weight:700;
   letter-spacing:0.1em;text-transform:uppercase;
@@ -967,12 +967,19 @@ onAuthStateChanged(auth,async function(u){
       cD={id:d.id,...d.data()};
     } else {
       // Auto-create user profile on first login (only if not exists)
-      var np={name:u.displayName||u.email.split("@")[0]||"Member",email:u.email||"",profilePic:u.photoURL||"",bio:"",tier:"Fan",followers:0,following:0,posts:0,joinedAt:serverTimestamp(),uid:u.uid};
+      var np={name:u.displayName||u.email.split("@")[0]||"Member",email:u.email||"",profilePic:u.photoURL||"",bio:"",tier:"Fan",privacy:{profilePic:"public",coverPhoto:"public",posts:"public",status:"public"},followers:0,following:0,posts:0,joinedAt:serverTimestamp(),uid:u.uid};
       try{await setDoc(doc(db,"users",u.uid),np);cD={id:u.uid,...np};}catch(se){console.log("Profile create error:",se.message);}
     }
   }catch(e){console.log("Auth error:",e);}
   boot();
 });
+function getTierBadge(tier){
+  var t=(tier||"Fan").toLowerCase();
+  if(t==="gold")return "<span class=\'sb-ti gold\'>🥇 VIP Gold</span>";
+  if(t==="silver")return "<span class=\'sb-ti silver\'>🥈 VIP Silver</span>";
+  if(t==="bronze")return "<span class=\'sb-ti bronze\'>🥉 VIP Bronze</span>";
+  return "<span class=\'sb-ti fan\'>Fan</span>";
+}
 function boot(){
   var nm=cD&&cD.name?cD.name:"Member";
   var av=document.getElementById("navAv");av.textContent=nm.charAt(0).toUpperCase();
