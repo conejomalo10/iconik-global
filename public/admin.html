@@ -340,17 +340,46 @@ select.fi option{background:var(--bg2);}
 
 <!-- MESSAGES -->
 <div class="view" id="messagesV">
-  <div class="wbar"><span style="font-size:1.4rem;">📩</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Send Message to All Members</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Appears in member inbox</div></div></div>
-  <div class="card">
-    <div class="fg"><label class="fl">Subject</label><input class="fi" id="msgSubj" placeholder="Message subject..."/></div>
-    <div class="fg"><label class="fl">Message *</label><textarea class="fi" id="msgBody" rows="4" placeholder="Your message to all members..."></textarea></div>
-    <button class="btn-gold" id="sendMsgBtn" onclick="sendMessage()">Send to All Members →</button>
-  </div>
-  <div class="sec-head">Message History</div>
-  <div id="messagesList"><div class="loader"><div class="loader-ring"></div></div></div>
-</div>
+  <div class="wbar"><span style="font-size:1.4rem;">📩</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Send Message</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Broadcast or Private DM — appears in member inbox</div></div></div>
 
-<!-- POLLS -->
+  <!-- Tab switcher -->
+  <div style="display:flex;gap:6px;margin-bottom:14px;">
+    <button id="msgTabAll" onclick="switchMsgTab('all')" style="flex:1;padding:9px;background:linear-gradient(135deg,#0A84FF,#0060CC);color:#fff;border:none;border-radius:8px;font-family:'Sora',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;">📢 Broadcast All</button>
+    <button id="msgTabDM" onclick="switchMsgTab('dm')" style="flex:1;padding:9px;background:var(--bg2);color:var(--text3);border:1px solid var(--border);border-radius:8px;font-family:'Sora',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;">💌 Private DM</button>
+  </div>
+
+  <!-- Broadcast to All -->
+  <div id="msgAllForm" class="card" style="margin-bottom:12px;">
+    <div class="fg"><label class="fl">Subject *</label><input class="fi" id="msgSubj" placeholder="Message subject..."/></div>
+    <div class="fg"><label class="fl">Message *</label><textarea class="fi" id="msgBody" rows="4" placeholder="Write your broadcast message..."></textarea></div>
+    <div class="fg"><label class="fl">Attach Media (optional)</label>
+      <input class="fi" id="msgImgUrl" placeholder="Paste image/file URL..." style="margin-bottom:6px;"/>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <label style="background:var(--bg3);border:1px solid var(--border);padding:7px 12px;border-radius:8px;cursor:pointer;font-size:0.68rem;color:var(--text);display:inline-flex;align-items:center;gap:5px;">
+          📎 Upload File<input type="file" id="msgFile" accept="image/*,video/*,.pdf,.doc,.docx" style="display:none;" onchange="document.getElementById('msgFnm').textContent=this.files[0]?this.files[0].name:''"/>
+        </label>
+        <span id="msgFnm" style="font-size:0.62rem;color:var(--text3);"></span>
+      </div>
+    </div>
+    <button class="btn-gold" id="sendAllBtn" onclick="sendMessageAll()" style="width:100%;">📢 Send to All Members →</button>
+  </div>
+
+  <!-- Private DM -->
+  <div id="msgDMForm" class="card" style="display:none;margin-bottom:12px;">
+    <div class="fg"><label class="fl">To (email or UID) *</label><input class="fi" id="dmToField" placeholder="member@email.com or member UID..."/></div>
+    <div class="fg"><label class="fl">Subject *</label><input class="fi" id="dmSubjField" placeholder="Message subject..."/></div>
+    <div class="fg"><label class="fl">Message *</label><textarea class="fi" id="dmBodyField" rows="4" placeholder="Private message..."></textarea></div>
+    <div class="fg"><label class="fl">Attach Media (optional)</label>
+      <input class="fi" id="dmImgUrl" placeholder="Paste image/file URL..." style="margin-bottom:6px;"/>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <label style="background:var(--bg3);border:1px solid var(--border);padding:7px 12px;border-radius:8px;cursor:pointer;font-size:0.68rem;color:var(--text);display:inline-flex;align-items:center;gap:5px;">
+          📎 Upload File<input type="file" id="dmFile" accept="image/*,video/*,.pdf,.doc,.docx" style="display:none;" onchange="document.getElementById('dmFnm').textContent=this.files[0]?this.files[0].name:''"/>
+        </label>
+        <span id="dmFnm" style="font-size:0.62rem;color:var(--text3);"></span>
+      </div>
+    </div>
+    <button class="btn-gold" id="sendDMBtn" onclick="sendPrivateDM()" style="width:100%;">💌 Send Private Message →</button>
+  </div>
 <div class="view" id="pollsV">
   <div class="wbar"><span style="font-size:1.4rem;">🗳️</span><div><div style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;color:var(--text);">Create Poll</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Members vote in the Polls tab</div></div></div>
   <div class="card">
@@ -378,7 +407,21 @@ select.fi option{background:var(--bg2);}
     </div>
     <div class="fg"><label class="fl">Summary *</label><textarea class="fi" id="magSummary" rows="3" placeholder="Article summary..."></textarea></div>
     <div class="fg"><label class="fl">Full Article</label><textarea class="fi" id="magContent" rows="5" placeholder="Full article text..."></textarea></div>
-    <div class="fg"><label class="fl">Cover Image URL</label><input class="fi" id="magImgUrl" placeholder="https://..."/></div>
+    <div class="fg"><label class="fl">Cover Image / Media</label>
+      <input class="fi" id="magImgUrl" placeholder="Paste image URL..." style="margin-bottom:6px;"/>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+        <label style="background:var(--bg3);border:1px solid var(--border);padding:7px 12px;border-radius:8px;cursor:pointer;font-size:0.68rem;color:var(--text);display:inline-flex;align-items:center;gap:5px;">
+          📷 Image<input type="file" id="magImgFile" accept="image/*" style="display:none;" onchange="document.getElementById('magFnm').textContent=this.files[0]?this.files[0].name:''"/>
+        </label>
+        <label style="background:var(--bg3);border:1px solid var(--border);padding:7px 12px;border-radius:8px;cursor:pointer;font-size:0.68rem;color:var(--text);display:inline-flex;align-items:center;gap:5px;">
+          🎬 Video<input type="file" id="magVidFile" accept="video/*" style="display:none;" onchange="document.getElementById('magFnm').textContent=this.files[0]?this.files[0].name:''"/>
+        </label>
+        <label style="background:var(--bg3);border:1px solid var(--border);padding:7px 12px;border-radius:8px;cursor:pointer;font-size:0.68rem;color:var(--text);display:inline-flex;align-items:center;gap:5px;">
+          📄 PDF/Doc<input type="file" id="magDocFile" accept=".pdf,.doc,.docx" style="display:none;" onchange="document.getElementById('magFnm').textContent=this.files[0]?this.files[0].name:''"/>
+        </label>
+        <span id="magFnm" style="font-size:0.62rem;color:var(--text3);align-self:center;"></span>
+      </div>
+    </div>
     <button class="btn-gold" id="addMagBtn" onclick="addMagazineArticle()">Publish Article →</button>
   </div>
 </div>
@@ -614,14 +657,14 @@ function memberRow(m,compact){
       <div class="m-name">${nm} <span class="badge ${badgeCls}">${status}</span>${isBanned?'<span class="badge badge-err" style="margin-left:3px;">BANNED</span>':''}</div>
       <div class="m-meta">${compact?esc(m.country||'—'):esc(m.email||'')+'&nbsp;·&nbsp;'+esc(m.country||'—')+'&nbsp;·&nbsp;'+esc(m.tier||'Fan')}</div>
     </div>
-    <div class="m-actions">
-      ${status!=='verified'?`<button class="m-btn m-btn-ok" data-action="verify" data-uid="${m.id}" title="Verify">✓</button>`:''}
-      ${status==='verified'?`<button class="m-btn m-btn-warn" data-action="unverify" data-uid="${m.id}" title="Remove verification">↩</button>`:''}
-      <button class="m-btn m-btn-info" data-action="vip" data-uid="${m.id}" data-tier="${esc(m.tier||'Fan')}" title="Change tier">VIP</button>
+    <div class="m-actions" style="display:flex;gap:5px;flex-wrap:wrap;margin-top:4px;">
+      ${status!=='verified'?`<button class="m-btn" data-action="verify" data-uid="${m.id}" title="Verify Member" style="background:rgba(52,199,89,0.15);color:#34C759;border:1.5px solid rgba(52,199,89,0.5);border-radius:20px;padding:5px 12px;font-size:0.62rem;font-weight:700;cursor:pointer;font-family:Sora,sans-serif;">✅ Verify</button>`:''}
+      ${status==='verified'?`<button class="m-btn" data-action="unverify" data-uid="${m.id}" title="Remove verification" style="background:rgba(255,149,0,0.12);color:#FF9500;border:1.5px solid rgba(255,149,0,0.4);border-radius:20px;padding:5px 12px;font-size:0.62rem;font-weight:700;cursor:pointer;font-family:Sora,sans-serif;">↩ Unverify</button>`:''}
+      <button class="m-btn" data-action="vip" data-uid="${m.id}" data-tier="${esc(m.tier||'Fan')}" title="Assign VIP" style="background:rgba(10,132,255,0.12);color:#0A84FF;border:1.5px solid rgba(10,132,255,0.4);border-radius:20px;padding:5px 12px;font-size:0.62rem;font-weight:700;cursor:pointer;font-family:Sora,sans-serif;">🏅 VIP</button>
       ${isBanned
-        ?`<button class="m-btn m-btn-ok" data-action="unban" data-uid="${m.id}" data-name="${nm}" title="Unban">🔓</button>`
-        :`<button class="m-btn m-btn-warn" data-action="ban" data-uid="${m.id}" data-name="${nm}" title="Ban">🚫</button>`}
-      <button class="m-btn m-btn-err" data-action="delete" data-uid="${m.id}" title="Delete">🗑</button>
+        ?`<button class="m-btn" data-action="unban" data-uid="${m.id}" data-name="${nm}" title="Unban" style="background:rgba(52,199,89,0.12);color:#34C759;border:1.5px solid rgba(52,199,89,0.4);border-radius:20px;padding:5px 12px;font-size:0.62rem;font-weight:700;cursor:pointer;font-family:Sora,sans-serif;">🔓 Unban</button>`
+        :`<button class="m-btn" data-action="ban" data-uid="${m.id}" data-name="${nm}" title="Ban" style="background:rgba(255,149,0,0.12);color:#FF9500;border:1.5px solid rgba(255,149,0,0.4);border-radius:20px;padding:5px 12px;font-size:0.62rem;font-weight:700;cursor:pointer;font-family:Sora,sans-serif;">🚫 Ban</button>`}
+      <button class="m-btn" data-action="delete" data-uid="${m.id}" title="Delete Member" style="background:rgba(255,59,48,0.1);color:#FF453A;border:1.5px solid rgba(255,59,48,0.35);border-radius:20px;padding:5px 12px;font-size:0.62rem;font-weight:700;cursor:pointer;font-family:Sora,sans-serif;">🗑️ Delete</button>
     </div>
   </div>`;
 }
