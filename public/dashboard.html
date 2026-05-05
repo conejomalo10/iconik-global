@@ -1610,35 +1610,53 @@ function loadRadio(){
 // TV — Real YouTube embeds
 function loadTV(){
   var el=document.getElementById("tvList");if(!el)return;
-  var vids=[
-    {title:"BTS — Permission to Dance (Live)",ch:"HYBE LABELS",id:"CuklIb9d3fI"},
-    {title:"Ballon d'Or 2024 Ceremony Highlights",ch:"France Football",id:"kRjht-v_3hk"},
-    {title:"Afrobeats Mix 2024 — Best of Naija",ch:"ICONIK Music",id:"LHYY4FxgW5g"},
-    {title:"Champions League Best Goals",ch:"UEFA TV",id:"3EGOaMBlvn8"},
-    {title:"Drake — Certified Lover Boy",ch:"OVO Sound",id:"TkW_v_4QFXE"},
-    {title:"Fashion Week Highlights 2024",ch:"Vogue",id:"M-4gtnRWq7w"},
-  ];
-  var h="<div style='font-family:Sora,sans-serif;font-size:0.75rem;color:var(--text3);margin-bottom:12px;'>Tap any video to watch · Admin uploads ICONIK content soon</div>";
-  // Featured player
-  h+="<div style='position:relative;width:100%;padding-top:56.25%;border-radius:14px;overflow:hidden;margin-bottom:12px;box-shadow:0 8px 24px rgba(0,0,0,0.4);'>"
-    +"<iframe id='tvFrame' src='https://www.youtube.com/embed/"+vids[0].id+"?rel=0&modestbranding=1' "
-    +"style='position:absolute;inset:0;width:100%;height:100%;border:none;' "
-    +"allowfullscreen allow='accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture'></iframe></div>";
-  h+="<div style='font-family:Sora,sans-serif;font-weight:700;font-size:0.9rem;color:var(--text);margin-bottom:2px;'>"+xe(vids[0].title)+"</div>";
-  h+="<div style='font-family:Sora,sans-serif;font-size:0.72rem;color:var(--text3);margin-bottom:14px;'>"+xe(vids[0].ch)+"</div>";
-  h+="<div style='font-family:Sora,sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;'>Up Next</div>";
-  h+="<div style='display:grid;gap:8px;'>";
-  vids.slice(1).forEach(function(v){
-    h+="<div onclick='document.getElementById(\"tvFrame\").src=\"https://www.youtube.com/embed/"+v.id+"?rel=0&autoplay=1\"' "
-      +"style='display:flex;gap:10px;align-items:center;cursor:pointer;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;transition:border-color 0.15s;' "
-      +"onmouseover='this.style.borderColor=\"var(--accent)\"' onmouseout='this.style.borderColor=\"var(--border)\"'>"
-      +"<img src='https://img.youtube.com/vi/"+v.id+"/mqdefault.jpg' style='width:80px;height:52px;object-fit:cover;border-radius:7px;flex-shrink:0;' onerror='this.style.background=\"var(--bg4)\";this.src=\"\"'/>"
-      +"<div style='flex:1;min-width:0;'><div style='font-family:Sora,sans-serif;font-weight:600;font-size:0.8rem;color:var(--text);margin-bottom:3px;line-height:1.3;'>"+xe(v.title)+"</div>"
-      +"<div style='font-family:Sora,sans-serif;font-size:0.68rem;color:var(--text3);'>"+xe(v.ch)+"</div></div>"
-      +"<span style='font-size:1.1rem;flex-shrink:0;color:var(--accent);'>▶</span></div>";
-  });
-  h+="</div>";
-  el.innerHTML=h;
+  el.innerHTML='<div class="loader"><div class="lring"></div></div>';
+  sg(query(collection(db,"iconikTV"),limit(30))).then(function(snap){
+    var vids=[];
+    snap.forEach(function(d){vids.push({id:d.id,...d.data()});});
+    vids.sort(function(a,b){return(b.createdAt&&b.createdAt.seconds||0)-(a.createdAt&&a.createdAt.seconds||0);});
+    if(!vids.length){
+      vids=[
+        {title:"BTS — Permission to Dance (Live)",videoUrl:"https://www.youtube.com/watch?v=CuklIb9d3fI",ch:"HYBE LABELS"},
+        {title:"Afrobeats Mix 2024",videoUrl:"https://www.youtube.com/watch?v=_AECdEkbYdQ",ch:"DJ Mix"},
+        {title:"FIFA World Cup Highlights",videoUrl:"https://www.youtube.com/watch?v=kRjht-v_3hk",ch:"FIFA"}
+      ];
+    }
+    var featured=vids[0];
+    var featId=ytId(featured.videoUrl||featured.videoId||"");
+    var h='<div style="position:relative;padding-bottom:56.25%;background:#000;border-radius:12px;overflow:hidden;margin-bottom:12px;">';
+    h+='<iframe id="tvMainFrame" src="https://www.youtube.com/embed/'+featId+'" style="position:absolute;inset:0;width:100%;height:100%;border:none;" allowfullscreen></iframe>';
+    h+='</div>';
+    h+='<div class="sh2" style="color:var(--accent);margin-bottom:4px;">'+xe(featured.title||"Featured")+'</div>';
+    h+='<div style="font-size:0.68rem;color:var(--muted);margin-bottom:14px;">'+xe(featured.category||featured.ch||"ICONIK TV")+'</div>';
+    if(vids.length>1){
+      h+='<div class="sh2" style="font-size:0.58rem;letter-spacing:0.15em;margin-bottom:8px;color:var(--text3);">MORE VIDEOS</div><div style="display:flex;flex-direction:column;gap:8px;">';
+      vids.slice(1).forEach(function(v,i){
+        var vid=ytId(v.videoUrl||v.videoId||"");
+        var vT=xe(v.title||"Video");
+        var vC=xe(v.category||v.ch||"ICONIK TV");
+        var th="https://img.youtube.com/vi/"+vid+"/mqdefault.jpg";
+        h+="<div class='tv-row' data-vid='"+vid+"' style='display:flex;gap:10px;align-items:center;background:var(--card);padding:10px;border-radius:10px;cursor:pointer;'>";
+        h+="<img src='"+th+"' style='width:90px;height:54px;object-fit:cover;border-radius:6px;flex-shrink:0;'/>";
+        h+="<div><div style='font-size:0.74rem;font-weight:700;color:var(--text);'>"+vT+"</div>";
+        h+="<div style='font-size:0.62rem;color:var(--muted);'>"+vC+"</div></div></div>";
+      });
+      h+='</div>';
+    }
+    el.innerHTML=h;
+    el.querySelectorAll('.tv-row').forEach(function(row){
+      row.onclick=function(){tvPlay(this.dataset.vid);};
+    });
+  }).catch(function(e){el.innerHTML='<p style="color:var(--muted);text-align:center;padding:20px;">Could not load videos.</p>';});
+}
+function ytId(url){
+  if(!url)return"";
+  var m=url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/|v\/))([a-zA-Z0-9_-]{11})/);
+  return m?m[1]:url;
+}
+function tvPlay(vid){
+  var f=document.getElementById("tvMainFrame");
+  if(f)f.src="https://www.youtube.com/embed/"+vid+"?autoplay=1";
 }
 
 // MAGAZINE
