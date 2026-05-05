@@ -15,7 +15,7 @@
   --card:rgba(255,255,255,0.045);
   --ok:#22C55E;--err:#EF4444;--info:#3B82F6;
 }
-body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;min-height:100vh;overflow-x:hidden;}
+html,body{max-width:100%;overflow-x:hidden;}body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;min-height:100vh;overflow-x:hidden;width:100%;box-sizing:border-box;}
 
 /* TOP NAV */
 #topnav{position:fixed;top:0;left:0;right:0;height:60px;z-index:600;background:rgba(7,7,13,0.96);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;backdrop-filter:blur(16px);}
@@ -40,7 +40,7 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
 .sb-section-label{font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.22em;color:var(--dim);padding:8px 16px 3px;}
 
 /* MAIN */
-#main{padding:70px 14px 76px;min-height:100vh;}
+#main{padding:70px 14px 76px;min-height:100vh;max-width:100%;box-sizing:border-box;overflow-x:hidden;}
 .view{display:none;}.view.active{display:block;}
 
 /* BOTTOM NAV */
@@ -74,12 +74,12 @@ select.fi option{background:var(--bg2);}
 .stat-lbl{font-family:'Montserrat',sans-serif;font-size:0.54rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);margin-top:2px;}
 
 /* MEMBER ROWS */
-.m-row{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:11px;display:flex;align-items:center;gap:10px;margin-bottom:7px;}
+.m-row{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:11px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-bottom:7px;}
 .m-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:var(--bg);overflow:hidden;flex-shrink:0;position:relative;}
 .m-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;border-radius:50%;z-index:2;}
 .m-name{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;color:var(--text);}
 .m-meta{font-family:'Montserrat',sans-serif;font-size:0.6rem;color:var(--dim);}
-.m-actions{display:flex;gap:5px;margin-left:auto;flex-shrink:0;}
+.m-actions{display:flex;gap:5px;flex-wrap:wrap;width:100%;}
 .m-btn{font-family:'Bebas Neue',sans-serif;font-size:0.54rem;letter-spacing:0.08em;padding:5px 9px;border:none;cursor:pointer;border-radius:3px;}
 .m-btn-ok{background:var(--ok);color:#fff;}
 .m-btn-warn{background:var(--gold);color:var(--bg);}
@@ -424,6 +424,8 @@ select.fi option{background:var(--bg2);}
     </div>
     <button class="btn-gold" id="addMagBtn" onclick="addMagazineArticle()">Publish Article →</button>
   </div>
+  <div class="sh2" style="color:var(--text3);font-size:0.6rem;letter-spacing:0.15em;margin:14px 0 8px;">PUBLISHED ARTICLES</div>
+  <div id="magazineList"><div class="loader"><div class="lring"></div></div></div>
 </div>
 
 <!-- ICONIK TV -->
@@ -439,6 +441,8 @@ select.fi option{background:var(--bg2);}
     <div class="fg"><label class="fl">Duration</label><input class="fi" id="tvDuration" placeholder="e.g. 45 min"/></div>
     <button class="btn-gold" id="addTvBtn" onclick="addTV()">Add to ICONIK TV →</button>
   </div>
+  <div class="sh2" style="color:var(--text3);font-size:0.6rem;letter-spacing:0.15em;margin:14px 0 8px;">UPLOADED VIDEOS</div>
+  <div id="tvList"><div class="loader"><div class="lring"></div></div></div>
 </div>
 
 <!-- SUB ADMINS -->
@@ -652,12 +656,14 @@ function memberRow(m,compact){
   const photo=m.profilePic&&m.profilePic.startsWith('http')?`<img src="${esc(m.profilePic)}" onerror="this.remove()"/>`:''
   const isBanned=m.banned===true;
   return`<div class="m-row">
-    <div class="m-av">${photo}${nm.charAt(0)}</div>
-    <div style="flex:1;min-width:0;">
-      <div class="m-name">${nm} <span class="badge ${badgeCls}">${status}</span>${isBanned?'<span class="badge badge-err" style="margin-left:3px;">BANNED</span>':''}</div>
-      <div class="m-meta">${compact?esc(m.country||'—'):esc(m.email||'')+'&nbsp;·&nbsp;'+esc(m.country||'—')+'&nbsp;·&nbsp;'+esc(m.tier||'Fan')}</div>
+    <div style="display:flex;align-items:center;gap:10px;width:100%;">
+      <div class="m-av">${photo}${nm.charAt(0)}</div>
+      <div style="flex:1;min-width:0;">
+        <div class="m-name">${nm} <span class="badge ${badgeCls}">${status}</span>${isBanned?'<span class="badge badge-err" style="margin-left:3px;">BANNED</span>':''}</div>
+        <div class="m-meta">${compact?esc(m.country||'—'):esc(m.email||'')+'&nbsp;·&nbsp;'+esc(m.country||'—')+'&nbsp;·&nbsp;'+esc(m.tier||'Fan')}</div>
+      </div>
     </div>
-    <div class="m-actions" style="display:flex;gap:5px;flex-wrap:wrap;margin-top:4px;">
+    <div class="m-actions" style="display:flex;gap:5px;flex-wrap:wrap;width:100%;">
       ${status!=='verified'?`<button class="m-btn" data-action="verify" data-uid="${m.id}" title="Verify Member" style="background:rgba(52,199,89,0.15);color:#34C759;border:1.5px solid rgba(52,199,89,0.5);border-radius:20px;padding:5px 12px;font-size:0.62rem;font-weight:700;cursor:pointer;font-family:Sora,sans-serif;">✅ Verify</button>`:''}
       ${status==='verified'?`<button class="m-btn" data-action="unverify" data-uid="${m.id}" title="Remove verification" style="background:rgba(255,149,0,0.12);color:#FF9500;border:1.5px solid rgba(255,149,0,0.4);border-radius:20px;padding:5px 12px;font-size:0.62rem;font-weight:700;cursor:pointer;font-family:Sora,sans-serif;">↩ Unverify</button>`:''}
       <button class="m-btn" data-action="vip" data-uid="${m.id}" data-tier="${esc(m.tier||'Fan')}" title="Assign VIP" style="background:rgba(10,132,255,0.12);color:#0A84FF;border:1.5px solid rgba(10,132,255,0.4);border-radius:20px;padding:5px 12px;font-size:0.62rem;font-weight:700;cursor:pointer;font-family:Sora,sans-serif;">🏅 VIP</button>
