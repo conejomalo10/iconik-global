@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -611,8 +610,20 @@ onAuthStateChanged(auth,async u=>{
   load_news();
   load_events();
   load_messages();
+  window.isChiefAdmin = (u.email === ADMIN_EMAIL);
+  if(window.isChiefAdmin){
+    var sBtn=document.getElementById('settingsNavBtn');
+    if(sBtn)sBtn.style.display='flex';
+    // Auto-ensure chief admin role in Firestore
+    try{
+      await setDoc(doc(db,'users',u.uid),{role:'admin',isChiefAdmin:true},{merge:true});
+    }catch(e){}
+  }
   load_polls();
   load_subadmins();
+  // Lazy load remaining tabs
+  setTimeout(function(){window.load_tv&&window.load_tv();},800);
+  setTimeout(function(){window.load_magazine&&window.load_magazine();},1200);
 });
 
 // ── OVERVIEW ──
@@ -1167,7 +1178,7 @@ window.load_polls=async function(){
   try{
     var snap=await getDocs(query(collection(db,'polls'),limit(10)));
     var polls=[];snap.forEach(function(d){polls.push({id:d.id,...d.data()});});
-    if(!polls.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);">No polls created yet. Use the form above to create your first poll!</div>';return;}
+    if(!polls.length){el.innerHTML='<div style="text-align:center;padding:32px 16px;color:var(--muted);font-family:Sora,sans-serif;"><div style="font-size:2rem;margin-bottom:12px;">⬆️</div><div style="font-size:0.82rem;line-height:1.6;">🗳️ No polls created yet.<br>Create your first poll using the form above.</div></div>';return;}
     var h='';
     polls.forEach(function(p){
       var opts=(p.options||[]).map(function(o,i){
@@ -1271,7 +1282,7 @@ window.load_subadmins=async function(){
       var snap2=await getDocs(collection(db,'subAdmins'));
       snap2.forEach(function(d){admins.push({id:d.id,...d.data()});});
     }
-    if(!admins.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);">No sub admins assigned yet. Use the form above to assign one.</div>';return;}
+    if(!admins.length){el.innerHTML='<div style="text-align:center;padding:32px 16px;color:var(--muted);font-family:Sora,sans-serif;"><div style="font-size:2rem;margin-bottom:12px;">⬆️</div><div style="font-size:0.82rem;line-height:1.6;">🛡️ No sub admins assigned yet.<br>Assign a trusted member using the form above.</div></div>';return;}
     var h='';
     admins.forEach(function(a){
       var nm=esc(a.name||a.email||'Admin');
@@ -1449,7 +1460,7 @@ window.load_tv=async function(){
     var snap=await getDocs(query(collection(db,'iconikTV'),limit(20)));
     var vids=[];snap.forEach(function(d){vids.push({id:d.id,...d.data()});});
     vids.sort(function(a,b){return(b.createdAt&&b.createdAt.seconds||0)-(a.createdAt&&a.createdAt.seconds||0);});
-    if(!vids.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);">No videos yet. Add a YouTube link above!</div>';return;}
+    if(!vids.length){el.innerHTML='<div style="text-align:center;padding:32px 16px;color:var(--muted);font-family:Sora,sans-serif;"><div style="font-size:2rem;margin-bottom:12px;">⬆️</div><div style="font-size:0.82rem;line-height:1.6;">📺 No videos added yet.<br>Add a YouTube URL using the form above.</div></div>';return;}
     var h='';
     vids.forEach(function(v){
       var vidId=v.videoId||'';
@@ -1491,7 +1502,7 @@ window.load_magazine=async function(){
     var snap=await getDocs(query(collection(db,'magazine'),limit(20)));
     var arts=[];snap.forEach(function(d){arts.push({id:d.id,...d.data()});});
     arts.sort(function(a,b){return(b.publishedAt&&b.publishedAt.seconds||0)-(a.publishedAt&&a.publishedAt.seconds||0);});
-    if(!arts.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);">No articles yet. Publish one above!</div>';return;}
+    if(!arts.length){el.innerHTML='<div style="text-align:center;padding:32px 16px;color:var(--muted);font-family:Sora,sans-serif;"><div style="font-size:2rem;margin-bottom:12px;">⬆️</div><div style="font-size:0.82rem;line-height:1.6;">📖 No articles published yet.<br>Write and publish your first article above.</div></div>';return;}
     var h='';
     arts.forEach(function(a){
       var date=a.publishedAt&&a.publishedAt.seconds?new Date(a.publishedAt.seconds*1000).toLocaleDateString():'';
