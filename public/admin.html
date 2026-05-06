@@ -135,6 +135,7 @@ select.fi option{background:var(--bg2);}
     <div class="sb-link" data-view="posts"><span class="sb-link-icon">📝</span>Publish Post</div>
     <div class="sb-link" data-view="news"><span class="sb-link-icon">📰</span>Add News</div>
     <div class="sb-link" data-view="events"><span class="sb-link-icon">🎫</span>Add Event</div>
+    <div class="sb-link" data-view="radio"><span class="sb-link-icon">📻</span>Radio</div>
     <div class="sb-link" data-view="magazine"><span class="sb-link-icon">📖</span>Magazine</div>
     <div class="sb-link" data-view="tv"><span class="sb-link-icon">📺</span>ICONIK TV</div>
     <div class="sb-section-label">Community</div>
@@ -1604,7 +1605,7 @@ window.addRadioStation=async function(){
 };</script>
 
 <!-- ═══ RADIO VIEW ═══ -->
-<div class="view" id="radioV" style="display:none;padding:0;">
+<div class="view" id="radioV" style="padding:0;">
   <div class="wbar"><span style="font-size:1.4rem;">📻</span><div><div class="wbar-title" style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;">ICONIK Radio</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Manage radio stations</div></div></div>
   <div class="card" style="margin:12px 14px;">
     <div class="fg"><label class="fl">Station Name *</label><input class="fi" id="radioName" placeholder="e.g. ICONIK Gold FM"/></div>
@@ -1619,7 +1620,7 @@ window.addRadioStation=async function(){
 </div>
 
 <!-- ═══ SETTINGS VIEW ═══ -->
-<div class="view" id="settingsV" style="display:none;padding:16px;">
+<div class="view" id="settingsV" style="padding:16px;">
   <div class="wbar"><span style="font-size:1.4rem;">⚙️</span><div><div class="wbar-title">Admin Settings</div><div class="wbar-sub">Chief Admin only</div></div></div>
 
   <!-- SUB ADMINS -->
