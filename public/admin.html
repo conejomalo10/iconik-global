@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1161,34 +1162,38 @@ window.sendMessage=async function(){
 // ── POLLS ──
 window.load_polls=async function(){
   var el=document.getElementById('pollsList');
-  if(!el)return;
+  if(!el){console.error('pollsList not found');return;}
   el.innerHTML='<div class="loader"><div class="lring"></div></div>';
   try{
-    var snap=await sg(query(collection(db,'polls'),limit(10)));
+    var snap=await getDocs(query(collection(db,'polls'),limit(10)));
     var polls=[];snap.forEach(function(d){polls.push({id:d.id,...d.data()});});
-    if(!polls.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No polls yet. Create one above!</div>';return;}
+    if(!polls.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);">No polls created yet. Use the form above to create your first poll!</div>';return;}
     var h='';
     polls.forEach(function(p){
-      var opts=(p.options||[]).map(function(o){return esc(o);}).join(' · ');
-      var total=(p.votes||[]).reduce(function(s,v){return s+(v||0);},0);
-      h+='<div class="m-row" style="flex-direction:row;align-items:center;">';
+      var opts=(p.options||[]).map(function(o,i){
+        var votes=(p.votes&&p.votes[i])||0;
+        return esc(o)+' ('+votes+')';
+      }).join(' &bull; ');
+      h+='<div class="m-row" style="flex-direction:row;align-items:center;gap:10px;">';
       h+='<div style="flex:1;min-width:0;">';
-      h+='<div class="m-name">'+esc(p.question||'Poll')+'</div>';
-      h+='<div class="m-meta">'+opts+'</div>';
-      h+='<div class="m-meta">Total votes: '+total+'</div>';
+      h+='<div style="font-weight:700;font-size:0.82rem;color:var(--text);">'+esc(p.question||'Poll')+'</div>';
+      h+='<div style="font-size:0.68rem;color:var(--muted);margin-top:3px;">'+opts+'</div>';
       h+='</div>';
-      h+='<button data-poll-id="'+p.id+'" style="background:rgba(255,59,48,0.1);color:#FF453A;border:1.5px solid rgba(255,59,48,0.35);border-radius:20px;padding:4px 10px;font-size:0.6rem;font-weight:700;cursor:pointer;flex-shrink:0;">🗑️</button>';
+      h+='<button data-pid="'+p.id+'" style="background:rgba(255,59,48,0.1);color:#FF453A;border:1.5px solid rgba(255,59,48,0.35);border-radius:20px;padding:5px 10px;font-size:0.62rem;font-weight:700;cursor:pointer;flex-shrink:0;">🗑️ Delete</button>';
       h+='</div>';
     });
     el.innerHTML=h;
-    el.querySelectorAll('[data-poll-id]').forEach(function(btn){
+    el.querySelectorAll('[data-pid]').forEach(function(btn){
       btn.onclick=async function(){
         if(!confirm('Delete this poll?'))return;
-        try{await deleteDoc(doc(db,'polls',this.dataset.pollId));toast('Deleted ✅');window.load_polls();}
+        try{await deleteDoc(doc(db,'polls',this.dataset.pid));toast('Poll deleted ✅');window.load_polls();}
         catch(e){toast('Error: '+e.message,'error');}
       };
     });
-  }catch(e){el.innerHTML='<div style="color:var(--err);padding:10px;">Error: '+e.message+'</div>';}
+  }catch(e){
+    console.error('load_polls error:',e);
+    el.innerHTML='<div style="color:var(--err);padding:16px;text-align:center;"><div style="font-size:1.5rem;margin-bottom:8px;">⚠️</div><div style="font-weight:700;">Error loading polls</div><div style="font-size:0.72rem;margin-top:4px;">'+e.message+'</div><button onclick="window.load_polls()" style="margin-top:12px;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-family:Sora,sans-serif;">Retry</button></div>';
+  }
 };
 
 window.addPoll=async function(){
@@ -1256,33 +1261,42 @@ window.addTV=async function(){
 // ── SUB ADMINS — FULL CHIEF ADMIN CONTROL ──
 window.load_subadmins=async function(){
   var el=document.getElementById('subAdminList');
-  if(!el)return;
+  if(!el){console.error('subAdminList not found');return;}
   el.innerHTML='<div class="loader"><div class="lring"></div></div>';
   try{
-    var snap=await sg(query(collection(db,'users'),where('role','in',['Sub Admin','Moderator','Content Manager']),limit(20)));
+    var snap=await getDocs(query(collection(db,'users'),where('role','in',['Sub Admin','Moderator','Content Manager']),limit(20)));
     var admins=[];snap.forEach(function(d){admins.push({id:d.id,...d.data()});});
-    if(!admins.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No sub admins yet. Assign one above.</div>';return;}
+    if(!admins.length){
+      // Also check subAdmins collection
+      var snap2=await getDocs(collection(db,'subAdmins'));
+      snap2.forEach(function(d){admins.push({id:d.id,...d.data()});});
+    }
+    if(!admins.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);">No sub admins assigned yet. Use the form above to assign one.</div>';return;}
     var h='';
     admins.forEach(function(a){
       var nm=esc(a.name||a.email||'Admin');
-      var pic=a.profilePic&&a.profilePic.startsWith('http')?'<img src="'+esc(a.profilePic)+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;"/>':'';
+      var pic=a.profilePic&&a.profilePic.startsWith('http')?'<img src="'+esc(a.profilePic)+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>':'';
       h+='<div class="m-row" style="flex-direction:row;align-items:center;flex-wrap:wrap;gap:8px;">';
-      h+='<div class="m-av" style="position:relative;overflow:hidden;">'+pic+'<span style="position:relative;z-index:0;">'+nm.charAt(0)+'</span></div>';
-      h+='<div style="flex:1;min-width:0;">';
-      h+='<div class="m-name">'+nm+' <span class="badge badge-ok">'+esc(a.role||'Sub Admin')+'</span></div>';
-      h+='<div class="m-meta">'+esc(a.email||'')+' · '+esc(a.category||'All categories')+'</div>';
+      h+='<div class="m-av" style="position:relative;overflow:hidden;">'+pic+'<span>'+nm.charAt(0)+'</span></div>';
+      h+='<div style="flex:1;min-width:120px;">';
+      h+='<div style="font-weight:700;font-size:0.82rem;color:var(--text);">'+nm+'</div>';
+      h+='<div style="font-size:0.68rem;color:var(--muted);">'+esc(a.email||'')+' &bull; '+esc(a.role||'Sub Admin')+'</div>';
+      h+='<div style="font-size:0.65rem;color:var(--text3);">📂 '+esc(a.category||'All categories')+'</div>';
       h+='</div>';
       h+='<div style="display:flex;gap:5px;flex-wrap:wrap;">';
-      h+='<button class="sa-view" data-uid="'+a.id+'" data-nm="'+nm+'" style="background:rgba(10,132,255,0.12);color:#0A84FF;border:1.5px solid rgba(10,132,255,0.4);border-radius:20px;padding:5px 10px;font-size:0.62rem;font-weight:700;cursor:pointer;">👁 View</button>';
-      h+='<button class="sa-edit" data-uid="'+a.id+'" data-nm="'+nm+'" style="background:rgba(255,149,0,0.12);color:#FF9500;border:1.5px solid rgba(255,149,0,0.4);border-radius:20px;padding:5px 10px;font-size:0.62rem;font-weight:700;cursor:pointer;">🔄 Edit</button>';
-      h+='<button class="sa-del" data-uid="'+a.id+'" data-nm="'+nm+'" style="background:rgba(255,59,48,0.1);color:#FF453A;border:1.5px solid rgba(255,59,48,0.35);border-radius:20px;padding:5px 10px;font-size:0.62rem;font-weight:700;cursor:pointer;">🔥 Remove</button>';
+      h+='<button class="sa-v-btn" data-uid="'+a.id+'" data-nm="'+nm+'" style="background:rgba(10,132,255,0.12);color:#0A84FF;border:1.5px solid rgba(10,132,255,0.4);border-radius:20px;padding:5px 10px;font-size:0.62rem;font-weight:700;cursor:pointer;">👁 View</button>';
+      h+='<button class="sa-e-btn" data-uid="'+a.id+'" data-nm="'+nm+'" style="background:rgba(255,149,0,0.12);color:#FF9500;border:1.5px solid rgba(255,149,0,0.4);border-radius:20px;padding:5px 10px;font-size:0.62rem;font-weight:700;cursor:pointer;">🔄 Edit</button>';
+      h+='<button class="sa-d-btn" data-uid="'+a.id+'" data-nm="'+nm+'" style="background:rgba(255,59,48,0.1);color:#FF453A;border:1.5px solid rgba(255,59,48,0.35);border-radius:20px;padding:5px 10px;font-size:0.62rem;font-weight:700;cursor:pointer;">🔥 Remove</button>';
       h+='</div></div>';
     });
     el.innerHTML=h;
-    el.querySelectorAll('.sa-view').forEach(function(b){b.onclick=function(){viewSubAdminDash(this.dataset.uid,this.dataset.nm);};});
-    el.querySelectorAll('.sa-edit').forEach(function(b){b.onclick=function(){reassignSubAdmin(this.dataset.uid,this.dataset.nm);};});
-    el.querySelectorAll('.sa-del').forEach(function(b){b.onclick=function(){fireSubAdmin(this.dataset.uid,this.dataset.nm);};});
-  }catch(e){el.innerHTML='<div style="color:var(--err);padding:10px;">Error: '+e.message+'</div>';}
+    el.querySelectorAll('.sa-v-btn').forEach(function(b){b.onclick=function(){viewSubAdminDash(this.dataset.uid,this.dataset.nm);};});
+    el.querySelectorAll('.sa-e-btn').forEach(function(b){b.onclick=function(){reassignSubAdmin(this.dataset.uid,this.dataset.nm);};});
+    el.querySelectorAll('.sa-d-btn').forEach(function(b){b.onclick=function(){fireSubAdmin(this.dataset.uid,this.dataset.nm);};});
+  }catch(e){
+    console.error('load_subadmins error:',e);
+    el.innerHTML='<div style="color:var(--err);padding:16px;text-align:center;"><div style="font-size:1.5rem;margin-bottom:8px;">⚠️</div><div style="font-weight:700;">Error loading sub admins</div><div style="font-size:0.72rem;margin-top:4px;">'+e.message+'</div><button onclick="window.load_subadmins()" style="margin-top:12px;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-family:Sora,sans-serif;">Retry</button></div>';
+  }
 };
 
 window.addSubAdmin=async function(){
@@ -1432,41 +1446,38 @@ window.load_tv=async function(){
   if(!el)return;
   el.innerHTML='<div class="loader"><div class="lring"></div></div>';
   try{
-    var snap=await sg(query(collection(db,'iconikTV'),limit(20)));
-    var vids=[];
-    snap.forEach(function(d){vids.push({id:d.id,...d.data()});});
+    var snap=await getDocs(query(collection(db,'iconikTV'),limit(20)));
+    var vids=[];snap.forEach(function(d){vids.push({id:d.id,...d.data()});});
     vids.sort(function(a,b){return(b.createdAt&&b.createdAt.seconds||0)-(a.createdAt&&a.createdAt.seconds||0);});
-    if(!vids.length){
-      el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No videos yet. Add one above!</div>';
-      return;
-    }
+    if(!vids.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);">No videos yet. Add a YouTube link above!</div>';return;}
     var h='';
     vids.forEach(function(v){
       var vidId=v.videoId||'';
-      if(!vidId&&v.videoUrl){
-        var m=v.videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
-        if(m)vidId=m[1];
-      }
-      var thumb=vidId?'https://img.youtube.com/vi/'+vidId+'/mqdefault.jpg':(v.thumbnail||'');
+      if(!vidId&&v.videoUrl){var m=v.videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);if(m)vidId=m[1];}
+      var thumb=vidId?('https://img.youtube.com/vi/'+vidId+'/mqdefault.jpg'):(v.thumbnail||'');
       var date=v.createdAt&&v.createdAt.seconds?new Date(v.createdAt.seconds*1000).toLocaleDateString():'';
-      h+='<div class="m-row" style="flex-direction:row;align-items:center;">';
-      if(thumb)h+='<img src="'+esc(thumb)+'" style="width:80px;height:50px;object-fit:cover;border-radius:6px;flex-shrink:0;" onerror="this.remove()"/>';
-      h+='<div style="flex:1;min-width:0;padding:0 8px;">';
+      var thumbHtml=thumb?('<img src="'+esc(thumb)+'" style="width:80px;height:50px;object-fit:cover;border-radius:6px;flex-shrink:0;" onerror="this.remove()"/>'):'';
+      h+='<div class="m-row" style="flex-direction:row;align-items:center;gap:10px;">';
+      h+=thumbHtml;
+      h+='<div style="flex:1;min-width:0;">';
       h+='<div style="font-weight:700;font-size:0.78rem;color:var(--text);">'+esc(v.title||'Video')+'</div>';
-      h+='<div style="font-size:0.62rem;color:var(--muted);">'+esc(v.category||'')+(date?' · '+date:'')+'</div>';
+      h+='<div style="font-size:0.62rem;color:var(--muted);">'+esc(v.category||'')+(date?' &bull; '+date:'')+'</div>';
       h+='</div>';
-      h+='<button data-vid-id="'+v.id+'" style="background:rgba(255,59,48,0.1);color:#FF453A;border:1.5px solid rgba(255,59,48,0.35);border-radius:20px;padding:4px 10px;font-size:0.6rem;font-weight:700;cursor:pointer;flex-shrink:0;">🗑️</button>';
+      h+='<button data-tv-id="'+v.id+'" style="background:rgba(255,59,48,0.1);color:#FF453A;border:1.5px solid rgba(255,59,48,0.35);border-radius:20px;padding:5px 10px;font-size:0.62rem;font-weight:700;cursor:pointer;flex-shrink:0;">🗑️</button>';
       h+='</div>';
     });
     el.innerHTML=h;
-    el.querySelectorAll('[data-vid-id]').forEach(function(btn){
+    el.querySelectorAll('[data-tv-id]').forEach(function(btn){
       btn.onclick=async function(){
-        if(!confirm('Delete this video?'))return;
-        try{await deleteDoc(doc(db,'iconikTV',this.dataset.vidId));toast('Deleted ✅');window.load_tv();}
+        if(!confirm('Delete?'))return;
+        try{await deleteDoc(doc(db,'iconikTV',this.dataset.tvId));toast('Deleted ✅');window.load_tv();}
         catch(e){toast('Error: '+e.message,'error');}
       };
     });
-  }catch(e){el.innerHTML='<div style="color:var(--err);padding:10px;">Error loading: '+e.message+'</div>';}
+  }catch(e){
+    console.error('load_tv error:',e);
+    el.innerHTML='<div style="color:var(--err);padding:16px;text-align:center;font-family:Sora,sans-serif;"><b>Error loading TV</b><br><span style="font-size:0.72rem;">'+e.message+'</span><br><button onclick="window.load_tv()" style="margin-top:10px;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:7px 14px;cursor:pointer;">Retry</button></div>';
+  }
 };
 
 // ══════════════════════════════════════
@@ -1477,37 +1488,37 @@ window.load_magazine=async function(){
   if(!el)return;
   el.innerHTML='<div class="loader"><div class="lring"></div></div>';
   try{
-    var snap=await sg(query(collection(db,'magazine'),limit(20)));
-    var arts=[];
-    snap.forEach(function(d){arts.push({id:d.id,...d.data()});});
+    var snap=await getDocs(query(collection(db,'magazine'),limit(20)));
+    var arts=[];snap.forEach(function(d){arts.push({id:d.id,...d.data()});});
     arts.sort(function(a,b){return(b.publishedAt&&b.publishedAt.seconds||0)-(a.publishedAt&&a.publishedAt.seconds||0);});
-    if(!arts.length){
-      el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No articles yet. Publish one above!</div>';
-      return;
-    }
+    if(!arts.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);">No articles yet. Publish one above!</div>';return;}
     var h='';
     arts.forEach(function(a){
       var date=a.publishedAt&&a.publishedAt.seconds?new Date(a.publishedAt.seconds*1000).toLocaleDateString():'';
-      h+='<div class="m-row" style="flex-direction:column;align-items:flex-start;">';
-      if(a.imageUrl&&a.imageUrl.startsWith('http'))
-        h+='<img src="'+esc(a.imageUrl)+'" style="width:100%;height:130px;object-fit:cover;border-radius:8px;" onerror="this.remove()"/>';
-      h+='<div style="width:100%;padding-top:6px;">';
-      h+='<div style="font-weight:700;font-size:0.82rem;color:var(--text);">'+esc(a.title||'Article')+'</div>';
-      h+='<div style="font-size:0.62rem;color:var(--muted);margin-top:2px;">'+esc(a.category||'')+(date?' · '+date:'')+'</div>';
-      if(a.summary)h+='<div style="font-size:0.72rem;color:var(--text2);margin-top:4px;line-height:1.5;">'+esc(a.summary)+'</div>';
+      var imgHtml=(a.imageUrl&&a.imageUrl.startsWith('http'))?('<img src="'+esc(a.imageUrl)+'" style="width:100%;height:130px;object-fit:cover;border-radius:8px;" onerror="this.remove()"/>'):'';
+      var summaryHtml=a.summary?('<div style="font-size:0.72rem;color:var(--text2);margin-top:5px;line-height:1.5;">'+esc(a.summary)+'</div>'):'';
+      h+='<div class="m-row" style="flex-direction:column;align-items:flex-start;gap:8px;">';
+      h+=imgHtml;
+      h+='<div style="width:100%;">';
+      h+='<div style="font-weight:700;font-size:0.84rem;color:var(--text);">'+esc(a.title||'Article')+'</div>';
+      h+='<div style="font-size:0.65rem;color:var(--muted);margin-top:3px;">'+esc(a.category||'General')+(date?' &bull; '+date:'')+'</div>';
+      h+=summaryHtml;
       h+='</div>';
-      h+='<button data-art-id="'+a.id+'" style="background:rgba(255,59,48,0.1);color:#FF453A;border:1.5px solid rgba(255,59,48,0.35);border-radius:20px;padding:4px 12px;font-size:0.62rem;font-weight:700;cursor:pointer;margin-top:4px;">🗑️ Delete</button>';
+      h+='<button data-mag-id="'+a.id+'" style="background:rgba(255,59,48,0.1);color:#FF453A;border:1.5px solid rgba(255,59,48,0.35);border-radius:20px;padding:5px 12px;font-size:0.62rem;font-weight:700;cursor:pointer;">🗑️ Delete</button>';
       h+='</div>';
     });
     el.innerHTML=h;
-    el.querySelectorAll('[data-art-id]').forEach(function(btn){
+    el.querySelectorAll('[data-mag-id]').forEach(function(btn){
       btn.onclick=async function(){
-        if(!confirm('Delete this article?'))return;
-        try{await deleteDoc(doc(db,'magazine',this.dataset.artId));toast('Deleted ✅');window.load_magazine();}
+        if(!confirm('Delete?'))return;
+        try{await deleteDoc(doc(db,'magazine',this.dataset.magId));toast('Deleted ✅');window.load_magazine();}
         catch(e){toast('Error: '+e.message,'error');}
       };
     });
-  }catch(e){el.innerHTML='<div style="color:var(--err);padding:10px;">Error loading: '+e.message+'</div>';}
+  }catch(e){
+    console.error('load_magazine error:',e);
+    el.innerHTML='<div style="color:var(--err);padding:16px;text-align:center;font-family:Sora,sans-serif;"><b>Error loading Magazine</b><br><span style="font-size:0.72rem;">'+e.message+'</span><br><button onclick="window.load_magazine()" style="margin-top:10px;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:7px 14px;cursor:pointer;">Retry</button></div>';
+  }
 };
 
 // ══════════════════════════════════════
