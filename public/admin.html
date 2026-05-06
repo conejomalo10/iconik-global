@@ -1311,6 +1311,225 @@ window.deleteItem=async function(col,id,reloadFn){
   toast('Deleted ✅');
   if(typeof reloadFn==='function')reloadFn();
 };
+
+
+// ══════════════════════════════════════
+// SEND MESSAGE ALL (with file/media)
+// ══════════════════════════════════════
+window.sendMessageAll=async function(){
+  var btn=document.getElementById('sendAllBtn');
+  if(!btn)return;
+  var subj=document.getElementById('msgSubj').value.trim();
+  var body=document.getElementById('msgBody').value.trim();
+  if(!subj||!body){toast('Subject and message required','error');return;}
+  btn.disabled=true;btn.textContent='Sending...';
+  try{
+    var mediaUrl='';
+    var file=document.getElementById('msgFile')&&document.getElementById('msgFile').files[0];
+    var urlIn=document.getElementById('msgImgUrl')&&document.getElementById('msgImgUrl').value.trim();
+    if(file){btn.textContent='Uploading...';try{mediaUrl=await uploadFile(file);}catch(e){}}
+    else if(urlIn)mediaUrl=urlIn;
+    await addDoc(collection(db,'messages'),{
+      subject:subj,body:body,mediaUrl:mediaUrl,
+      fromName:'ICONIK',isAdmin:true,broadcast:true,
+      createdAt:serverTimestamp()
+    });
+    toast('Message sent to all members ✅');
+    document.getElementById('msgSubj').value='';
+    document.getElementById('msgBody').value='';
+    if(document.getElementById('msgImgUrl'))document.getElementById('msgImgUrl').value='';
+    if(document.getElementById('msgFnm'))document.getElementById('msgFnm').textContent='';
+  }catch(e){toast('Error: '+e.message,'error');}
+  btn.disabled=false;btn.textContent='📢 Send to All Members →';
+};
+
+// ══════════════════════════════════════
+// SEND PRIVATE DM
+// ══════════════════════════════════════
+window.sendPrivateDM=async function(){
+  var btn=document.getElementById('sendDMBtn');
+  if(!btn)return;
+  var to=document.getElementById('dmToField').value.trim();
+  var subj=document.getElementById('dmSubjField').value.trim();
+  var body=document.getElementById('dmBodyField').value.trim();
+  if(!to||!subj||!body){toast('Fill all required fields','error');return;}
+  btn.disabled=true;btn.textContent='Sending...';
+  try{
+    var mediaUrl='';
+    var file=document.getElementById('dmFile')&&document.getElementById('dmFile').files[0];
+    var urlIn=document.getElementById('dmImgUrl')&&document.getElementById('dmImgUrl').value.trim();
+    if(file){btn.textContent='Uploading...';try{mediaUrl=await uploadFile(file);}catch(e){}}
+    else if(urlIn)mediaUrl=urlIn;
+    var targetId=to;
+    try{
+      var snap=await getDocs(query(collection(db,'users'),where('email','==',to),limit(1)));
+      snap.forEach(function(d){targetId=d.id;});
+    }catch(e){}
+    await addDoc(collection(db,'messages'),{
+      to:targetId,toEmail:to,
+      subject:subj,body:body,mediaUrl:mediaUrl,
+      fromName:'ICONIK',isAdmin:true,isDM:true,
+      createdAt:serverTimestamp()
+    });
+    toast('Private message sent ✅');
+    ['dmToField','dmSubjField','dmBodyField','dmImgUrl'].forEach(function(id){
+      var el=document.getElementById(id);if(el)el.value='';
+    });
+    if(document.getElementById('dmFnm'))document.getElementById('dmFnm').textContent='';
+  }catch(e){toast('Error: '+e.message,'error');}
+  btn.disabled=false;btn.textContent='💌 Send Private Message →';
+};
+
+// ══════════════════════════════════════
+// MSG TAB SWITCHER
+// ══════════════════════════════════════
+window.switchMsgTab=function(tab){
+  var allF=document.getElementById('msgAllForm');
+  var dmF=document.getElementById('msgDMForm');
+  var allB=document.getElementById('msgTabAll');
+  var dmB=document.getElementById('msgTabDM');
+  if(!allF||!dmF)return;
+  if(tab==='all'){
+    allF.style.display='block';dmF.style.display='none';
+    allB.style.background='linear-gradient(135deg,#0A84FF,#0060CC)';allB.style.color='#fff';
+    dmB.style.background='var(--bg2)';dmB.style.color='var(--text3)';
+  }else{
+    allF.style.display='none';dmF.style.display='block';
+    dmB.style.background='linear-gradient(135deg,#0A84FF,#0060CC)';dmB.style.color='#fff';
+    allB.style.background='var(--bg2)';allB.style.color='var(--text3)';
+  }
+};
+
+// ══════════════════════════════════════
+// LOAD TV — reads from Firestore iconikTV
+// ══════════════════════════════════════
+window.load_tv=async function(){
+  var el=document.getElementById('tvList');
+  if(!el)return;
+  el.innerHTML='<div class="loader"><div class="lring"></div></div>';
+  try{
+    var snap=await sg(query(collection(db,'iconikTV'),limit(20)));
+    var vids=[];
+    snap.forEach(function(d){vids.push({id:d.id,...d.data()});});
+    vids.sort(function(a,b){return(b.createdAt&&b.createdAt.seconds||0)-(a.createdAt&&a.createdAt.seconds||0);});
+    if(!vids.length){
+      el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No videos yet. Add one above!</div>';
+      return;
+    }
+    var h='';
+    vids.forEach(function(v){
+      var vidId=v.videoId||'';
+      if(!vidId&&v.videoUrl){
+        var m=v.videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+        if(m)vidId=m[1];
+      }
+      var thumb=vidId?'https://img.youtube.com/vi/'+vidId+'/mqdefault.jpg':(v.thumbnail||'');
+      var date=v.createdAt&&v.createdAt.seconds?new Date(v.createdAt.seconds*1000).toLocaleDateString():'';
+      h+='<div class="m-row" style="flex-direction:row;align-items:center;">';
+      if(thumb)h+='<img src="'+esc(thumb)+'" style="width:80px;height:50px;object-fit:cover;border-radius:6px;flex-shrink:0;" onerror="this.remove()"/>';
+      h+='<div style="flex:1;min-width:0;padding:0 8px;">';
+      h+='<div style="font-weight:700;font-size:0.78rem;color:var(--text);">'+esc(v.title||'Video')+'</div>';
+      h+='<div style="font-size:0.62rem;color:var(--muted);">'+esc(v.category||'')+(date?' · '+date:'')+'</div>';
+      h+='</div>';
+      h+='<button data-vid-id="'+v.id+'" style="background:rgba(255,59,48,0.1);color:#FF453A;border:1.5px solid rgba(255,59,48,0.35);border-radius:20px;padding:4px 10px;font-size:0.6rem;font-weight:700;cursor:pointer;flex-shrink:0;">🗑️</button>';
+      h+='</div>';
+    });
+    el.innerHTML=h;
+    el.querySelectorAll('[data-vid-id]').forEach(function(btn){
+      btn.onclick=async function(){
+        if(!confirm('Delete this video?'))return;
+        try{await deleteDoc(doc(db,'iconikTV',this.dataset.vidId));toast('Deleted ✅');window.load_tv();}
+        catch(e){toast('Error: '+e.message,'error');}
+      };
+    });
+  }catch(e){el.innerHTML='<div style="color:var(--err);padding:10px;">Error loading: '+e.message+'</div>';}
+};
+
+// ══════════════════════════════════════
+// LOAD MAGAZINE — reads from Firestore
+// ══════════════════════════════════════
+window.load_magazine=async function(){
+  var el=document.getElementById('magazineList');
+  if(!el)return;
+  el.innerHTML='<div class="loader"><div class="lring"></div></div>';
+  try{
+    var snap=await sg(query(collection(db,'magazine'),limit(20)));
+    var arts=[];
+    snap.forEach(function(d){arts.push({id:d.id,...d.data()});});
+    arts.sort(function(a,b){return(b.publishedAt&&b.publishedAt.seconds||0)-(a.publishedAt&&a.publishedAt.seconds||0);});
+    if(!arts.length){
+      el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No articles yet. Publish one above!</div>';
+      return;
+    }
+    var h='';
+    arts.forEach(function(a){
+      var date=a.publishedAt&&a.publishedAt.seconds?new Date(a.publishedAt.seconds*1000).toLocaleDateString():'';
+      h+='<div class="m-row" style="flex-direction:column;align-items:flex-start;">';
+      if(a.imageUrl&&a.imageUrl.startsWith('http'))
+        h+='<img src="'+esc(a.imageUrl)+'" style="width:100%;height:130px;object-fit:cover;border-radius:8px;" onerror="this.remove()"/>';
+      h+='<div style="width:100%;padding-top:6px;">';
+      h+='<div style="font-weight:700;font-size:0.82rem;color:var(--text);">'+esc(a.title||'Article')+'</div>';
+      h+='<div style="font-size:0.62rem;color:var(--muted);margin-top:2px;">'+esc(a.category||'')+(date?' · '+date:'')+'</div>';
+      if(a.summary)h+='<div style="font-size:0.72rem;color:var(--text2);margin-top:4px;line-height:1.5;">'+esc(a.summary)+'</div>';
+      h+='</div>';
+      h+='<button data-art-id="'+a.id+'" style="background:rgba(255,59,48,0.1);color:#FF453A;border:1.5px solid rgba(255,59,48,0.35);border-radius:20px;padding:4px 12px;font-size:0.62rem;font-weight:700;cursor:pointer;margin-top:4px;">🗑️ Delete</button>';
+      h+='</div>';
+    });
+    el.innerHTML=h;
+    el.querySelectorAll('[data-art-id]').forEach(function(btn){
+      btn.onclick=async function(){
+        if(!confirm('Delete this article?'))return;
+        try{await deleteDoc(doc(db,'magazine',this.dataset.artId));toast('Deleted ✅');window.load_magazine();}
+        catch(e){toast('Error: '+e.message,'error');}
+      };
+    });
+  }catch(e){el.innerHTML='<div style="color:var(--err);padding:10px;">Error loading: '+e.message+'</div>';}
+};
+
+// ══════════════════════════════════════
+// UPDATED addMagazineArticle (with file upload)
+// ══════════════════════════════════════
+var _origAddMag=window.addMagazineArticle;
+window.addMagazineArticle=async function(){
+  var btn=document.getElementById('addMagBtn');
+  if(!btn)return;
+  var title=document.getElementById('magTitle').value.trim();
+  var summary=document.getElementById('magSummary').value.trim();
+  if(!title||!summary){toast('Title and summary required','error');return;}
+  btn.disabled=true;btn.textContent='Publishing...';
+  try{
+    var imgUrl=document.getElementById('magImgUrl').value.trim();
+    var imgFile=document.getElementById('magImgFile')&&document.getElementById('magImgFile').files[0];
+    var vidFile=document.getElementById('magVidFile')&&document.getElementById('magVidFile').files[0];
+    var docFile=document.getElementById('magDocFile')&&document.getElementById('magDocFile').files[0];
+    if(imgFile&&!imgUrl){btn.textContent='Uploading image...';imgUrl=await uploadFile(imgFile);}
+    else if(vidFile&&!imgUrl){btn.textContent='Uploading video...';imgUrl=await uploadFile(vidFile);}
+    else if(docFile&&!imgUrl){btn.textContent='Uploading file...';imgUrl=await uploadFile(docFile);}
+    await addDoc(collection(db,'magazine'),{
+      title:title,
+      category:document.getElementById('magCat').value,
+      summary:summary,
+      body:document.getElementById('magContent').value.trim(),
+      imageUrl:imgUrl,author:'ICONIK',isAdmin:true,
+      publishedAt:serverTimestamp()
+    });
+    toast('Article published ✅');
+    ['magTitle','magSummary','magContent','magImgUrl'].forEach(function(id){
+      var el=document.getElementById(id);if(el)el.value='';
+    });
+    if(document.getElementById('magFnm'))document.getElementById('magFnm').textContent='';
+    window.load_magazine();
+  }catch(e){toast('Error: '+e.message,'error');}
+  btn.disabled=false;btn.textContent='Publish Article →';
+};
+
+// Auto-load TV when addTV succeeds
+var _origAddTV=window.addTV;
+window.addTV=async function(){
+  if(_origAddTV)await _origAddTV.apply(this,arguments);
+  setTimeout(window.load_tv,800);
+};
+
 </script>
 
 <!-- ═══ SETTINGS VIEW ═══ -->
