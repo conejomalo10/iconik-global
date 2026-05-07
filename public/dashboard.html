@@ -946,7 +946,7 @@ body.light .soc-copy{color:rgba(0,0,0,0.3);}
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,updateDoc,deleteDoc,query,limit,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,updateDoc,deleteDoc,query,limit,serverTimestamp,where}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 const cfg={apiKey:"AIzaSyCnX9DszicduSwsFwBZ_iTLI47NPeXkteE",authDomain:"iconik-global.firebaseapp.com",projectId:"iconik-global",storageBucket:"iconik-global.firebasestorage.app",messagingSenderId:"1040054516979",appId:"1:1040054516979:web:33cd5f07ae8fc146a30b86"};
 const fb=initializeApp(cfg),auth=getAuth(fb),db=getFirestore(fb);
 async function sg(r){try{return await getDocs(r);}catch(e){console.warn("Firestore:",e.message);return{empty:true,forEach:()=>{},docs:[],size:0};}}
@@ -1924,20 +1924,49 @@ async function saveProfile(){
 // MESSAGES
 async function loadMsgs(){
   var el=document.getElementById("msgList");
-  var snap=await sg(query(collection(db,"messages"),limit(20)));
-  var ms=[];snap.forEach(function(d){ms.push({id:d.id,...d.data()});});
-  ms.sort(function(a,b){return(b.createdAt&&b.createdAt.seconds||0)-(a.createdAt&&a.createdAt.seconds||0);});
-  if(!ms.length){el.innerHTML="<div class=\"card\" style=\"text-align:center;color:var(--muted);padding:12px;\">No messages yet. &#128233;</div>";return;}
-  var h="";
-  ms.forEach(function(m){
-    h+="<div class=\"card\"><div style=\"display:flex;align-items:center;gap:8px;margin-bottom:6px;\">";
-    h+="<span style=\"font-weight:700;font-size:0.74rem;color:var(--text);\">"+(m.isAdmin?"ICONIK":xe(m.fromName||"Member"))+"</span>";
-    h+="<span style=\"font-family:'Bebas Neue',sans-serif;font-size:0.5rem;color:var(--bg);background:var(--accent);padding:1px 6px;\">"+xe(m.fromRole||"ADMIN")+"</span>";
-    h+="<span style=\"font-size:0.56rem;color:var(--dim);margin-left:auto;\">"+(m.createdAt&&m.createdAt.toDate?m.createdAt.toDate().toLocaleDateString():"")+"</span></div>";
-    if(m.subject)h+="<div style=\"font-weight:700;font-size:0.74rem;color:var(--text);margin-bottom:5px;\">"+xe(m.subject)+"</div>";
-    h+="<div style=\"font-size:0.72rem;color:var(--muted);line-height:1.6;\">"+xe(m.content||"")+"</div></div>";
-  });
-  el.innerHTML=h;
+  if(!el||!cU)return;
+  el.innerHTML="<div style='text-align:center;padding:16px;color:var(--muted);'>Loading messages...</div>";
+  try{
+    var snap=await getDocs(query(collection(db,"messages"),limit(30)));
+    var ms=[];
+    snap.forEach(function(d){
+      var data={id:d.id,...d.data()};
+      if(data.broadcast===true||data.isAdmin===true||data.to===cU.uid){
+        ms.push(data);
+      }
+    });
+    ms.sort(function(a,b){return(b.createdAt&&b.createdAt.seconds||0)-(a.createdAt&&a.createdAt.seconds||0);});
+    if(!ms.length){
+      el.innerHTML="<div class='card' style='text-align:center;color:var(--muted);padding:20px;'>No messages yet. 📩</div>";
+      return;
+    }
+    var h="";
+    ms.forEach(function(m){
+      var sender=m.isAdmin?"ICONIK":xe(m.fromName||"Member");
+      var isDM=m.isDM===true;
+      var date=m.createdAt&&m.createdAt.seconds?new Date(m.createdAt.seconds*1000).toLocaleDateString():"";
+      var mediaHtml="";
+      if(m.mediaUrl&&m.mediaUrl.startsWith("http")){
+        var isImg=/\.(jpg|jpeg|png|gif|webp)/i.test(m.mediaUrl);
+        if(isImg)mediaHtml="<img src='"+xe(m.mediaUrl)+"' style='width:100%;border-radius:8px;margin-top:8px;' onerror='this.remove()'/>";
+        else mediaHtml="<a href='"+xe(m.mediaUrl)+"' target='_blank' style='color:var(--accent);font-size:0.72rem;margin-top:6px;display:inline-block;'>&#128206; View attachment</a>";
+      }
+      h+="<div class='card' style='margin-bottom:8px;border-left:3px solid "+(isDM?"#0A84FF":"var(--accent)")+";padding:12px;'>";
+      h+="<div style='display:flex;align-items:center;gap:8px;margin-bottom:6px;'>";
+      h+="<span style='font-weight:800;font-size:0.76rem;color:var(--text);'>"+sender+"</span>";
+      h+="<span style='font-size:0.5rem;color:#fff;background:"+(isDM?"#0A84FF":"var(--accent)")+";padding:1px 7px;border-radius:4px;'>"+(isDM?"PRIVATE":"ADMIN")+"</span>";
+      h+="<span style='font-size:0.56rem;color:var(--muted);margin-left:auto;'>"+date+"</span>";
+      h+="</div>";
+      if(m.subject)h+="<div style='font-weight:700;font-size:0.76rem;color:var(--text);margin-bottom:4px;'>"+xe(m.subject)+"</div>";
+      h+="<div style='font-size:0.72rem;color:var(--muted);line-height:1.6;'>"+xe(m.body||m.content||"")+"</div>";
+      h+=mediaHtml;
+      h+="</div>";
+    });
+    el.innerHTML=h;
+  }catch(e){
+    console.error("loadMsgs error:",e);
+    el.innerHTML="<div class='card' style='color:var(--err);padding:12px;'>Could not load messages.</div>";
+  }
 }
 
 // NOTIFICATIONS
