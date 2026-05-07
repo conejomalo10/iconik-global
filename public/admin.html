@@ -113,6 +113,13 @@ select.fi option{background:var(--bg2);}
 /* Settings tab */
 .btn-danger{padding:8px 14px;background:rgba(255,59,48,0.12);border:1.5px solid rgba(255,59,48,0.4);color:#FF453A;border-radius:8px;font-family:'Sora',sans-serif;font-size:0.68rem;font-weight:700;cursor:pointer;transition:all 0.2s;}
 .btn-danger:hover{background:rgba(255,59,48,0.25);}
+
+/* ── Skeleton Loading ── */
+.sk{background:linear-gradient(90deg,var(--bg2) 25%,var(--bg3) 50%,var(--bg2) 75%);background-size:200% 100%;animation:skl 1.4s infinite ease-in-out;}
+@keyframes skl{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.sk-line{height:11px;border-radius:6px;margin-bottom:7px;}.sk-line.sm{width:55%;}.sk-line.md{width:75%;}.sk-line.lg{width:100%;}
+.sk-av{width:40px;height:40px;border-radius:50%;flex-shrink:0;}
+.sk-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;}
 </style>
 </head>
 <body>
@@ -177,7 +184,7 @@ select.fi option{background:var(--bg2);}
     <button class="btn-gold" onclick="goView('members')">👥 Members</button>
     <button class="btn-gold" onclick="goView('celebrities')" style="background:rgba(255,255,255,0.08);color:var(--text);">⭐ Add Celebrity</button>
     <button class="btn-gold" onclick="goView('posts')" style="background:rgba(255,255,255,0.08);color:var(--text);">📝 Publish Post</button>
-    <button class="btn-gold" onclick="switchMsgTab('all');goView('messages')" style="background:rgba(255,255,255,0.08);color:var(--text);">📩 Message All</button>
+    <button class="btn-gold" onclick="goView('messages')" style="background:rgba(255,255,255,0.08);color:var(--text);">📩 Message All</button>
   </div>
   <div class="sec-head">Recent Members</div>
   <div id="recentMembersList"><div class="loader"><div class="loader-ring"></div></div></div>
@@ -472,107 +479,6 @@ select.fi option{background:var(--bg2);}
   <div id="subAdminList"><div class="loader"><div class="loader-ring"></div></div></div>
 </div>
 
-
-
-<div class="view" id="radioV" style="padding:0;">
-  <div class="wbar"><span style="font-size:1.4rem;">📻</span><div><div class="wbar-title" style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;">ICONIK Radio</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Manage radio stations</div></div></div>
-  <div class="card" style="margin:12px 14px;">
-    <div class="fg"><label class="fl">Station Name *</label><input class="fi" id="radioName" placeholder="e.g. ICONIK Gold FM"/></div>
-    <div class="fg"><label class="fl">Stream URL *</label><input class="fi" id="radioUrl" placeholder="https://stream.url/radio.mp3"/></div>
-    <div class="fg"><label class="fl">Genre</label><input class="fi" id="radioGenre" placeholder="e.g. Afrobeats, Gospel, Hip-Hop..."/></div>
-    <button class="btn-gold" id="addRadioBtn" onclick="addRadioStation()" style="width:100%;">Add Station →</button>
-  </div>
-  <div style="padding:0 14px;">
-    <div class="sh2" style="color:var(--text3);font-size:0.6rem;letter-spacing:0.15em;margin:0 0 8px;">STATIONS</div>
-    <div id="radioList"><div class="loader"><div class="lring"></div></div></div>
-  </div>
-</div>
-
-<!-- ═══ SETTINGS VIEW ═══ -->
-
-<div class="view" id="settingsV" style="padding:16px;">
-  <div class="wbar"><span style="font-size:1.4rem;">⚙️</span><div><div class="wbar-title">Admin Settings</div><div class="wbar-sub">Chief Admin only</div></div></div>
-
-  <!-- SUB ADMINS -->
-  <div class="card" style="margin-bottom:12px;">
-    <div class="sh2" style="color:var(--accent);margin-bottom:12px;">👥 Sub Admin Management</div>
-    <div style="display:flex;gap:8px;margin-bottom:12px;">
-      <input id="saEmail" class="fi" placeholder="Sub Admin email..." style="flex:1;"/>
-      <button class="btn-gold" onclick="assignSubAdmin()" style="white-space:nowrap;">+ Assign</button>
-    </div>
-    <div id="subAdminsList"></div>
-  </div>
-
-  <!-- BAN / RESTRICT MEMBERS -->
-  <div class="card" style="margin-bottom:12px;">
-    <div class="sh2" style="color:var(--accent);margin-bottom:12px;">🚫 Ban / Restrict Members</div>
-    <div style="display:flex;gap:8px;margin-bottom:12px;">
-      <input id="banUid" class="fi" placeholder="Member email or UID..." style="flex:1;"/>
-      <select id="banType" class="fi" style="width:120px;">
-        <option value="ban">Ban</option>
-        <option value="restrict">Restrict</option>
-        <option value="unban">Unban</option>
-      </select>
-      <button class="btn-gold" onclick="banMember()">Apply</button>
-    </div>
-    <div id="bannedList"></div>
-  </div>
-
-  <!-- VIP MEDAL ASSIGNMENT -->
-  <div class="card" style="margin-bottom:12px;">
-    <div class="sh2" style="color:var(--accent);margin-bottom:12px;">🏅 Assign VIP Medals</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
-      <input id="vipUid" class="fi" placeholder="Member email or UID..." style="flex:1;min-width:200px;"/>
-      <select id="vipTier" class="fi" style="width:140px;">
-        <option value="Fan">Fan (Free)</option>
-        <option value="Bronze">🥉 Bronze</option>
-        <option value="Silver">🥈 Silver</option>
-        <option value="Gold">🥇 Gold</option>
-      </select>
-      <button class="btn-gold" onclick="assignVIP()">Assign</button>
-    </div>
-  </div>
-
-  <!-- ACCOUNT VERIFICATION -->
-  <div class="card" style="margin-bottom:12px;">
-    <div class="sh2" style="color:var(--accent);margin-bottom:12px;">✅ Account Verification</div>
-    <div id="pendingVerifyList"><div class="loader"><div class="lring"></div></div></div>
-  </div>
-
-  <!-- DELETE TABS / CONTENT -->
-  <div class="card" style="margin-bottom:12px;">
-    <div class="sh2" style="color:var(--accent);margin-bottom:12px;">🗑️ Bulk Delete</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <button class="btn-danger" onclick="bulkDelete('posts')">Delete All Posts</button>
-      <button class="btn-danger" onclick="bulkDelete('celebrityNews')">Delete All News</button>
-      <button class="btn-danger" onclick="bulkDelete('events')">Delete All Events</button>
-      <button class="btn-danger" onclick="bulkDelete('stories')">Delete All Stories</button>
-    </div>
-  </div>
-
-  <!-- DIRECT MESSAGES -->
-  <div class="card" style="margin-bottom:12px;">
-    <div class="sh2" style="color:var(--accent);margin-bottom:12px;">💬 Direct Message Member</div>
-    <div class="fg"><label class="lbl">To (email or UID)</label>
-      <input id="dmTo" class="fi" placeholder="member@email.com or UID..."/></div>
-    <div class="fg"><label class="lbl">Subject</label>
-      <input id="dmSubject" class="fi" placeholder="Message subject..."/></div>
-    <div class="fg"><label class="lbl">Message</label>
-      <textarea id="dmBody" class="fi" rows="4" placeholder="Type your message..."></textarea></div>
-    <button class="btn-gold" onclick="sendDM()" style="width:100%;">Send Direct Message →</button>
-  </div>
-
-  <!-- SUB ADMIN ACCESS CONTROL -->
-  <div class="card">
-    <div class="sh2" style="color:var(--accent);margin-bottom:12px;">🔐 Sub Admin Access Control</div>
-    <p style="font-size:0.72rem;color:var(--text3);margin-bottom:12px;">Control which Sub Admins can access the Direct Messages dashboard.</p>
-    <div id="saAccessList"></div>
-  </div>
-</div>
-
-</body>
-</html>
-
 </div><!-- end #main -->
 
 <!-- BOTTOM NAV -->
@@ -787,12 +693,8 @@ function memberRow(m,compact){
   h+='<div style="display:flex;align-items:center;gap:10px;width:100%;">';
   h+='<div class="m-av">'+photo+nm.charAt(0)+'</div>';
   h+='<div style="flex:1;min-width:0;">';
-  h+='<div class="m-name">'+nm;
-  h+=' <span class="badge '+badgeCls+'">'+status+'</span>';
-  if(isBanned)h+=' <span class="badge badge-err">BANNED</span>';
-  if(tierIcon)h+=' <span style="font-size:0.75rem;">'+tierIcon+'</span>';
-  h+='</div>';
-  h+='<div style="font-size:0.62rem;color:var(--muted);margin-top:1px;font-family:Sora,sans-serif;">'+esc(username)+'</div>';
+  h+='<div class="m-name">'+nm+' <span class="badge '+badgeCls+'">'+status+'</span>'+(isBanned?' <span class="badge badge-err">BANNED</span>':'')+(tierIcon?' <span>'+tierIcon+'</span>':'')+'</div>';
+  h+='<div style="font-size:0.62rem;color:var(--muted);margin-top:1px;">'+esc(username)+'</div>';
   h+='</div></div>';
   if(!compact){
     h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;margin-top:8px;width:100%;background:var(--bg2);border-radius:8px;padding:8px;">';
@@ -808,8 +710,7 @@ function memberRow(m,compact){
   if(status!=='verified')h+='<button class="m-btn" data-action="verify" data-uid="'+m.id+'" style="background:rgba(52,199,89,0.15);color:#34C759;border:1.5px solid rgba(52,199,89,0.5);border-radius:20px;padding:5px 11px;font-size:0.62rem;font-weight:700;cursor:pointer;">✅ Verify</button>';
   if(status==='verified')h+='<button class="m-btn" data-action="unverify" data-uid="'+m.id+'" style="background:rgba(255,149,0,0.12);color:#FF9500;border:1.5px solid rgba(255,149,0,0.4);border-radius:20px;padding:5px 11px;font-size:0.62rem;font-weight:700;cursor:pointer;">↩ Unverify</button>';
   h+='<button class="m-btn" data-action="vip" data-uid="'+m.id+'" data-tier="'+esc(tier)+'" style="background:rgba(10,132,255,0.12);color:#0A84FF;border:1.5px solid rgba(10,132,255,0.4);border-radius:20px;padding:5px 11px;font-size:0.62rem;font-weight:700;cursor:pointer;">🏅 VIP</button>';
-  if(isBanned)h+='<button class="m-btn" data-action="unban" data-uid="'+m.id+'" data-name="'+nm+'" style="background:rgba(52,199,89,0.12);color:#34C759;border:1.5px solid rgba(52,199,89,0.4);border-radius:20px;padding:5px 11px;font-size:0.62rem;font-weight:700;cursor:pointer;">🔓 Unban</button>';
-  else h+='<button class="m-btn" data-action="ban" data-uid="'+m.id+'" data-name="'+nm+'" style="background:rgba(255,149,0,0.12);color:#FF9500;border:1.5px solid rgba(255,149,0,0.4);border-radius:20px;padding:5px 11px;font-size:0.62rem;font-weight:700;cursor:pointer;">🚫 Ban</button>';
+  h+=isBanned?'<button class="m-btn" data-action="unban" data-uid="'+m.id+'" data-name="'+nm+'" style="background:rgba(52,199,89,0.12);color:#34C759;border:1.5px solid rgba(52,199,89,0.4);border-radius:20px;padding:5px 11px;font-size:0.62rem;font-weight:700;cursor:pointer;">🔓 Unban</button>':'<button class="m-btn" data-action="ban" data-uid="'+m.id+'" data-name="'+nm+'" style="background:rgba(255,149,0,0.12);color:#FF9500;border:1.5px solid rgba(255,149,0,0.4);border-radius:20px;padding:5px 11px;font-size:0.62rem;font-weight:700;cursor:pointer;">🚫 Ban</button>';
   h+='<button class="m-btn" data-action="dm" data-uid="'+m.id+'" data-name="'+nm+'" data-email="'+email+'" style="background:rgba(10,132,255,0.1);color:#0A84FF;border:1.5px solid rgba(10,132,255,0.3);border-radius:20px;padding:5px 11px;font-size:0.62rem;font-weight:700;cursor:pointer;">💌 DM</button>';
   h+='<button class="m-btn" data-action="delete" data-uid="'+m.id+'" style="background:rgba(255,59,48,0.1);color:#FF453A;border:1.5px solid rgba(255,59,48,0.35);border-radius:20px;padding:5px 11px;font-size:0.62rem;font-weight:700;cursor:pointer;">🗑️ Delete</button>';
   h+='</div></div>';
@@ -1530,34 +1431,15 @@ window.sendPrivateDM=async function(prefillEmail){
     var urlIn=document.getElementById('dmImgUrl')&&document.getElementById('dmImgUrl').value.trim();
     if(file){btn.textContent='Uploading...';try{mediaUrl=await uploadFile(file);}catch(e){}}
     else if(urlIn)mediaUrl=urlIn;
-    // Clean input — strip @ prefix if present
     var toClean=to.startsWith('@')?to.substring(1):to;
     var targetId=null; var targetEmail=to;
-    // Search by email
     var s1=await getDocs(query(collection(db,'users'),where('email','==',to),limit(1)));
     s1.forEach(function(d){targetId=d.id;targetEmail=d.data().email||to;});
-    // Search by username (with and without @)
-    if(!targetId){
-      var s2=await getDocs(query(collection(db,'users'),where('username','==',to),limit(1)));
-      s2.forEach(function(d){targetId=d.id;targetEmail=d.data().email||to;});
-    }
-    if(!targetId){
-      var s2b=await getDocs(query(collection(db,'users'),where('username','==','@'+toClean),limit(1)));
-      s2b.forEach(function(d){targetId=d.id;targetEmail=d.data().email||to;});
-    }
-    // Search by userId field
-    if(!targetId){
-      var s3=await getDocs(query(collection(db,'users'),where('userId','==',to),limit(1)));
-      s3.forEach(function(d){targetId=d.id;targetEmail=d.data().email||to;});
-    }
-    // Search by name
-    if(!targetId){
-      var s4=await getDocs(query(collection(db,'users'),where('name','==',to),limit(1)));
-      s4.forEach(function(d){targetId=d.id;targetEmail=d.data().email||to;});
-    }
-    // Fallback: treat as Firestore UID directly
+    if(!targetId){var s2=await getDocs(query(collection(db,'users'),where('username','==',to),limit(1)));s2.forEach(function(d){targetId=d.id;targetEmail=d.data().email||to;});}
+    if(!targetId){var s2b=await getDocs(query(collection(db,'users'),where('username','==','@'+toClean),limit(1)));s2b.forEach(function(d){targetId=d.id;targetEmail=d.data().email||to;});}
+    if(!targetId){var s3=await getDocs(query(collection(db,'users'),where('userId','==',to),limit(1)));s3.forEach(function(d){targetId=d.id;targetEmail=d.data().email||to;});}
+    if(!targetId){var s4=await getDocs(query(collection(db,'users'),where('name','==',to),limit(1)));s4.forEach(function(d){targetId=d.id;targetEmail=d.data().email||to;});}
     if(!targetId)targetId=to;
-    if(!targetId){toast('Member not found: '+to,'error');btn.disabled=false;btn.textContent='💌 Send Private Message →';return;}
     await addDoc(collection(db,'messages'),{
       to:targetId,toEmail:targetEmail,subject:subj,body:body,mediaUrl:mediaUrl,
       fromName:'ICONIK',isAdmin:true,isDM:true,createdAt:serverTimestamp()
@@ -1767,5 +1649,100 @@ window.addRadioStation=async function(){
 };</script>
 
 <!-- ═══ RADIO VIEW ═══ -->
+<div class="view" id="radioV" style="padding:0;">
+  <div class="wbar"><span style="font-size:1.4rem;">📻</span><div><div class="wbar-title" style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;">ICONIK Radio</div><div style="font-family:'Montserrat',sans-serif;font-size:0.62rem;color:var(--muted);">Manage radio stations</div></div></div>
+  <div class="card" style="margin:12px 14px;">
+    <div class="fg"><label class="fl">Station Name *</label><input class="fi" id="radioName" placeholder="e.g. ICONIK Gold FM"/></div>
+    <div class="fg"><label class="fl">Stream URL *</label><input class="fi" id="radioUrl" placeholder="https://stream.url/radio.mp3"/></div>
+    <div class="fg"><label class="fl">Genre</label><input class="fi" id="radioGenre" placeholder="e.g. Afrobeats, Gospel, Hip-Hop..."/></div>
+    <button class="btn-gold" id="addRadioBtn" onclick="addRadioStation()" style="width:100%;">Add Station →</button>
+  </div>
+  <div style="padding:0 14px;">
+    <div class="sh2" style="color:var(--text3);font-size:0.6rem;letter-spacing:0.15em;margin:0 0 8px;">STATIONS</div>
+    <div id="radioList"><div class="loader"><div class="lring"></div></div></div>
+  </div>
+</div>
 
+<!-- ═══ SETTINGS VIEW ═══ -->
+<div class="view" id="settingsV" style="padding:16px;">
+  <div class="wbar"><span style="font-size:1.4rem;">⚙️</span><div><div class="wbar-title">Admin Settings</div><div class="wbar-sub">Chief Admin only</div></div></div>
 
+  <!-- SUB ADMINS -->
+  <div class="card" style="margin-bottom:12px;">
+    <div class="sh2" style="color:var(--accent);margin-bottom:12px;">👥 Sub Admin Management</div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;">
+      <input id="saEmail" class="fi" placeholder="Sub Admin email..." style="flex:1;"/>
+      <button class="btn-gold" onclick="assignSubAdmin()" style="white-space:nowrap;">+ Assign</button>
+    </div>
+    <div id="subAdminsList"></div>
+  </div>
+
+  <!-- BAN / RESTRICT MEMBERS -->
+  <div class="card" style="margin-bottom:12px;">
+    <div class="sh2" style="color:var(--accent);margin-bottom:12px;">🚫 Ban / Restrict Members</div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;">
+      <input id="banUid" class="fi" placeholder="Member email or UID..." style="flex:1;"/>
+      <select id="banType" class="fi" style="width:120px;">
+        <option value="ban">Ban</option>
+        <option value="restrict">Restrict</option>
+        <option value="unban">Unban</option>
+      </select>
+      <button class="btn-gold" onclick="banMember()">Apply</button>
+    </div>
+    <div id="bannedList"></div>
+  </div>
+
+  <!-- VIP MEDAL ASSIGNMENT -->
+  <div class="card" style="margin-bottom:12px;">
+    <div class="sh2" style="color:var(--accent);margin-bottom:12px;">🏅 Assign VIP Medals</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+      <input id="vipUid" class="fi" placeholder="Member email or UID..." style="flex:1;min-width:200px;"/>
+      <select id="vipTier" class="fi" style="width:140px;">
+        <option value="Fan">Fan (Free)</option>
+        <option value="Bronze">🥉 Bronze</option>
+        <option value="Silver">🥈 Silver</option>
+        <option value="Gold">🥇 Gold</option>
+      </select>
+      <button class="btn-gold" onclick="assignVIP()">Assign</button>
+    </div>
+  </div>
+
+  <!-- ACCOUNT VERIFICATION -->
+  <div class="card" style="margin-bottom:12px;">
+    <div class="sh2" style="color:var(--accent);margin-bottom:12px;">✅ Account Verification</div>
+    <div id="pendingVerifyList"><div class="loader"><div class="lring"></div></div></div>
+  </div>
+
+  <!-- DELETE TABS / CONTENT -->
+  <div class="card" style="margin-bottom:12px;">
+    <div class="sh2" style="color:var(--accent);margin-bottom:12px;">🗑️ Bulk Delete</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn-danger" onclick="bulkDelete('posts')">Delete All Posts</button>
+      <button class="btn-danger" onclick="bulkDelete('celebrityNews')">Delete All News</button>
+      <button class="btn-danger" onclick="bulkDelete('events')">Delete All Events</button>
+      <button class="btn-danger" onclick="bulkDelete('stories')">Delete All Stories</button>
+    </div>
+  </div>
+
+  <!-- DIRECT MESSAGES -->
+  <div class="card" style="margin-bottom:12px;">
+    <div class="sh2" style="color:var(--accent);margin-bottom:12px;">💬 Direct Message Member</div>
+    <div class="fg"><label class="lbl">To (email or UID)</label>
+      <input id="dmTo" class="fi" placeholder="member@email.com or UID..."/></div>
+    <div class="fg"><label class="lbl">Subject</label>
+      <input id="dmSubject" class="fi" placeholder="Message subject..."/></div>
+    <div class="fg"><label class="lbl">Message</label>
+      <textarea id="dmBody" class="fi" rows="4" placeholder="Type your message..."></textarea></div>
+    <button class="btn-gold" onclick="sendDM()" style="width:100%;">Send Direct Message →</button>
+  </div>
+
+  <!-- SUB ADMIN ACCESS CONTROL -->
+  <div class="card">
+    <div class="sh2" style="color:var(--accent);margin-bottom:12px;">🔐 Sub Admin Access Control</div>
+    <p style="font-size:0.72rem;color:var(--text3);margin-bottom:12px;">Control which Sub Admins can access the Direct Messages dashboard.</p>
+    <div id="saAccessList"></div>
+  </div>
+</div>
+
+</body>
+</html>
