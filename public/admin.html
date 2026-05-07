@@ -540,7 +540,7 @@ select.fi option{background:var(--bg2);}
 </script>
 
 <!-- FIREBASE + ADMIN LOGIC -->
-<s
+<script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,updateDoc,deleteDoc,query,where,limit,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -653,7 +653,7 @@ window.load_overview=async function(){
 // ── MEMBERS ──
 window.load_members=async function(){
   const el=document.getElementById('membersList');
-  const snap=await sg(query(collection(db,'users'),limit(100)));
+  const snap=await getDocs(query(collection(db,'users'),limit(100)));
   allMembers=[];snap.forEach(d=>allMembers.push({id:d.id,...d.data()}));
   allMembers.sort((a,b)=>(b.joinedAt?.seconds||0)-(a.joinedAt?.seconds||0));
   renderMembers(allMembers);
@@ -761,7 +761,7 @@ let _allCelebsCache=[];
 
 // ── LOAD & CACHE CELEBRITIES ──
 async function fetchAllCelebs(){
-  const snap=await sg(query(collection(db,'celebrities'),limit(100)));
+  const snap=await getDocs(query(collection(db,'celebrities'),limit(100)));
   _allCelebsCache=[];
   snap.forEach(d=>_allCelebsCache.push({id:d.id,...d.data()}));
   return _allCelebsCache;
@@ -986,7 +986,7 @@ window.deleteCeleb=async function(id,name){
 // ── POSTS ── (with Edit + Delete for Chief Admin)
 window.load_posts=async function(){
   const el=document.getElementById('postsList');
-  const snap=await sg(query(collection(db,'posts'),limit(30)));
+  const snap=await getDocs(query(collection(db,'posts'),limit(30)));
   const posts=[];snap.forEach(d=>posts.push({id:d.id,...d.data()}));
   posts.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
   if(!posts.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No posts yet.</div>';return;}
@@ -1072,7 +1072,7 @@ window.publishPost=async function(){
 // ── NEWS ──
 window.load_news=async function(){
   const el=document.getElementById('newsList');
-  const snap=await sg(query(collection(db,'celebrityNews'),limit(20)));
+  const snap=await getDocs(query(collection(db,'celebrityNews'),limit(20)));
   const news=[];snap.forEach(d=>news.push({id:d.id,...d.data()}));
   news.sort((a,b)=>(b.publishedAt?.seconds||0)-(a.publishedAt?.seconds||0));
   if(!news.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No news yet.</div>';return;}
@@ -1112,7 +1112,7 @@ window.addNews=async function(){
 // ── EVENTS ──
 window.load_events=async function(){
   const el=document.getElementById('eventsList');
-  const snap=await sg(query(collection(db,'events'),limit(20)));
+  const snap=await getDocs(query(collection(db,'events'),limit(20)));
   const events=[];snap.forEach(d=>events.push({id:d.id,...d.data()}));
   events.sort((a,b)=>(a.eventDate||'').localeCompare(b.eventDate||''));
   if(!events.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No events yet.</div>';return;}
@@ -1153,7 +1153,7 @@ window.addEvent=async function(){
 // ── MESSAGES ──
 window.load_messages=async function(){
   const el=document.getElementById('messagesList');
-  const snap=await sg(query(collection(db,'messages'),limit(20)));
+  const snap=await getDocs(query(collection(db,'messages'),limit(20)));
   const msgs=[];snap.forEach(d=>msgs.push({id:d.id,...d.data()}));
   msgs.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
   if(!msgs.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No messages sent yet.</div>';return;}
@@ -1332,7 +1332,7 @@ window.addSubAdmin=async function(){
   const category=catEl?catEl.value:'All';
   if(!email){toast('Email required','error');return;}
   try{
-    const snap=await sg(query(collection(db,'users'),where('email','==',email),limit(1)));
+    const snap=await getDocs(query(collection(db,'users'),where('email','==',email),limit(1)));
     if(snap.empty){toast('No member found with that email. They must register first.','error');return;}
     const uid=snap.docs[0].id;
     await updateDoc(doc(db,'users',uid),{role,category:category||'All'});
@@ -1621,7 +1621,7 @@ window.load_radio=async function(){
   if(!el)return;
   el.innerHTML='<div class="loader"><div class="lring"></div></div>';
   try{
-    var snap=await sg(query(collection(db,'radio'),limit(20)));
+    var snap=await getDocs(query(collection(db,'radio'),limit(20)));
     var stations=[];snap.forEach(function(d){stations.push({id:d.id,...d.data()});});
     if(!stations.length){el.innerHTML='<div style="color:var(--muted);font-size:0.72rem;padding:10px;">No stations yet. Add one above!</div>';return;}
     var h='';
@@ -1663,7 +1663,6 @@ window.addRadioStation=async function(){
     window.load_radio();
   }catch(e){toast('Error: '+e.message,'error');}
   btn.disabled=false;btn.textContent='Add Station →';
-};='Add Station →';
 };</script>
 
 <!-- ═══ RADIO VIEW ═══ -->
