@@ -177,7 +177,7 @@ select.fi option{background:var(--bg2);}
     <button class="btn-gold" onclick="goView('members')">👥 Members</button>
     <button class="btn-gold" onclick="goView('celebrities')" style="background:rgba(255,255,255,0.08);color:var(--text);">⭐ Add Celebrity</button>
     <button class="btn-gold" onclick="goView('posts')" style="background:rgba(255,255,255,0.08);color:var(--text);">📝 Publish Post</button>
-    <button class="btn-gold" onclick="goView('messages')" style="background:rgba(255,255,255,0.08);color:var(--text);">📩 Message All</button>
+    <button class="btn-gold" onclick="switchMsgTab('all');goView('messages')" style="background:rgba(255,255,255,0.08);color:var(--text);">📩 Message All</button>
   </div>
   <div class="sec-head">Recent Members</div>
   <div id="recentMembersList"><div class="loader"><div class="loader-ring"></div></div></div>
@@ -540,7 +540,7 @@ select.fi option{background:var(--bg2);}
 </script>
 
 <!-- FIREBASE + ADMIN LOGIC -->
-<script type="module">
+<s
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import{getFirestore,collection,doc,setDoc,getDoc,getDocs,addDoc,updateDoc,deleteDoc,query,where,limit,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -736,6 +736,8 @@ function attachMemberActions(){
       }else if(action==='unban'){
         await updateDoc(doc(db,'users',uid),{banned:false,banDate:null});
         toast(name+' access restored ✅');load_members();
+      }else if(action==='dm'){
+        sendPrivateDM(this.dataset.email||uid);
       }else if(action==='delete'){
         if(confirm('Delete this member? Cannot be undone.')){
           await deleteDoc(doc(db,'users',uid));toast('Member removed');load_members();load_overview();
@@ -1427,17 +1429,39 @@ window.sendPrivateDM=async function(prefillEmail){
     var urlIn=document.getElementById('dmImgUrl')&&document.getElementById('dmImgUrl').value.trim();
     if(file){btn.textContent='Uploading...';try{mediaUrl=await uploadFile(file);}catch(e){}}
     else if(urlIn)mediaUrl=urlIn;
+    // Clean input — strip @ prefix if present
+    var toClean=to.startsWith('@')?to.substring(1):to;
     var targetId=null; var targetEmail=to;
+    // Search by email
     var s1=await getDocs(query(collection(db,'users'),where('email','==',to),limit(1)));
     s1.forEach(function(d){targetId=d.id;targetEmail=d.data().email||to;});
-    if(!targetId){var s2=await getDocs(query(collection(db,'users'),where('username','==',to),limit(1)));s2.forEach(function(d){targetId=d.id;targetEmail=d.data().email||to;});}
-    if(!targetId){var s3=await getDocs(query(collection(db,'users'),where('name','==',to),limit(1)));s3.forEach(function(d){targetId=d.id;targetEmail=d.data().email||to;});}
+    // Search by username (with and without @)
+    if(!targetId){
+      var s2=await getDocs(query(collection(db,'users'),where('username','==',to),limit(1)));
+      s2.forEach(function(d){targetId=d.id;targetEmail=d.data().email||to;});
+    }
+    if(!targetId){
+      var s2b=await getDocs(query(collection(db,'users'),where('username','==','@'+toClean),limit(1)));
+      s2b.forEach(function(d){targetId=d.id;targetEmail=d.data().email||to;});
+    }
+    // Search by userId field
+    if(!targetId){
+      var s3=await getDocs(query(collection(db,'users'),where('userId','==',to),limit(1)));
+      s3.forEach(function(d){targetId=d.id;targetEmail=d.data().email||to;});
+    }
+    // Search by name
+    if(!targetId){
+      var s4=await getDocs(query(collection(db,'users'),where('name','==',to),limit(1)));
+      s4.forEach(function(d){targetId=d.id;targetEmail=d.data().email||to;});
+    }
+    // Fallback: treat as Firestore UID directly
     if(!targetId)targetId=to;
+    if(!targetId){toast('Member not found: '+to,'error');btn.disabled=false;btn.textContent='💌 Send Private Message →';return;}
     await addDoc(collection(db,'messages'),{
       to:targetId,toEmail:targetEmail,subject:subj,body:body,mediaUrl:mediaUrl,
       fromName:'ICONIK',isAdmin:true,isDM:true,createdAt:serverTimestamp()
     });
-    toast('Private message sent ✅');
+    toast('Message sent to '+targetEmail+' ✅');
     ['dmToField','dmSubjField','dmBodyField','dmImgUrl'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
     if(document.getElementById('dmFnm'))document.getElementById('dmFnm').textContent='';
   }catch(e){toast('Error: '+e.message,'error');}
@@ -1639,6 +1663,7 @@ window.addRadioStation=async function(){
     window.load_radio();
   }catch(e){toast('Error: '+e.message,'error');}
   btn.disabled=false;btn.textContent='Add Station →';
+};='Add Station →';
 };</script>
 
 <!-- ═══ RADIO VIEW ═══ -->
