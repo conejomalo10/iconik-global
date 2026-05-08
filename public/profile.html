@@ -131,6 +131,13 @@ select.privacy-sel{background:var(--bg3);border:1px solid var(--border);color:va
 /* TOAST */
 #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:rgba(20,83,45,0.96);color:#fff;padding:10px 20px;border-radius:24px;font-size:0.72rem;font-weight:600;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
 #toast.on{opacity:1;}
+
+/* ── 4K Premium rendering ── */
+*,*::before,*::after{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;}
+body.light .prof-name,body.light .prof-handle,body.light .sh2,body.light .privacy-label,body.light .fl{color:#1A2B3C !important;}
+body.light .prof-bio,body.light .prof-loc,body.light .privacy-sub{color:#3D5068 !important;}
+body.light .card{box-shadow:0 1px 4px rgba(0,0,0,0.07),0 4px 16px rgba(0,0,0,0.04);}
+body.light .stat-num{color:#0060CC;}
 </style>
 </head>
 <body>
@@ -169,6 +176,7 @@ select.privacy-sel{background:var(--bg3);border:1px solid var(--border);color:va
   <div class="prof-pad">
     <div class="prof-name" id="profName">Loading...</div>
     <div class="prof-handle" id="profHandle"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;"><span style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:0.6rem;color:var(--text3);font-weight:600;" id="profUsername"></span><span style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:0.6rem;color:var(--text3);font-family:monospace;" id="profUserId"></span></div>
     <div id="tierBadge" style="margin-bottom:10px;"></div>
     <div class="prof-bio" id="profBio"></div>
     <div class="prof-loc" id="profLoc"></div>
@@ -229,6 +237,7 @@ select.privacy-sel{background:var(--bg3);border:1px solid var(--border);color:va
       <div class="fg"><label class="fl">Age</label><input class="fi" id="eAge" type="number" placeholder="Your age" min="13" max="120"/></div>
       <div class="fg"><label class="fl">Website</label><input class="fi" id="eWebsite" placeholder="https://yourwebsite.com"/></div>
       <div class="fg"><label class="fl">Phone (optional)</label><input class="fi" id="ePhone" placeholder="+1 234 567 8900"/></div>
+      <div class="fg"><label class="fl">Email Address</label><input class="fi" id="eEmail" type="email" readonly style="opacity:0.7;cursor:not-allowed;" title="Email tied to your account"/></div>
     </div>
 
     <div class="card">
@@ -264,36 +273,7 @@ select.privacy-sel{background:var(--bg3);border:1px solid var(--border);color:va
       <div class="privacy-row">
         <div><div class="privacy-label">Cover Photo</div><div class="privacy-sub">Who can see your cover?</div></div>
         <select class="privacy-sel" id="privCover">
-          <option value="public">Public</option>
-          <option value="friends">Friends</option>
-          <option value="none">Only Me</option>
-        </select>
-      </div>
-      <div class="privacy-row">
-        <div><div class="privacy-label">Posts</div><div class="privacy-sub">Who can see your posts?</div></div>
-        <select class="privacy-sel" id="privPosts">
-          <option value="public">Public</option>
-          <option value="friends">Friends</option>
-          <option value="none">Only Me</option>
-        </select>
-      </div>
-      <div class="privacy-row" style="border-bottom:none;">
-        <div><div class="privacy-label">Status / Stories</div><div class="privacy-sub">Who can see your stories?</div></div>
-        <select class="privacy-sel" id="privStatus">
-          <option value="public">Public</option>
-          <option value="friends">Friends</option>
-          <option value="none">Only Me</option>
-        </select>
-      </div>
-    </div>
-
-    <button class="btn-primary" id="saveBtn" style="margin:0 16px 32px;width:calc(100% - 32px);">Save Profile →</button>
-  </div>
-</div>
-
-<div id="toast"></div>
-
-<script type="module">
+          <option v
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {getAuth,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {getFirestore,doc,getDoc,getDocs,setDoc,addDoc,deleteDoc,collection,query,where,orderBy,limit,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -374,7 +354,14 @@ function renderProfile(){
   var nameEl=document.getElementById("profName");
   nameEl.innerHTML=xe(cD.name||"Member")+(cD.verificationStatus==="verified"?'<span class="badge-verified"></span>':"");
   // Handle
-  document.getElementById("profHandle").textContent="@"+(cD.name||"member").toLowerCase().replace(/\s+/g,"_");
+  var uname=cD.username||cD.userName||("@iconik_"+(cU&&cU.uid?cU.uid.substring(0,8):""));
+  document.getElementById("profHandle").textContent=uname;
+  // Username badge
+  var unEl=document.getElementById("profUsername");
+  if(unEl)unEl.textContent=uname;
+  // User ID badge
+  var uidEl=document.getElementById("profUserId");
+  if(uidEl&&cU)uidEl.textContent="ID: "+(cD.userId||cU.uid).substring(0,16)+"...";
   // Tier
   document.getElementById("tierBadge").innerHTML=getTierBadge(cD.tier);
   // Bio
@@ -520,7 +507,7 @@ window.removeFriend=async function(uid2){
 // ── LOAD EDIT FORM ──
 function loadEditForm(){
   if(!cD)return;
-  var fields={eName:"name",eBio:"bio",eCity:"city",eCountry:"country",eOccupation:"occupation",eAge:"age",eWebsite:"website",ePhone:"phone",ePic:"profilePic",eCov:"coverPhoto"};
+  var fields={eName:"name",eBio:"bio",eCity:"city",eCountry:"country",eOccupation:"occupation",eAge:"age",eWebsite:"website",ePhone:"phone",ePic:"profilePic",eCov:"coverPhoto"};var emailEl=document.getElementById("eEmail");if(emailEl&&cU)emailEl.value=cU.email||cD.email||"";
   Object.keys(fields).forEach(function(id){
     var el=document.getElementById(id);
     if(el&&cD[fields[id]])el.value=cD[fields[id]]||"";
@@ -547,6 +534,7 @@ document.getElementById("saveBtn").onclick=async function(){
     var cf=document.getElementById("covF2").files[0];
     if(pf){btn.textContent="Uploading photo...";try{pic=await upload(pf);}catch(e){toast("Photo upload failed","error");}}
     if(cf){btn.textContent="Uploading cover...";try{cov=await upload(cf);}catch(e){toast("Cover upload failed","error");}}
+    var uname2=cD&&(cD.username||cD.userName)||("@iconik_"+(cU?cU.uid.substring(0,8):""));
     var updates={
       name:document.getElementById("eName").value.trim()||(cD&&cD.name)||"",
       bio:document.getElementById("eBio").value.trim(),
@@ -556,6 +544,9 @@ document.getElementById("saveBtn").onclick=async function(){
       age:document.getElementById("eAge").value.trim(),
       website:document.getElementById("eWebsite").value.trim(),
       phone:document.getElementById("ePhone").value.trim(),
+      email:cU&&cU.email||"",
+      username:uname2,
+      userId:cU&&cU.uid||"",
       profilePic:pic,coverPhoto:cov,
       privacy:{
         profilePic:document.getElementById("privPic").value,
@@ -570,6 +561,38 @@ document.getElementById("saveBtn").onclick=async function(){
     renderProfile();
   }catch(e){toast("Error: "+e.message,"error");}
   btn.disabled=false;btn.textContent="Save Profile →";
+};
+
+// ── PHOTO UPLOAD FROM AVATAR/COVER CLICK ──
+document.getElementById("picF").onchange=async function(){
+  var f=this.files[0];if(!f)return;
+  toast("Uploading...","info");
+  try{
+    var url=await upload(f);
+    await setDoc(doc(db,"users",cU.uid),{profilePic:url},{merge:true});
+    if(cD)cD.profilePic=url;
+    renderProfile();
+    toast("Profile picture updated! ✅");
+  }catch(e){toast("Upload failed: "+e.message,"error");}
+};
+document.getElementById("covF").onchange=async function(){
+  var f=this.files[0];if(!f)return;
+  toast("Uploading...","info");
+  try{
+    var url=await upload(f);
+    await setDoc(doc(db,"users",cU.uid),{coverPhoto:url},{merge:true});
+    if(cD)cD.coverPhoto=url;
+    renderProfile();
+    toast("Cover photo updated! ✅");
+  }catch(e){toast("Upload failed: "+e.message,"error");}
+};
+
+// ── SHARE ──
+document.getElementById("shareBtn").onclick=function(){
+  if(navigator.share)navigator.share({title:"My ICONIK Profile",url:location.href});
+  else if(navigator.clipboard)navigator.clipboard.writeText(location.href).then(function(){toast("Link copied!");});
+};
+btn.disabled=false;btn.textContent="Save Profile →";
 };
 
 // ── PHOTO UPLOAD FROM AVATAR/COVER CLICK ──
