@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
 <title>ICONIK — My Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
@@ -46,17 +46,17 @@
    Clean white, deep charcoal, warm gold
    ════════════════════════════════════ */
 body.light{
-  --bg:#F6F8FC;
+  --bg:#F2F5FA;
   --bg2:#FFFFFF;
-  --bg3:#EEF2F8;
-  --bg4:#E2E8F4;
+  --bg3:#E8EDF5;
+  --bg4:#D8E0EF;
   --accent:#0A84FF;
   --accent2:#0060CC;
-  --accent-soft:rgba(10,132,255,0.08);
-  --accent-glow:rgba(10,132,255,0.20);
-  --text:#0D1117;
-  --text2:#3A4555;
-  --text3:#7A8899;
+  --accent-soft:rgba(10,132,255,0.10);
+  --accent-glow:rgba(10,132,255,0.25);
+  --text:#08111E;
+  --text2:#1E2D42;
+  --text3:#3D5068;
   --border:rgba(0,0,0,0.08);
   --border2:rgba(0,0,0,0.16);
   --card:#FFFFFF;
@@ -691,6 +691,57 @@ body.light .soc-copy{color:rgba(0,0,0,0.3);}
 .fab-menu.open{display:flex;}
 .fab-item{display:flex;align-items:center;gap:10px;background:rgba(8,12,28,0.96);border:1px solid rgba(10,132,255,0.35);color:#fff;padding:10px 18px;border-radius:30px;font-size:0.78rem;font-family:'Sora',sans-serif;font-weight:600;cursor:pointer;backdrop-filter:blur(12px);box-shadow:0 2px 14px rgba(0,0,0,0.5);transition:all 0.2s;white-space:nowrap;border:none;}
 .fab-item:hover{background:rgba(10,132,255,0.25);transform:translateX(-4px);}
+
+/* ── Light mode: sharp readable nav text ── */
+.light .sb-link,
+.light .sb-section-label,
+.light .sb-link-icon,
+.light .sb-link span,
+.light .nav-label,
+.light .bn-label,
+.light .feature-card .fc-label,
+.light .sec-head,
+.light .card-title,
+.light .feed-name,
+.light .comm-name {
+  color: #1A2B3C !important;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.light .sb-link.active,
+.light .sb-link:hover {
+  color: #0A84FF !important;
+  background: rgba(10,132,255,0.08) !important;
+}
+.light .sb-link {
+  font-weight: 600 !important;
+}
+
+/* ── 4K Premium rendering for all modes ── */
+*,*::before,*::after {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+img, video {
+  image-rendering: -webkit-optimize-contrast;
+}
+
+/* ── Light mode card and container sharpness ── */
+.light .card {
+  background: #FFFFFF;
+  border: 1px solid rgba(0,0,0,0.09);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.04);
+}
+.light .m-name,
+.light .m-meta,
+.light .wbar-title,
+.light .sh2 {
+  color: #08111E !important;
+}
+.light .m-meta {
+  color: #3D5068 !important;
+}
 </style>
 </head>
 <body>
