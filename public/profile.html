@@ -42,7 +42,7 @@ body.light{--bg:#F0F4FA;--bg2:#FFFFFF;--bg3:#E8EEF8;--card:#FFFFFF;--card2:#F5F8
 .av{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:2.4rem;color:#fff;border:4px solid var(--bg);overflow:hidden;font-weight:800;}
 .av img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
 .av-cam{position:absolute;bottom:2px;right:2px;width:28px;height:28px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:0.75rem;border:2.5px solid var(--bg);}
-.av-actions{display:flex;gap:8px;padding-bottom:4px;}
+/* av-actions defined in btn-outline block */
 
 /* TIER BADGES */
 .badge-fan{display:inline-flex;align-items:center;gap:4px;font-size:0.6rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:var(--card2);color:var(--text3);border:1px solid var(--border);}
@@ -108,8 +108,9 @@ select.privacy-sel{background:var(--bg3);border:1px solid var(--border);color:va
 /* BTNS */
 .btn-primary{width:100%;padding:13px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-family:'Sora',sans-serif;font-weight:700;font-size:0.74rem;letter-spacing:0.1em;border:none;border-radius:var(--radius-sm);cursor:pointer;transition:opacity 0.2s;}
 .btn-primary:hover{opacity:0.9;}
-.btn-outline{padding:9px 16px;background:transparent;border:1.5px solid var(--accent);color:var(--accent);font-family:'Sora',sans-serif;font-weight:700;font-size:0.72rem;border-radius:var(--radius-sm);cursor:pointer;transition:all 0.2s;}
+.btn-outline{padding:7px 11px;background:transparent;border:1.5px solid var(--accent);color:var(--accent);font-family:'Sora',sans-serif;font-weight:700;font-size:0.64rem;border-radius:var(--radius-xs);cursor:pointer;transition:all 0.2s;white-space:nowrap;}
 .btn-outline:hover{background:rgba(10,132,255,0.1);}
+.av-actions{display:flex;gap:5px;padding-bottom:4px;flex-wrap:wrap;max-width:calc(100% - 108px);}
 
 /* UPLOAD BOX */
 .upbox{border:1.5px dashed var(--border);border-radius:var(--radius-sm);padding:20px;text-align:center;cursor:pointer;transition:border 0.2s;}
@@ -290,7 +291,36 @@ body.light .stat-num{color:#0060CC;}
       <div class="privacy-row">
         <div><div class="privacy-label">Cover Photo</div><div class="privacy-sub">Who can see your cover?</div></div>
         <select class="privacy-sel" id="privCover">
-          <option v
+          <option value="public">Public</option>
+          <option value="friends">Friends</option>
+          <option value="none">Only Me</option>
+        </select>
+      </div>
+      <div class="privacy-row">
+        <div><div class="privacy-label">Posts</div><div class="privacy-sub">Who can see your posts?</div></div>
+        <select class="privacy-sel" id="privPosts">
+          <option value="public">Public</option>
+          <option value="friends">Friends</option>
+          <option value="none">Only Me</option>
+        </select>
+      </div>
+      <div class="privacy-row">
+        <div><div class="privacy-label">Online Status</div><div class="privacy-sub">Who can see when you're online?</div></div>
+        <select class="privacy-sel" id="privStatus">
+          <option value="public">Public</option>
+          <option value="friends">Friends</option>
+          <option value="none">Only Me</option>
+        </select>
+      </div>
+      <!-- Save button -->
+      <button class="btn-primary" id="saveBtn" style="width:100%;margin-top:4px;">Save Profile →</button>
+    </div><!-- end edit tab -->
+  </div><!-- end tab-contents -->
+</div><!-- end main -->
+
+<div id="toast"></div>
+
+<script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {getAuth,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {getFirestore,doc,getDoc,getDocs,setDoc,addDoc,deleteDoc,collection,query,where,orderBy,limit,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -434,32 +464,45 @@ function renderProfile(){
   }
 }
 
-// ── LOAD STATS ──
+// ── LOAD STATS (live counts, persist to Firestore) ──
 async function loadStats(){
   if(!cU)return;
-  // Posts count
-  var postsSnap=await getDocs(query(collection(db,"posts"),where("userId","==",cU.uid)));
-  var postCount=postsSnap.size;
-  document.getElementById("statPosts").textContent=postCount;
-  // Followers
-  var follSnap=await getDocs(query(collection(db,"follows"),where("followingId","==",cU.uid)));
-  document.getElementById("statFollowers").textContent=follSnap.size;
-  // Following
-  var follingSnap=await getDocs(query(collection(db,"follows"),where("followerId","==",cU.uid)));
-  document.getElementById("statFollowing").textContent=follingSnap.size;
-  // Friends
-  var frSnap=await getDocs(query(collection(db,"friends"),where("uid1","==",cU.uid)));
-  document.getElementById("statFriends").textContent=frSnap.size;
-  // Update Points stat display
-  var pts=document.getElementById("statPoints");
-  if(pts)pts.textContent=cD&&cD.points||0;
-  // Update Firestore with real counts
-  await setDoc(doc(db,"users",cU.uid),{
-    postCount:postCount,
-    followersCount:follSnap.size,
-    followingCount:follingSnap.size,
-    friendsCount:frSnap.size
-  },{merge:true});
+  try{
+    // Posts — live count from collection
+    var postsSnap=await getDocs(query(collection(db,"posts"),where("userId","==",cU.uid)));
+    var postCount=postsSnap.size;
+    document.getElementById("statPosts").textContent=postCount;
+    // Followers — who follows ME
+    var follSnap=await getDocs(query(collection(db,"follows"),where("followingId","==",cU.uid)));
+    document.getElementById("statFollowers").textContent=follSnap.size;
+    // Following — who I follow
+    var follingSnap=await getDocs(query(collection(db,"follows"),where("followerId","==",cU.uid)));
+    document.getElementById("statFollowing").textContent=follingSnap.size;
+    // Friends
+    var frSnap=await getDocs(query(collection(db,"friends"),where("uid1","==",cU.uid)));
+    document.getElementById("statFriends").textContent=frSnap.size;
+    // Points from cD
+    var pts=document.getElementById("statPoints");
+    if(pts)pts.textContent=cD&&cD.points?cD.points:0;
+    // Persist real counts to Firestore so other views show correct numbers
+    await setDoc(doc(db,"users",cU.uid),{
+      postCount:postCount,
+      followersCount:follSnap.size,
+      followingCount:follingSnap.size,
+      friendsCount:frSnap.size
+    },{merge:true});
+    // FIX 2: Restore friends indicator badge with real count
+    var ind=document.getElementById("friendsIndicator");
+    var badge=document.getElementById("friendsBadge");
+    if(ind&&badge){
+      if(frSnap.size>0){
+        ind.style.display="block";
+        badge.textContent="🤝 "+frSnap.size+" Friend"+(frSnap.size===1?"":"s");
+      }else{
+        ind.style.display="none";
+      }
+    }
+  }catch(e){console.warn("loadStats error:",e.message);}
 }
 
 // ── LOAD POSTS ──
@@ -492,6 +535,14 @@ async function loadPosts(){
         h+='<video src="'+xu(p.videoUrl)+'" controls style="width:100%;border-radius:var(--radius-sm);margin-bottom:10px;max-height:300px;"></video>';
         videoH+='<div class="photo-item"><video src="'+xu(p.videoUrl)+'"></video><div class="photo-play">▶️</div></div>';
       }
+      // Repost + share buttons per post
+      var enc=encodeURIComponent(location.href);
+      var shortContent=(p.content||"").substring(0,120);
+      h+='<div style="display:flex;gap:8px;padding-top:8px;border-top:1px solid var(--border);margin-top:8px;">';
+      var shareTitle=xe((p.content||"Post").substring(0,40))+" on ICONIK";
+      var shareUrl=location.origin;
+      h+="<button onclick='doShare("+JSON.stringify(shareTitle)+","+JSON.stringify(xe(shortContent))+","+JSON.stringify(shareUrl)+")' style='flex:1;padding:6px;background:none;border:1px solid var(--border2);border-radius:6px;color:var(--muted);font-size:0.62rem;font-family:Sora,sans-serif;cursor:pointer;'>🔗 Share</button>";
+      h+='</div>';
       h+='</div>';
     });
     el.innerHTML=h;
@@ -599,16 +650,21 @@ async function loadProfileLikes(){
   }catch(e){console.warn("Profile likes:",e.message);}
 }
 
-// ── CHECK FRIENDS INDICATOR ──
+// ── CHECK FRIENDS INDICATOR (handled inside loadStats now) ──
 async function checkFriendship(){
+  // This is now called via loadStats for accurate count — kept for compatibility
   if(!cU)return;
   try{
-    var snap=await getDocs(query(collection(db,"friends"),where("uid1","==",cU.uid),limit(1)));
+    var snap=await getDocs(query(collection(db,"friends"),where("uid1","==",cU.uid)));
     var ind=document.getElementById("friendsIndicator");
     var badge=document.getElementById("friendsBadge");
-    if(!snap.empty){
-      if(ind)ind.style.display="block";
-      if(badge)badge.textContent="🤝 "+snap.size+" Friend"+(snap.size===1?"":"s");
+    if(ind&&badge){
+      if(!snap.empty){
+        ind.style.display="block";
+        badge.textContent="🤝 "+snap.size+" Friend"+(snap.size===1?"":"s");
+      }else{
+        ind.style.display="none";
+      }
     }
   }catch(e){console.warn("Friendship check:",e.message);}
 }
@@ -651,35 +707,9 @@ document.getElementById("saveBtn").onclick=async function(){
   btn.disabled=false;btn.textContent="Save Profile →";
 };
 
-// ── PHOTO UPLOAD FROM AVATAR/COVER CLICK ──
-document.getElementById("picF").onchange=async function(){
-  var f=this.files[0];if(!f)return;
-  toast("Uploading...","info");
-  try{
-    var url=await upload(f);
-    await setDoc(doc(db,"users",cU.uid),{profilePic:url},{merge:true});
-    if(cD)cD.profilePic=url;
-    renderProfile();
-    toast("Profile picture updated! ✅");
-  }catch(e){toast("Upload failed: "+e.message,"error");}
-};
-document.getElementById("covF").onchange=async function(){
-  var f=this.files[0];if(!f)return;
-  toast("Uploading...","info");
-  try{
-    var url=await upload(f);
-    await setDoc(doc(db,"users",cU.uid),{coverPhoto:url},{merge:true});
-    if(cD)cD.coverPhoto=url;
-    renderProfile();
-    toast("Cover photo updated! ✅");
-  }catch(e){toast("Upload failed: "+e.message,"error");}
-};
 
-// ── SHARE ──
-document.getElementById("shareBtn").onclick=function(){
-  if(navigator.share)navigator.share({title:"My ICONIK Profile",url:location.href});
-  else if(navigator.clipboard)navigator.clipboard.writeText(location.href).then(function(){toast("Link copied!");});
-};
+
+
 
 // ── PHOTO UPLOAD FROM AVATAR/COVER CLICK ──
 document.getElementById("picF").onchange=async function(){
@@ -705,11 +735,90 @@ document.getElementById("covF").onchange=async function(){
   }catch(e){toast("Upload failed: "+e.message,"error");}
 };
 
-// ── SHARE ──
+// ── SHARE (FIX 4: real Web Share API + social fallback modal) ──
+function doShare(title,text,url){
+  if(navigator.share){
+    navigator.share({title:title,text:text,url:url}).catch(function(){});
+    return;
+  }
+  // Fallback share modal
+  var enc=encodeURIComponent(url);
+  var etxt=encodeURIComponent(text.substring(0,100));
+  var modal=document.createElement("div");
+  modal.id="_shareModal";
+  modal.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:99999;display:flex;align-items:flex-end;justify-content:center;";
+  var html='<div style="background:var(--bg2);border-radius:16px 16px 0 0;padding:24px 20px;width:100%;max-width:480px;border:1px solid var(--border);">';
+  html+='<div style="font-family:Sora,sans-serif;font-weight:800;font-size:0.9rem;color:var(--text);margin-bottom:16px;">Share</div>';
+  html+='<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px;">';
+  html+='<a href="https://wa.me/?text='+etxt+'%20'+enc+'" target="_blank" rel="noopener" style="display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;"><div style="width:48px;height:48px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;font-size:1.4rem;">💬</div><span style="font-size:0.58rem;color:var(--text3);">WhatsApp</span></a>';
+  html+='<a href="https://twitter.com/intent/tweet?text='+etxt+'&url='+enc+'" target="_blank" rel="noopener" style="display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;"><div style="width:48px;height:48px;border-radius:50%;background:#000;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff;font-weight:900;">X</div><span style="font-size:0.58rem;color:var(--text3);">X / Twitter</span></a>';
+  html+='<a href="https://www.facebook.com/sharer/sharer.php?u='+enc+'" target="_blank" rel="noopener" style="display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;"><div style="width:48px;height:48px;border-radius:50%;background:#1877F2;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff;font-weight:900;">f</div><span style="font-size:0.58rem;color:var(--text3);">Facebook</span></a>';
+  html+='<a href="https://t.me/share/url?url='+enc+'&text='+etxt+'" target="_blank" rel="noopener" style="display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;"><div style="width:48px;height:48px;border-radius:50%;background:#0088cc;display:flex;align-items:center;justify-content:center;font-size:1.4rem;">✈️</div><span style="font-size:0.58rem;color:var(--text3);">Telegram</span></a>';
+  html+='</div>';
+  html+='<div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">';
+  html+='<input id="_sui" readonly value="'+url+'" style="flex:1;padding:9px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.66rem;font-family:monospace;"/>';
+  html+='<button id="_scopy" style="padding:9px 14px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-family:Sora,sans-serif;font-weight:700;font-size:0.68rem;cursor:pointer;">Copy</button>';
+  html+='</div>';
+  html+='<button id="_sclose" style="width:100%;padding:11px;background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--muted);font-family:Sora,sans-serif;font-size:0.72rem;cursor:pointer;">Cancel</button>';
+  html+='</div>';
+  modal.innerHTML=html;
+  document.body.appendChild(modal);
+  document.getElementById("_scopy").onclick=function(){
+    var inp=document.getElementById("_sui");
+    if(inp&&navigator.clipboard)navigator.clipboard.writeText(inp.value).then(function(){toast("Link copied! 🔗");});
+  };
+  document.getElementById("_sclose").onclick=function(){modal.remove();};
+  modal.onclick=function(e){if(e.target===modal)modal.remove();};
+}
+window.doShare=doShare;
+// Post share via data attributes (avoids quoting issues in innerHTML)
+document.addEventListener("click",function(e){
+  var btn=e.target.closest("[data-title]");
+  if(!btn)return;
+  var title=btn.dataset.title||"Post on ICONIK";
+  var text=btn.dataset.content||"";
+  doShare(title,text,location.href);
+});
+
+
 document.getElementById("shareBtn").onclick=function(){
-  if(navigator.share)navigator.share({title:"My ICONIK Profile",url:location.href});
-  else if(navigator.clipboard)navigator.clipboard.writeText(location.href).then(function(){toast("Link copied!");});
+  doShare(
+    (cD&&cD.name||"Member")+" on ICONIK",
+    "Check out "+(cD&&cD.name||"this member")+" on ICONIK - the global fan community!",
+    location.href
+  );
 };
+
+// ═══════════════════════════════════════════════════════════
+// FIX 5 — Repost other members posts to my profile
+// ═══════════════════════════════════════════════════════════
+window.repostToProfile=async function(postId,originalContent,originalAuthor,originalImage){
+  if(!cU){toast("Sign in to repost","error");return;}
+  if(!confirm("Repost this to your profile?"))return;
+  try{
+    await addDoc(collection(db,"posts"),{
+      content:originalContent,
+      title:"",
+      category:"",
+      userId:cU.uid,
+      userName:(cD&&cD.name)||"Member",
+      userPhoto:(cD&&cD.profilePic)||"",
+      imageUrl:originalImage||"",
+      videoUrl:"",
+      isAdmin:false,
+      isRepost:true,
+      originalAuthor:originalAuthor,
+      originalPostId:postId,
+      likeCount:0,
+      commentCount:0,
+      createdAt:serverTimestamp()
+    });
+    toast("Reposted to your profile! 🔁");
+    loadPosts();
+    loadStats();
+  }catch(e){toast("Error: "+e.message,"error");}
+};
+
 </script>
 </body>
 </html>
