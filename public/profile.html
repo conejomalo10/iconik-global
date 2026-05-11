@@ -48,7 +48,7 @@ body.light{--bg:#F0F4FA;--bg2:#FFFFFF;--bg3:#E8EEF8;--card:#FFFFFF;--card2:#F5F8
 .badge-fan{display:inline-flex;align-items:center;gap:4px;font-size:0.6rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:var(--card2);color:var(--text3);border:1px solid var(--border);}
 .badge-bronze{display:inline-flex;align-items:center;gap:4px;font-size:0.6rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:rgba(205,127,50,0.18);color:var(--bronze);border:1px solid rgba(205,127,50,0.4);}
 .badge-silver{display:inline-flex;align-items:center;gap:4px;font-size:0.6rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:rgba(192,192,192,0.18);color:var(--silver);border:1px solid rgba(192,192,192,0.4);}
-.badge-gold{display:inline-flex;align-items:center;gap:4px;font-size:0.6rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:rgba(255,215,0,0.18);color:var(--gold);border:1px solid rgba(255,215,0,0.4);box-shadow:0 0 10px rgba(255,215,0,0.15);}
+.badge-gold{display:inline-flex;align-items:center;gap:4px;font-size:0.6rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:rgba(255,215,0,0.18);color:var(--accent);border:1px solid rgba(255,215,0,0.4);box-shadow:0 0 10px rgba(255,215,0,0.15);}
 .badge-verified{display:inline-block;width:18px;height:18px;background:#0A84FF;border-radius:50%;position:relative;vertical-align:middle;margin-left:4px;}
 .badge-verified::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.6rem;font-weight:900;display:flex;}
 
@@ -138,6 +138,12 @@ body.light .prof-name,body.light .prof-handle,body.light .sh2,body.light .privac
 body.light .prof-bio,body.light .prof-loc,body.light .privacy-sub{color:#3D5068 !important;}
 body.light .card{box-shadow:0 1px 4px rgba(0,0,0,0.07),0 4px 16px rgba(0,0,0,0.04);}
 body.light .stat-num{color:#0060CC;}
+
+/* Phase 2a additions */
+#likeProfileBtn.liked{background:rgba(239,68,68,0.15)!important;border-color:var(--err)!important;color:var(--err)!important;font-weight:700;}
+.stat-box{cursor:default;}
+#friendsIndicator{animation:fadeIn 0.3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
 </style>
 </head>
 <body>
@@ -169,6 +175,7 @@ body.light .stat-num{color:#0060CC;}
     <div class="av-actions">
       <button class="btn-outline" id="editBtn" onclick="showTab('edit')">✏️ Edit</button>
       <button class="btn-outline" id="shareBtn">🔗 Share</button>
+      <button class="btn-outline" id="likeProfileBtn" onclick="likeProfile()" style="background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.3);color:var(--err);">👍 <span id="likeCount">0</span></button>
     </div>
   </div>
 
@@ -177,9 +184,18 @@ body.light .stat-num{color:#0060CC;}
     <div class="prof-name" id="profName">Loading...</div>
     <div class="prof-handle" id="profHandle"></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;"><span style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:0.6rem;color:var(--text3);font-weight:600;" id="profUsername"></span><span style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:0.6rem;color:var(--text3);font-family:monospace;" id="profUserId"></span></div>
-    <div id="tierBadge" style="margin-bottom:10px;"></div>
+    <div id="tierBadge" style="margin-bottom:6px;"></div>
+    <div id="friendsIndicator" style="margin-bottom:10px;display:none;">
+      <span id="friendsBadge" style="display:inline-flex;align-items:center;gap:5px;font-family:'Sora',sans-serif;font-size:0.62rem;font-weight:700;background:rgba(10,132,255,0.12);border:1px solid rgba(10,132,255,0.3);color:var(--accent);padding:3px 10px;border-radius:20px;">🤝 Friends</span>
+    </div>
     <div class="prof-bio" id="profBio"></div>
     <div class="prof-loc" id="profLoc"></div>
+    <div id="profWebsite" style="display:none;margin-top:4px;">
+      <a id="profWebsiteLink" href="#" target="_blank" rel="noopener noreferrer"
+         style="display:inline-flex;align-items:center;gap:5px;font-family:'Sora',sans-serif;font-size:0.72rem;font-weight:600;color:var(--accent);text-decoration:none;word-break:break-all;">
+        🔗 <span id="profWebsiteText"></span>
+      </a>
+    </div>
 
     <!-- STATS -->
     <div class="stats-row">
@@ -187,6 +203,7 @@ body.light .stat-num{color:#0060CC;}
       <div class="stat-box"><div class="stat-num" id="statFollowers">0</div><div class="stat-lbl">Followers</div></div>
       <div class="stat-box"><div class="stat-num" id="statFollowing">0</div><div class="stat-lbl">Following</div></div>
       <div class="stat-box"><div class="stat-num" id="statFriends">0</div><div class="stat-lbl">Friends</div></div>
+      <div class="stat-box"><div class="stat-num" id="statPoints">0</div><div class="stat-lbl">Points</div></div>
     </div>
   </div>
 
@@ -342,6 +359,8 @@ onAuthStateChanged(auth,async function(u){
   }catch(e){console.log("Auth:",e);}
   renderProfile();
   loadPosts();
+  loadProfileLikes();
+  checkFriendship();
   loadFriends();
   loadStats();
   loadEditForm();
@@ -389,6 +408,23 @@ function renderProfile(){
     document.getElementById("coverImg").innerHTML='<img src="'+xu(cov)+'" style="width:100%;height:200px;object-fit:cover;" onerror="this.remove()"/>';
   }
   // Communities
+  // Website link — public display
+  var webWrap=document.getElementById("profWebsite");
+  var webLink=document.getElementById("profWebsiteLink");
+  var webText=document.getElementById("profWebsiteText");
+  var website=cD.website||cD.websiteUrl||"";
+  if(webWrap&&webLink&&webText){
+    if(website){
+      webWrap.style.display="block";
+      // Ensure URL has protocol
+      var webHref=website.startsWith("http")?website:"https://"+website;
+      webLink.href=webHref;
+      // Display clean version (strip https://)
+      webText.textContent=website.replace(/^https?:\/\//,"");
+    }else{
+      webWrap.style.display="none";
+    }
+  }
   var comsEl=document.getElementById("myComsList");
   var cats=cD.categories||[];
   if(cats.length){
@@ -414,6 +450,9 @@ async function loadStats(){
   // Friends
   var frSnap=await getDocs(query(collection(db,"friends"),where("uid1","==",cU.uid)));
   document.getElementById("statFriends").textContent=frSnap.size;
+  // Update Points stat display
+  var pts=document.getElementById("statPoints");
+  if(pts)pts.textContent=cD&&cD.points||0;
   // Update Firestore with real counts
   await setDoc(doc(db,"users",cU.uid),{
     postCount:postCount,
@@ -525,6 +564,55 @@ function loadEditForm(){
 }
 
 // ── SAVE PROFILE ──
+// ── LIKE PROFILE ──
+window.likeProfile=async function(){
+  if(!cU){toast("Sign in to like profiles","error");return;}
+  var btn=document.getElementById("likeProfileBtn");
+  var lc=document.getElementById("likeCount");
+  var already=btn&&btn.classList.contains("liked");
+  try{
+    if(already){
+      await deleteDoc(doc(db,"profile_likes",cU.uid+"_own"));
+      if(btn)btn.classList.remove("liked");
+      if(lc)lc.textContent=Math.max(0,(parseInt(lc.textContent)||1)-1);
+      toast("Like removed");
+    }else{
+      await setDoc(doc(db,"profile_likes",cU.uid+"_own"),{userId:cU.uid,profileId:cU.uid,likedAt:serverTimestamp()});
+      if(btn)btn.classList.add("liked");
+      if(lc)lc.textContent=(parseInt(lc.textContent)||0)+1;
+      toast("Profile liked! 👍");
+    }
+  }catch(e){toast("Error: "+e.message,"error");}
+};
+
+// ── LOAD PROFILE LIKES COUNT ──
+async function loadProfileLikes(){
+  if(!cU)return;
+  try{
+    var snap=await getDocs(query(collection(db,"profile_likes"),where("profileId","==",cU.uid)));
+    var count=0;snap.forEach(function(){count++;});
+    var lc=document.getElementById("likeCount");if(lc)lc.textContent=count;
+    // Check if current user already liked
+    var myLike=snap.docs&&snap.docs.find(function(d){return d.data().userId===cU.uid;});
+    var btn=document.getElementById("likeProfileBtn");
+    if(btn&&myLike)btn.classList.add("liked");
+  }catch(e){console.warn("Profile likes:",e.message);}
+}
+
+// ── CHECK FRIENDS INDICATOR ──
+async function checkFriendship(){
+  if(!cU)return;
+  try{
+    var snap=await getDocs(query(collection(db,"friends"),where("uid1","==",cU.uid),limit(1)));
+    var ind=document.getElementById("friendsIndicator");
+    var badge=document.getElementById("friendsBadge");
+    if(!snap.empty){
+      if(ind)ind.style.display="block";
+      if(badge)badge.textContent="🤝 "+snap.size+" Friend"+(snap.size===1?"":"s");
+    }
+  }catch(e){console.warn("Friendship check:",e.message);}
+}
+
 document.getElementById("saveBtn").onclick=async function(){
   var btn=this;btn.disabled=true;btn.textContent="Saving...";
   try{
@@ -591,8 +679,6 @@ document.getElementById("covF").onchange=async function(){
 document.getElementById("shareBtn").onclick=function(){
   if(navigator.share)navigator.share({title:"My ICONIK Profile",url:location.href});
   else if(navigator.clipboard)navigator.clipboard.writeText(location.href).then(function(){toast("Link copied!");});
-};
-btn.disabled=false;btn.textContent="Save Profile →";
 };
 
 // ── PHOTO UPLOAD FROM AVATAR/COVER CLICK ──
