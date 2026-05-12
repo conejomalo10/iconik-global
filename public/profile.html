@@ -361,10 +361,10 @@ onAuthStateChanged(auth,async function(u){
     if(d.exists()){
       cD={id:d.id,...d.data()};
     } else {
-      cD={id:u.uid,name:u.displayName||u.email.split("@")[0]||"Member",email:u.email||"",profilePic:u.photoURL||"",bio:"",tier:"Fan",privacy:{profilePic:"public",coverPhoto:"public",posts:"public",status:"public"},followers:0,following:0,posts:0,joinedAt:serverTimestamp(),uid:u.uid};
+      cD={id:u.uid,name:u.displayName||u.email.split("@")[0]||"Member",email:u.email||"",profilePic:u.photoURL||"",bio:"",tier:"Fan",privacy:{profilePic:"public",coverPhoto:"public",posts:"public",status:"public"},followers:0,following:0,posts:0,postCount:0,followersCount:0,followingCount:0,friendsCount:0,points:0,joinedAt:serverTimestamp(),uid:u.uid};
       await setDoc(doc(db,"users",u.uid),cD);
     }
-  }catch(e){console.log("Auth:",e);}
+  }catch(e){console.error("AUTH ERROR:",e);toast("Profile load error: "+e.message,"error");}
   renderProfile();
   loadPosts();
   loadFriends();
@@ -400,8 +400,8 @@ function renderProfile(){
   // Instant stats from stored cD (no Firestore wait)
   function _se(id,v){var e=document.getElementById(id);if(e)e.textContent=v||0;}
   _se("statPosts",cD.postCount||cD.posts||0);
-  _se("statFollowers",cD.followersCount||cD.followers||0);
-  _se("statFollowing",cD.followingCount||cD.following||0);
+  _se("statFollowers",cD.followersCount||cD.followers||cD.followerCount||0);
+  _se("statFollowing",cD.followingCount||cD.following||cD.followingCount||0);
   _se("statFriends",cD.friendsCount||0);
   _se("statPoints",cD.points||0);
   // Friends indicator from stored count
@@ -438,9 +438,9 @@ async function loadStats(){
   if(!cU||!cD)return;
   function _se(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
   var pc=cD.postCount||0,flc=cD.followersCount||0,flic=cD.followingCount||0,frc=cD.friendsCount||0;
-  try{var s1=await getDocs(query(collection(db,"posts"),where("userId","==",cU.uid)));pc=s1.size;_se("statPosts",pc);}catch(e){}
-  try{var s2=await getDocs(query(collection(db,"follows"),where("followingId","==",cU.uid)));flc=s2.size;_se("statFollowers",flc);}catch(e){}
-  try{var s3=await getDocs(query(collection(db,"follows"),where("followerId","==",cU.uid)));flic=s3.size;_se("statFollowing",flic);}catch(e){}
+  try{var s1=await getDocs(query(collection(db,"posts"),where("userId","==",cU.uid)));pc=s1.size;_se("statPosts",pc);}catch(e){console.warn("posts:",e.code,e.message);}
+  try{var s2=await getDocs(query(collection(db,"follows"),where("followingId","==",cU.uid)));flc=s2.size;_se("statFollowers",flc);}catch(e){console.warn("followers:",e.code,e.message);}
+  try{var s3=await getDocs(query(collection(db,"follows"),where("followerId","==",cU.uid)));flic=s3.size;_se("statFollowing",flic);}catch(e){console.warn("following:",e.code,e.message);}
   try{
     var s4=await getDocs(query(collection(db,"friends"),where("uid1","==",cU.uid)));
     frc=s4.size;_se("statFriends",frc);
@@ -689,7 +689,7 @@ async function loadProfileLikes(){
       if(btn)btn.dataset.liked="0";
       if(lc)lc.textContent=0;
     }
-  }catch(e){}
+  }catch(e){console.warn("likes:",e.code,e.message);}
 }
 
 // ── REPOST ──
