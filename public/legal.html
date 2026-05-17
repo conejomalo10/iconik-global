@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Legal & Privacy — ICONIK Global</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--bg:#060A12;--bg2:#0D1117;--bg3:#161B27;--accent:#0A84FF;--text:#E8EDF5;--text2:#B8C4D0;--muted:#556070;--border:rgba(255,255,255,0.08);--gold:#FFD700;}
+html,body{background:var(--bg);color:var(--text);font-family:"Sora",sans-serif;min-height:100vh;}
+#topbar{position:sticky;top:0;z-index:100;background:rgba(6,10,18,0.97);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;gap:12px;backdrop-filter:blur(16px);}
+.logo-bar{display:flex;align-items:center;}
+
+
+.back-btn{margin-left:auto;padding:6px 12px;background:var(--accent);color:#fff;border:none;border-radius:6px;font-size:0.68rem;font-weight:700;cursor:pointer;font-family:"Sora",sans-serif;text-decoration:none;}
+#toc{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;}
+#toc::-webkit-scrollbar{display:none;}
+.toc-btn{padding:6px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;font-size:0.6rem;font-weight:700;color:var(--text2);cursor:pointer;white-space:nowrap;font-family:"Sora",sans-serif;flex-shrink:0;}
+.toc-btn:hover,.toc-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+main{max-width:720px;margin:0 auto;padding:24px 16px 80px;}
+.section{margin-bottom:40px;scroll-margin-top:80px;}
+.sec-icon{font-size:2rem;margin-bottom:8px;}
+.sec-title{font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:4px;}
+.sec-sub{font-size:0.68rem;color:var(--accent);font-weight:700;letter-spacing:0.12em;margin-bottom:14px;text-transform:uppercase;}
+.divider{width:40px;height:3px;background:var(--accent);border-radius:2px;margin-bottom:16px;}
+p{font-size:0.78rem;color:var(--text2);line-height:1.8;margin-bottom:10px;}
+h3{font-size:0.78rem;font-weight:800;color:var(--text);margin:16px 0 6px;}
+ul,ol{padding-left:18px;margin-bottom:10px;}
+li{font-size:0.76rem;color:var(--text2);line-height:1.8;margin-bottom:2px;}
+.must-do{color:#30D158;}
+.must-not{color:#FF453A;}
+.community-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0;}
+.com-chip{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:0.68rem;color:var(--text);}
+.com-chip strong{display:block;font-size:0.72rem;color:var(--text);margin-bottom:2px;}
+.com-chip span{color:var(--muted);font-size:0.6rem;}
+.compliance-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(10,132,255,0.1);border:1px solid rgba(10,132,255,0.3);border-radius:6px;padding:4px 10px;font-size:0.62rem;font-weight:700;color:var(--accent);margin:2px;}
+.contact-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:8px;}
+.contact-card .label{font-size:0.6rem;font-weight:800;letter-spacing:0.12em;color:var(--accent);margin-bottom:4px;}
+.contact-card .val{font-size:0.76rem;color:var(--text);}
+.updated{font-size:0.62rem;color:var(--muted);text-align:center;padding:20px 0;}
+#acceptBar{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);padding:12px 16px;z-index:200;display:flex;align-items:center;gap:10px;max-width:720px;margin:0 auto;}
+#acceptBar label{font-size:0.68rem;color:var(--text2);flex:1;line-height:1.4;cursor:pointer;}
+#acceptBar input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent);flex-shrink:0;cursor:pointer;}
+#acceptBtn{padding:10px 18px;background:var(--muted);color:rgba(255,255,255,0.4);border:none;border-radius:8px;font-family:"Sora",sans-serif;font-weight:700;font-size:0.72rem;cursor:not-allowed;white-space:nowrap;transition:all 0.3s;}
+#acceptBtn.ready{background:var(--accent);color:#fff;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="logo-bar" style="display:flex;align-items:center;gap:3px;line-height:1;">
+    <div style="width:3px;height:10px;background:linear-gradient(135deg,#FF1D25 0%,#FF1D25 48%,#ffffff 48%,#ffffff 100%);border-radius:1px;flex-shrink:0;"></div>
+    <span style="color:#fff;font-family:'Montserrat',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.5px;line-height:1;">CONIK GLOBAL</span>
+  </div>
+  <a href="/dashboard.html" class="back-btn">&#8592; Back to ICONIK</a>
+</div>
+
+<div id="toc">
+  <button class="toc-btn active" onclick="scrollTo('about')">About</button>
+  <button class="toc-btn" onclick="scrollTo('terms')">Terms</button>
+  <button class="toc-btn" onclick="scrollTo('privacy')">Privacy</button>
+  <button class="toc-btn" onclick="scrollTo('rules')">Community Rules</button>
+  <button class="toc-btn" onclick="scrollTo('disclaimer')">Disclaimer</button>
+  <button class="toc-btn" onclick="scrollTo('cyber')">Cyber Security</button>
+  <button class="toc-btn" onclick="scrollTo('contact')">Contact & DPO</button>
+</div>
+
+<main>
+
+<!-- ABOUT -->
+<div class="section" id="about">
+  <div class="sec-icon">&#127760;</div>
+  <div class="sec-title">About ICONIK Global</div>
+  <div class="sec-sub">Who We Are</div>
+  <div class="divider"></div>
+  <p>ICONIK Global is a world-class premium fan-celebrity and social community platform connecting fans with their favourite icons across every passion, culture and continental border — while creating memorable connections between ICONIK members worldwide.</p>
+  <p>ICONIK operates as a fully integrated multi-functional digital platform combining social media, fan-celebrity community, private messaging, marketplace, affiliate shopping, radio, television, magazine, creator fund, dating and matchmaking — all in one premium experience.</p>
+
+  <h3>&#127760; What ICONIK Offers</h3>
+  <ul>
+    <li><strong>Social Media & Community</strong> — Share posts, photos, videos and stories. Follow, friend and connect with fans and celebrities across 13 thriving communities.</li>
+    <li><strong>Fan-Celebrity Hub</strong> — Dedicated fan spaces for every icon — musicians, actors, athletes, authors, chefs, designers, tech innovators, beauty artists, entertainers and leaders worldwide.</li>
+    <li><strong>I-Messenger</strong> — Private 1-to-1 conversations, group chats, photo sharing, voice notes and video calls between members.</li>
+    <li><strong>Marketplace</strong> — VIP members, creators, brands and affiliates list and sell products — fan merchandise, celebrity-endorsed items and exclusive collectibles.</li>
+    <li><strong>Shop & Earn</strong> — 120+ global affiliate partners. Members shop and earn cashback automatically across Fashion, Tech, Beauty, Food, Sports, Travel and more.</li>
+    <li><strong>ICONIK Radio</strong> — Members upload and stream music, podcasts and fan mixes by VIP tier.</li>
+    <li><strong>ICONIK Magazine</strong> — VIP Gold members publish original articles and exclusives.</li>
+    <li><strong>ICONIK TV</strong> — Celebrity video content, fan reactions and exclusive broadcasts.</li>
+    <li><strong>Creator Fund</strong> — VIP members earn commission on referrals: 2% Bronze, 5% Silver, 10% Gold.</li>
+    <li><strong>Dating & Matchmaking</strong> — VIP Silver and Gold members connect with fans sharing the same celebrity passions.</li>
+    <li><strong>Fan Challenges, Q&A, Tour Buddy, Live Streams, Polls, Rankings</strong> — Fully interactive fan engagement features.</li>
+  </ul>
+
+  <h3>&#127919; Our Mission</h3>
+  <p>To build the world's most inclusive, secure and vibrant fan-celebrity and social community — where every fan finds their circle, their icons, their voice and their opportunity across every continent.</p>
+
+  <h3>&#128065; Our Vision</h3>
+  <p>A borderless global platform where 13 thriving fan communities unite fans, celebrities, creators, brands and affiliates under one premium roof:</p>
+
+  <div class="community-grid">
+    <div class="com-chip"><strong>&#127925; Music</strong><span>Artists · Albums · Concerts</span></div>
+    <div class="com-chip"><strong>&#127909; Film & TV</strong><span>Movies · Series · Directors</span></div>
+    <div class="com-chip"><strong>&#9917; Sports</strong><span>Football · Basketball · Athletics</span></div>
+    <div class="com-chip"><strong>&#128218; Literature</strong><span>Authors · Books · Knowledge</span></div>
+    <div class="com-chip"><strong>&#128247; Fashion</strong><span>Style · Designers · Trends</span></div>
+    <div class="com-chip"><strong>&#128170; Fitness & Wellness</strong><span>Health · Fitness · Mind</span></div>
+    <div class="com-chip"><strong>&#127869;&#65039; Food & Culinary</strong><span>Chefs · Recipes · Culture</span></div>
+    <div class="com-chip"><strong>&#127807; Nature</strong><span>Adventure · Wildlife · Earth</span></div>
+    <div class="com-chip"><strong>&#128663; Automotive</strong><span>Cars · Bikes · Lifestyle</span></div>
+    <div class="com-chip"><strong>&#128187; Tech & Innovation</strong><span>AI · Gadgets · Future</span></div>
+    <div class="com-chip"><strong>&#128132; Beauty</strong><span>Makeup · Skincare · Art</span></div>
+    <div class="com-chip"><strong>&#127917; Entertainment</strong><span>Comedy · Talent · Shows</span></div>
+    <div class="com-chip"><strong>&#127891; Leadership</strong><span>Vision · Motivation · Growth</span></div>
+  </div>
+</div>
+
+<!-- TERMS -->
+<div class="section" id="terms">
+  <div class="sec-icon">&#128221;</div>
+  <div class="sec-title">Terms & Conditions</div>
+  <div class="sec-sub">Effective May 2026</div>
+  <div class="divider"></div>
+
+  <h3>1. Membership & Eligibility</h3>
+  <ul>
+    <li>Members must be 13 years or older. Members under 18 require parental or guardian consent.</li>
+    <li>One account per person. Duplicate or fake accounts are strictly prohibited.</li>
+    <li>Impersonating any person, celebrity, artist, athlete, author, chef, designer, tech leader, entertainer or public figure is a permanent ban offence.</li>
+    <li>Valid government-issued identity verification is required for the blue &#9989; verified badge.</li>
+    <li>Members must provide accurate name, email, phone number, date of birth, gender and country during registration.</li>
+  </ul>
+
+  <h3>2. Community Conduct</h3>
+  <p>All 13 ICONIK communities — Music, Film & TV, Sports, Literature, Fashion, Fitness & Wellness, Food & Culinary, Nature, Automotive, Tech & Innovation, Beauty, Entertainment and Leadership — are governed by the same conduct standards without exception.</p>
+  <ul>
+    <li>Respect all members regardless of race, gender, religion, nationality or background in every community.</li>
+    <li>No hate speech, harassment, bullying or discrimination in any community feed, chat, post or message.</li>
+    <li>No spam, fake news, misinformation or misleading content in any community.</li>
+    <li>Copyright content shared in Music, Film & TV, Literature, Fashion, Beauty and Entertainment communities must be properly attributed to the original creator.</li>
+    <li>Sports community members must not promote match-fixing, illegal gambling or addiction.</li>
+    <li>Tech & Innovation community members must not share malware, hacking tools, exploit code or promote cybercrime.</li>
+    <li>Nature community members must not promote illegal wildlife trade or environmental destruction.</li>
+    <li>Automotive community members must not promote illegal street racing or dangerous driving.</li>
+    <li>Fitness & Wellness and Food & Culinary community members must not promote dangerous, unverified or harmful health advice.</li>
+    <li>Leadership community members must not promote pyramid schemes, financial fraud or illegal business practices.</li>
+  </ul>
+
+  <h3>3. VIP Subscriptions</h3>
+  <ul>
+    <li>VIP Bronze — $3/month | VIP Silver — $5/month | VIP Gold — $10/month</li>
+    <li>Subscriptions auto-renew monthly until cancelled.</li>
+    <li>Refund requests reviewed within 7 days of payment where genuine technical failure is demonstrated.</li>
+    <li>VIP benefits activate immediately upon successful payment confirmation.</li>
+    <li>Banned accounts forfeit all subscription credits without refund.</li>
+  </ul>
+
+  <h3>4. Content Ownership</h3>
+  <ul>
+    <li>Members retain full ownership of original content they post on ICONIK.</li>
+    <li>By posting content, members grant ICONIK a non-exclusive, royalty-free licence to display, distribute and promote that content on the platform.</li>
+    <li>ICONIK reserves the right to remove content that violates these Terms without prior notice.</li>
+    <li>Members must not post content they do not own or have permission to share.</li>
+  </ul>
+
+  <h3>5. I-Messenger</h3>
+  <ul>
+    <li>I-Messenger is provided for lawful private communication between members.</li>
+    <li>ICONIK reserves the right to investigate and report messages flagged as illegal by law enforcement.</li>
+    <li>Members must not use I-Messenger to harass, threaten, solicit, scam or distribute illegal content.</li>
+  </ul>
+
+  <h3>6. Marketplace & Affiliates</h3>
+  <ul>
+    <li>VIP members listing products are responsible for the accuracy, legality and fulfilment of their listings.</li>
+    <li>ICONIK Verified&#8482; Real Estate listings are screened for legitimacy. ICONIK is not a licensed real estate agent. Independent legal advice is required for all property transactions.</li>
+    <li>Affiliate cashback earnings are tracked and paid when Paystack payment gateway is active.</li>
+    <li>ICONIK earns affiliate commission from Shop & Earn partners but is not liable for third-party transactions, returns or disputes.</li>
+  </ul>
+
+  <h3>7. Account Termination</h3>
+  <ul>
+    <li>ICONIK reserves the right to suspend or permanently ban accounts that violate these Terms.</li>
+    <li>Members may appeal a suspension by contacting iconikglobal01@gmail.com within 14 days.</li>
+    <li>Accounts inactive for 24 consecutive months may be archived.</li>
+  </ul>
+
+  <h3>8. Governing Law</h3>
+  <p>These Terms are governed by the laws of the Federal Republic of Nigeria and applicable international law including GDPR, UK Online Safety Act 2023, NDPR 2019, Nigerian Cybercrime Act 2015 and COPPA 1998.</p>
+</div>
+
+<!-- PRIVACY -->
+<div class="section" id="privacy">
+  <div class="sec-icon">&#128274;</div>
+  <div class="sec-title">Privacy Policy & Data Protection</div>
+  <div class="sec-sub">Compliant with GDPR · NDPR · CCPA · COPPA</div>
+  <div class="divider"></div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:14px;">
+    <span class="compliance-badge">&#9989; GDPR (EU)</span>
+    <span class="compliance-badge">&#9989; NDPR (Nigeria)</span>
+    <span class="compliance-badge">&#9989; CCPA (USA)</span>
+    <span class="compliance-badge">&#9989; COPPA</span>
+    <span class="compliance-badge">&#9989; UK Online Safety Act</span>
+  </div>
+
+  <h3>1. Data We Collect</h3>
+  <ul>
+    <li><strong>Identity data:</strong> Full name, email address, phone number, date of birth, gender, country, city and occupation.</li>
+    <li><strong>Profile data:</strong> Profile photo, cover photo, bio, website link and social links.</li>
+    <li><strong>Verification data:</strong> Government-issued ID type, front and back page photos — accessible to ICONIK Admin only, encrypted at rest.</li>
+    <li><strong>Community content:</strong> Posts, photos, videos, audio, comments, likes, shares and interactions across all 13 communities — Music, Film & TV, Sports, Literature, Fashion, Fitness & Wellness, Food & Culinary, Nature, Automotive, Tech & Innovation, Beauty, Entertainment and Leadership.</li>
+    <li><strong>Message data:</strong> I-Messenger conversations, group chats and media — encrypted in transit.</li>
+    <li><strong>Payment data:</strong> Transaction records, VIP subscription history — processed by Paystack and PayPal. Card details are never stored by ICONIK.</li>
+    <li><strong>Technical data:</strong> Device type, browser, IP address, login timestamps and usage patterns for security and analytics.</li>
+    <li><strong>Matchmaking data:</strong> Celebrity preferences, matchmaking bio and relationship intent — VIP Silver and Gold only.</li>
+  </ul>
+
+  <h3>2. How We Use Your Data</h3>
+  <ul>
+    <li>To create and maintain your ICONIK account and community memberships.</li>
+    <li>To verify member identity for the blue &#9989; badge certification.</li>
+    <li>To personalise your content feed across your chosen communities.</li>
+    <li>To process VIP subscription payments and Creator Fund commissions.</li>
+    <li>To operate I-Messenger private and group messaging.</li>
+    <li>To operate the Marketplace, Shop & Earn affiliate programme and Creator Fund.</li>
+    <li>To detect and prevent fraud, spam, harassment and cybercrime across all 13 communities.</li>
+    <li>To comply with legal obligations and law enforcement requests where legally required.</li>
+    <li><strong>We NEVER sell your personal data to third parties for marketing purposes.</strong></li>
+  </ul>
+
+  <h3>3. Data Sharing</h3>
+  <ul>
+    <li><strong>Paystack & PayPal:</strong> Payment processing only. No personal profile data shared.</li>
+    <li><strong>Cloudinary:</strong> Secure media file storage for photos, videos and audio.</li>
+    <li><strong>Firebase/Google:</strong> Secure database hosting, authentication and analytics.</li>
+    <li><strong>Affiliate partners:</strong> Only anonymised click and commission tracking data shared.</li>
+    <li><strong>Law enforcement:</strong> Account data provided only upon receipt of a valid court order or legal demand, except in emergency situations involving imminent risk to life.</li>
+  </ul>
+
+  <h3>4. Data Retention</h3>
+  <ul>
+    <li>Active account data retained for the duration of active membership.</li>
+    <li>Deleted account data purged within 30 days of verified deletion request.</li>
+    <li>Government ID verification documents retained for 12 months post-deletion for legal compliance.</li>
+    <li>Payment records retained for 7 years per Nigerian and international financial regulations.</li>
+    <li>Law enforcement preservation requests honoured for the legally required period.</li>
+  </ul>
+
+  <h3>5. Your Rights</h3>
+  <ul>
+    <li>&#9989; Right to access all personal data ICONIK holds about you.</li>
+    <li>&#9989; Right to correct inaccurate or outdated personal data.</li>
+    <li>&#9989; Right to delete your account and associated data.</li>
+    <li>&#9989; Right to data portability — export your data in a readable format.</li>
+    <li>&#9989; Right to withdraw consent for non-essential data processing at any time.</li>
+    <li>&#9989; Right to object to automated decision-making affecting your account.</li>
+    <li>&#9989; Right to complain to your national data protection authority.</li>
+  </ul>
+  <p>To exercise any right: iconikglobal01@gmail.com — Response within 72 hours.</p>
+
+  <h3>6. Children's Privacy (COPPA)</h3>
+  <p>ICONIK strictly prohibits membership for children under 13 years of age. Members aged 13 to 17 must have parental or guardian consent. ICONIK does not knowingly collect personal data from children under 13. Any account found to belong to a child under 13 will be immediately deleted and the data permanently purged.</p>
+
+  <h3>7. Cookie Policy</h3>
+  <ul>
+    <li><strong>Essential cookies:</strong> Required for authentication and security. Cannot be disabled.</li>
+    <li><strong>Analytics cookies:</strong> Used to understand platform usage and improve features. Can be opted out.</li>
+    <li><strong>No third-party advertising cookies</strong> are used on ICONIK. The platform is ad-free.</li>
+  </ul>
+</div>
+
+<!-- COMMUNITY RULES -->
+<div class="section" id="rules">
+  <div class="sec-icon">&#128737;&#65039;</div>
+  <div class="sec-title">Community Rules</div>
+  <div class="sec-sub">Applies to All 13 Communities Without Exception</div>
+  <div class="divider"></div>
+
+  <p>These rules apply equally and without exception across all 13 ICONIK communities: Music, Film & TV, Sports, Literature, Fashion, Fitness & Wellness, Food & Culinary, Nature, Automotive, Tech & Innovation, Beauty, Entertainment and Leadership.</p>
+
+  <h3 class="must-do">&#9989; What Members MUST Do</h3>
+  <ul>
+    <li>Register with your real identity — name, email, phone number and date of birth.</li>
+    <li>Treat all members with respect across every community regardless of background, nationality, gender or belief.</li>
+    <li>Report harmful, abusive or illegal content immediately using the Report function.</li>
+    <li>Keep community discussions relevant to the community's focus and topic.</li>
+    <li>Credit original creators when sharing their music, films, books, art, fashion designs, recipes or any creative work.</li>
+    <li>Submit valid government-issued ID to qualify for the blue &#9989; verified badge.</li>
+    <li>Keep your account information accurate and up to date.</li>
+    <li>Comply with all applicable local, national and international laws when using ICONIK.</li>
+    <li>Use I-Messenger only for lawful communication between consenting members.</li>
+    <li>Ensure content you post is suitable for a global, diverse community audience.</li>
+  </ul>
+
+  <h3 class="must-not">&#10060; What Members MUST NOT Do</h3>
+  <ul>
+    <li>No nudity, sexual content or sexually suggestive material in any community — zero tolerance.</li>
+    <li>No content involving minors in any inappropriate context — immediate permanent ban and mandatory law enforcement referral.</li>
+    <li>No hate speech targeting race, ethnicity, religion, gender, sexual orientation, disability or nationality — in any community.</li>
+    <li>No harassment, threats, intimidation or sustained bullying of any member.</li>
+    <li>No impersonation of celebrities, musicians, athletes, authors, chefs, designers, tech leaders, beauty artists, entertainers, leaders or any public figure.</li>
+    <li>No pyramid schemes, Ponzi schemes, financial scams or fraudulent investment promotions — particularly in the Leadership, Tech & Innovation and Automotive communities.</li>
+    <li>No sharing of pirated or copyrighted music, films, books, software or designs — particularly in Music, Film & TV, Literature, Tech & Innovation and Beauty communities.</li>
+    <li>No dangerous, unverified or harmful health, diet or fitness advice in the Fitness & Wellness and Food & Culinary communities.</li>
+    <li>No illegal wildlife trade, poaching promotion or environmental destruction content in the Nature community.</li>
+    <li>No promotion of dangerous driving, illegal street racing, vehicle modification to evade law enforcement in the Automotive community.</li>
+    <li>No sharing of malware, hacking tools, exploit code, phishing links or cybercrime instructions in the Tech & Innovation community.</li>
+    <li>No promotion of match-fixing, illegal gambling, sports betting addiction or doping in the Sports community.</li>
+    <li>No unauthorised commercial promotions or unsolicited advertising (spam) in any community feed or via I-Messenger.</li>
+    <li>No creation of multiple accounts to evade a ban or manipulate platform rankings.</li>
+  </ul>
+
+  <h3>Enforcement</h3>
+  <ol>
+    <li><strong>Warning</strong> — First minor violation with explanation.</li>
+    <li><strong>Content Removal</strong> — Repeated minor violations.</li>
+    <li><strong>7-Day Suspension</strong> — Serious single violation.</li>
+    <li><strong>Permanent Ban</strong> — Severe or repeated serious violation.</li>
+    <li><strong>Law Enforcement Referral</strong> — Any illegal activity detected.</li>
+  </ol>
+  <p>Appeals: iconikglobal01@gmail.com within 14 days of enforcement action.</p>
+</div>
+
+<!-- DISCLAIMER -->
+<div class="section" id="disclaimer">
+  <div class="sec-icon">&#9878;&#65039;</div>
+  <div class="sec-title">Disclaimer</div>
+  <div class="sec-sub">Platform Limitations & Liability</div>
+  <div class="divider"></div>
+
+  <h3>User-Generated Content</h3>
+  <p>ICONIK Global is a community platform. Content posted by members across all 13 communities — Music, Film & TV, Sports, Literature, Fashion, Fitness & Wellness, Food & Culinary, Nature, Automotive, Tech & Innovation, Beauty, Entertainment and Leadership — represents the personal views and opinions of individual members and does not represent the views, endorsement or verification of ICONIK Global.</p>
+
+  <h3>Health & Wellness Content</h3>
+  <p>Content shared in the Fitness & Wellness and Food & Culinary communities is for informational and community engagement purposes only. It does not constitute professional medical, nutritional, dietary or fitness advice. Members should consult qualified healthcare professionals before making any health-related decisions.</p>
+
+  <h3>Financial & Business Content</h3>
+  <p>Content shared in the Leadership and Tech & Innovation communities does not constitute professional financial, investment, legal or business advice. ICONIK is not liable for any financial decisions made based on community content.</p>
+
+  <h3>Affiliate Links & Shop & Earn</h3>
+  <p>ICONIK operates an affiliate programme with 120+ global partners across multiple categories. ICONIK earns commission when members shop through affiliate links. ICONIK is not liable for the quality, accuracy, fulfilment, returns or disputes arising from third-party partner transactions. Members transact with third-party stores at their own risk.</p>
+
+  <h3>ICONIK Verified&#8482; Real Estate</h3>
+  <p>ICONIK screens Real Estate listings for basic legitimacy before display. However, ICONIK is not a licensed real estate agent, broker or solicitor in any jurisdiction. All property transactions require independent professional legal and financial advice. ICONIK accepts no liability for any property transaction completed through listings discovered on the platform.</p>
+
+  <h3>Service Availability</h3>
+  <p>ICONIK does not guarantee uninterrupted service availability. The platform may experience downtime for maintenance, updates or due to third-party infrastructure failures beyond ICONIK's control, including Firebase, Cloudinary, Paystack and internet service providers. ICONIK is not liable for data loss caused by force majeure events.</p>
+
+  <h3>Celebrity Accounts</h3>
+  <p>Unless explicitly marked with a blue &#9989; verified badge confirmed by ICONIK Admin, celebrity accounts and fan pages on ICONIK are operated by fans and not by the celebrities themselves. ICONIK is not responsible for the accuracy of fan-created celebrity content.</p>
+</div>
+
+<!-- CYBER SECURITY -->
+<div class="section" id="cyber">
+  <div class="sec-icon">&#128272;</div>
+  <div class="sec-title">Cyber Security & Law Enforcement Compliance</div>
+  <div class="sec-sub">Global Regulatory Compliance</div>
+  <div class="divider"></div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:14px;">
+    <span class="compliance-badge">Nigerian Cybercrime Act 2015</span>
+    <span class="compliance-badge">GDPR (EU) 2016/679</span>
+    <span class="compliance-badge">UK Online Safety Act 2023</span>
+    <span class="compliance-badge">NDPR Nigeria 2019</span>
+    <span class="compliance-badge">COPPA USA 1998</span>
+    <span class="compliance-badge">Computer Misuse Act UK 1990</span>
+    <span class="compliance-badge">NITDA Act Nigeria</span>
+  </div>
+
+  <h3>Technical Security Measures</h3>
+  <ul>
+    <li>All data transmitted over HTTPS/TLS encrypted connections.</li>
+    <li>Firebase Authentication used for all member account security.</li>
+    <li>Government ID verification data encrypted at rest — accessible only to authorised ICONIK Admin.</li>
+    <li>I-Messenger messages encrypted in transit between sender and recipient.</li>
+    <li>Payment card data never stored by ICONIK — processed entirely by Paystack and PayPal PCI-DSS compliant systems.</li>
+    <li>Automatic suspicious activity detection and account flagging.</li>
+    <li>Admin access controls — role-based permissions for Admin, Sub Admin, Moderator and Content Manager.</li>
+    <li>Regular platform security reviews and updates.</li>
+    <li>Cloudinary media storage with secure access controls.</li>
+  </ul>
+
+  <h3>Law Enforcement Cooperation</h3>
+  <ul>
+    <li>ICONIK will preserve and provide account data — including identity, messages, posts, payment records and activity logs — to law enforcement agencies upon receipt of a valid court order, subpoena or legally binding demand from a competent authority.</li>
+    <li>ICONIK will proactively and immediately report any detected child sexual abuse material (CSAM) to the National Centre for Missing and Exploited Children (NCMEC), the Nigerian Police Force, the UK Internet Watch Foundation and relevant national authorities without waiting for a court order.</li>
+    <li>ICONIK will cooperate fully with cybercrime investigations across all 13 community activity areas including Music, Film & TV, Sports, Literature, Fashion, Fitness & Wellness, Food & Culinary, Nature, Automotive, Tech & Innovation, Beauty, Entertainment and Leadership.</li>
+    <li>Emergency disclosures of account data may be made without a court order where ICONIK believes there is an imminent risk to the life or safety of any person.</li>
+    <li>ICONIK maintains access logs and account records for a minimum of 12 months to support potential law enforcement investigations.</li>
+    <li>ICONIK does not notify account holders of law enforcement data requests where prohibited by court order or where notification would compromise an investigation.</li>
+  </ul>
+
+  <h3>Member Cyber Safety Responsibilities</h3>
+  <ul>
+    <li>Members must use strong, unique passwords for their ICONIK accounts.</li>
+    <li>Members must not share their account credentials with any other person.</li>
+    <li>Members must report any suspected account compromise immediately to iconikglobal01@gmail.com.</li>
+    <li>Members must not attempt to hack, reverse-engineer, scrape or interfere with ICONIK platform infrastructure.</li>
+    <li>Members must not use ICONIK to distribute malware, phishing links, ransomware or any malicious code — particularly in the Tech & Innovation community.</li>
+    <li>Members must not attempt to access other members' accounts, private messages or personal data without authorisation.</li>
+    <li>Any member found conducting or facilitating cybercrime through ICONIK will be immediately banned and reported to relevant cybercrime authorities including the Nigerian Cybercrime Advisory Council, the UK National Crime Agency (NCA) and Interpol as applicable.</li>
+  </ul>
+
+  <h3>Prohibited Cyber Activities</h3>
+  <p>The following are strictly prohibited on ICONIK and constitute criminal offences under applicable law:</p>
+  <ul>
+    <li>Unauthorised access to any ICONIK account or system.</li>
+    <li>Distribution of malware, spyware, ransomware or any malicious software.</li>
+    <li>Phishing, social engineering or identity theft targeting any ICONIK member.</li>
+    <li>Distributed Denial of Service (DDoS) attacks against ICONIK infrastructure.</li>
+    <li>Fraudulent financial transactions including payment fraud, chargeback fraud and subscription manipulation.</li>
+    <li>Cryptocurrency scams, fake investment schemes or financial fraud promoted through any ICONIK community or via I-Messenger.</li>
+    <li>Any activity that violates the Nigerian Cybercrime (Prohibition, Prevention etc.) Act 2015 or equivalent legislation in the member's jurisdiction.</li>
+  </ul>
+</div>
+
+<!-- CONTACT -->
+<div class="section" id="contact">
+  <div class="sec-icon">&#128231;</div>
+  <div class="sec-title">Contact & Data Protection Officer</div>
+  <div class="sec-sub">We Respond Within 72 Hours</div>
+  <div class="divider"></div>
+
+  <div class="contact-card">
+    <div class="label">ICONIK GLOBAL — PLATFORM OWNER</div>
+    <div class="val">Email: iconikglobal01@gmail.com</div>
+    <div class="val">Website: iconik-global.web.app</div>
+  </div>
+
+  <div class="contact-card">
+    <div class="label">DATA PROTECTION OFFICER (DPO)</div>
+    <div class="val">Email: iconikglobal01@gmail.com</div>
+    <div class="val">Subject line: DATA PROTECTION REQUEST</div>
+    <div class="val">Response time: Within 72 hours</div>
+  </div>
+
+  <div class="contact-card">
+    <div class="label">REPORT ABUSE / ILLEGAL CONTENT</div>
+    <div class="val">Email: iconikglobal01@gmail.com</div>
+    <div class="val">Subject line: ABUSE REPORT</div>
+    <div class="val">Include: Username, content link, description</div>
+  </div>
+
+  <div class="contact-card">
+    <div class="label">LAW ENFORCEMENT REQUESTS</div>
+    <div class="val">Email: iconikglobal01@gmail.com</div>
+    <div class="val">Subject line: LAW ENFORCEMENT REQUEST</div>
+    <div class="val">Attach: Valid court order or legal demand on official letterhead</div>
+  </div>
+
+  <h3>Regulatory Authorities</h3>
+  <ul>
+    <li><strong>Nigeria:</strong> NITDA — nitda.gov.ng | FCCPC — fccpc.gov.ng</li>
+    <li><strong>United Kingdom:</strong> ICO — ico.org.uk</li>
+    <li><strong>European Union:</strong> Your national Data Protection Authority</li>
+    <li><strong>United States:</strong> FTC — ftc.gov</li>
+    <li><strong>International:</strong> Interpol — interpol.int</li>
+  </ul>
+
+  <p style="margin-top:16px;">If you believe ICONIK has not adequately addressed your data protection concern, you have the right to lodge a complaint directly with your national data protection supervisory authority.</p>
+
+  <div class="updated">Last Updated: May 2026 | Version 1.0<br/>Governing Law: Federal Republic of Nigeria + Applicable International Law<br/>&#169; 2026 ICONIK Global. All Rights Reserved.</div>
+</div>
+
+</main>
+
+<!-- ACCEPT BAR (shown only when accessed from registration) -->
+<div id="acceptBar" style="display:none;">
+  <input type="checkbox" id="acceptChk" onchange="toggleAccept()"/>
+  <label for="acceptChk">I confirm I am 13+ years old and have read and accept the ICONIK Terms, Privacy Policy, Community Rules, Disclaimer and Cyber Security Policy.</label>
+  <button id="acceptBtn" onclick="doAccept()">I Accept &#10148;</button>
+</div>
+
+<script>
+function scrollTo(id){
+  var el=document.getElementById(id);
+  if(el)el.scrollIntoView({behavior:"smooth",block:"start"});
+  document.querySelectorAll(".toc-btn").forEach(function(b){b.classList.remove("active");});
+  event.target.classList.add("active");
+}
+function toggleAccept(){
+  var chk=document.getElementById("acceptChk");
+  var btn=document.getElementById("acceptBtn");
+  if(chk.checked){btn.classList.add("ready");}
+  else{btn.classList.remove("ready");}
+}
+function doAccept(){
+  var chk=document.getElementById("acceptChk");
+  if(!chk.checked){alert("Please tick the checkbox to confirm you have read the policy.");return;}
+  localStorage.setItem("iconik_policy_accepted","1");
+  var ret=new URLSearchParams(location.search).get("return");
+  location.href=ret||"/dashboard.html";
+}
+// Show accept bar if coming from registration
+if(new URLSearchParams(location.search).get("accept")==="1"){
+  document.getElementById("acceptBar").style.display="flex";
+}
+// Highlight active section on scroll
+window.addEventListener("scroll",function(){
+  var sections=["about","terms","privacy","rules","disclaimer","cyber","contact"];
+  var btns=document.querySelectorAll(".toc-btn");
+  sections.forEach(function(id,i){
+    var el=document.getElementById(id);
+    if(el){
+      var r=el.getBoundingClientRect();
+      if(r.top<=120&&r.bottom>120){
+        btns.forEach(function(b){b.classList.remove("active");});
+        if(btns[i])btns[i].classList.add("active");
+      }
+    }
+  });
+});
+</script>
+</body>
+</html>
