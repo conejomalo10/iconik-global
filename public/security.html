@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ICONIK — Security & Trust</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#07070D;color:#F5F0E8;font-family:'Inter',sans-serif;min-height:100vh;}
+nav{position:fixed;top:0;left:0;right:0;height:60px;z-index:100;background:rgba(7,7,13,0.96);border-bottom:1px solid rgba(10,132,255,0.3);display:flex;align-items:center;justify-content:space-between;padding:0 20px;backdrop-filter:blur(16px);}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.08em;color:#0A84FF;text-decoration:none;}
+.nav-back{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;letter-spacing:0.12em;color:#F5F0E8;text-decoration:none;padding:8px 16px;border:1px solid rgba(255,255,255,0.15);border-radius:6px;transition:all 0.2s;}
+.nav-back:hover{border-color:#0A84FF;color:#0A84FF;}
+.hero{padding:100px 20px 40px;text-align:center;max-width:800px;margin:0 auto;}
+.hero-icon{font-size:3rem;margin-bottom:16px;display:block;}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,8vw,3.5rem);letter-spacing:0.1em;background:linear-gradient(135deg,#0A84FF,#0060CC);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px;}
+.hero-sub{font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(189,181,166,0.7);letter-spacing:0.05em;margin-bottom:8px;}
+.last-updated{font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(189,181,166,0.4);margin-bottom:40px;}
+.content{max-width:760px;margin:0 auto;padding:0 20px 80px;}
+.content h2{font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.9rem;letter-spacing:0.12em;text-transform:uppercase;color:#0A84FF;margin:36px 0 12px;padding-bottom:8px;border-bottom:1px solid rgba(10,132,255,0.2);}
+.content h3{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;color:rgba(245,240,232,0.8);margin:24px 0 10px;}
+.content p{font-family:'Inter',sans-serif;font-size:0.84rem;line-height:1.75;color:rgba(189,181,166,0.85);margin-bottom:14px;}
+.content ul{margin:8px 0 16px 0;padding-left:0;list-style:none;}
+.content ul li{font-family:'Inter',sans-serif;font-size:0.82rem;line-height:1.7;color:rgba(189,181,166,0.8);padding:6px 0 6px 20px;position:relative;border-bottom:1px solid rgba(255,255,255,0.03);}
+.content ul li::before{content:'✦';color:#0A84FF;font-size:0.5rem;position:absolute;left:0;top:10px;}
+.content a{color:#0A84FF;text-decoration:none;}
+.content a:hover{text-decoration:underline;}
+footer{text-align:center;padding:32px 20px;border-top:1px solid rgba(255,255,255,0.06);}
+footer p{font-family:'Inter',sans-serif;font-size:0.7rem;color:rgba(189,181,166,0.35);margin-bottom:12px;}
+.footer-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;}
+.footer-links a{font-family:'Inter',sans-serif;font-size:0.7rem;color:rgba(189,181,166,0.5);text-decoration:none;}
+.footer-links a:hover{color:#0A84FF;}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="/index.html">ICONIK</a>
+  <a class="nav-back" href="/app.html">← Sign In / Join</a>
+</nav>
+<div class="hero">
+  <span class="hero-icon">🛡️</span>
+  <div class="hero-title">Security & Trust</div>
+  <div class="hero-sub">ICONIK Global Fans Community</div>
+  <div class="last-updated">Last updated: January 2026</div>
+</div>
+<div class="content">
+
+<h2>Our Security Commitment</h2>
+<p>At ICONIK Global, the security of your personal data and account is our highest priority. We employ industry-leading technologies and practices to keep your information safe.</p>
+
+<h2>Authentication Security</h2>
+<p>ICONIK uses <strong>Firebase Authentication</strong> (Google Cloud) for all user sign-ins. This means:</p>
+<ul>
+<li>Passwords are hashed and never stored in plain text</li>
+<li>All authentication traffic is encrypted with TLS/HTTPS</li>
+<li>Password reset via verified email link</li>
+<li>Account lockout protection against brute-force attacks</li>
+</ul>
+
+<h2>Data Storage Security</h2>
+<p>All user data is stored in <strong>Google Firebase/Firestore</strong>, one of the most secure cloud database platforms available. Data is:</p>
+<ul>
+<li>Encrypted at rest and in transit</li>
+<li>Protected by Firebase Security Rules (access control)</li>
+<li>Backed up automatically with geographic redundancy</li>
+</ul>
+
+<h2>Media Security</h2>
+<p>All uploaded images, videos, and documents are stored via <strong>Cloudinary</strong> with:</p>
+<ul>
+<li>Secure HTTPS delivery</li>
+<li>Upload presets that prevent unauthorized file types</li>
+<li>Content delivery via global CDN</li>
+</ul>
+
+<h2>Payment Security</h2>
+<p>All payments on ICONIK are processed by PCI-DSS compliant third-party providers:</p>
+<ul>
+<li><strong>Paystack</strong> — NGN card, bank transfer, and USSD payments</li>
+<li><strong>PayPal</strong> — International USD payments</li>
+<li><strong>Cryptocurrency</strong> — BTC, ETH, USDT via NowPayments</li>
+</ul>
+<p>ICONIK does not store card numbers or payment credentials on its servers.</p>
+
+<h2>Access Controls</h2>
+<p>ICONIK employs a tiered admin system:</p>
+<ul>
+<li><strong>Chief Admin:</strong> Full platform control — single designated account</li>
+<li><strong>Sub Admins:</strong> Limited access to specific communities and features</li>
+<li><strong>Moderators:</strong> Content moderation only</li>
+<li><strong>Members:</strong> Access only to their own data and public content</li>
+</ul>
+
+<h2>Reporting Security Issues</h2>
+<p>If you discover a security vulnerability, please report it responsibly to: <a href="mailto:iconikglobal01@gmail.com" style="color:#0A84FF;">iconikglobal01@gmail.com</a></p>
+<p>We take all security reports seriously and will respond within 48 hours.</p>
+
+<h2>User Responsibilities</h2>
+<ul>
+<li>Use a strong, unique password for your ICONIK account</li>
+<li>Never share your login credentials with anyone</li>
+<li>Log out from shared devices</li>
+<li>Report suspicious activity or unauthorized access immediately</li>
+</ul>
+
+</div>
+<footer>
+  <p>© 2026 ICONIK Global Fans Community · All rights reserved.</p>
+  <div class="footer-links">
+    <a href="/terms.html">Terms & Conditions</a>
+    <a href="/privacy.html">Privacy Policy</a>
+    <a href="/about.html">About</a>
+    <a href="/security.html">Security</a>
+    <a href="/disclaimer.html">Disclaimer</a>
+    <a href="/cookies.html">Cookies</a>
+  </div>
+</footer>
+</body>
+</html>
